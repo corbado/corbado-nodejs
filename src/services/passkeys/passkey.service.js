@@ -1,12 +1,44 @@
 const axios = require("axios");
 
+const EMAIL_TEMPLATES = {
+    EMAIL_SIGN_UP_TEMPLATE : "email_signup_user",
+    EMAIL_LOGIN_TEMPLATE : "email_login_user",
+    PASSKEY_SIGN_UP_TEMPLATE : "webauthn_signup_user",
+    PASSKEY_LOGIN_TEMPLATE : "webauthn_login_user",
+}
+
+const INTERNAL_CONFIG = {
+    API_VERSION : "v1",
+    API_URL :"https://api.corbado.com/v1/",
+}
+
 class CorbadoPasskeyService {
 
-    constructor(projectId, apiKey, origin) {
-        this.projectId = projectId;
+    constructor(apiKey, config) {
+
+        if (!apiKey) {
+            throw new Error('API key is required');
+        }
+
+        if (!config) {
+            throw new Error('Config is required');
+        }
+
+        if (!("projectId" in config)) {
+            throw new Error('Project ID (projectId) field in Configuration Object is required');
+        }
+
+        if (!("origin" in config)) {
+            throw new Error('Origin (origin) field in Configuration Object is required');
+        }
+
         this.apiKey = apiKey;
-        this.origin = origin;
-        this.apiURL = "https://api.corbado.com/v1/";
+        this.config = config;
+
+        this.projectId = config.projectId;
+        this.origin = config.origin;
+
+        this.apiURL = INTERNAL_CONFIG.API_URL;
     }
     
     /*
@@ -18,8 +50,8 @@ class CorbadoPasskeyService {
     */
     // @Route("/api/signup/webauthn/init")
     startSignup = async (username, clientInfo) => {
-        let {data} = await axios.post(process.env.API_URL + 'webauthn/register/start', {
-            username, origin: process.env.ORIGIN , clientInfo: clientInfo, credentialStatus: "active"
+        let {data} = await axios.post(this.apiURL + 'webauthn/register/start', {
+            username, origin: this.origin , clientInfo: clientInfo, credentialStatus: "active"
         }, {
             auth: {
                 username: this.projectId,
@@ -29,11 +61,10 @@ class CorbadoPasskeyService {
         return data["publicKeyCredentialCreationOptions"];
     };
 
-
     // @Route("/api/signup/webauthn/finish")
-    finishSignup = async (publicKeyCredential, clientInfo, requestID) => {
+    finishSignup = async (publicKeyCredential, clientInfo, requestID = null) => {
         let {data} = await this.webAuthnRegisterFinish(publicKeyCredential, clientInfo);
-        await this.webAuthnConfirmDevice(data["credentialID"], 'active');
+        await this.webAuthnConfirmDevice(data["credentialID"], 'active', requestID);
         return data;
     };
 
@@ -56,10 +87,10 @@ class CorbadoPasskeyService {
         }).catch(e=> console.log(e))
     };
 
-    emailLinkSend = async (email, templateName, redirect, create, additionalPayload, clientInfo, projectId, apiSecret) => {
+    emailLinkSend = async (email, redirect, create = true, additionalPayload, clientInfo) => {
         let data = {
             email: email,
-            templateName: templateName, // webauthn_signup_user
+            templateName: EMAIL_TEMPLATES.PASSKEY_SIGN_UP_TEMPLATE, // webauthn_signup_user
             redirect: redirect,
             create: create, // true
             clientInfo: clientInfo,
