@@ -2,7 +2,7 @@
 
 The Corbado Node library provides convenient access to the Corbado API from applications written in server-side JavaScript.
 
-## Docuemntation 
+## Documentation 
 
 See the Corbado API References https://api.corbado.com/docs/api/ and Official Corbado API implementation examples and documentation https://corbado.gitbook.io/api-docs/overview/welcome to understand the usage of Corbado API. 
 
