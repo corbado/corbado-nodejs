@@ -1,5 +1,6 @@
 const CorbadoPasskeyService  =  require('./services/passkeys/passkey.service');
 const CorbadoEmailMagicLinkService  =  require('./services/email/emaillink.service');
+const getClientInfo = require('./utils/clientInfo.utils');
 
 const DEFAULT_API_VERSION = 'v1';
 const DEFAULT_TIMEOUT = 80000;
@@ -46,7 +47,8 @@ class Corbado {
         }
 
         this.webauthnService = new CorbadoPasskeyService(apiKey, config, EMAIL_TEMPLATES, INTERNAL_CONFIG);
-        this.emailMagicLinkService = new CorbadoEmailMagicLinkService(apiKey, config);
+        this.emailMagicLinkService = new CorbadoEmailMagicLinkService(apiKey, config, EMAIL_TEMPLATES, INTERNAL_CONFIG);
+        this.utils.getClientInfo = getClientInfo;
     }
 }
 

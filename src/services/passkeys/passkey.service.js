@@ -1,41 +1,41 @@
 const axios = require("axios");
 
+// //helper function
+// async function webAuthnRegisterFinish(publicKeyCredential, clientInfo, requestID = null, projectId, apiURL, apiKey, origin){
+//     let data = {
+//         publicKeyCredential: JSON.stringify(publicKeyCredential),
+//         origin: origin,
+//         clientInfo: clientInfo,
+//     };
+
+//     if (requestID) {
+//         data["requestID"] = requestID;
+//     }
+
+//     return axios.post(apiURL + 'webauthn/register/finish', data, {
+//         auth: {
+//             username: projectId,
+//             password: apiKey
+//         }
+//     }).catch(e=> console.log(e))
+// };
+
 //helper function
-async function webAuthnRegisterFinish(publicKeyCredential, clientInfo, requestID = null, projectId, apiURL, apiKey, origin){
-    let data = {
-        publicKeyCredential: JSON.stringify(publicKeyCredential),
-        origin: origin,
-        clientInfo: clientInfo,
-    };
+// async function webAuthnLoginFinish(publicKeyCredential, clientInfo, projectId, apiURL, apiKey, origin){
+//     let data = {
+//         publicKeyCredential: JSON.stringify(publicKeyCredential),
+//         origin: origin,
+//         clientInfo: clientInfo
+//     };
 
-    if (requestID) {
-        data["requestID"] = requestID;
-    }
-
-    return axios.post(apiURL + 'webauthn/register/finish', data, {
-        auth: {
-            username: projectId,
-            password: apiKey
-        }
-    }).catch(e=> console.log(e))
-};
-
-//helper function
-async function webAuthnLoginFinish(publicKeyCredential, clientInfo, projectId, apiURL, apiKey, origin){
-    let data = {
-        publicKeyCredential: JSON.stringify(publicKeyCredential),
-        origin: origin,
-        clientInfo: clientInfo
-    };
-
-    return axios.post(apiURL + 'webauthn/authenticate/finish', data, {
-        auth: {
-            username: projectId,
-            password: apiKey
-        }
-    })
-    .catch(e => console.log(e))
-} 
+//     return axios.post(apiURL + 'webauthn/authenticate/finish', data, {
+//         auth: {
+//             username: projectId,
+//             password: apiKey
+//         }
+//     })
+//     .catch(e => console.log(e))
+// } 
 
 class CorbadoPasskeyService {
 
@@ -99,20 +99,45 @@ class CorbadoPasskeyService {
     * @returns {object} - the response object from the server containing the username, status and creadentialID
     */
     registerFinish = async (publicKeyCredential, clientInfo, requestID = null) => {
-        let {data} = await webAuthnRegisterFinish(
-            publicKeyCredential, 
-            clientInfo, 
-            requestID, 
-            this.projectId, 
-            this.apiURL, 
-            this.apiKey, 
-            this.origin
-            );
+        // let {data} = await webAuthnRegisterFinish(
+        //     publicKeyCredential, 
+        //     clientInfo, 
+        //     requestID, 
+        //     this.projectId, 
+        //     this.apiURL, 
+        //     this.apiKey, 
+        //     this.origin
+        //     );
 
-        //Updates the credential status to "active"
-        await this.credentialUpdate(data["credentialID"], 'active');
+        // //Updates the credential status to "active"
+        // await this.credentialUpdate(data["credentialID"], 'active');
 
-        return data;
+        // return data;
+
+        let params = {
+            publicKeyCredential: JSON.stringify(publicKeyCredential),
+            origin: this.origin,
+            clientInfo: clientInfo,
+        };
+
+    
+        if (requestID) {
+            params["requestID"] = requestID;
+        }
+
+        try {
+            let { data } = await axios.post(this.apiURL + 'webauthn/register/finish', params, {
+                auth: {
+                    username: this.projectId,
+                    password: this.apiKey
+                }
+            });
+            return data;
+        }
+        catch (e) {
+            console.log(e);
+            throw new Error('Webauthn registration finish failed');
+        }
     };
 
     /*
@@ -213,9 +238,40 @@ class CorbadoPasskeyService {
     * 
     * @returns {object} - the response object from the server containing the username, status and creadentialID
     */
-    authenticateFinish = async (publicKeyCredential, clientInfo) => {
-        let { data } = await webAuthnLoginFinish(publicKeyCredential, clientInfo, this.projectId, this.apiURL, this.apiKey, this.origin);
-        return data;
+    authenticateFinish = async (publicKeyCredential, clientInfo, requestID = null) => {
+        // let { data } = await webAuthnLoginFinish(publicKeyCredential, clientInfo, this.projectId, this.apiURL, this.apiKey, this.origin);
+        // return data;
+        let params = {
+            publicKeyCredential: JSON.stringify(publicKeyCredential),
+            origin: this.origin,
+            clientInfo: clientInfo
+        };
+
+        if (requestID) {
+            params["requestID"] = requestID;
+        }
+
+        try {
+            let { data } = await axios.post(this.apiURL + 'webauthn/authenticate/finish', params, {
+                auth: {
+                    username: this.projectId,
+                     password: this.apiKey
+                }
+            });
+            return data;
+        }
+        catch (e) {
+            console.log(e);
+            throw new Error('Webauthn authentication finish failed');
+        }
+    
+        // return axios.post(apiURL + 'webauthn/authenticate/finish', data, {
+        //     auth: {
+        //         username: projectId,
+        //         password: apiKey
+        //     }
+        // })
+        // .catch(e => console.log(e))
     };
 }
 
