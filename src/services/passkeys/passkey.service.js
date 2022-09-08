@@ -36,6 +36,9 @@ class CorbadoPasskeyService {
     * 
     * @param {string} username - the email of the user
     * @param {object} clientInfo - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
+    * @param {string} clientInfo.remoteAddress - IP of the user
+    * @param {string} clientInfo.userAgent - User Agent of the user
+    * @param {string} clientInfo.origin - Origin of the request
     * 
     * @returns {object} data - the response from the server containing the publicKeyCredentialOptions
     * @returns {object} data.publicKeyCredentialOptions - the publicKeyCredentialOptions object is needed to initialize the Webauthn registration process from the client side
@@ -64,6 +67,9 @@ class CorbadoPasskeyService {
     * 
     * @param {string} publicKeyCredential - can be obtained from the browser webatuhn create function by passing the publicKeyCredentialOptions 
     * @param {object} clientInfo - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
+    * @param {string} clientInfo.remoteAddress - IP of the user
+    * @param {string} clientInfo.userAgent - User Agent of the user
+    * @param {string} clientInfo.origin - Origin of the request
     * @param {string} requestID - the requestID, is set automatically if not provided
     * 
     * @returns {object} - the response object from the server containing the username, status and creadentialID
@@ -191,9 +197,12 @@ class CorbadoPasskeyService {
     * 
     * @param {string} username - the email of the user
     * @param {object} clientInfo - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
+    * @param {string} clientInfo.remoteAddress - IP of the user
+    * @param {string} clientInfo.userAgent - User Agent of the user
+    * @param {string} clientInfo.origin - Origin of the request
     * 
     * @returns {object} data - the response from the server containing the publicKeyCredentialOptions
-    * @returns {string} data.publicKeyCredentialOptions - the publicKeyCredentialOptions object is needed to initialize the Webauthn registration process from the client side
+    * @returns {object} data.publicKeyCredentialOptions - the publicKeyCredentialOptions object is needed to initialize the Webauthn registration process from the client side
     */
     authenticateStart = async (username, clientInfo) => {
         try {
@@ -218,6 +227,10 @@ class CorbadoPasskeyService {
     * 
     * @param {string} publicKeyCredential - can be obtained from the browser webatuhn create function by passing the publicKeyCredentialOptions 
     * @param {object} clientInfo - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
+    * @param {string} clientInfo.remoteAddress - IP of the user
+    * @param {string} clientInfo.userAgent - User Agent of the user
+    * @param {string} clientInfo.origin - Origin of the request
+    * 
     * @param {string} requestID - the requestID, is set automatically if not provided
     * 
     * @returns {object} data - the response object from the server containing the username, status and creadentialID
