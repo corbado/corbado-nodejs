@@ -36,6 +36,15 @@ To access specific methods in, e.g Corbado Webauthn Service, you can use:
 
 ```
 corbado.webauthnService.registerStart(email, clientInfo);
-
 ```
+
+
+###Utilities
+
+Corbado package also provides several useful utitlity functions that can make the development process easier, e.g.:
+```
+corbado.utils.getClientInfo(req);
+```
+helps to obtain relevant client information (User Agent, Remote Address, etc.) object from an Http Request.
+
 
