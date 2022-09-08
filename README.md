@@ -29,3 +29,13 @@ const corbado = new Corbado("uu....DZ", {
 
 ```
 
+###Services 
+
+Corbado package provides several services.
+To access specific methods in, e.g Corbado Webauthn Service, you can use: 
+
+```
+corbado.webauthnService.registerStart(email, clientInfo);
+
+```
+
