@@ -37,7 +37,8 @@ class CorbadoPasskeyService {
     * @param {string} username - the email of the user
     * @param {object} clientInfo - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
     * 
-    * @returns {string} - the response from the server containing the publicKeyCredentialOptions
+    * @returns {object} data - the response from the server containing the publicKeyCredentialOptions
+    * @returns {object} data.publicKeyCredentialOptions - the publicKeyCredentialOptions object is needed to initialize the Webauthn registration process from the client side
     */
     registerStart = async (username, clientInfo) => {
         try {
@@ -55,7 +56,6 @@ class CorbadoPasskeyService {
             console.log(e);
             throw new Error('Webauthn starting registration failed');
         }
-        // return data["publicKeyCredentialCreationOptions"];
     };
 
 
@@ -98,13 +98,17 @@ class CorbadoPasskeyService {
     /*
     * Creates a Request Corbado Service to send a confirmation email to the user, to confirm biometric device registration
     * 
-    * @param {string} email - can be obtained from the browser webatuhn create function by passing the publicKeyCredentialOptions 
-    * @param {object} redirec - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
-    * @param {string} create - the requestID, is set automatically if not provided
-    * @param {string} additionalPayload - the status of the credential, can be "active" or "inactive"
-    * @param {string} clientInfo - the credentialID, is set automatically if not provided
+    * @param {string} email - the email of the user
+    * @param {object} redirect - the URL to redirect the user to from the confirmation email
+    * @param {boolean} create - create a new user with the given email if not found
+    * @param {object} additionalPayload - additional payload to be added to the email
+    * @param {string} additionalPayload.UserFullName - Full Name of the user to be added to the email
+    * @param {object} clientInfo - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
+    * @param {string} clientInfo.remoteAddress - IP of the user
+    * @param {string} clientInfo.userAgent - User Agent of the user
+    * @param {string} clientInfo.origin - Origin of the request
     * 
-    * @returns {object} - the response object from the server containing the username, status and creadentialID
+    * @returns {object} data - the response object from the server 
     */
     emailLinkSend = async (email, redirect, create = true, additionalPayload, clientInfo) => {
         let params = {
@@ -130,12 +134,17 @@ class CorbadoPasskeyService {
             console.log(e);
             throw new Error('Webauthn seding confirmation email link failed');
         }
-
-        // return {
-        //     httpStatusCode: res.data.httpStatusCode, message: res.data.message,
-        // };
     };
 
+    /*
+    * Creates a Request Corbado Service to confirm tha validity of the linkID and the token that was sent to the client. 
+    * Can be used after the user is redirected back to the via the email link.
+    * 
+    * @param {string} emailLinkID - is sent to the client via the email link
+    * @param {object} token - is sent to the client via the email link
+    * 
+    * @returns {object} data - the response object from the server containing the username, status and creadentialID
+    */
     emailLinkValidate = async (emailLinkID, token) => {
         try {
             let { data } = await axios.put(this.apiURL + "emailLinks/" + emailLinkID + "/validate", {token}, {
@@ -150,12 +159,6 @@ class CorbadoPasskeyService {
             console.log(e);
             throw new Error('Webauthn email link validation failed');
         }       
-
-        // return {
-        //     httpStatusCode: res.data.httpStatusCode,
-        //     message: res.data.message,
-        //     additionalPayload: res.data.additionalPayload,
-        // };
     }
 
     /*
@@ -164,7 +167,7 @@ class CorbadoPasskeyService {
     * @param {credentialID} credentialID - the credentialID to update
     * @param {status} status - the status to update to
     * 
-    * @returns {object} - the response object from the server containing the publicKeyCredentialOptions
+    * @returns {object} data - the response object from the server containing the new credential status
     */
     credentialUpdate = (credentialID, status) => {
 
@@ -189,7 +192,8 @@ class CorbadoPasskeyService {
     * @param {string} username - the email of the user
     * @param {object} clientInfo - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
     * 
-    * @returns {string} - the response from the server containing the publicKeyCredentialOptions
+    * @returns {object} data - the response from the server containing the publicKeyCredentialOptions
+    * @returns {string} data.publicKeyCredentialOptions - the publicKeyCredentialOptions object is needed to initialize the Webauthn registration process from the client side
     */
     authenticateStart = async (username, clientInfo) => {
         try {
@@ -206,9 +210,7 @@ class CorbadoPasskeyService {
         catch (e) {
             console.log(e);
             throw new Error('Webauthn authenticate start failed');
-        }
-        
-        // return data['publicKeyCredentialRequestOptions'];
+        }        
     }
 
     /*
@@ -218,7 +220,7 @@ class CorbadoPasskeyService {
     * @param {object} clientInfo - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
     * @param {string} requestID - the requestID, is set automatically if not provided
     * 
-    * @returns {object} - the response object from the server containing the username, status and creadentialID
+    * @returns {object} data - the response object from the server containing the username, status and creadentialID
     */
     authenticateFinish = async (publicKeyCredential, clientInfo, requestID = null) => {
         let params = {
