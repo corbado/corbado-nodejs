@@ -4,20 +4,9 @@ const CorbadoEmailMagicLinkService  =  require('./services/email/emaillink.servi
 const DEFAULT_API_VERSION = 'v1';
 const DEFAULT_TIMEOUT = 80000;
 
-
 const ALLOWED_CONFIG_PROPERTIES = [
     'origin',
     'projectId',
-    'maxNetworkRetries',
-    'httpAgent',
-    'httpClient',
-    'timeout',
-    'host',
-    'port',
-    'protocol',
-    'telemetry',
-    'appInfo',
-    'stripeAccount',
 ];
 
 const EMAIL_TEMPLATES = {
@@ -43,6 +32,11 @@ class Corbado {
             throw new Error('Config is required');
         }
 
+        //Check if config parameters are allowed
+        if ( Object.keys(config).every((key) => key in ALLOWED_CONFIG_PROPERTIES) === false ) {
+            throw new Error('Config parameters are not allowed');
+        }
+
         if (!("projectId" in config)) {
             throw new Error('Project ID (projectId) field in Configuration Object is required');
         }
@@ -51,13 +45,9 @@ class Corbado {
             throw new Error('Origin (origin) field in Configuration Object is required');
         }
 
-        this.webauthnService = new CorbadoPasskeyService(apiKey, config);
+        this.webauthnService = new CorbadoPasskeyService(apiKey, config, EMAIL_TEMPLATES, INTERNAL_CONFIG);
         this.emailMagicLinkService = new CorbadoEmailMagicLinkService(apiKey, config);
     }
 }
 
 module.exports = Corbado;
-
-// exports.printMsg = function() {
-//     console.log("This is a message from the demo package");
-// }

@@ -1,17 +1,6 @@
 const axios = require("axios");
 
-const EMAIL_TEMPLATES = {
-    EMAIL_SIGN_UP_TEMPLATE : "email_signup_user",
-    EMAIL_LOGIN_TEMPLATE : "email_login_user",
-    PASSKEY_SIGN_UP_TEMPLATE : "webauthn_signup_user",
-    PASSKEY_LOGIN_TEMPLATE : "webauthn_login_user",
-}
-
-const INTERNAL_CONFIG = {
-    API_VERSION : "v1",
-    API_URL :"https://api.corbado.com/v1/",
-}
-
+//helper function
 async function webAuthnRegisterFinish(publicKeyCredential, clientInfo, requestID = null, projectId, apiURL, apiKey, origin){
     let data = {
         publicKeyCredential: JSON.stringify(publicKeyCredential),
@@ -31,6 +20,7 @@ async function webAuthnRegisterFinish(publicKeyCredential, clientInfo, requestID
     }).catch(e=> console.log(e))
 };
 
+//helper function
 async function webAuthnLoginFinish(publicKeyCredential, clientInfo, projectId, apiURL, apiKey, origin){
     let data = {
         publicKeyCredential: JSON.stringify(publicKeyCredential),
@@ -49,7 +39,7 @@ async function webAuthnLoginFinish(publicKeyCredential, clientInfo, projectId, a
 
 class CorbadoPasskeyService {
 
-    constructor(apiKey, config) {
+    constructor(apiKey, config, email_templates, internal_config) {
 
         if (!apiKey) {
             throw new Error('API key is required');
@@ -73,17 +63,19 @@ class CorbadoPasskeyService {
         this.projectId = config.projectId;
         this.origin = config.origin;
 
-        this.apiURL = INTERNAL_CONFIG.API_URL;
+        this.apiURL = internal_config.API_URL;
+
+        this.email_templates = email_templates;
     }
     
     /*
-    * Creates an HTTP client for issuing Stripe API requests which uses the Web
-    * Fetch API.
-    *
-    * A fetch function can optionally be passed in as a parameter. If none is
-    * passed, will default to the default `fetch` function in the global scope.
+    * Creates a Request to Corbado Service to initialize the Webatuhn registration process 
+    * 
+    * @param {string} username - the email of the user
+    * @param {object} clientInfo - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
+    * 
+    * @returns {string} - the response from the server containing the publicKeyCredentialOptions
     */
-    // @Route("/api/signup/webauthn/init")
     registerStart = async (username, clientInfo) => {
         let {data} = await axios.post(this.apiURL + 'webauthn/register/start', {
             username, origin: this.origin , clientInfo: clientInfo, credentialStatus: "active"
@@ -97,17 +89,47 @@ class CorbadoPasskeyService {
     };
 
 
-    // @Route("/api/signup/webauthn/finish")
+    /*
+    * Creates a Request Corbado Service to finilize the Webatuhn registration process 
+    * 
+    * @param {string} publicKeyCredential - can be obtained from the browser webatuhn create function by passing the publicKeyCredentialOptions 
+    * @param {object} clientInfo - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
+    * @param {string} requestID - the requestID, is set automatically if not provided
+    * 
+    * @returns {object} - the response object from the server containing the username, status and creadentialID
+    */
     registerFinish = async (publicKeyCredential, clientInfo, requestID = null) => {
-        let {data} = await webAuthnRegisterFinish(publicKeyCredential, clientInfo, requestID, this.projectId, this.apiURL, this.apiKey, this.origin);
-        await this.webAuthnConfirmDevice(data["credentialID"], 'active');
+        let {data} = await webAuthnRegisterFinish(
+            publicKeyCredential, 
+            clientInfo, 
+            requestID, 
+            this.projectId, 
+            this.apiURL, 
+            this.apiKey, 
+            this.origin
+            );
+
+        //Updates the credential status to "active"
+        await this.credentialUpdate(data["credentialID"], 'active');
+
         return data;
     };
 
+    /*
+    * Creates a Request Corbado Service to send a confirmation email to the user, to confirm biometric device registration
+    * 
+    * @param {string} email - can be obtained from the browser webatuhn create function by passing the publicKeyCredentialOptions 
+    * @param {object} redirec - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
+    * @param {string} create - the requestID, is set automatically if not provided
+    * @param {string} additionalPayload - the status of the credential, can be "active" or "inactive"
+    * @param {string} clientInfo - the credentialID, is set automatically if not provided
+    * 
+    * @returns {object} - the response object from the server containing the username, status and creadentialID
+    */
     emailLinkSend = async (email, redirect, create = true, additionalPayload, clientInfo) => {
         let data = {
             email: email,
-            templateName: EMAIL_TEMPLATES.PASSKEY_SIGN_UP_TEMPLATE, // webauthn_signup_user
+            templateName: this.email_templates.PASSKEY_SIGN_UP_TEMPLATE, // webauthn_signup_user
             redirect: redirect,
             create: create, // true
             clientInfo: clientInfo,
@@ -128,13 +150,6 @@ class CorbadoPasskeyService {
         };
     };
 
-    // @Route("process.env.REDIRECT")
-    confirmSignup = async (emailLinkId, token) => {
-        let response = await this.emailLinkValidate(emailLinkId, token);
-        let {credentialId} = JSON.parse(response.additionalPayload);
-        return this.webAuthnConfirmDevice(credentialId, 'active');
-    }
-
     emailLinkValidate = async (emailLinkID, token) => {
         let res = await axios.put(this.apiURL + "emailLinks/" + emailLinkID + "/validate", {token}, {
             auth: {
@@ -150,7 +165,15 @@ class CorbadoPasskeyService {
         };
     }
 
-    webAuthnConfirmDevice = (credentialID, status) => {
+    /*
+    * Updates the credential status 
+    * 
+    * @param {credentialID} credentialID - the credentialID to update
+    * @param {status} status - the status to update to
+    * 
+    * @returns {object} - the response object from the server containing the publicKeyCredentialOptions
+    */
+    credentialUpdate = (credentialID, status) => {
         return axios.put(this.apiURL + `webauthn/credential/${credentialID}`, {status}, {
             auth: {
                 username: this.projectId,
@@ -159,10 +182,17 @@ class CorbadoPasskeyService {
         });
     };
 
-    // @Route("/api/login/webauthn/start")
+    /*
+    * Creates a Request to Corbado Service to initialize the Webatuhn login process 
+    * 
+    * @param {string} username - the email of the user
+    * @param {object} clientInfo - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
+    * 
+    * @returns {string} - the response from the server containing the publicKeyCredentialOptions
+    */
     authenticateStart = async (username, clientInfo) => {
 
-        let {data} = await axios.post(this.apiURL + 'webauthn/authenticate/start', {
+        let { data } = await axios.post(this.apiURL + 'webauthn/authenticate/start', {
             username, origin: this.origin, clientInfo: clientInfo
         },{
             auth: {
@@ -174,7 +204,15 @@ class CorbadoPasskeyService {
         return data['publicKeyCredentialRequestOptions'];
     };
 
-    // @Route("/api/login/webauthn/finish")
+    /*
+    * Creates a Request to Corbado Service to finilize the Webatuhn login process 
+    * 
+    * @param {string} publicKeyCredential - can be obtained from the browser webatuhn create function by passing the publicKeyCredentialOptions 
+    * @param {object} clientInfo - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
+    * @param {string} requestID - the requestID, is set automatically if not provided
+    * 
+    * @returns {object} - the response object from the server containing the username, status and creadentialID
+    */
     authenticateFinish = async (publicKeyCredential, clientInfo) => {
         let { data } = await webAuthnLoginFinish(publicKeyCredential, clientInfo, this.projectId, this.apiURL, this.apiKey, this.origin);
         return data;

@@ -1,20 +1,8 @@
 const axios = require("axios");
 
-const EMAIL_TEMPLATES = {
-    EMAIL_SIGN_UP_TEMPLATE : "email_signup_user",
-    EMAIL_LOGIN_TEMPLATE : "email_login_user",
-    PASSKEY_SIGN_UP_TEMPLATE : "webauthn_signup_user",
-    PASSKEY_LOGIN_TEMPLATE : "webauthn_login_user",
-}
-
-const INTERNAL_CONFIG = {
-    API_VERSION : "v1",
-    API_URL :"https://api.corbado.com/v1/",
-}
-
 class CorbadoEmailMagicLinkService {
 
-    constructor(apiKey, config) {
+    constructor(apiKey, config, email_templates, internal_config) {
 
         if (!apiKey) {
             throw new Error('API key is required');
@@ -38,14 +26,16 @@ class CorbadoEmailMagicLinkService {
         this.projectId = config.projectId;
         this.origin = config.origin;
 
-        this.apiURL = INTERNAL_CONFIG.API_URL;
+        this.apiURL = internal_config.API_URL;
+
+        this.email_templates = email_templates;
     }
 
     // @Route("/api/emailLinkSend")
     emailLinkSend = async (email, redirect, create, additionalPayload, clientInfo) => {
         let data = {
             email: email,
-            templateName: EMAIL_TEMPLATES.EMAIL_LOGIN_TEMPLATE, // email_login_user OR email_signup_user
+            templateName: this.email_templates.EMAIL_LOGIN_TEMPLATE, // email_login_user OR email_signup_user
             redirect: redirect,
             create: create, // true
             additionalPayload: JSON.stringify(additionalPayload), 
