@@ -1,4 +1,4 @@
-exports.getClientInfo = (req) => {
+module.exports = getClientInfo = (req) => {
     return {
         remoteAddress: req.headers['x-forwarded-for'] || req.socket.remoteAddress,
         userAgent: req.get('user-agent'),
