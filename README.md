@@ -29,7 +29,7 @@ const corbado = new Corbado("uu....DZ", {
 
 ```
 
-###Services 
+##Services 
 
 Corbado package provides several services.
 To access specific methods in, e.g Corbado Webauthn Service, you can use: 
@@ -39,7 +39,7 @@ corbado.webauthnService.registerStart(email, clientInfo);
 ```
 
 
-###Utilities
+##Utilities
 
 Corbado package also provides several useful utitlity functions that can make the development process easier, e.g.:
 ```
