@@ -84,7 +84,7 @@ class CorbadoPasskeyService {
     * passed, will default to the default `fetch` function in the global scope.
     */
     // @Route("/api/signup/webauthn/init")
-    startSignup = async (username, clientInfo) => {
+    registerStart = async (username, clientInfo) => {
         let {data} = await axios.post(this.apiURL + 'webauthn/register/start', {
             username, origin: this.origin , clientInfo: clientInfo, credentialStatus: "active"
         }, {
@@ -98,7 +98,7 @@ class CorbadoPasskeyService {
 
 
     // @Route("/api/signup/webauthn/finish")
-    finishSignup = async (publicKeyCredential, clientInfo, requestID = null) => {
+    registerFinish = async (publicKeyCredential, clientInfo, requestID = null) => {
         let {data} = await webAuthnRegisterFinish(publicKeyCredential, clientInfo, requestID, this.projectId, this.apiURL, this.apiKey, this.origin);
         await this.webAuthnConfirmDevice(data["credentialID"], 'active');
         return data;
