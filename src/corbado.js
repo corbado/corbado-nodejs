@@ -34,9 +34,9 @@ class Corbado {
         }
 
         //Check if config parameters are allowed
-        if ( Object.keys(config).every((key) => key in ALLOWED_CONFIG_PROPERTIES) === false ) {
-            throw new Error('Config parameters are not allowed');
-        }
+        // if ( Object.keys(config).every((key) => key in ALLOWED_CONFIG_PROPERTIES) === false ) {
+        //     throw new Error('Config parameters are not allowed');
+        // }
 
         if (!("projectId" in config)) {
             throw new Error('Project ID (projectId) field in Configuration Object is required');
@@ -48,7 +48,9 @@ class Corbado {
 
         this.webauthnService = new CorbadoPasskeyService(apiKey, config, EMAIL_TEMPLATES, INTERNAL_CONFIG);
         this.emailMagicLinkService = new CorbadoEmailMagicLinkService(apiKey, config, EMAIL_TEMPLATES, INTERNAL_CONFIG);
-        this.utils.getClientInfo = getClientInfo;
+        this.utils = {
+            getClientInfo : getClientInfo
+        }
     }
 }
 
