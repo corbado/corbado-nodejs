@@ -12,6 +12,41 @@ const INTERNAL_CONFIG = {
     API_URL :"https://api.corbado.com/v1/",
 }
 
+async function webAuthnRegisterFinish(publicKeyCredential, clientInfo, requestID = null, projectId, apiURL, apiKey, origin){
+    let data = {
+        publicKeyCredential: JSON.stringify(publicKeyCredential),
+        origin: origin,
+        clientInfo: clientInfo,
+    };
+
+    if (requestID) {
+        data["requestID"] = requestID;
+    }
+
+    return axios.post(apiURL + 'webauthn/register/finish', data, {
+        auth: {
+            username: projectId,
+            password: apiKey
+        }
+    }).catch(e=> console.log(e))
+};
+
+async function webAuthnLoginFinish(publicKeyCredential, clientInfo, projectId, apiURL, apiKey, origin){
+    let data = {
+        publicKeyCredential: JSON.stringify(publicKeyCredential),
+        origin: origin,
+        clientInfo: clientInfo
+    };
+
+    return axios.post(apiURL + 'webauthn/authenticate/finish', data, {
+        auth: {
+            username: projectId,
+            password: apiKey
+        }
+    })
+    .catch(e => console.log(e))
+} 
+
 class CorbadoPasskeyService {
 
     constructor(apiKey, config) {
@@ -61,30 +96,12 @@ class CorbadoPasskeyService {
         return data["publicKeyCredentialCreationOptions"];
     };
 
+
     // @Route("/api/signup/webauthn/finish")
     finishSignup = async (publicKeyCredential, clientInfo, requestID = null) => {
-        let {data} = await this.webAuthnRegisterFinish(publicKeyCredential, clientInfo);
-        await this.webAuthnConfirmDevice(data["credentialID"], 'active', requestID);
+        let {data} = await webAuthnRegisterFinish(publicKeyCredential, clientInfo, requestID, this.projectId, this.apiURL, this.apiKey, this.origin);
+        await this.webAuthnConfirmDevice(data["credentialID"], 'active');
         return data;
-    };
-
-    webAuthnRegisterFinish = async (publicKeyCredential, clientInfo, requestID = null) => {
-        let data = {
-            publicKeyCredential: JSON.stringify(publicKeyCredential),
-            origin: this.origin,
-            clientInfo: clientInfo,
-        };
-
-        if (requestID) {
-            data["requestID"] = requestID;
-        }
-
-        return axios.post(this.apiURL + 'webauthn/register/finish', data, {
-            auth: {
-                username: this.projectId,
-                password: this.apiKey
-            }
-        }).catch(e=> console.log(e))
     };
 
     emailLinkSend = async (email, redirect, create = true, additionalPayload, clientInfo) => {
@@ -143,7 +160,7 @@ class CorbadoPasskeyService {
     };
 
     // @Route("/api/login/webauthn/start")
-    startLogin = async (username, clientInfo) => {
+    authenticateStart = async (username, clientInfo) => {
 
         let {data} = await axios.post(this.apiURL + 'webauthn/authenticate/start', {
             username, origin: this.origin, clientInfo: clientInfo
@@ -158,26 +175,10 @@ class CorbadoPasskeyService {
     };
 
     // @Route("/api/login/webauthn/finish")
-    finishLogin = async (publicKeyCredential, clientInfo) => {
-        let { data } = await this.webAuthnLoginFinish(publicKeyCredential, clientInfo);
+    authenticateFinish = async (publicKeyCredential, clientInfo) => {
+        let { data } = await webAuthnLoginFinish(publicKeyCredential, clientInfo, this.projectId, this.apiURL, this.apiKey, this.origin);
         return data;
     };
-
-    webAuthnLoginFinish = async (publicKeyCredential, clientInfo) => {
-        let data = {
-            publicKeyCredential: JSON.stringify(publicKeyCredential),
-            origin: this.origin,
-            clientInfo: clientInfo
-        };
-
-        return axios.post(this.apiURL + 'webauthn/authenticate/finish', data, {
-            auth: {
-                username: this.projectId,
-                password: this.apiKey
-            }
-        })
-        .catch(e => console.log(e))
-    }
 }
 
 module.exports = CorbadoPasskeyService;
