@@ -12,8 +12,8 @@ class CorbadoPasskeyService {
             throw new Error('Config is required');
         }
 
-        if (!("projectId" in config)) {
-            throw new Error('Project ID (projectId) field in Configuration Object is required');
+        if (!("projectID" in config)) {
+            throw new Error('Project ID (projectID) field in Configuration Object is required');
         }
 
         if (!("origin" in config)) {
@@ -23,7 +23,7 @@ class CorbadoPasskeyService {
         this.apiKey = apiKey;
         this.config = config;
 
-        this.projectId = config.projectId;
+        this.projectID = config.projectID;
         this.origin = config.origin;
 
         this.apiURL = internal_config.API_URL;
@@ -49,7 +49,7 @@ class CorbadoPasskeyService {
                 username, origin: this.origin , clientInfo: clientInfo, credentialStatus: "active"
             }, {
                 auth: {
-                    username: this.projectId,
+                    username: this.projectID,
                     password: this.apiKey
                 }
             });
@@ -60,7 +60,6 @@ class CorbadoPasskeyService {
             throw new Error('Webauthn starting registration failed');
         }
     };
-
 
     /*
     * Creates a Request Corbado Service to finilize the Webatuhn registration process 
@@ -89,7 +88,7 @@ class CorbadoPasskeyService {
         try {
             let { data } = await axios.post(this.apiURL + 'webauthn/register/finish', params, {
                 auth: {
-                    username: this.projectId,
+                    username: this.projectID,
                     password: this.apiKey
                 }
             });
@@ -130,7 +129,7 @@ class CorbadoPasskeyService {
             let { data } = await axios.post(this.apiURL + "emailLinks", params, 
                 {
                     auth: {
-                        username: this.projectId,
+                        username: this.projectID,
                         password: this.apiKey,
                     },
                 }
@@ -155,7 +154,7 @@ class CorbadoPasskeyService {
         try {
             let { data } = await axios.put(this.apiURL + "emailLinks/" + emailLinkID + "/validate", {token}, {
                 auth: {
-                    username: this.projectId,
+                    username: this.projectID,
                     password: this.apiKey,
                 }
             });
@@ -180,7 +179,7 @@ class CorbadoPasskeyService {
         try {
             let { data } = axios.put(this.apiURL + `webauthn/credential/${credentialID}`, {status}, {
                 auth: {
-                    username: this.projectId,
+                    username: this.projectID,
                     password: this.apiKey
                 }
             });
@@ -210,7 +209,7 @@ class CorbadoPasskeyService {
                 username, origin: this.origin, clientInfo: clientInfo
             },{
                 auth: {
-                    username: this.projectId,
+                    username: this.projectID,
                     password: this.apiKey
                 }
             })
@@ -249,7 +248,7 @@ class CorbadoPasskeyService {
         try {
             let { data } = await axios.post(this.apiURL + 'webauthn/authenticate/finish', params, {
                 auth: {
-                    username: this.projectId,
+                    username: this.projectID,
                      password: this.apiKey
                 }
             });

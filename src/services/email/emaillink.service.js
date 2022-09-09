@@ -12,8 +12,8 @@ class CorbadoEmailMagicLinkService {
             throw new Error('Config is required');
         }
 
-        if (!("projectId" in config)) {
-            throw new Error('Project ID (projectId) field in Configuration Object is required');
+        if (!("projectID" in config)) {
+            throw new Error('Project ID (projectID) field in Configuration Object is required');
         }
 
         if (!("origin" in config)) {
@@ -23,7 +23,7 @@ class CorbadoEmailMagicLinkService {
         this.apiKey = apiKey;
         this.config = config;
 
-        this.projectId = config.projectId;
+        this.projectID = config.projectID;
         this.origin = config.origin;
 
         this.apiURL = internal_config.API_URL;
@@ -60,7 +60,7 @@ class CorbadoEmailMagicLinkService {
         try {
             let { data } = await axios.post(this.apiURL + "emailLinks", data, {
                 auth: {
-                    username: this.projectId,
+                    username: this.projectID,
                     password: this.apiKey
                 }
             })
@@ -68,11 +68,9 @@ class CorbadoEmailMagicLinkService {
             return data;
         }
         catch (e) {
-            console.log(e);
             throw new Error('Email link sending failed from EmailMagicLinkService');
         }        
     };
-
 
     /*
     * Creates a Request Corbado Service to confirm tha validity of the linkID and the token that was sent to the client. 
@@ -88,7 +86,7 @@ class CorbadoEmailMagicLinkService {
         try {
             let { data } = await axios.put(this.apiURL + "emailLinks/" + emailLinkID + "/validate", {token}, {
                 auth: {
-                    username: this.projectId,
+                    username: this.projectID,
                     password: this.apiKey
                 }
             });
@@ -96,11 +94,9 @@ class CorbadoEmailMagicLinkService {
             return data;
         }
         catch (e) {
-            console.log(e);
-            throw new Error('Email link validation failed from EmailMagicLinkService');
+            throw new Error('Email link validation failed from EmailMagicLinkService', e);
         }
     }
 }
-
 
 module.exports =  CorbadoEmailMagicLinkService;

@@ -4,7 +4,7 @@ The Corbado Node library provides convenient access to the Corbado API from appl
 
 ## Documentation 
 
-See the Corbado API References https://api.corbado.com/docs/api/ and Official Corbado API implementation examples and documentation https://corbado.gitbook.io/api-docs/overview/welcome to understand the usage of Corbado API. 
+See the [Corbado API References](https://api.corbado.com/docs/api/) and [Official Corbado API implementation examples and documentation](https://corbado.gitbook.io/api-docs/overview/welcome) to understand the usage of Corbado API. 
 
 ## Requirements 
 
@@ -16,15 +16,15 @@ npm install https://github.com/corbado/node-sdk#node-corbado-services-implementa
 
 ## Usage 
 
-The package needs to be configured with your Corbado account's API secret key, ProjectId and Origin Parameters. All the parameters can be obtained from Corbado Developer Dashboard after signing up to https://app.corbado.com. 
+The package needs to be configured with your Corbado account's API secret key, ProjectId and Origin Parameters. All the parameters can be obtained from [Corbado Developer Dashboard](https://app.corbado.com). 
 
-Api Secret Key, Origin and ProjectId can be provided when initiating the Corbado Module: 
+Api Secret Key, Origin and ProjectID can be provided when initiating the Corbado Module: 
 
 ```
 const Corbado = require("corbado-test");
 const corbado = new Corbado("uu....DZ", {
-    "projectId": "pro-4242...523",
-    "origin": "google.com",
+    "projectID": "pro-4242...523",
+    "origin": "https://core.corbado.com"",
 });
 
 ```
@@ -46,5 +46,3 @@ Corbado package also provides several useful utitlity functions that can make th
 corbado.utils.getClientInfo(req);
 ```
 helps to obtain relevant client information (User Agent, Remote Address, etc.) object from an Http Request.
-
-
