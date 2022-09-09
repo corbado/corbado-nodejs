@@ -56,8 +56,7 @@ class CorbadoPasskeyService {
             return data;
         } 
         catch (e) {
-            console.log(e);
-            throw new Error('Webauthn starting registration failed');
+            throw new Error('Webauthn starting registration failed : ' + e.message);
         }
     };
 
@@ -95,8 +94,7 @@ class CorbadoPasskeyService {
             return data;
         }
         catch (e) {
-            console.log(e);
-            throw new Error('Webauthn registration finish failed');
+            throw new Error('Webauthn registration finish failed : ' + e.message);
         }
     };
 
@@ -136,8 +134,7 @@ class CorbadoPasskeyService {
             )
             return data;
         } catch (e) {
-            console.log(e);
-            throw new Error('Webauthn seding confirmation email link failed');
+            throw new Error('Webauthn seding confirmation email link failed : ' + e.message);
         }
     };
 
@@ -161,8 +158,7 @@ class CorbadoPasskeyService {
             return data;
         }
         catch (e) {
-            console.log(e);
-            throw new Error('Webauthn email link validation failed');
+            throw new Error('Webauthn email link validation failed : ' + e.message);
         }       
     }
 
@@ -186,8 +182,7 @@ class CorbadoPasskeyService {
             return data;
         }
         catch (e) {
-            console.log(e);
-            throw new Error('Webauthn credential update failed');
+            throw new Error('Webauthn credential update failed : ' + e.message);
         }
     }
 
@@ -216,8 +211,7 @@ class CorbadoPasskeyService {
             return data;
         }
         catch (e) {
-            console.log(e);
-            throw new Error('Webauthn authenticate start failed');
+            throw new Error('Webauthn authenticate start failed : ' + e.message);
         }        
     }
 
@@ -255,8 +249,7 @@ class CorbadoPasskeyService {
             return data;
         }
         catch (e) {
-            console.log(e);
-            throw new Error('Webauthn authentication finish failed');
+            throw new Error('Webauthn authentication finish failed : ' + e.message);
         }
     }
 }
