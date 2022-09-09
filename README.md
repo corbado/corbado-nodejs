@@ -21,10 +21,10 @@ The package needs to be configured with your Corbado account's API secret key, P
 Api Secret Key, Origin and ProjectID can be provided when initiating the Corbado Module: 
 
 ```
-const Corbado = require("corbado-test");
-const corbado = new Corbado("uu....DZ", {
-    "projectID": "pro-4242...523",
-    "origin": "https://core.corbado.com"",
+const Corbado = require('corbado-test');
+const corbado = new Corbado('uu....DZ', {
+    'projectID': 'pro-4242...523',
+    'origin': 'https://core.corbado.com',
 });
 
 ```

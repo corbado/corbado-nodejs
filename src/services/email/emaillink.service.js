@@ -1,4 +1,4 @@
-const axios = require("axios");
+const axios = require('axios');
 
 class CorbadoEmailMagicLinkService {
 
@@ -12,11 +12,11 @@ class CorbadoEmailMagicLinkService {
             throw new Error('Config is required');
         }
 
-        if (!("projectID" in config)) {
+        if (!('projectID' in config)) {
             throw new Error('Project ID (projectID) field in Configuration Object is required');
         }
 
-        if (!("origin" in config)) {
+        if (!('origin' in config)) {
             throw new Error('Origin (origin) field in Configuration Object is required');
         }
 
@@ -26,7 +26,7 @@ class CorbadoEmailMagicLinkService {
         this.projectID = config.projectID;
         this.origin = config.origin;
 
-        this.apiURL = internal_config.API_URL;
+        this.apiURL = internal_config.BASE_API_URL + '/' + internal_config.API_VERSION + '/';
 
         this.email_templates = email_templates;
     }
@@ -58,7 +58,7 @@ class CorbadoEmailMagicLinkService {
         };
 
         try {
-            let { data } = await axios.post(this.apiURL + "emailLinks", data, {
+            let { data } = await axios.post(this.apiURL + 'emailLinks', data, {
                 auth: {
                     username: this.projectID,
                     password: this.apiKey
@@ -84,7 +84,7 @@ class CorbadoEmailMagicLinkService {
     emailLinkValidate = async (emailLinkID, token) => {
 
         try {
-            let { data } = await axios.put(this.apiURL + "emailLinks/" + emailLinkID + "/validate", {token}, {
+            let { data } = await axios.put(this.apiURL + 'emailLinks/' + emailLinkID + '/validate', {token}, {
                 auth: {
                     username: this.projectID,
                     password: this.apiKey

@@ -1,4 +1,4 @@
-const axios = require("axios");
+const axios = require('axios');
 
 class CorbadoPasskeyService {
 
@@ -12,11 +12,11 @@ class CorbadoPasskeyService {
             throw new Error('Config is required');
         }
 
-        if (!("projectID" in config)) {
+        if (!('projectID' in config)) {
             throw new Error('Project ID (projectID) field in Configuration Object is required');
         }
 
-        if (!("origin" in config)) {
+        if (!('origin' in config)) {
             throw new Error('Origin (origin) field in Configuration Object is required');
         }
 
@@ -26,7 +26,7 @@ class CorbadoPasskeyService {
         this.projectID = config.projectID;
         this.origin = config.origin;
 
-        this.apiURL = internal_config.API_URL;
+        this.apiURL = internal_config.BASE_API_URL + '/' + internal_config.API_VERSION + '/';
 
         this.email_templates = email_templates;
     }
@@ -46,7 +46,7 @@ class CorbadoPasskeyService {
     registerStart = async (username, clientInfo) => {
         try {
             let { data } = await axios.post(this.apiURL + 'webauthn/register/start', {
-                username, origin: this.origin , clientInfo: clientInfo, credentialStatus: "active"
+                username, origin: this.origin , clientInfo: clientInfo, credentialStatus: 'active'
             }, {
                 auth: {
                     username: this.projectID,
@@ -82,7 +82,7 @@ class CorbadoPasskeyService {
 
     
         if (requestID) {
-            params["requestID"] = requestID;
+            params['requestID'] = requestID;
         }
 
         try {
@@ -126,7 +126,7 @@ class CorbadoPasskeyService {
         };
 
         try {
-            let { data } = await axios.post(this.apiURL + "emailLinks", params, 
+            let { data } = await axios.post(this.apiURL + 'emailLinks', params, 
                 {
                     auth: {
                         username: this.projectID,
@@ -152,7 +152,7 @@ class CorbadoPasskeyService {
     */
     emailLinkValidate = async (emailLinkID, token) => {
         try {
-            let { data } = await axios.put(this.apiURL + "emailLinks/" + emailLinkID + "/validate", {token}, {
+            let { data } = await axios.put(this.apiURL + 'emailLinks/' + emailLinkID + '/validate', {token}, {
                 auth: {
                     username: this.projectID,
                     password: this.apiKey,
@@ -242,7 +242,7 @@ class CorbadoPasskeyService {
         };
 
         if (requestID) {
-            params["requestID"] = requestID;
+            params['requestID'] = requestID;
         }
 
         try {

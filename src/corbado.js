@@ -15,7 +15,6 @@ const EMAIL_TEMPLATES = {
 const INTERNAL_CONFIG = {
     API_VERSION : 'v1',
     BASE_API_URL : 'https://api.corbado.com',
-    API_URL : 'https://api.corbado.com/v1/',
 }
 
 class Corbado {
@@ -29,11 +28,11 @@ class Corbado {
             throw new Error('Config is required');
         }
 
-        if (!("projectID" in config)) {
+        if (!('projectID' in config)) {
             throw new Error('Project ID (projectID) field in Configuration Object is required');
         }
 
-        if (!("origin" in config)) {
+        if (!('origin' in config)) {
             throw new Error('Origin (origin) field in Configuration Object is required');
         }
 
