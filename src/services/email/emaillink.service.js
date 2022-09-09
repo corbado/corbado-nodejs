@@ -50,9 +50,9 @@ class CorbadoEmailMagicLinkService {
     emailLinkSend = async (email, redirect, create, additionalPayload, clientInfo) => {
         let data = {
             email: email,
-            templateName: this.email_templates.EMAIL_LOGIN_TEMPLATE, // email_login_user OR email_signup_user
+            templateName: this.email_templates.EMAIL_LOGIN_TEMPLATE, 
             redirect: redirect,
-            create: create, // true
+            create: create, 
             additionalPayload: JSON.stringify(additionalPayload), 
             clientInfo: clientInfo,
         };
@@ -68,7 +68,7 @@ class CorbadoEmailMagicLinkService {
             return data;
         }
         catch (e) {
-            throw new Error('Email link sending failed from EmailMagicLinkService');
+            throw new Error('Email link sending failed from EmailMagicLinkService : ' + e.message);
         }        
     };
 
@@ -94,7 +94,7 @@ class CorbadoEmailMagicLinkService {
             return data;
         }
         catch (e) {
-            throw new Error('Email link validation failed from EmailMagicLinkService', e);
+            throw new Error('Email link validation failed from EmailMagicLinkService ' + e.message);
         }
     }
 }
