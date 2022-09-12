@@ -71,7 +71,6 @@ class CorbadoEmailMagicLinkService {
             return data;
         }
         catch (e) {
-            console.log(e);
             throw new Error('Email link sending failed from EmailMagicLinkService : ' + e.message);
         }       
     };

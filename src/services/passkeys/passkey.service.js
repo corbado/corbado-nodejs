@@ -31,7 +31,7 @@ class CorbadoPasskeyService {
 
         this.email_templates = email_templates;
 
-        this.emailLinkService = new CorbadoEmailMagicLinkService(apiKey, config, email_templates, this.apiURL);
+        this.emailLinkService = new CorbadoEmailMagicLinkService(apiKey, config, email_templates, internal_config);
     }
     
     /*
@@ -136,7 +136,7 @@ class CorbadoPasskeyService {
             redirect: redirect,
             create: create,
             clientInfo: clientInfo,
-            additionalPayload: JSON.stringify(additionalPayload),
+            additionalPayload: additionalPayload,
         };
 
         try {
@@ -150,9 +150,9 @@ class CorbadoPasskeyService {
             );
             return data;
         } catch (e) {
-            throw new Error('Webauthn seding confirmation email link failed : ' + e.message);
+            throw new Error('Webauthn sending confirmation email link failed : ' + e.message);
         }
-    };
+    }
 
     /*
     * Creates a Request Corbado Service to confirm tha validity of the linkID and the token that was sent to the client. 
