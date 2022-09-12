@@ -47,8 +47,8 @@ class CorbadoEmailMagicLinkService {
     * 
     * @returns {object} data - the response object from the server 
     */
-    emailLinkSend = async (email, redirect, create, additionalPayload, clientInfo) => {
-        let data = {
+    emailLinkSend = async (email, redirect, create, additionalPayload, clientInfo, loginEmail = true) => {
+        let params = {
             email: email,
             templateName: this.email_templates.EMAIL_LOGIN_TEMPLATE, 
             redirect: redirect,
@@ -57,8 +57,12 @@ class CorbadoEmailMagicLinkService {
             clientInfo: clientInfo,
         };
 
+        if (!loginEmail) {
+            params.templateName = this.email_templates.EMAIL_SIGN_UP_TEMPLATE;
+        }
+
         try {
-            let { data } = await axios.post(this.apiURL + 'emailLinks', data, {
+            let { data } = await axios.post(this.apiURL + 'emailLinks', params, {
                 auth: {
                     username: this.projectID,
                     password: this.apiKey

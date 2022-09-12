@@ -1,4 +1,5 @@
 const axios = require('axios');
+const EmailMagicLinkService = require('./services/email/emaillink.service');
 
 class CorbadoPasskeyService {
 
@@ -29,6 +30,8 @@ class CorbadoPasskeyService {
         this.apiURL = internal_config.BASE_API_URL + '/' + internal_config.API_VERSION + '/';
 
         this.email_templates = email_templates;
+
+        this.emailLinkService = new EmailMagicLinkService(apiKey, config, email_templates, this.apiURL);
     }
     
     /*
@@ -43,11 +46,25 @@ class CorbadoPasskeyService {
     * @returns {object} data - the response from the server containing the publicKeyCredentialOptions
     * @returns {object} data.publicKeyCredentialOptions - the publicKeyCredentialOptions object is needed to initialize the Webauthn registration process from the client side
     */
-    registerStart = async (username, clientInfo) => {
+    registerStart = async (username, clientInfo, requestID=null, credentialStatus = null) => {
         try {
-            let { data } = await axios.post(this.apiURL + 'webauthn/register/start', {
-                username, origin: this.origin , clientInfo: clientInfo, credentialStatus: 'active'
-            }, {
+            let params = {
+                username: username,
+                origin: this.origin,
+                clientInfo: clientInfo,
+                credentialStatus: 'active',                
+            }
+
+            if (requestID) {
+                params['requestID'] = requestID;
+            }
+
+            if (credentialStatus) {
+                params['credentialStatus'] = credentialStatus;
+            } 
+
+            let { data } = await axios.post(this.apiURL + 'webauthn/register/start', params, 
+            {
                 auth: {
                     username: this.projectID,
                     password: this.apiKey
@@ -116,22 +133,24 @@ class CorbadoPasskeyService {
     emailLinkSend = async (email, redirect, create = true, additionalPayload, clientInfo) => {
         let params = {
             email: email,
-            templateName: this.email_templates.PASSKEY_SIGN_UP_TEMPLATE, // webauthn_signup_user
+            templateName: this.email_templates.PASSKEY_SIGN_UP_TEMPLATE,
             redirect: redirect,
-            create: create, // true
+            create: create,
             clientInfo: clientInfo,
             additionalPayload: JSON.stringify(additionalPayload),
         };
 
         try {
-            let { data } = await axios.post(this.apiURL + 'emailLinks', params, 
-                {
-                    auth: {
-                        username: this.projectID,
-                        password: this.apiKey,
-                    },
-                }
-            )
+            let data = await this.emailLinkService.emailLinkSend(
+                params.email,
+                params.templateName,
+                params.redirect,
+                params.create,
+                params.additionalPayload,
+                params.clientInfo,
+                false
+            );
+
             return data;
         } catch (e) {
             throw new Error('Webauthn seding confirmation email link failed : ' + e.message);
@@ -149,12 +168,7 @@ class CorbadoPasskeyService {
     */
     emailLinkValidate = async (emailLinkID, token) => {
         try {
-            let { data } = await axios.put(this.apiURL + 'emailLinks/' + emailLinkID + '/validate', {token}, {
-                auth: {
-                    username: this.projectID,
-                    password: this.apiKey,
-                }
-            });
+            let data  = await this.emailLinkService.emailLinkValidate(emailLinkID, token);
             return data;
         }
         catch (e) {
@@ -198,8 +212,17 @@ class CorbadoPasskeyService {
     * @returns {object} data - the response from the server containing the publicKeyCredentialOptions
     * @returns {object} data.publicKeyCredentialOptions - the publicKeyCredentialOptions object is needed to initialize the Webauthn registration process from the client side
     */
-    authenticateStart = async (username, clientInfo) => {
+    authenticateStart = async (username, clientInfo, requestID=null) => {
         try {
+            let params = {
+                username: username,
+                origin: this.origin,
+                clientInfo: clientInfo,
+            }
+            if (requestID) {
+                params['requestID'] = requestID;
+            }
+
             let { data } = await axios.post(this.apiURL + 'webauthn/authenticate/start', {
                 username, origin: this.origin, clientInfo: clientInfo
             },{
@@ -243,7 +266,7 @@ class CorbadoPasskeyService {
             let { data } = await axios.post(this.apiURL + 'webauthn/authenticate/finish', params, {
                 auth: {
                     username: this.projectID,
-                     password: this.apiKey
+                    password: this.apiKey
                 }
             });
             return data;
