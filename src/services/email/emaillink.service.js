@@ -47,7 +47,7 @@ class CorbadoEmailMagicLinkService {
     * 
     * @returns {object} data - the response object from the server 
     */
-    emailLinkSend = async (email, redirect, create, additionalPayload, clientInfo, passkeySignUp = false) => {
+    emailLinkSend = async (email, redirect, create, additionalPayload, clientInfo, passkeySignUp = false, requestID = null) => {
         let params = {
             email: email,
             templateName: this.email_templates.EMAIL_LOGIN_TEMPLATE, 
@@ -59,6 +59,10 @@ class CorbadoEmailMagicLinkService {
 
         if (passkeySignUp) {
             params.templateName = this.email_templates.PASSKEY_SIGN_UP_TEMPLATE;
+        }
+
+        if (requestID) {
+            params['requestID'] = requestID;
         }
 
         try {
@@ -84,10 +88,18 @@ class CorbadoEmailMagicLinkService {
     * 
     * @returns {object} data - the response object from the server containing the username, status and creadentialID
     */
-    emailLinkValidate = async (emailLinkID, token) => {
+    emailLinkValidate = async (emailLinkID, token, requestID = null) => {
 
         try {
-            let { data } = await axios.put(this.apiURL + 'emailLinks/' + emailLinkID + '/validate', {token}, {
+            let params = {
+                token: token,
+            }
+
+            if (requestID) {
+                params['requestID'] = requestID;
+            }
+
+            let { data } = await axios.put(this.apiURL + 'emailLinks/' + emailLinkID + '/validate', params, {
                 auth: {
                     username: this.projectID,
                     password: this.apiKey

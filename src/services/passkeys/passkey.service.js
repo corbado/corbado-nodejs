@@ -130,7 +130,7 @@ class CorbadoPasskeyService {
     * 
     * @returns {object} data - the response object from the server 
     */
-    emailLinkSend = async (email, redirect, create = true, additionalPayload, clientInfo) => {
+    emailLinkSend = async (email, redirect, create = true, additionalPayload, clientInfo, requestID = null) => {
         let params = {
             email: email,
             redirect: redirect,
@@ -146,7 +146,8 @@ class CorbadoPasskeyService {
                 params.create,
                 params.additionalPayload,
                 params.clientInfo,
-                true
+                true, 
+                requestID
             );
             return data;
         } catch (e) {
@@ -163,9 +164,9 @@ class CorbadoPasskeyService {
     * 
     * @returns {object} data - the response object from the server containing the username, status and creadentialID
     */
-    emailLinkValidate = async (emailLinkID, token) => {
+    emailLinkValidate = async (emailLinkID, token, requestID = null) => {
         try {
-            let data  = await this.emailLinkService.emailLinkValidate(emailLinkID, token);
+            let data  = await this.emailLinkService.emailLinkValidate(emailLinkID, token, requestID);
             return data;
         }
         catch (e) {
