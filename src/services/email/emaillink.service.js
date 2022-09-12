@@ -47,7 +47,7 @@ class CorbadoEmailMagicLinkService {
     * 
     * @returns {object} data - the response object from the server 
     */
-    emailLinkSend = async (email, redirect, create, additionalPayload, clientInfo, loginEmail = true) => {
+    emailLinkSend = async (email, redirect, create, additionalPayload, clientInfo, passkeySignUp = false) => {
         let params = {
             email: email,
             templateName: this.email_templates.EMAIL_LOGIN_TEMPLATE, 
@@ -57,8 +57,8 @@ class CorbadoEmailMagicLinkService {
             clientInfo: clientInfo,
         };
 
-        if (!loginEmail) {
-            params.templateName = this.email_templates.EMAIL_SIGN_UP_TEMPLATE;
+        if (passkeySignUp) {
+            params.templateName = this.email_templates.PASSKEY_SIGN_UP_TEMPLATE;
         }
 
         try {
@@ -67,13 +67,13 @@ class CorbadoEmailMagicLinkService {
                     username: this.projectID,
                     password: this.apiKey
                 }
-            })
-    
+            });
             return data;
         }
         catch (e) {
+            console.log(e);
             throw new Error('Email link sending failed from EmailMagicLinkService : ' + e.message);
-        }        
+        }       
     };
 
     /*

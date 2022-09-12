@@ -148,9 +148,8 @@ class CorbadoPasskeyService {
                 params.create,
                 params.additionalPayload,
                 params.clientInfo,
-                false
+                true
             );
-
             return data;
         } catch (e) {
             throw new Error('Webauthn seding confirmation email link failed : ' + e.message);
