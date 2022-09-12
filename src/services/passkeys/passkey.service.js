@@ -133,7 +133,6 @@ class CorbadoPasskeyService {
     emailLinkSend = async (email, redirect, create = true, additionalPayload, clientInfo) => {
         let params = {
             email: email,
-            templateName: this.email_templates.PASSKEY_SIGN_UP_TEMPLATE,
             redirect: redirect,
             create: create,
             clientInfo: clientInfo,
@@ -143,7 +142,6 @@ class CorbadoPasskeyService {
         try {
             let data = await this.emailLinkService.emailLinkSend(
                 params.email,
-                params.templateName,
                 params.redirect,
                 params.create,
                 params.additionalPayload,
