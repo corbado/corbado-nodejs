@@ -1,6 +1,6 @@
 # Corbado Node.js Library 
 
-The Corbado Node library provides convenient access to the Corbado API from applications written in server-side JavaScript.
+The Corbado Node.js library provides convenient access to the Corbado API from applications written in server-side JavaScript.
 
 ## Documentation 
 
@@ -8,7 +8,7 @@ See the [Corbado API References](https://api.corbado.com/docs/api/) and [Officia
 
 ## Requirements 
 
-Node 8, 10 or higher. 
+Node 8 or higher. 
 
 Installation 
 
@@ -16,9 +16,9 @@ npm install https://github.com/corbado/node-sdk#node-corbado-services-implementa
 
 ## Usage 
 
-The package needs to be configured with your Corbado account's API secret key, ProjectId and Origin Parameters. All the parameters can be obtained from [Corbado Developer Dashboard](https://app.corbado.com). 
+The package needs to be configured with your Corbado account's API secret key, ```projectID``` and ```origin``` parameters. All the parameters can be obtained from [Corbado Developer Panel](https://app.corbado.com). 
 
-Api Secret Key, Origin and ProjectID can be provided when initiating the Corbado Module: 
+```API Secret Key```, ```origin``` and ```projectID``` should be provided when initializing the Corbado Module: 
 
 ```
 const Corbado = require('corbado-test');
@@ -31,7 +31,7 @@ const corbado = new Corbado('uu....DZ', {
 
 ### Services 
 
-Corbado package provides several services.
+Corbado package provides several services, e.g. Weabuthn Service, Email Magic Link Service.
 To access specific methods in, e.g Corbado Webauthn Service, you can use: 
 
 ```
