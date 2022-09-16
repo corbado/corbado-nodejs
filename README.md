@@ -16,7 +16,7 @@ npm install https://github.com/corbado/node-sdk#node-corbado-services-implementa
 
 ## Usage 
 
-The package needs to be configured with your Corbado account's ```API Secret Sey```, ```projectID``` and ```origin``` parameters. All the parameters can be obtained from [Corbado Developer Panel](https://app.corbado.com). 
+The package needs to be configured with your Corbado account's ```API Secret Key```, ```projectID``` and ```origin``` parameters. All the parameters can be obtained from [Corbado Developer Panel](https://app.corbado.com). 
 
 ```API Secret Key```, ```origin``` and ```projectID``` should be provided when initializing the Corbado Module: 
 
@@ -45,4 +45,4 @@ Corbado package also provides several useful utitlity functions that can make th
 ```
 corbado.utils.getClientInfo(req);
 ```
-helps to obtain relevant client information (```User Agent```, ```Remote Address```, etc.) object from an ```Http Request```.
+helps to obtain relevant client information (```UserAgent```, ```RemoteAddress```, etc.) object from an ```HttpRequest```.
