@@ -2,29 +2,10 @@ const axios = require('axios');
 
 class CorbadoEmailMagicLinkService {
 
-    constructor(apiKey, config, email_templates, internal_config) {
+    constructor(projectID, apiSecret, email_templates, internal_config) {
 
-        if (!apiKey) {
-            throw new Error('API key is required');
-        }
-
-        if (!config) {
-            throw new Error('Config is required');
-        }
-
-        if (!('projectID' in config)) {
-            throw new Error('Project ID (projectID) field in Configuration Object is required');
-        }
-
-        if (!('origin' in config)) {
-            throw new Error('Origin (origin) field in Configuration Object is required');
-        }
-
-        this.apiKey = apiKey;
-        this.config = config;
-
-        this.projectID = config.projectID;
-        this.origin = config.origin;
+        this.projectID = projectID;
+        this.apiSecret = apiSecret;
 
         this.apiURL = internal_config.BASE_API_URL + '/' + internal_config.API_VERSION + '/';
 
@@ -69,7 +50,7 @@ class CorbadoEmailMagicLinkService {
             let { data } = await axios.post(this.apiURL + 'emailLinks', params, {
                 auth: {
                     username: this.projectID,
-                    password: this.apiKey
+                    password: this.apiSecret
                 }
             });
             return data;
@@ -102,7 +83,7 @@ class CorbadoEmailMagicLinkService {
             let { data } = await axios.put(this.apiURL + 'emailLinks/' + emailLinkID + '/validate', params, {
                 auth: {
                     username: this.projectID,
-                    password: this.apiKey
+                    password: this.apiSecret
                 }
             });
     

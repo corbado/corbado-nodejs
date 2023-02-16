@@ -3,8 +3,6 @@ const CorbadoEmailMagicLinkService = require('./services/email/emaillink.service
 const SessionService = require('./services/session/session.service');
 const getClientInfo = require('./utils/clientInfo.utils');
 
-const DEFAULT_API_VERSION = 'v1';
-const DEFAULT_TIMEOUT = 80000;
 
 const EMAIL_TEMPLATES = {
     EMAIL_SIGN_UP_TEMPLATE: 'email_signup_user',
@@ -19,27 +17,19 @@ const INTERNAL_CONFIG = {
 }
 
 class Corbado {
-    constructor(apiKey, config) {
+    constructor(projectID, apiSecret) {
 
-        if (!apiKey) {
-            throw new Error('API key is required');
+        if (!projectID) {
+            throw new Error('Project ID is required');
         }
 
-        if (!config) {
-            throw new Error('Config is required');
+        if (!apiSecret) {
+            throw new Error('API secret is required');
         }
 
-        if (!('projectID' in config)) {
-            throw new Error('Project ID (projectID) field in Configuration Object is required');
-        }
-
-        if (!('origin' in config)) {
-            throw new Error('Origin (origin) field in Configuration Object is required');
-        }
-
-        this.webauthnService = new CorbadoPasskeyService(apiKey, config, EMAIL_TEMPLATES, INTERNAL_CONFIG);
-        this.emailMagicLinkService = new CorbadoEmailMagicLinkService(apiKey, config, EMAIL_TEMPLATES, INTERNAL_CONFIG);
-        this.sessionService = new SessionService(apiKey, config, INTERNAL_CONFIG);
+        this.webauthnService = new CorbadoPasskeyService(projectID, apiSecret, EMAIL_TEMPLATES, INTERNAL_CONFIG);
+        this.emailMagicLinkService = new CorbadoEmailMagicLinkService(projectID, apiSecret, EMAIL_TEMPLATES, INTERNAL_CONFIG);
+        this.sessionService = new SessionService(projectID, apiSecret, INTERNAL_CONFIG);
         this.utils = {
             getClientInfo: getClientInfo
         }

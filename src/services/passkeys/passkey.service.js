@@ -3,35 +3,17 @@ const CorbadoEmailMagicLinkService = require('.././email/emaillink.service');
 
 class CorbadoPasskeyService {
 
-    constructor(apiKey, config, email_templates, internal_config) {
+    constructor(projectID, apiSecret, email_templates, internal_config) {
 
-        if (!apiKey) {
-            throw new Error('API key is required');
-        }
 
-        if (!config) {
-            throw new Error('Config is required');
-        }
-
-        if (!('projectID' in config)) {
-            throw new Error('Project ID (projectID) field in Configuration Object is required');
-        }
-
-        if (!('origin' in config)) {
-            throw new Error('Origin (origin) field in Configuration Object is required');
-        }
-
-        this.apiKey = apiKey;
-        this.config = config;
-
-        this.projectID = config.projectID;
-        this.origin = config.origin;
+        this.projectID = projectID;
+        this.apiSecret = apiSecret;
 
         this.apiURL = internal_config.BASE_API_URL + '/' + internal_config.API_VERSION + '/';
 
         this.email_templates = email_templates;
 
-        this.emailLinkService = new CorbadoEmailMagicLinkService(apiKey, config, email_templates, internal_config);
+        this.emailLinkService = new CorbadoEmailMagicLinkService(projectID, apiSecret, email_templates, internal_config);
     }
     
     /*
@@ -46,12 +28,12 @@ class CorbadoPasskeyService {
     * @returns {object} data - the response from the server containing the publicKeyCredentialOptions
     * @returns {object} data.publicKeyCredentialOptions - the publicKeyCredentialOptions object is needed to initialize the Webauthn registration process from the client side
     */
-    registerStart = async (username, clientInfo, requestID=null, credentialStatus = null) => {
+    registerStart = async (username, clientInfo, origin, requestID=null, credentialStatus = null) => {
         try {
             let params = {
                 username: username,
-                origin: this.origin,
                 clientInfo: clientInfo,
+                origin: origin,
                 credentialStatus: 'active',                
             }
 
@@ -67,7 +49,7 @@ class CorbadoPasskeyService {
             {
                 auth: {
                     username: this.projectID,
-                    password: this.apiKey
+                    password: this.apiSecret
                 }
             });
             return data;
@@ -89,11 +71,11 @@ class CorbadoPasskeyService {
     * 
     * @returns {object} - the response object from the server containing the username, status and creadentialID
     */
-    registerFinish = async (publicKeyCredential, clientInfo, requestID = null) => {
+    registerFinish = async (publicKeyCredential, clientInfo, origin, requestID = null) => {
         let params = {
             publicKeyCredential: JSON.stringify(publicKeyCredential),
-            origin: this.origin,
             clientInfo: clientInfo,
+            origin: origin,
         };
 
     
@@ -105,7 +87,7 @@ class CorbadoPasskeyService {
             let { data } = await axios.post(this.apiURL + 'webauthn/register/finish', params, {
                 auth: {
                     username: this.projectID,
-                    password: this.apiKey
+                    password: this.apiSecret
                 }
             });
             return data;
@@ -188,7 +170,7 @@ class CorbadoPasskeyService {
             let { data } = axios.put(this.apiURL + `webauthn/credential/${credentialID}`, {status}, {
                 auth: {
                     username: this.projectID,
-                    password: this.apiKey
+                    password: this.apiSecret
                 }
             });
             return data;
@@ -210,23 +192,23 @@ class CorbadoPasskeyService {
     * @returns {object} data - the response from the server containing the publicKeyCredentialOptions
     * @returns {object} data.publicKeyCredentialOptions - the publicKeyCredentialOptions object is needed to initialize the Webauthn registration process from the client side
     */
-    authenticateStart = async (username, clientInfo, requestID=null) => {
+    authenticateStart = async (username, clientInfo, origin, requestID=null) => {
         try {
             let params = {
                 username: username,
-                origin: this.origin,
                 clientInfo: clientInfo,
+                origin: origin,
             }
             if (requestID) {
                 params['requestID'] = requestID;
             }
 
             let { data } = await axios.post(this.apiURL + 'webauthn/authenticate/start', {
-                username, origin: this.origin, clientInfo: clientInfo
+                username, origin: origin, clientInfo: clientInfo
             },{
                 auth: {
                     username: this.projectID,
-                    password: this.apiKey
+                    password: this.apiSecret
                 }
             })
             return data;
@@ -249,11 +231,11 @@ class CorbadoPasskeyService {
     * 
     * @returns {object} data - the response object from the server containing the username, status and creadentialID
     */
-    authenticateFinish = async (publicKeyCredential, clientInfo, requestID = null) => {
+    authenticateFinish = async (publicKeyCredential, clientInfo, origin, requestID = null) => {
         let params = {
             publicKeyCredential: JSON.stringify(publicKeyCredential),
-            origin: this.origin,
-            clientInfo: clientInfo
+            clientInfo: clientInfo,
+            origin: origin,
         };
 
         if (requestID) {
@@ -264,7 +246,7 @@ class CorbadoPasskeyService {
             let { data } = await axios.post(this.apiURL + 'webauthn/authenticate/finish', params, {
                 auth: {
                     username: this.projectID,
-                    password: this.apiKey
+                    password: this.apiSecret
                 }
             });
             return data;

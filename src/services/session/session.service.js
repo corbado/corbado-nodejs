@@ -2,29 +2,10 @@ const axios = require('axios');
 
 class SessionService {
 
-    constructor(apiKey, config, internal_config) {
+    constructor(projectID, apiSecret, internal_config) {
 
-        if (!apiKey) {
-            throw new Error('API key is required');
-        }
-
-        if (!config) {
-            throw new Error('Config is required');
-        }
-
-        if (!('projectID' in config)) {
-            throw new Error('Project ID (projectID) field in Configuration Object is required');
-        }
-
-        if (!('origin' in config)) {
-            throw new Error('Origin (origin) field in Configuration Object is required');
-        }
-
-        this.apiKey = apiKey;
-        this.config = config;
-
-        this.projectID = config.projectID;
-        this.origin = config.origin;
+        this.projectID = projectID;
+        this.apiSecret = apiSecret;
 
         this.apiURL = internal_config.BASE_API_URL + '/' + internal_config.API_VERSION + '/';
     }
@@ -34,9 +15,6 @@ class SessionService {
     * 
     * @param {string} sessionToken - the session token obtained as HTTP GET parameter from the Redirect URL
     * @param {object} clientInfo - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
-    * @param {string} clientInfo.remoteAddress - IP of the user
-    * @param {string} clientInfo.userAgent - User Agent of the user
-    * @param {string} clientInfo.origin - Origin of the request
     * 
     * @returns {object} data - the response from the server containing the userData
     */
@@ -44,7 +22,6 @@ class SessionService {
         try {
             let params = {
                 token: sessionToken,
-                origin: this.origin,
                 clientInfo: clientInfo,
             }
 
@@ -56,7 +33,7 @@ class SessionService {
                 {
                     auth: {
                         username: this.projectID,
-                        password: this.apiKey
+                        password: this.apiSecret
                     }
                 });
             return data;
