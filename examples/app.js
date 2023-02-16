@@ -15,10 +15,7 @@ app.get('/', function (req, res) {
 
 app.get('/logged-in', async function (req, res) {
 
-    const corbado = new Corbado('dyJACyayAB8boJFPxtuVNCgb3HUo2f', {
-        'projectID': 'pro-15532438046016049903',
-        'origin': 'http://localhost:3000',
-    }); //TODO origin must be optional
+    const corbado = new Corbado('pro-15532438046016049903','dyJACyayAB8boJFPxtuVNCgb3HUo2f');
 
     let token = req.query.sessionToken;
     let clientInfo = corbado.utils.getClientInfo(req);
