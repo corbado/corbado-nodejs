@@ -42,8 +42,7 @@ The package needs to be configured with your Corbado account's ```project ID``` 
 
 The package needs to be configured with your Corbado account's ```API Secret```, ```projectID``` and ```origin``` parameters. All the parameters can be obtained from [Corbado Developer Panel](https://app.corbado.com). 
 
-```API Secret```, ```origin``` and ```projectID``` should be provided when initializing the Corbado Module: 
->>>>>>> main
+```API Secret```, ```origin``` and ```projectID``` should be provided when initializing the Corbado Module:
 
 ```
 const Corbado = require('corbado-test');
@@ -53,7 +52,7 @@ const corbado = new Corbado('pro-xxxx', 'uu....DZ');
 
 ### Services 
 
-Corbado provides several services, e.g. ```CorbadoPasskeyService```,, ```CorbadoSessionService```, ```CorbadoEmailMagicLinkService```.
+Corbado provides several services, e.g. ```CorbadoPasskeyService```,, ```CorbadoSessionService```, ```CorbadoEmailLinkService```.
 To access specific methods in, e.g. ```CorbadoPasskeyService```, you can call:
 
 ```

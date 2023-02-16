@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-class CorbadoEmailMagicLinkService {
+class CorbadoEmailLinkService {
 
     constructor(projectID, apiSecret, email_templates, internal_config) {
 
@@ -56,7 +56,7 @@ class CorbadoEmailMagicLinkService {
             return data;
         }
         catch (e) {
-            throw new Error('Email link sending failed from EmailMagicLinkService : ' + e.message);
+            throw new Error('Email link sending failed from EmailLinkService : ' + e.message);
         }       
     };
 
@@ -90,9 +90,9 @@ class CorbadoEmailMagicLinkService {
             return data;
         }
         catch (e) {
-            throw new Error('Email link validation failed from EmailMagicLinkService ' + e.message);
+            throw new Error('Email link validation failed from EmailLinkService ' + e.message);
         }
     }
 }
 
-module.exports =  CorbadoEmailMagicLinkService;
+module.exports =  CorbadoEmailLinkService;

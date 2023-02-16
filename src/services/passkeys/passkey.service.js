@@ -1,5 +1,5 @@
 const axios = require('axios');
-const CorbadoEmailMagicLinkService = require('.././email/emaillink.service');
+const CorbadoEmailLinkService = require('.././email/emaillink.service');
 
 class CorbadoPasskeyService {
 
@@ -13,7 +13,7 @@ class CorbadoPasskeyService {
 
         this.email_templates = email_templates;
 
-        this.emailLinkService = new CorbadoEmailMagicLinkService(projectID, apiSecret, email_templates, internal_config);
+        this.emailLinkService = new CorbadoEmailLinkService(projectID, apiSecret, email_templates, internal_config);
     }
     
     /*

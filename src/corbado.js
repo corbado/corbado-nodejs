@@ -1,5 +1,5 @@
 const CorbadoPasskeyService = require('./services/passkeys/passkey.service');
-const CorbadoEmailMagicLinkService = require('./services/email/emaillink.service');
+const CorbadoEmailLinkService = require('./services/email/emaillink.service');
 const SessionService = require('./services/session/session.service');
 const getClientInfo = require('./utils/clientInfo.utils');
 
@@ -28,7 +28,7 @@ class Corbado {
         }
 
         this.passkeyService = new CorbadoPasskeyService(projectID, apiSecret, EMAIL_TEMPLATES, INTERNAL_CONFIG);
-        this.emailMagicLinkService = new CorbadoEmailMagicLinkService(projectID, apiSecret, EMAIL_TEMPLATES, INTERNAL_CONFIG);
+        this.emailLinkService = new CorbadoEmailLinkService(projectID, apiSecret, EMAIL_TEMPLATES, INTERNAL_CONFIG);
         this.sessionService = new SessionService(projectID, apiSecret, INTERNAL_CONFIG);
         this.utils = {
             getClientInfo: getClientInfo
