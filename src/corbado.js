@@ -27,7 +27,7 @@ class Corbado {
             throw new Error('API secret is required');
         }
 
-        this.webauthnService = new CorbadoPasskeyService(projectID, apiSecret, EMAIL_TEMPLATES, INTERNAL_CONFIG);
+        this.passkeyService = new CorbadoPasskeyService(projectID, apiSecret, EMAIL_TEMPLATES, INTERNAL_CONFIG);
         this.emailMagicLinkService = new CorbadoEmailMagicLinkService(projectID, apiSecret, EMAIL_TEMPLATES, INTERNAL_CONFIG);
         this.sessionService = new SessionService(projectID, apiSecret, INTERNAL_CONFIG);
         this.utils = {
