@@ -1,8 +1,8 @@
 {
-  "name": "corbado-test",
+  "name": "node-sdk",
   "version": "1.0.0",
   "description": "",
-  "main": "src/corbado.js",
+  "main": "corbado.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js"
