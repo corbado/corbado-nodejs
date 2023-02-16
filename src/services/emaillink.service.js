@@ -1,18 +1,16 @@
-const axios = require('axios');
+const CorbadoApi = require('./CorbadoApi');
 
-class CorbadoEmailLinkService {
+class EmailLinkService {
 
     /**
-     * Creates a new instance of the CorbadoEmailLinkService.
+     * Creates a new instance of the EmailLinkService.
      * @param {string} projectID - The project ID for the Corbado service.
      * @param {string} apiSecret - The API secret for the Corbado service.
      * @param {string} apiURL - The base URL for the Corbado service API.
      * @param {object} email_templates - An object containing the names of the email templates to use.
      */
     constructor(projectID, apiSecret, apiURL, email_templates) {
-        this.projectID = projectID;
-        this.apiSecret = apiSecret;
-        this.apiURL = apiURL;
+        this.corbadoApi = new CorbadoApi(projectID, apiSecret, apiURL);
         this.email_templates = email_templates;
     }
 
@@ -35,10 +33,10 @@ class CorbadoEmailLinkService {
     emailLinkSend = async (email, redirect, create, additionalPayload, clientInfo, passkeySignUp = false, requestID = null) => {
         let params = {
             email: email,
-            templateName: this.email_templates.EMAIL_LOGIN_TEMPLATE, 
+            templateName: this.email_templates.EMAIL_LOGIN_TEMPLATE,
             redirect: redirect,
-            create: create, 
-            additionalPayload: JSON.stringify(additionalPayload), 
+            create: create,
+            additionalPayload: JSON.stringify(additionalPayload),
             clientInfo: clientInfo,
         };
 
@@ -50,18 +48,7 @@ class CorbadoEmailLinkService {
             params['requestID'] = requestID;
         }
 
-        try {
-            let { data } = await axios.post(this.apiURL + 'emailLinks', params, {
-                auth: {
-                    username: this.projectID,
-                    password: this.apiSecret
-                }
-            });
-            return data;
-        }
-        catch (e) {
-            throw new Error('Email link sending failed from EmailLinkService : ' + e.message);
-        }       
+        return await this.corbadoApi.request('emailLinks', 'POST', params);
     };
 
     /*
@@ -74,29 +61,16 @@ class CorbadoEmailLinkService {
     * @returns {object} data - the response object from the server containing the username, status and creadentialID
     */
     emailLinkValidate = async (emailLinkID, token, requestID = null) => {
-
-        try {
-            let params = {
-                token: token,
-            }
-
-            if (requestID) {
-                params['requestID'] = requestID;
-            }
-
-            let { data } = await axios.put(this.apiURL + 'emailLinks/' + emailLinkID + '/validate', params, {
-                auth: {
-                    username: this.projectID,
-                    password: this.apiSecret
-                }
-            });
-    
-            return data;
+        let params = {
+            token: token,
         }
-        catch (e) {
-            throw new Error('Email link validation failed from EmailLinkService ' + e.message);
+
+        if (requestID) {
+            params['requestID'] = requestID;
         }
+        return await this.corbadoApi.request('emailLinks/' + emailLinkID + '/validate', 'PUT', params);
+
     }
 }
 
-module.exports =  CorbadoEmailLinkService;
+module.exports = EmailLinkService;

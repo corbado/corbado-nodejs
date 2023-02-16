@@ -1,6 +1,6 @@
-const CorbadoPasskeyService = require('./services/passkeys/passkey.service');
-const CorbadoEmailLinkService = require('./services/email/emaillink.service');
-const SessionService = require('./services/session/session.service');
+const PasskeyService = require('./services/passkey.service');
+const EmailLinkService = require('./services/emaillink.service');
+const SessionService = require('./services/session.service');
 const getClientInfo = require('./utils/clientInfo.utils');
 
 
@@ -24,8 +24,8 @@ class Corbado {
             throw new Error('API secret is required');
         }
 
-        this.passkeyService = new CorbadoPasskeyService(projectID, apiSecret, API_URL);
-        this.emailLinkService = new CorbadoEmailLinkService(projectID, apiSecret, API_URL, EMAIL_TEMPLATES);
+        this.passkeyService = new PasskeyService(projectID, apiSecret, API_URL);
+        this.emailLinkService = new EmailLinkService(projectID, apiSecret, API_URL, EMAIL_TEMPLATES);
         this.sessionService = new SessionService(projectID, apiSecret, API_URL);
         this.utils = {getClientInfo};
     }
