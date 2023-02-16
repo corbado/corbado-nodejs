@@ -12,6 +12,7 @@ Node 8 or higher.
 
 ## Installation 
 
+<<<<<<< HEAD
 ```npm install corbado -- save``` (Will be changed to ```npm install corbado --save```.
 
 Currently, the package is not yet published to the npm registry. To use it locally, follow these steps:
@@ -34,6 +35,15 @@ const Corbado = require('node-sdk');
 The package needs to be configured with your Corbado account's ```project ID``` and ```API secret```. All the parameters can be obtained from [Corbado developer panel](https://app.corbado.com). 
 
 ```Project ID``` and ```API secret``` should be provided when initializing the Corbado Module: 
+=======
+```npm install https://github.com/corbado/node-sdk#node-corbado-services-implementation -- save``` (Will be changed to ```npm install corbado --save```   after publishing the official package to NPM).
+
+## Usage 
+
+The package needs to be configured with your Corbado account's ```API Secret```, ```projectID``` and ```origin``` parameters. All the parameters can be obtained from [Corbado Developer Panel](https://app.corbado.com). 
+
+```API Secret```, ```origin``` and ```projectID``` should be provided when initializing the Corbado Module: 
+>>>>>>> main
 
 ```
 const Corbado = require('corbado-test');
@@ -44,7 +54,7 @@ const corbado = new Corbado('pro-xxxx', 'uu....DZ');
 ### Services 
 
 Corbado provides several services, e.g. ```CorbadoPasskeyService```,, ```CorbadoSessionService```, ```CorbadoEmailMagicLinkService```.
-To access specific methods in, e.g. ```CorbadoPasskeyService```, you can call: 
+To access specific methods in, e.g. ```CorbadoPasskeyService```, you can call:
 
 ```
 corbado.passkeyService.registerStart(username, clientInfo, origin);
