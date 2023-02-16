@@ -10,15 +10,15 @@ See the [Corbado API References](https://api.corbado.com/docs/api/) and [Officia
 
 Node 8 or higher. 
 
-Installation 
+## Installation 
 
-npm install https://github.com/corbado/node-sdk#node-corbado-services-implementation -- save (Will be changed to npm install corbado --save   after publishing the official package to npm)
+```npm install https://github.com/corbado/node-sdk#node-corbado-services-implementation -- save``` (Will be changed to ```npm install corbado --save```   after publishing the official package to NPM).
 
 ## Usage 
 
-The package needs to be configured with your Corbado account's ```API Secret Key```, ```projectID``` and ```origin``` parameters. All the parameters can be obtained from [Corbado Developer Panel](https://app.corbado.com). 
+The package needs to be configured with your Corbado account's ```API Secret```, ```projectID``` and ```origin``` parameters. All the parameters can be obtained from [Corbado Developer Panel](https://app.corbado.com). 
 
-```API Secret Key```, ```origin``` and ```projectID``` should be provided when initializing the Corbado Module: 
+```API Secret```, ```origin``` and ```projectID``` should be provided when initializing the Corbado Module: 
 
 ```
 const Corbado = require('corbado-test');
@@ -31,13 +31,12 @@ const corbado = new Corbado('uu....DZ', {
 
 ### Services 
 
-Corbado package provides several services, e.g. ```WebauthnService```, ```EmailMagicLinkService```.
-To access specific methods in, e.g Corbado Webauthn Service, you can call: 
+Corbado package provides several services, e.g. ```CorbadoWebAuthnService```, ```CorbadoEmailMagicLinkService```.
+To access specific methods in, e.g. ```CorbadoWebauthnService```, you can call: 
 
 ```
 corbado.webauthnService.registerStart(email, clientInfo);
 ```
-
 
 ### Utilities
 
