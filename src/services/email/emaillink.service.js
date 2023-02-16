@@ -2,13 +2,17 @@ const axios = require('axios');
 
 class CorbadoEmailLinkService {
 
-    constructor(projectID, apiSecret, email_templates, internal_config) {
-
+    /**
+     * Creates a new instance of the CorbadoEmailLinkService.
+     * @param {string} projectID - The project ID for the Corbado service.
+     * @param {string} apiSecret - The API secret for the Corbado service.
+     * @param {string} apiURL - The base URL for the Corbado service API.
+     * @param {object} email_templates - An object containing the names of the email templates to use.
+     */
+    constructor(projectID, apiSecret, apiURL, email_templates) {
         this.projectID = projectID;
         this.apiSecret = apiSecret;
-
-        this.apiURL = internal_config.BASE_API_URL + '/' + internal_config.API_VERSION + '/';
-
+        this.apiURL = apiURL;
         this.email_templates = email_templates;
     }
 

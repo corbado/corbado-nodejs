@@ -3,21 +3,16 @@ const CorbadoEmailLinkService = require('.././email/emaillink.service');
 
 class CorbadoPasskeyService {
 
-    constructor(projectID, apiSecret, email_templates, internal_config) {
-
+    constructor(projectID, apiSecret, apiURL, email_templates) {
 
         this.projectID = projectID;
         this.apiSecret = apiSecret;
-
-        this.apiURL = internal_config.BASE_API_URL + '/' + internal_config.API_VERSION + '/';
-
-        this.email_templates = email_templates;
-
-        this.emailLinkService = new CorbadoEmailLinkService(projectID, apiSecret, email_templates, internal_config);
+        this.apiURL = apiURL;
+        this.emailLinkService = new CorbadoEmailLinkService(projectID, apiSecret, apiURL, email_templates);
     }
     
     /*
-    * Creates a Request to Corbado Service to initialize the Webatuhn registration process 
+    * Creates a Request to Corbado Service to initialize the WebAuthn registration process
     * 
     * @param {string} username - the email of the user
     * @param {object} clientInfo - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
@@ -60,16 +55,16 @@ class CorbadoPasskeyService {
     };
 
     /*
-    * Creates a Request Corbado Service to finilize the Webatuhn registration process 
+    * Creates a Request Corbado Service to finilize the WebAuthn registration process
     * 
-    * @param {string} publicKeyCredential - can be obtained from the browser webatuhn create function by passing the publicKeyCredentialOptions 
+    * @param {string} publicKeyCredential - can be obtained from the browser WebAuthn create function by passing the publicKeyCredentialOptions
     * @param {object} clientInfo - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
     * @param {string} clientInfo.remoteAddress - IP of the user
     * @param {string} clientInfo.userAgent - User Agent of the user
     * @param {string} clientInfo.origin - Origin of the request
     * @param {string} requestID - the requestID, is set automatically if not provided
     * 
-    * @returns {object} - the response object from the server containing the username, status and creadentialID
+    * @returns {object} - the response object from the server containing the username, status and credentialID
     */
     registerFinish = async (publicKeyCredential, clientInfo, origin, requestID = null) => {
         let params = {
@@ -144,7 +139,7 @@ class CorbadoPasskeyService {
     * @param {string} emailLinkID - is sent to the client via the email link
     * @param {object} token - is sent to the client via the email link
     * 
-    * @returns {object} data - the response object from the server containing the username, status and creadentialID
+    * @returns {object} data - the response object from the server containing the username, status and credentialID
     */
     emailLinkValidate = async (emailLinkID, token, requestID = null) => {
         try {
@@ -181,7 +176,7 @@ class CorbadoPasskeyService {
     }
 
     /*
-    * Creates a Request to Corbado Service to initialize the Webatuhn login process 
+    * Creates a Request to Corbado Service to initialize the WebAuthn login process
     * 
     * @param {string} username - the email of the user
     * @param {object} clientInfo - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
@@ -190,7 +185,7 @@ class CorbadoPasskeyService {
     * @param {string} clientInfo.origin - Origin of the request
     * 
     * @returns {object} data - the response from the server containing the publicKeyCredentialOptions
-    * @returns {object} data.publicKeyCredentialOptions - the publicKeyCredentialOptions object is needed to initialize the Webauthn registration process from the client side
+    * @returns {object} data.publicKeyCredentialOptions - the publicKeyCredentialOptions object is needed to initialize the WebAuthn registration process from the client side
     */
     authenticateStart = async (username, clientInfo, origin, requestID=null) => {
         try {
@@ -219,9 +214,9 @@ class CorbadoPasskeyService {
     }
 
     /*
-    * Creates a Request to Corbado Service to finilize the Webatuhn login process 
+    * Creates a Request to Corbado Service to finilize the WebAuthn login process
     * 
-    * @param {string} publicKeyCredential - can be obtained from the browser webatuhn create function by passing the publicKeyCredentialOptions 
+    * @param {string} publicKeyCredential - can be obtained from the browser WebAuthn create function by passing the publicKeyCredentialOptions
     * @param {object} clientInfo - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
     * @param {string} clientInfo.remoteAddress - IP of the user
     * @param {string} clientInfo.userAgent - User Agent of the user

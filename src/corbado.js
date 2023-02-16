@@ -11,10 +11,7 @@ const EMAIL_TEMPLATES = {
     PASSKEY_LOGIN_TEMPLATE: 'webauthn_login_user',
 }
 
-const INTERNAL_CONFIG = {
-    API_VERSION: 'v1',
-    BASE_API_URL: 'https://api.corbado.com',
-}
+const API_URL = 'https://api.corbado.com/v1/';
 
 class Corbado {
     constructor(projectID, apiSecret) {
@@ -27,12 +24,10 @@ class Corbado {
             throw new Error('API secret is required');
         }
 
-        this.passkeyService = new CorbadoPasskeyService(projectID, apiSecret, EMAIL_TEMPLATES, INTERNAL_CONFIG);
-        this.emailLinkService = new CorbadoEmailLinkService(projectID, apiSecret, EMAIL_TEMPLATES, INTERNAL_CONFIG);
-        this.sessionService = new SessionService(projectID, apiSecret, INTERNAL_CONFIG);
-        this.utils = {
-            getClientInfo: getClientInfo
-        }
+        this.passkeyService = new CorbadoPasskeyService(projectID, apiSecret, API_URL);
+        this.emailLinkService = new CorbadoEmailLinkService(projectID, apiSecret, API_URL, EMAIL_TEMPLATES);
+        this.sessionService = new SessionService(projectID, apiSecret, API_URL);
+        this.utils = {getClientInfo};
     }
 }
 
