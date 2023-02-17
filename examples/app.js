@@ -42,7 +42,7 @@ app.get('/logged-in', async function (req, res, next) {
 });
 
 app.use((err, req, res, next) => {
-    console.error('Unhandled error:', err.message);
+    console.error('Unhandled error:', err);
     res.status(500).json({
         message: 'Internal server error',
         result: 'error'
