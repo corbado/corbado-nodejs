@@ -12,7 +12,6 @@ Node 8 or higher.
 
 ## Installation 
 
-<<<<<<< HEAD
 ```npm install corbado -- save``` (Will be changed to ```npm install corbado --save```.
 
 Currently, the package is not yet published to the npm registry. To use it locally, follow these steps:
