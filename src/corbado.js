@@ -14,19 +14,27 @@ const EMAIL_TEMPLATES = {
 const API_URL = 'https://api.corbado.com/v1/';
 
 class Corbado {
-    constructor(projectID, apiSecret) {
+
+    /**
+     * @param {string} projectID Project ID from https://app.corbado.com/
+     * @param {string} apiSecret Api secret from https://app.corbado.com/app/settings/credentials/api-keys
+     * @param {string} baseURL Optional different api url
+     */
+    constructor(projectID, apiSecret, baseURL = API_URL) {
 
         if (!projectID) {
             throw new Error('Project ID is required');
+        } else if (projectID.substr(0, 4) !== 'pro-') {
+            throw new Error('Project ID is invalid');
         }
 
         if (!apiSecret) {
             throw new Error('API secret is required');
         }
 
-        this.passkeyService = new PasskeyService(projectID, apiSecret, API_URL);
-        this.emailLinkService = new EmailLinkService(projectID, apiSecret, API_URL, EMAIL_TEMPLATES);
-        this.sessionService = new SessionService(projectID, apiSecret, API_URL);
+        this.passkeyService = new PasskeyService(projectID, apiSecret, baseURL);
+        this.emailLinkService = new EmailLinkService(projectID, apiSecret, baseURL, EMAIL_TEMPLATES);
+        this.sessionService = new SessionService(projectID, apiSecret, baseURL);
         this.utils = {getClientInfo};
     }
 }

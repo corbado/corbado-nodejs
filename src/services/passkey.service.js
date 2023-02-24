@@ -19,6 +19,17 @@ class PasskeyService {
      * @returns {Promise<any|undefined>}
      */
     registerStart = async (username, clientInfo, origin, requestID = null, credentialStatus = null) => {
+        if (!username) {
+            throw new Error('Username is required');
+        }
+
+        if (!clientInfo) {
+            throw new Error('ClientInfo is required');
+        }
+
+        if (!origin) {
+            throw new Error('Origin is required');
+        }
 
         let params = {
             username: username,
@@ -51,6 +62,18 @@ class PasskeyService {
     * @returns {object} - the response object from the server containing the username, status and credentialID
     */
     registerFinish = async (publicKeyCredential, clientInfo, origin, requestID = null) => {
+        if (!publicKeyCredential) {
+            throw new Error('PublicKeyCredential is required');
+        }
+
+        if (!clientInfo) {
+            throw new Error('ClientInfo is required');
+        }
+
+        if (!origin) {
+            throw new Error('Origin is required');
+        }
+
         let params = {
             publicKeyCredential: JSON.stringify(publicKeyCredential),
             clientInfo: clientInfo,
@@ -81,7 +104,7 @@ class PasskeyService {
     * @returns {object} data - the response object from the server
     */
     emailLinkSend = async (email, redirect, create = true, additionalPayload, clientInfo, requestID = null) => {
-        return await this.emailLinkService.emailLinkSend(email,
+        return await this.emailLinkService.send(email,
             redirect,
             create,
             additionalPayload,
@@ -102,7 +125,7 @@ class PasskeyService {
     * @returns {object} data - the response object from the server containing the username, status and credentialID
     */
     emailLinkValidate = async (emailLinkID, token, requestID = null) => {
-        return await this.emailLinkService.emailLinkValidate(emailLinkID, token, requestID);
+        return await this.emailLinkService.validate(emailLinkID, token, requestID);
     }
 
     /**
@@ -133,6 +156,18 @@ class PasskeyService {
     * @returns {object} data.publicKeyCredentialOptions - the publicKeyCredentialOptions object is needed to initialize the WebAuthn registration process from the client side
     */
     authenticateStart = async (username, clientInfo, origin, requestID = null) => {
+        if (!username) {
+            throw new Error('Username is required');
+        }
+
+        if (!clientInfo) {
+            throw new Error('ClientInfo is required');
+        }
+
+        if (!origin) {
+            throw new Error('Origin is required');
+        }
+
         let params = {
             username: username,
             clientInfo: clientInfo,
@@ -144,7 +179,6 @@ class PasskeyService {
 
         return await this.corbadoApi.request('webauthn/authenticate/start', 'POST', params);
     }
-
 
     /**
     * Creates a Request to Corbado Service to finilize the WebAuthn login process
@@ -160,6 +194,18 @@ class PasskeyService {
     * @returns {object} data - the response object from the server containing the username, status and creadentialID
     */
     authenticateFinish = async (publicKeyCredential, clientInfo, origin, requestID = null) => {
+        if (!publicKeyCredential) {
+            throw new Error('Username is required');
+        }
+
+        if (!clientInfo) {
+            throw new Error('ClientInfo is required');
+        }
+
+        if (!origin) {
+            throw new Error('Origin is required');
+        }
+
         let params = {
             publicKeyCredential: JSON.stringify(publicKeyCredential),
             clientInfo: clientInfo,

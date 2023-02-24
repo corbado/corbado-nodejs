@@ -15,11 +15,16 @@ class SessionService {
      * @returns {object} - The response from the server containing the userData.
      * @throws {Error} - If the request fails.
      */
-    async sessionTokenVerify(sessionToken, clientInfo, requestID = null) {
+    async verify(sessionToken, clientInfo, requestID = null) {
+        if (!sessionToken) {
+            throw new Error('SessionToken is required');
+        }
+
         const params = {
             token: sessionToken,
             clientInfo,
-        };
+        }
+
         if (requestID) {
             params.requestID = requestID;
         }
