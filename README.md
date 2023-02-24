@@ -23,7 +23,7 @@ The package needs to be configured with your Corbado account's ```project ID``` 
 
 
 ```
-const Corbado = require('corbado-test');
+const Corbado = require('corbado');
 const corbado = new Corbado('pro-xxxx', 'uu....DZ');
 
 ```
