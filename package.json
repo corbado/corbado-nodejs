@@ -11,7 +11,13 @@
     "type": "git",
     "url": "git+https://github.com/corbado/corbado-nodejs.git"
   },
-  "author": "",
+  "keywords": [
+    "passkeys",
+    "authentication",
+    "webhooks",
+    "fido2"
+  ],
+  "author": "Corbado",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/corbado/corbado-nodejs/issues"
