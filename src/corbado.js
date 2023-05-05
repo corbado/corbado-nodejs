@@ -2,7 +2,7 @@ const PasskeyService = require("./services/passkey.service");
 const EmailLinkService = require("./services/emaillink.service");
 const SessionService = require("./services/session.service");
 const WebhookService = require("./services/webhook.service");
-const webhookMiddleware = require("./middlewares/webhook.middleware");
+const webhookMiddleware = require("./middlewares/webhookMiddleware");
 const getClientInfo = require("./utils/clientInfo.utils");
 
 const EMAIL_TEMPLATES = {
