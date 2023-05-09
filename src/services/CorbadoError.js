@@ -4,3 +4,5 @@ class CorbadoError extends Error {
     this.name = "CorbadoError";
   }
 }
+
+module.exports = CorbadoError;
