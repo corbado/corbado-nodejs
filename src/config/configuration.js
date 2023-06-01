@@ -1,0 +1,102 @@
+const assert = require('assert');
+
+class Configuration {
+
+    #projectID;
+    #apiSecret;
+    #apiURL = 'https://api.corbado.com/v1';
+    #shortSessionCookieName = 'cbo_short_session';
+    #issuer = undefined
+    #jwksURI = undefined
+    #cacheMaxAge = 10 * 60 * 1000
+    #emailTemplates = {
+        EMAIL_SIGN_UP_TEMPLATE: 'email_signup_user',
+        EMAIL_LOGIN_TEMPLATE: 'email_login_user',
+        PASSKEY_SIGN_UP_TEMPLATE: 'webauthn_signup_user',
+        PASSKEY_LOGIN_TEMPLATE: 'webauthn_login_user',
+    }
+
+    set projectID(value) {
+        assert(value.startsWith('pro-'), 'ProjectID is incorrect')
+
+        this.#projectID = value;
+    }
+
+    set apiSecret(value) {
+        assert(value.length > 0, 'API is invalid')
+
+        this.#apiSecret = value;
+    }
+
+    set apiURL(value) {
+        assert(value.length > 0, 'API url is invalid')
+        assert(value.startsWith('http://') || value.startsWith('https://'), 'API url is invalid')
+
+        this.#apiURL = value;
+    }
+
+    get projectID() {
+        return this.#projectID;
+    }
+
+    get apiSecret() {
+        return this.#apiSecret;
+    }
+
+    get apiURL() {
+        return this.#apiURL;
+    }
+
+    get shortSessionCookieName() {
+        return this.#shortSessionCookieName;
+    }
+
+    set shortSessionCookieName(value) {
+        assert(value.length > 0, 'Short session cookie name is invalid')
+
+        this.#shortSessionCookieName = value;
+    }
+
+    get issuer() {
+        return this.#issuer;
+    }
+
+    set issuer(value) {
+        assert(value.length > 0, 'Issuer is invalid')
+
+        this.#issuer = value;
+    }
+
+    get jwksURI() {
+        return this.#jwksURI;
+    }
+
+    set jwksURI(value) {
+        assert(value.length > 0, 'API url is invalid')
+        assert(value.startsWith('http://') || value.startsWith('https://'), 'API url is invalid')
+
+        this.#jwksURI = value;
+    }
+
+    get cacheMaxAge() {
+        return this.#cacheMaxAge;
+    }
+
+    set cacheMaxAge(value) {
+        assert(value > 0, 'Cache max age is invalid')
+
+        this.#cacheMaxAge = value;
+    }
+
+    get emailTemplates() {
+        return this.#emailTemplates;
+    }
+
+    set emailTemplates(value) {
+        assert(typeof value === "object", 'Email templates is invalid')
+
+        this.#emailTemplates = value;
+    }
+}
+
+module.exports = Configuration

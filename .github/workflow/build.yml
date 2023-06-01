@@ -1,0 +1,26 @@
+name: Build workflow
+
+on:
+  push:
+    branches: '*'
+  pull_request:
+    branches: '*'
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - run: node --version
+      - run: npm audit
+      - run: npm ci
+      - run: npm test
+        env:
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          API_SECRET: ${{ secrets.API_SECRET }}
