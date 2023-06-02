@@ -12,7 +12,7 @@ Node 8 or higher.
 
 ## Installation 
 
-```npm install corbado --save```
+```npm install @corbado/nodejs --save```
 
 
 ## Usage 
@@ -23,8 +23,14 @@ The package needs to be configured with your Corbado account's ```project ID``` 
 
 
 ```
-const Corbado = require('corbado');
-const corbado = new Corbado('pro-xxxx', 'uu....DZ');
+const Configuration = require('@corbado/nodejs/src/config/configuration');
+const Corbado = require('@corbado/nodejs');
+
+const config = new Configuration()
+config.projectID = process.env.PROJECT_ID
+config.apiSecret = process.env.API_SECRET
+
+const corbado = new Corbado(config)
 
 ```
 
