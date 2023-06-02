@@ -1,6 +1,6 @@
 const jose = require('jose');
 const assert = require('assert')
-const NotAuthedError = require('NotAuthedError')
+const NotAuthedError = require('./NotAuthedError')
 
 class ShortSessionService {
 
