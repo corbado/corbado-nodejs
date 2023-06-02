@@ -1,5 +1,6 @@
 const jose = require('jose');
 const assert = require('assert')
+const NotAuthedError = require('NotAuthedError')
 
 class ShortSessionService {
 
@@ -40,7 +41,12 @@ class ShortSessionService {
         const options = {
             issuer: this.#issuer,
         }
-        const { payload } = await jose.jwtVerify(this.#getSessionToken(req), JWKS, options)
+        const token = this.#getSessionToken(req)
+        if (token === null) {
+            throw new NotAuthedError()
+        }
+
+        const { payload } = await jose.jwtVerify(token, JWKS, options)
 
         return payload
     }
