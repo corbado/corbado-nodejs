@@ -1,6 +1,7 @@
 const PasskeyService = require('./services/passkey.service');
 const EmailLinkService = require('./services/emaillink.service');
 const ShortSession = require('./services/shortsession.service');
+const SessionService = require('./services/session.service');
 const assert = require('assert')
 
 class Corbado {
@@ -8,6 +9,7 @@ class Corbado {
     #shortSession = null
     #passkeyService = null
     #emailLinkService = null
+    #sessionService = null
 
     /**
      * @type {Configuration}
@@ -54,6 +56,22 @@ class Corbado {
         }
 
         return this.#emailLinkService
+    }
+
+    /**
+     *
+     * @returns {SessionService}
+     */
+    get session() {
+        if (this.#sessionService  === null) {
+            this.#sessionService = new SessionService(
+                this.#config.projectID,
+                this.#config.apiSecret,
+                this.#config.apiURL,
+            )
+        }
+
+        return this.#sessionService
     }
 
     /**
