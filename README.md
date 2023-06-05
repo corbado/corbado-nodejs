@@ -58,7 +58,7 @@ config.authenticationURL = "https://" + validConfig.projectID + '.auth.corbado.c
 
 const corbado = new Corbado.SDK(config)
 
-const user = corbado.shortSession.validate(req)
+const user = await corbado.shortSession.validate(req)
 if (user.authenticated === true) {
     // Do anything with authenticated user
 } else {
