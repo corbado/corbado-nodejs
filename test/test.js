@@ -177,11 +177,11 @@ describe('Corbado endpoint tests', function () {
 
         corbado.shortSession.validate(
             req,
-        ).then(() => {
-            done(new Error('Should not happen'))
-        }).catch(err => {
-            expect(err.message === 'JWSInvalid: Invalid Compact JWS')
+        ).then(usr => {
+            expect(usr.authenticated).equals(false)
             done()
+        }).catch(err => {
+            done(err)
         })
     })
 })

@@ -6,8 +6,7 @@ class Configuration {
     #apiSecret;
     #apiURL = 'https://api.corbado.com/v1';
     #shortSessionCookieName = 'cbo_short_session';
-    #issuer = undefined
-    #jwksURI = undefined
+    #authenticationURL = undefined
     #cacheMaxAge = 10 * 60 * 1000
     #emailTemplates = {
         EMAIL_SIGN_UP_TEMPLATE: 'email_signup_user',
@@ -22,10 +21,18 @@ class Configuration {
         this.#projectID = value;
     }
 
+    get projectID() {
+        return this.#projectID;
+    }
+
     set apiSecret(value) {
         assert(value.length > 0, 'API is invalid')
 
         this.#apiSecret = value;
+    }
+
+    get apiSecret() {
+        return this.#apiSecret;
     }
 
     set apiURL(value) {
@@ -35,13 +42,6 @@ class Configuration {
         this.#apiURL = value;
     }
 
-    get projectID() {
-        return this.#projectID;
-    }
-
-    get apiSecret() {
-        return this.#apiSecret;
-    }
 
     get apiURL() {
         return this.#apiURL;
@@ -57,25 +57,15 @@ class Configuration {
         this.#shortSessionCookieName = value;
     }
 
-    get issuer() {
-        return this.#issuer;
+    get authenticationURL() {
+        return this.#authenticationURL;
     }
 
-    set issuer(value) {
-        assert(value.length > 0, 'Issuer is invalid')
+    set authenticationURL(value) {
+        assert(value.length > 0, 'Authentication url is invalid')
+        assert(value.startsWith('http://') || value.startsWith('https://'), 'Authentication url is invalid')
 
-        this.#issuer = value;
-    }
-
-    get jwksURI() {
-        return this.#jwksURI;
-    }
-
-    set jwksURI(value) {
-        assert(value.length > 0, 'API url is invalid')
-        assert(value.startsWith('http://') || value.startsWith('https://'), 'API url is invalid')
-
-        this.#jwksURI = value;
+        this.#authenticationURL = value;
     }
 
     get cacheMaxAge() {

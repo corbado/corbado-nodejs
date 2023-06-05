@@ -81,16 +81,14 @@ class Corbado {
     get shortSession() {
         if (this.#shortSession === null) {
 
-            assert(this.#config.issuer !== undefined, 'Issuer undefined')
-            assert(this.#config.issuer.length > 0, 'Issuer is empty')
-            assert(this.#config.jwksURI !== undefined, 'Issuer undefined')
-            assert(this.#config.jwksURI.length > 0, 'JWKS uri is empty')
+            assert(this.#config.authenticationURL !== undefined, 'Issuer undefined')
+            assert(this.#config.authenticationURL.length > 0, 'Issuer is empty')
             assert(this.#config.cacheMaxAge > 0, 'Cache max age is invalid')
 
             this.#shortSession = new ShortSession(
                 this.#config.shortSessionCookieName,
-                this.#config.issuer,
-                this.#config.jwksURI,
+                this.#config.authenticationURL,
+                this.#config.authenticationURL + '/.well-known/jwks.json',
                 this.#config.cacheMaxAge,
             )
         }

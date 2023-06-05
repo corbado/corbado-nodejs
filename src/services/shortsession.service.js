@@ -1,6 +1,7 @@
 const jose = require('jose');
 const assert = require('assert')
 const NotAuthedError = require('./NotAuthedError')
+const User = require('../entities/User')
 
 class ShortSessionService {
 
@@ -17,7 +18,12 @@ class ShortSessionService {
     }
 
     #getSessionToken(req) {
-        return req.cookies[this.#shortSessionCookieName] ?? this.#getBearerToken(req)
+        const token = req.cookies[this.#shortSessionCookieName] ?? this.#getBearerToken(req)
+        if (token !== null && token.length < 10) {
+            return null
+        }
+
+        return token
     }
 
     #getBearerToken(req) {
@@ -43,12 +49,18 @@ class ShortSessionService {
         }
         const token = this.#getSessionToken(req)
         if (token === null) {
-            throw new NotAuthedError()
+            return new User(false)
         }
 
         const { payload } = await jose.jwtVerify(token, JWKS, options)
 
-        return payload
+        return new User(
+            true,
+            payload.sub,
+            payload.name,
+            payload.email,
+            payload.phoneNumber
+        )
     }
 }
 
