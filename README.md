@@ -29,7 +29,7 @@ const config = new Corbado.Configuration()
 config.projectID = process.env.PROJECT_ID
 config.apiSecret = process.env.API_SECRET
 
-const sdk = new Corbado.SDK(config)
+const corbado = new Corbado.SDK(config)
 
 ```
 
@@ -39,7 +39,7 @@ Corbado provides several services, e.g. ```PasskeyService```, ```SessionService`
 To access specific methods in, e.g. ```SessionService```, you can call:
 
 ```
-sdk.session.verify(sessionToken, clientInfo);
+corbado.session.verify(sessionToken, clientInfo);
 ```
 
 ### ShortSession
