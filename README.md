@@ -54,7 +54,7 @@ const Corbado = require('@corbado/nodejs');
 const config = new Corbado.Configuration()
 config.projectID = process.env.PROJECT_ID
 config.apiSecret = process.env.API_SECRET
-config.authenticationURL = "https://" + validConfig.projectID + '.auth.corbado.com'
+config.authenticationURL = "https://" + config.projectID + '.auth.corbado.com'
 
 const corbado = new Corbado.SDK(config)
 
