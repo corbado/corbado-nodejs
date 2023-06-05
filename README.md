@@ -40,8 +40,10 @@ Corbado provides several services, e.g. ```PasskeyService```, ```SessionService`
 To access specific methods in, e.g. ```SessionService```, you can call:
 
 ```
-corbado.sessionService.verify(sessionToken, clientInfo);
+corbado.session.verify(sessionToken, clientInfo);
 ```
+
+In order to 
 
 ### Utilities
 
