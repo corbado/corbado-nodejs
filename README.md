@@ -56,9 +56,9 @@ config.projectID = process.env.PROJECT_ID
 config.apiSecret = process.env.API_SECRET
 config.authenticationURL = "https://" + validConfig.projectID + '.auth.corbado.com'
 
-const sdk = new Corbado.SDK(config)
+const corbado = new Corbado.SDK(config)
 
-const user = sdk.shortSession.validate(req)
+const user = corbado.shortSession.validate(req)
 if (user.authenticated === true) {
     // Do anything with authenticated user
 } else {
