@@ -19,6 +19,7 @@ describe('Corbado endpoint tests', function () {
     validConfig.apiSecret = process.env.API_SECRET
 
     const username = generateUsername()
+
     it('Validation projectID should work', function () {
 
         const cfg = new Configuration()
@@ -117,7 +118,7 @@ describe('Corbado endpoint tests', function () {
 
     })
 
-    it('Short session validation issuer undefined', function (done) {
+    it('Short session validation AuthenticationURL undefined', function (done) {
         const corbado = new Corbado(validConfig)
 
         try {
@@ -130,17 +131,19 @@ describe('Corbado endpoint tests', function () {
             })
         } catch (err) {
             expect(err.name).equals('AssertionError')
-            expect(err.message).equals('Issuer undefined')
+            expect(err.message).equals('AuthenticationURL undefined')
             done()
         }
     })
 
-    it('Short session validation issuer undefined', function (done) {
+
+
+    it('Short session validation request not given', function (done) {
         const cfg = new Configuration()
 
         cfg.projectID = validConfig.projectID
         cfg.apiSecret = validConfig.apiSecret
-        cfg.issuer = validConfig.projectID + '.auth.corbado.com'
+        cfg.authenticationURL = "https://" + validConfig.projectID + '.auth.corbado.com'
 
         const corbado = new Corbado(cfg)
 
@@ -150,22 +153,23 @@ describe('Corbado endpoint tests', function () {
             ).then(() => {
                 done(new Error('Should not happen'))
             }).catch(err => {
-                done(err)
+                expect(err.name).equals('AssertionError')
+                expect(err.message).equals('RequestObject not given')
+                done()
             })
         } catch (err) {
-            expect(err.name).equals('AssertionError')
-            expect(err.message).equals('Issuer undefined')
-            done()
+            done(err)
         }
+
+
     })
 
-    it('Short session validation valid', function (done) {
+    it('Short session validation empty', function (done) {
         const cfg = new Configuration()
 
         cfg.projectID = validConfig.projectID
         cfg.apiSecret = validConfig.apiSecret
-        cfg.issuer = validConfig.projectID + '.auth.corbado.com'
-        cfg.jwksURI = 'https://' + config.issuer + '/.well-known/jwks'
+        cfg.authenticationURL = "https://" + validConfig.projectID + '.auth.corbado.com'
 
         const corbado = new Corbado(cfg)
 

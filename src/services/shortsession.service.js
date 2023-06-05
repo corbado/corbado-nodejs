@@ -39,7 +39,7 @@ class ShortSessionService {
     }
 
     async validate(req) {
-        assert(typeof req === 'object')
+        assert(typeof req === 'object' && req !== null, 'RequestObject not given')
 
         const JWKS = jose.createRemoteJWKSet(new URL(this.#jwksURI), {
             cacheMaxAge: this.#cacheMaxAge

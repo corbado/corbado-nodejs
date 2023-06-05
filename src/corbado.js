@@ -81,8 +81,8 @@ class Corbado {
     get shortSession() {
         if (this.#shortSession === null) {
 
-            assert(this.#config.authenticationURL !== undefined, 'Issuer undefined')
-            assert(this.#config.authenticationURL.length > 0, 'Issuer is empty')
+            assert(this.#config.authenticationURL !== undefined, 'AuthenticationURL undefined')
+            assert(this.#config.authenticationURL.length > 0, 'AuthenticationURL is empty')
             assert(this.#config.cacheMaxAge > 0, 'Cache max age is invalid')
 
             this.#shortSession = new ShortSession(
