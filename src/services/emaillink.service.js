@@ -56,7 +56,7 @@ class EmailLinkService {
             params['requestID'] = requestID;
         }
 
-        return await this.corbadoApi.request('emailLinks', 'POST', params);
+        return await this.corbadoApi.request('/emailLinks', 'POST', params);
     };
 
     /**
@@ -84,7 +84,7 @@ class EmailLinkService {
         if (requestID) {
             params['requestID'] = requestID;
         }
-        return await this.corbadoApi.request('emailLinks/' + emailLinkID + '/validate', 'PUT', params);
+        return await this.corbadoApi.request('/emailLinks/' + emailLinkID + '/validate', 'PUT', params);
 
     }
 }

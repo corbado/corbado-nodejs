@@ -12,7 +12,7 @@ Node 8 or higher.
 
 ## Installation 
 
-```npm install corbado --save```
+```npm install @corbado/nodejs --save```
 
 
 ## Usage 
@@ -23,24 +23,54 @@ The package needs to be configured with your Corbado account's ```project ID``` 
 
 
 ```
-const Corbado = require('corbado');
-const corbado = new Corbado('pro-xxxx', 'uu....DZ');
+const Corbado = require('@corbado/nodejs');
+
+const config = new Corbado.Configuration()
+config.projectID = process.env.PROJECT_ID
+config.apiSecret = process.env.API_SECRET
+
+const corbado = new Corbado.SDK(config)
 
 ```
 
 ### Services 
 
-Corbado provides several services, e.g. ```PasskeyService```, ```SessionService```, ```EmailLinkService```.
+Corbado provides several services, e.g. ```PasskeyService```, ```SessionService```, ```EmailLinkService``` or ```ShortSessionService```.
 To access specific methods in, e.g. ```SessionService```, you can call:
 
 ```
-corbado.sessionService.verify(sessionToken, clientInfo);
+corbado.session.verify(sessionToken, clientInfo);
 ```
+
+### ShortSession
+
+Short session service provides you an easy way of accessing our session v2 variant. 
+It provides a validate method that returns a user object with all information about the current users state.
+This state contains the current authentication state as well as users id, name, email and phone number.
+
+```
+const Corbado = require('@corbado/nodejs');
+
+const config = new Corbado.Configuration()
+config.projectID = process.env.PROJECT_ID
+config.apiSecret = process.env.API_SECRET
+config.authenticationURL = "https://" + config.projectID + '.auth.corbado.com'
+
+const corbado = new Corbado.SDK(config)
+
+const user = await corbado.shortSession.validate(req)
+if (user.authenticated === true) {
+    // Do anything with authenticated user
+} else {
+    // Perform login ceremony
+}
+```
+
 
 ### Utilities
 
 Corbado package also provides several useful utility functions that can ease the development process, e.g.:
 ```
-corbado.utils.getClientInfo(req);
+Corbado.getClientInfo(req);
 ```
 helps to obtain relevant client information (```UserAgent```, ```RemoteAddress```, etc.) object from an ```HttpRequest```.

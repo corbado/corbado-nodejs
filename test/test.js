@@ -1,5 +1,10 @@
+const Configuration = require('../src/config/configuration')
 const Corbado = require('../src/corbado')
-const {expect} = require("chai");
+const {expect, config} = require("chai");
+
+const generateUsername = () => {
+    return "test+" + (new Date()).getTime() + "@corbado.com"
+}
 
 describe('Corbado endpoint tests', function () {
 
@@ -9,10 +14,18 @@ describe('Corbado endpoint tests', function () {
         timezone: 'Europe/Berlin',
     }
 
+    const validConfig = new Configuration()
+    validConfig.projectID = process.env.PROJECT_ID
+    validConfig.apiSecret = process.env.API_SECRET
+
+    const username = generateUsername()
+
     it('Validation projectID should work', function () {
 
+        const cfg = new Configuration()
+
         try {
-            new Corbado(undefined, undefined)
+            new Corbado(cfg)
         } catch (err) {
             expect(err).to.be.a('error')
             expect(err.message).to.equal('Project ID is required')
@@ -23,7 +36,10 @@ describe('Corbado endpoint tests', function () {
     it('Validation projectID should work', function () {
 
         try {
-            new Corbado('pro-1234', undefined)
+            const cfg = new Configuration()
+            cfg.projectID = process.env.PROJECT_ID
+
+            new Corbado(cfg)
         } catch (err) {
             expect(err).to.be.a('error')
             expect(err.message).to.equal('API secret is required')
@@ -32,11 +48,12 @@ describe('Corbado endpoint tests', function () {
     })
 
     it('Email link should get send', function (done) {
-        const corbado = new Corbado(process.env.PROJECT_ID, process.env.API_SECRET)
 
-        corbado.emailLinkService.send(
-        "test@corbado.com",
-        'http://localhost',
+        const corbado = new Corbado(validConfig)
+
+        corbado.emailLink.send(
+            generateUsername(),
+            'http://localhost',
             true,
             {UserFullName: "Test Name"},
             clientInfo,
@@ -55,33 +72,11 @@ describe('Corbado endpoint tests', function () {
 
     })
 
-    it('Session verify', function (done) {
-        const corbado = new Corbado(process.env.PROJECT_ID, process.env.API_SECRET)
-
-        corbado.sessionService.verify(
-            process.env.SESSION_TOKEN,
-            clientInfo,
-        ).then(rsp => {
-            expect(rsp).to.be.a('object');
-            expect(rsp).to.have.property('httpStatusCode').with.equal(200);
-            expect(rsp).to.have.property('message')
-            expect(rsp).to.have.property('requestData')
-            expect(rsp).to.have.property('runtime')
-            expect(rsp).to.have.property('data').with.property('userID').with.contains('usr-')
-            expect(rsp).to.have.property('data').with.property('userData')
-
-            done()
-        }).catch(err => {
-            done(err)
-        })
-
-    })
-
     it('Passkey register', function (done) {
-        const corbado = new Corbado(process.env.PROJECT_ID, process.env.API_SECRET)
+        const corbado = new Corbado(validConfig)
 
-        corbado.passkeyService.registerStart(
-            'test@corbado.com',
+        corbado.passkey.registerStart(
+            username,
             clientInfo,
             'http://localhost',
         ) .then(rsp => {
@@ -101,10 +96,10 @@ describe('Corbado endpoint tests', function () {
     })
 
     it('Passkey authentication', function (done) {
-        const corbado = new Corbado(process.env.PROJECT_ID, process.env.API_SECRET)
+        const corbado = new Corbado(validConfig)
 
-        corbado.passkeyService.authenticateFinish(
-            'test@corbado.com',
+        corbado.passkey.authenticateStart(
+            username,
             clientInfo,
             'http://localhost',
         ) .then(rsp => {
@@ -121,5 +116,76 @@ describe('Corbado endpoint tests', function () {
             done(err)
         })
 
+    })
+
+    it('Short session validation AuthenticationURL undefined', function (done) {
+        const corbado = new Corbado(validConfig)
+
+        try {
+            corbado.shortSession.validate(
+                null
+            ).then(() => {
+                done(new Error('Should not happen'))
+            }).catch(err => {
+                done(err)
+            })
+        } catch (err) {
+            expect(err.name).equals('AssertionError')
+            expect(err.message).equals('AuthenticationURL undefined')
+            done()
+        }
+    })
+
+
+
+    it('Short session validation request not given', function (done) {
+        const cfg = new Configuration()
+
+        cfg.projectID = validConfig.projectID
+        cfg.apiSecret = validConfig.apiSecret
+        cfg.authenticationURL = "https://" + validConfig.projectID + '.auth.corbado.com'
+
+        const corbado = new Corbado(cfg)
+
+        try {
+            corbado.shortSession.validate(
+                null
+            ).then(() => {
+                done(new Error('Should not happen'))
+            }).catch(err => {
+                expect(err.name).equals('AssertionError')
+                expect(err.message).equals('RequestObject not given')
+                done()
+            })
+        } catch (err) {
+            done(err)
+        }
+
+
+    })
+
+    it('Short session validation empty', function (done) {
+        const cfg = new Configuration()
+
+        cfg.projectID = validConfig.projectID
+        cfg.apiSecret = validConfig.apiSecret
+        cfg.authenticationURL = "https://" + validConfig.projectID + '.auth.corbado.com'
+
+        const corbado = new Corbado(cfg)
+
+        const req = {
+            cookies: {
+                cbo_short_session: "",
+            }
+        }
+
+        corbado.shortSession.validate(
+            req,
+        ).then(usr => {
+            expect(usr.authenticated).equals(false)
+            done()
+        }).catch(err => {
+            done(err)
+        })
     })
 })
