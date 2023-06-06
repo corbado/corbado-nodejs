@@ -88,7 +88,7 @@ class Corbado {
             this.#shortSession = new ShortSession(
                 this.#config.shortSessionCookieName,
                 this.#config.authenticationURL,
-                this.#config.authenticationURL + '/.well-known/jwks.json',
+                this.#config.authenticationURL + '/.well-known/jwks',
                 this.#config.cacheMaxAge,
             )
         }
