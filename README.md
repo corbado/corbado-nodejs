@@ -28,7 +28,10 @@ can be obtained from [Corbado developer panel](https://app.corbado.com).
 ```JavaScript
 const Corbado = require('@corbado/nodejs');
 
-const config = new Corbado.Configuration(process.env.PROJECT_ID,process.env.API_SECRET);
+const projectID = process.env.PROJECT_ID;
+const apiSecret = process.env.API_SECRET;
+
+const config = new Corbado.Configuration(projectID, apiSecret);
 const corbado = new Corbado.SDK(config);
 
 ```

@@ -23,6 +23,10 @@ class Configuration {
     #webhookPassword;f
 
     constructor(projectID, apiSecret, sessionVersion = 'v2') {
+        if (!projectID || !apiSecret) {
+            throw new Error('Missing environment variables project ID and/or API secret.');
+        }
+
         this.#projectID = projectID;
         this.#apiSecret = apiSecret;
         this.#sessionVersion = sessionVersion;
