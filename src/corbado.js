@@ -1,41 +1,99 @@
 const PasskeyService = require('./services/passkey.service');
 const EmailLinkService = require('./services/emaillink.service');
+const ShortSession = require('./services/shortsession.service');
 const SessionService = require('./services/session.service');
-const getClientInfo = require('./utils/clientInfo.utils');
-
-
-const EMAIL_TEMPLATES = {
-    EMAIL_SIGN_UP_TEMPLATE: 'email_signup_user',
-    EMAIL_LOGIN_TEMPLATE: 'email_login_user',
-    PASSKEY_SIGN_UP_TEMPLATE: 'webauthn_signup_user',
-    PASSKEY_LOGIN_TEMPLATE: 'webauthn_login_user',
-}
-
-const API_URL = 'https://api.corbado.com/v1/';
+const assert = require('assert')
 
 class Corbado {
 
+    #shortSession = null
+    #passkeyService = null
+    #emailLinkService = null
+    #sessionService = null
+
     /**
-     * @param {string} projectID Project ID from https://app.corbado.com/
-     * @param {string} apiSecret Api secret from https://app.corbado.com/app/settings/credentials/api-keys
-     * @param {string} baseURL Optional different api url
+     * @type {Configuration}
      */
-    constructor(projectID, apiSecret, baseURL = API_URL) {
+    #config = null
 
-        if (!projectID) {
-            throw new Error('Project ID is required');
-        } else if (projectID.substr(0, 4) !== 'pro-') {
-            throw new Error('Project ID is invalid');
+    /**
+     *
+     * @param {Configuration} config
+     */
+    constructor(config) {
+        this.#config = config
+    }
+
+    /**
+     *
+     * @returns {PasskeyService}
+     */
+    get passkey() {
+        if (this.#passkeyService === null) {
+            this.#passkeyService = new PasskeyService(
+                this.#config.projectID,
+                this.#config.apiSecret,
+                this.#config.apiURL,
+                this.emailLink,
+            )
         }
 
-        if (!apiSecret) {
-            throw new Error('API secret is required');
+        return this.#passkeyService
+    }
+
+    /**
+     *
+     * @returns {EmailLinkService}
+     */
+    get emailLink() {
+        if (this.#emailLinkService === null) {
+            this.#emailLinkService = new EmailLinkService(
+                this.#config.projectID,
+                this.#config.apiSecret,
+                this.#config.apiURL,
+                this.#config.emailTemplates,
+            )
         }
 
-        this.passkeyService = new PasskeyService(projectID, apiSecret, baseURL);
-        this.emailLinkService = new EmailLinkService(projectID, apiSecret, baseURL, EMAIL_TEMPLATES);
-        this.sessionService = new SessionService(projectID, apiSecret, baseURL);
-        this.utils = {getClientInfo};
+        return this.#emailLinkService
+    }
+
+    /**
+     *
+     * @returns {SessionService}
+     */
+    get session() {
+        if (this.#sessionService  === null) {
+            this.#sessionService = new SessionService(
+                this.#config.projectID,
+                this.#config.apiSecret,
+                this.#config.apiURL,
+            )
+        }
+
+        return this.#sessionService
+    }
+
+    /**
+     *
+     * @returns {ShortSession}
+     */
+    get shortSession() {
+        if (this.#shortSession === null) {
+
+            assert(this.#config.authenticationURL !== undefined, 'AuthenticationURL undefined')
+            assert(this.#config.authenticationURL.length > 0, 'AuthenticationURL is empty')
+            assert(this.#config.cacheMaxAge > 0, 'Cache max age is invalid')
+
+            this.#shortSession = new ShortSession(
+                this.#config.shortSessionCookieName,
+                this.#config.authenticationURL,
+                this.#config.authenticationURL + '/.well-known/jwks',
+                this.#config.cacheMaxAge,
+            )
+        }
+
+        return this.#shortSession
     }
 }
 

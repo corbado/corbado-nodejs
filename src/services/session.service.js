@@ -28,7 +28,7 @@ class SessionService {
         if (requestID) {
             params.requestID = requestID;
         }
-        return await this.corbadoApi.request('sessions/verify', 'POST', params);
+        return await this.corbadoApi.request('/sessions/verify', 'POST', params);
     }
 }
 
