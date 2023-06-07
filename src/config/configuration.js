@@ -8,6 +8,7 @@ class Configuration {
     #shortSessionCookieName = 'cbo_short_session';
     #authenticationURL = undefined
     #cacheMaxAge = 10 * 60 * 1000
+    #client;
     #emailTemplates = {
         EMAIL_SIGN_UP_TEMPLATE: 'email_signup_user',
         EMAIL_LOGIN_TEMPLATE: 'email_login_user',
@@ -76,6 +77,14 @@ class Configuration {
         assert(value > 0, 'Cache max age is invalid')
 
         this.#cacheMaxAge = value;
+    }
+
+    get client() {
+        return this.#client;
+    }
+
+    set client(client) {
+        this.#client = client;
     }
 
     get emailTemplates() {

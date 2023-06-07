@@ -1,15 +1,14 @@
 const PasskeyService = require('./services/passkey.service');
 const EmailLinkService = require('./services/emaillink.service');
-const ShortSession = require('./services/shortsession.service');
 const SessionService = require('./services/session.service');
 const assert = require('assert')
 
 class Corbado {
 
-    #shortSession = null
     #passkeyService = null
     #emailLinkService = null
     #sessionService = null
+    #sessionVersion = null;
 
     /**
      * @type {Configuration}
@@ -31,9 +30,7 @@ class Corbado {
     get passkey() {
         if (this.#passkeyService === null) {
             this.#passkeyService = new PasskeyService(
-                this.#config.projectID,
-                this.#config.apiSecret,
-                this.#config.apiURL,
+                this.#config.client,
                 this.emailLink,
             )
         }
@@ -48,9 +45,7 @@ class Corbado {
     get emailLink() {
         if (this.#emailLinkService === null) {
             this.#emailLinkService = new EmailLinkService(
-                this.#config.projectID,
-                this.#config.apiSecret,
-                this.#config.apiURL,
+                this.#config.client,
                 this.#config.emailTemplates,
             )
         }
@@ -62,38 +57,28 @@ class Corbado {
      *
      * @returns {SessionService}
      */
-    get session() {
-        if (this.#sessionService  === null) {
-            this.#sessionService = new SessionService(
-                this.#config.projectID,
-                this.#config.apiSecret,
-                this.#config.apiURL,
-            )
+    session(version = 'v2') {
+        const validVersions = ['v1', 'v2'];
+
+        if (this.#sessionVersion && this.#sessionVersion !== version) {
+            throw new Error('Called session with different version before');
         }
 
-        return this.#sessionService
-    }
+        if (this.#sessionService === null) {
 
-    /**
-     *
-     * @returns {ShortSession}
-     */
-    get shortSession() {
-        if (this.#shortSession === null) {
+            assert(validVersions.includes(version), 'Version number not allowed');
 
-            assert(this.#config.authenticationURL !== undefined, 'AuthenticationURL undefined')
-            assert(this.#config.authenticationURL.length > 0, 'AuthenticationURL is empty')
-            assert(this.#config.cacheMaxAge > 0, 'Cache max age is invalid')
-
-            this.#shortSession = new ShortSession(
+            this.#sessionService = new SessionService(
+                version,
                 this.#config.shortSessionCookieName,
                 this.#config.authenticationURL,
-                this.#config.authenticationURL + '/.well-known/jwks',
+                this.#config.authenticationURL + "/.well-known/jwks.json",
                 this.#config.cacheMaxAge,
-            )
+                this.#config.client
+            );
         }
 
-        return this.#shortSession
+        return this.#sessionService;
     }
 }
 

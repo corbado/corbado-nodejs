@@ -3,8 +3,8 @@ const CorbadoApi = require('./CorbadoApi');
 
 class PasskeyService {
 
-    constructor(projectID, apiSecret, apiURL, emailLinkService) {
-        this.corbadoApi = new CorbadoApi(projectID, apiSecret, apiURL);
+    constructor(client, emailLinkService) {
+        this.client = client;
         this.emailLinkService = emailLinkService
     }
 
@@ -45,7 +45,7 @@ class PasskeyService {
             params['credentialStatus'] = credentialStatus;
         }
 
-        return await this.corbadoApi.request('/webauthn/register/start', 'POST', params);
+        return await this.client.request('/webauthn/register/start', 'POST', params);
     };
 
     /**
@@ -84,7 +84,7 @@ class PasskeyService {
             params['requestID'] = requestID;
         }
 
-        return await this.corbadoApi.request('/webauthn/register/finish', 'POST', params);
+        return await this.client.request('/webauthn/register/finish', 'POST', params);
     };
 
     /**
@@ -138,7 +138,7 @@ class PasskeyService {
     credentialUpdate = async (credentialID, status) => {
         const params = {status};
 
-        return await this.corbadoApi.request('/webauthn/credential/${credentialID}', 'PUT', params);
+        return await this.client.request('/webauthn/credential/${credentialID}', 'PUT', params);
 
     }
 
@@ -176,7 +176,7 @@ class PasskeyService {
             params['requestID'] = requestID;
         }
 
-        return await this.corbadoApi.request('/webauthn/authenticate/start', 'POST', params);
+        return await this.client.request('/webauthn/authenticate/start', 'POST', params);
     }
 
     /**
@@ -216,7 +216,7 @@ class PasskeyService {
         }
 
 
-        return await this.corbadoApi.request('/webauthn/authenticate/finish', 'POST', params);
+        return await this.client.request('/webauthn/authenticate/finish', 'POST', params);
     }
 }
 

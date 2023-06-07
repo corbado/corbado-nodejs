@@ -2,7 +2,6 @@ module.exports = getClientInfo = (req) => {
     return {
         remoteAddress: getRemoteAddress(req),
         userAgent: req.get('user-agent'),
-        origin: req.get('origin')
     };
 };
 

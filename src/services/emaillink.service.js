@@ -9,8 +9,8 @@ class EmailLinkService {
      * @param {string} apiURL - The base URL for the Corbado service API.
      * @param {object} email_templates - An object containing the names of the email templates to use.
      */
-    constructor(projectID, apiSecret, apiURL, email_templates) {
-        this.corbadoApi = new CorbadoApi(projectID, apiSecret, apiURL);
+    constructor(client, email_templates) {
+        this.client = client;
         this.email_templates = email_templates;
     }
 
@@ -56,7 +56,7 @@ class EmailLinkService {
             params['requestID'] = requestID;
         }
 
-        return await this.corbadoApi.request('/emailLinks', 'POST', params);
+        return await this.client.request('/emailLinks', 'POST', params);
     };
 
     /**
@@ -84,7 +84,7 @@ class EmailLinkService {
         if (requestID) {
             params['requestID'] = requestID;
         }
-        return await this.corbadoApi.request('/emailLinks/' + emailLinkID + '/validate', 'PUT', params);
+        return await this.client.request('/emailLinks/' + emailLinkID + '/validate', 'PUT', params);
 
     }
 }
