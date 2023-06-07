@@ -1,4 +1,3 @@
-
 class PasskeyService {
 
     constructor(client, emailLinkService) {
@@ -6,6 +5,15 @@ class PasskeyService {
         this.emailLinkService = emailLinkService
     }
 
+    /**
+     * Start the WebAuthn register flow.
+     * @param username
+     * @param clientInfo
+     * @param origin
+     * @param requestID
+     * @param credentialStatus
+     * @returns {Promise<*>}
+     */
     registerStart = async (username, clientInfo, origin, requestID = null, credentialStatus = null) => {
         if (!username) {
             throw new Error('Username is required');
@@ -43,16 +51,12 @@ class PasskeyService {
     ;
 
     /**
-     * Creates a Request Corbado Service to finilize the WebAuthn registration process
-     *
-     * @param {string} publicKeyCredential - can be obtained from the browser WebAuthn create function by passing the publicKeyCredentialOptions
-     * @param {object} clientInfo - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
-     * @param {string} clientInfo.remoteAddress - IP of the user
-     * @param {string} clientInfo.userAgent - User Agent of the user
-     * @param {string} clientInfo.origin - Origin of the request
-     * @param {string} requestID - the requestID, is set automatically if not provided
-     *
-     * @returns {object} - the response object from the server containing the username, status and credentialID
+     * Finishes the WebAuthn register flow.
+     * @param publicKeyCredential
+     * @param clientInfo
+     * @param origin
+     * @param requestID
+     * @returns {Promise<*>}
      */
     registerFinish = async (
         publicKeyCredential,
@@ -76,19 +80,14 @@ class PasskeyService {
     };
 
     /**
-     * Creates a Request Corbado Service to send a confirmation email to the user, to confirm biometric device registration
-     *
-     * @param {string} email - the email of the user
-     * @param {object} redirect - the URL to redirect the user to from the confirmation email
-     * @param {boolean} create - create a new user with the given email if not found
-     * @param {object} additionalPayload - additional payload to be added to the email
-     * @param {string} additionalPayload.UserFullName - Full Name of the user to be added to the email
-     * @param {object} clientInfo - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
-     * @param {string} clientInfo.remoteAddress - IP of the user
-     * @param {string} clientInfo.userAgent - User Agent of the user
-     * @param {string} clientInfo.origin - Origin of the request
-     *
-     * @returns {object} data - the response object from the server
+     * Sends an email magic link.
+     * @param email
+     * @param redirect
+     * @param create
+     * @param additionalPayload
+     * @param clientInfo
+     * @param requestID
+     * @returns {Promise<*>}
      */
     emailLinkSend = async (
         email,
@@ -110,13 +109,11 @@ class PasskeyService {
     };
 
     /**
-     * Creates a Request Corbado Service to confirm tha validity of the linkID and the token that was sent to the client.
-     * Can be used after the user is redirected back to the via the email link.
-     *
-     * @param {string} emailLinkID - is sent to the client via the email link
-     * @param {object} token - is sent to the client via the email link
-     *
-     * @returns {object} data - the response object from the server containing the username, status and credentialID
+     * Validate an email magic link
+     * @param emailLinkID
+     * @param token
+     * @param requestID
+     * @returns {Promise<*>}
      */
     emailLinkValidate = async (emailLinkID, token, requestID = null) => {
         return await this.emailLinkService.validate(emailLinkID, token, requestID);
@@ -124,12 +121,10 @@ class PasskeyService {
 
 
     /**
-     * Updates the credential status
-     *
-     * @param {credentialID} credentialID - the credentialID to update
-     * @param {status} status - the status to update to
-     *
-     * @returns {object} data - the response object from the server containing the new credential status
+     * Update WebAuthn credentials' state
+     * @param credentialID
+     * @param status
+     * @returns {Promise<*>}
      */
     credentialUpdate = async (credentialID, status) => {
         const params = {status};
@@ -139,16 +134,12 @@ class PasskeyService {
     }
 
     /**
-     * Creates a Request to Corbado Service to initialize the WebAuthn login process
-     *
-     * @param {string} username - the email of the user
-     * @param {object} clientInfo - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
-     * @param {string} clientInfo.remoteAddress - IP of the user
-     * @param {string} clientInfo.userAgent - User Agent of the user
-     * @param {string} clientInfo.origin - Origin of the request
-     *
-     * @returns {object} data - the response from the server containing the publicKeyCredentialOptions
-     * @returns {object} data.publicKeyCredentialOptions - the publicKeyCredentialOptions object is needed to initialize the WebAuthn registration process from the client side
+     * Start the WebAuthn authentication flow.
+     * @param username
+     * @param clientInfo
+     * @param origin
+     * @param requestID
+     * @returns {Promise<*>}
      */
     authenticateStart = async (username, clientInfo, origin, requestID = null) => {
         if (!username) {
@@ -176,17 +167,12 @@ class PasskeyService {
     }
 
     /**
-     * Creates a Request to Corbado Service to finilize the WebAuthn login process
-     *
-     * @param {string} publicKeyCredential - can be obtained from the browser WebAuthn create function by passing the publicKeyCredentialOptions
-     * @param {object} clientInfo - the clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}
-     * @param {string} clientInfo.remoteAddress - IP of the user
-     * @param {string} clientInfo.userAgent - User Agent of the user
-     * @param {string} clientInfo.origin - Origin of the request
-     *
-     * @param {string} requestID - the requestID, is set automatically if not provided
-     *
-     * @returns {object} data - the response object from the server containing the username, status and creadentialID
+     * Finish the WebAuthn authentication flow.
+     * @param publicKeyCredential
+     * @param clientInfo
+     * @param origin
+     * @param requestID
+     * @returns {Promise<*>}
      */
     authenticateFinish = async (publicKeyCredential, clientInfo, origin, requestID = null) => {
         if (!publicKeyCredential) {

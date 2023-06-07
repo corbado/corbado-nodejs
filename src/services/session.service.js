@@ -12,7 +12,7 @@ class SessionService {
     #client;
 
     /**
-     *
+     * Create a session service.
      * @param version
      * @param shortSessionCookieName
      * @param issuer
@@ -33,7 +33,7 @@ class SessionService {
     }
 
     /**
-     *
+     * Obtain the short session cookie.
      * @param req
      * @returns {*|string|null}
      */
@@ -51,7 +51,7 @@ class SessionService {
     }
 
     /**
-     *
+     * Extract the short session cookie if it's stored in the bearer token.
      * @param req
      * @returns {string|null}
      */
@@ -68,7 +68,7 @@ class SessionService {
     }
 
     /**
-     *
+     * Validate the short session cookie.
      * @param req
      * @returns {Promise<User>}
      */
@@ -101,6 +101,10 @@ class SessionService {
         )
     }
 
+    /**
+     * Get information for the current user.
+     * @returns {Promise<User>}
+     */
     async getCurrentUser() {
         if (this.#version === 'v1') {
             throw new Error('getCurrentUser() is only available in session v2');
@@ -129,14 +133,12 @@ class SessionService {
 
     /**
      * Verifies a session token by sending a request to Corbado.
-     *
-     * @param {string} sessionToken - The session token obtained as an HTTP GET parameter from the Redirect URL.
-     * @param {object} clientInfo - The clientInfo object containing the browser and device information {remoteAddress, userAgent, origin}.
-     * @param {string|null} requestID - An optional request ID to send to Corbado.
-     *
-     * @returns {object} - The response from the server containing the userData.
-     * @throws {Error} - If the request fails.
+     * @param corbadoSessionToken
+     * @param clientInfo
+     * @param requestID
+     * @returns {Promise<*>}
      */
+
     async verify(corbadoSessionToken, clientInfo, requestID = null) {
         if (this.#version === 'v2') {
             throw new Error('This is only available on session v1');

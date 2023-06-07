@@ -18,7 +18,7 @@ app.use(cookieParser())
 const projectID = process.env.PROJECT_ID_V1;
 const apiSecret = process.env.API_SECRET_V1;
 
-const config = new Corbado.Configuration(projectID, apiSecret);
+const config = new Corbado.Configuration(projectID, apiSecret, 'v1');
 const corbado = new Corbado.SDK(config);*/
 
 
