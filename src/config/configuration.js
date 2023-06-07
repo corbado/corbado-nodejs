@@ -26,6 +26,7 @@ class Configuration {
         this.#projectID = projectID;
         this.#apiSecret = apiSecret;
         this.#sessionVersion = sessionVersion;
+        this.#authenticationURL = 'https://' + projectID + '.auth.corbado.com';
         this.#client = new CorbadoApi(this.#projectID,this.#apiSecret, this.#apiURL);
     }
 

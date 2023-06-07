@@ -28,10 +28,7 @@ can be obtained from [Corbado developer panel](https://app.corbado.com).
 ```JavaScript
 const Corbado = require('@corbado/nodejs');
 
-const config = new Corbado.Configuration();
-config.projectID = process.env.PROJECT_ID;
-config.apiSecret = process.env.API_SECRET;
-config.authenticationURL = 'https://' + process.env.PROJECT_ID + '.auth.corbado.com';
+const config = new Corbado.Configuration(process.env.PROJECT_ID,process.env.API_SECRET);
 const corbado = new Corbado.SDK(config);
 
 ```
@@ -43,11 +40,12 @@ Corbado provides several services, e.g.:
 - `PasskeyService`
 - `EmailLinkService`
 - `SessionService`
+- `WebhookService`
 
 To access specific methods in, e.g. ```SessionService```, you can call:
 
 ```
-corbado.session.validate(req);
+corbado.session.validateShortSessionValue(req);
 ```
 
 ### Session management
@@ -57,7 +55,7 @@ all information about the current user. This state contains the current authenti
 email and phone number.
 
 ```JavaScript
-const user = await corbado.session.validate(req);
+const user = await corbado.session.validateShortSessionValue(req);
 if (user.authenticated === true) {
     // Do anything with authenticated user
 } else {
