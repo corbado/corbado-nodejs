@@ -21,7 +21,7 @@ class SessionService {
      * @param client
      */
     constructor(version, shortSessionCookieName, issuer, jwksURI, cacheMaxAge, client) {
-        if (!version || !shortSessionCookieName || !issuer || !jwksURI || !cacheMaxAge || !client) {
+        if (!version || !client) {
             throw new Error('Invalid argument(s)');
         }
         this.#version = version;
@@ -37,12 +37,12 @@ class SessionService {
      * @param req
      * @returns {*|string|null}
      */
-    #getSessionToken(req) {
+    getShortSessionValue(req) {
         if (this.#version === 'v1') {
             throw new Error('This is only available on session v2');
         }
 
-        const token = req.cookies[this.#shortSessionCookieName] ?? this.#getBearerToken(req);
+        const token = req.cookies[this.#shortSessionCookieName] ?? this.#extractBearerToken(req);
         if (token !== null && token.length < 10) {
             return null;
         }
@@ -55,7 +55,7 @@ class SessionService {
      * @param req
      * @returns {string|null}
      */
-    #getBearerToken(req) {
+    #extractBearerToken(req) {
         if (!req.headers.authorization) {
             return null;
         }
@@ -72,7 +72,7 @@ class SessionService {
      * @param req
      * @returns {Promise<User>}
      */
-    async validate(req) {
+    async validateShortSessionValue(req) {
         if (this.#version === 'v1') {
             throw new Error('This is only available on session v2');
         }
@@ -85,7 +85,7 @@ class SessionService {
         const options = {
             issuer: this.#issuer,
         }
-        const token = this.#getSessionToken(req)
+        const token = this.getShortSessionValue(req)
         if (token === null) {
             return new User(false)
         }
@@ -95,13 +95,37 @@ class SessionService {
         return new User(
             true,
             payload.sub,
-            payload.name,
-            payload.email,
-            payload.phoneNumber
+            payload.Name,
+            payload.Email,
+            payload.PhoneNumber
         )
     }
 
+    async getCurrentUser() {
+        if (this.#version === 'v1') {
+            throw new Error('getCurrentUser() is only available in session v2');
+        }
 
+        const guest = new User(false);
+
+        const value = this.getShortSessionValue();
+        if (value.length < 10) {
+            return guest;
+        }
+
+        const decoded = await this.validateShortSessionValue(value);
+        if (decoded !== null) {
+            return new User(
+                true,
+                decoded.id,
+                decoded.name,
+                decoded.email,
+                decoded.phoneNumber
+            );
+        }
+
+        return guest;
+    }
 
     /**
      * Verifies a session token by sending a request to Corbado.
@@ -113,17 +137,17 @@ class SessionService {
      * @returns {object} - The response from the server containing the userData.
      * @throws {Error} - If the request fails.
      */
-    async verify(sessionToken, clientInfo, requestID = null) {
+    async verify(corbadoSessionToken, clientInfo, requestID = null) {
         if (this.#version === 'v2') {
             throw new Error('This is only available on session v1');
         }
 
-        if (!sessionToken) {
+        if (!corbadoSessionToken) {
             throw new Error('SessionToken is required');
         }
 
         const params = {
-            token: sessionToken,
+            token: corbadoSessionToken,
             clientInfo: clientInfo
         }
 
