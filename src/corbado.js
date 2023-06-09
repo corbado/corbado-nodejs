@@ -13,10 +13,10 @@ const assert = require('assert');
  */
 class Corbado {
 
-    #passkeyService = null
-    #emailLinkService = null
-    #sessionService = null
-    #webhookService = null;
+    #passkey = null
+    #emailLink = null
+    #session = null
+    #webhook = null;
 
     /**
      * @type {Configuration}
@@ -32,13 +32,13 @@ class Corbado {
 
 
         // PasskeyService
-        this.#passkeyService = new PasskeyService(
+        this.#passkey = new PasskeyService(
             this.#config.client,
             this.emailLink,
         )
 
         // EmailLinkService
-        this.#emailLinkService = new EmailLinkService(
+        this.#emailLink = new EmailLinkService(
             this.#config.client,
             this.#config.emailTemplates,
         )
@@ -47,7 +47,7 @@ class Corbado {
         const validSessionVersions = ['v1', 'v2'];
         assert(validSessionVersions.includes(this.#config.sessionVersion), 'Session version number not allowed');
 
-        this.#sessionService = new SessionService(
+        this.#session = new SessionService(
             this.#config.sessionVersion,
             this.#config.shortSessionCookieName,
             this.#config.authenticationURL,
@@ -56,11 +56,6 @@ class Corbado {
             this.#config.client
         );
 
-        // WebhookService
-        this.#webhookService = new WebhookService(
-            webhookMiddleware(this.#config.webhookUsername, this.#config.webhookPassword)
-        )
-
     }
 
     /**
@@ -68,7 +63,7 @@ class Corbado {
      * @returns {PasskeyService}
      */
     get passkey() {
-        return this.#passkeyService
+        return this.#passkey
     }
 
     /**
@@ -76,7 +71,7 @@ class Corbado {
      * @returns {EmailLinkService}
      */
     get emailLink() {
-        return this.#emailLinkService
+        return this.#emailLink
     }
 
     /**
@@ -84,7 +79,7 @@ class Corbado {
      * @returns {SessionService}
      */
     get session() {
-        return this.#sessionService;
+        return this.#session;
     }
 
     /**
@@ -92,7 +87,12 @@ class Corbado {
      * @returns {WebhookService}
      */
     get webhook() {
-        return this.#webhookService
+        if (this.#webhook === null) {
+            this.#webhook = new WebhookService(
+                webhookMiddleware(this.#config.webhookUsername, this.#config.webhookPassword)
+            )
+        }
+        return this.#webhook
     }
 
 }

@@ -22,15 +22,15 @@ class Configuration {
     #webhookUsername;
     #webhookPassword;f
 
-    constructor(projectID, apiSecret, sessionVersion = 'v2') {
-        if (!projectID || !apiSecret) {
-            throw new Error('Missing environment variables project ID and/or API secret.');
+    constructor(authenticationURL, projectID, apiSecret, sessionVersion = 'v2') {
+        if (!authenticationURL || !projectID || !apiSecret) {
+            throw new Error('Missing environment variables authenticationURL, project ID and/or API secret.');
         }
 
+        this.#authenticationURL = authenticationURL;
         this.#projectID = projectID;
         this.#apiSecret = apiSecret;
         this.#sessionVersion = sessionVersion;
-        this.#authenticationURL = 'https://' + projectID + '.auth.corbado.com';
         this.#client = new CorbadoApi(this.#projectID,this.#apiSecret, this.#apiURL);
     }
 
