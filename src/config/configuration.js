@@ -7,7 +7,7 @@ class Configuration {
     #apiSecret;
     #apiURL = 'https://api.corbado.com/v1';
     #shortSessionCookieName = 'cbo_short_session';
-    #authenticationURL = undefined
+    #authenticationURL;
     #cacheMaxAge = 10 * 60 * 1000
     #client;
     #emailTemplates = {
@@ -17,17 +17,16 @@ class Configuration {
         PASSKEY_LOGIN_TEMPLATE: 'webauthn_login_user',
     }
 
-    #sessionVersion = 'v2';
+    #sessionVersion;
 
     #webhookUsername;
     #webhookPassword;f
 
-    constructor(authenticationURL, projectID, apiSecret, sessionVersion = 'v2') {
-        if (!authenticationURL || !projectID || !apiSecret) {
-            throw new Error('Missing environment variables authenticationURL, project ID and/or API secret.');
+    constructor(projectID, apiSecret, sessionVersion = 'v2') {
+        if (!projectID || !apiSecret) {
+            throw new Error('Missing environment variables project ID and/or API secret.');
         }
 
-        this.#authenticationURL = authenticationURL;
         this.#projectID = projectID;
         this.#apiSecret = apiSecret;
         this.#sessionVersion = sessionVersion;

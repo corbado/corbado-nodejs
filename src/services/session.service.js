@@ -20,16 +20,16 @@ class SessionService {
      * @param cacheMaxAge
      * @param client
      */
-    constructor(version, shortSessionCookieName, issuer, jwksURI, cacheMaxAge, client) {
+    constructor(version, client, shortSessionCookieName, issuer, jwksURI, cacheMaxAge) {
         if (!version || !client) {
             throw new Error('Invalid argument(s)');
         }
         this.#version = version;
+        this.#client = client;
         this.#shortSessionCookieName = shortSessionCookieName;
         this.#issuer = issuer;
         this.#jwksURI = jwksURI;
         this.#cacheMaxAge = cacheMaxAge
-        this.#client = client;
     }
 
     /**

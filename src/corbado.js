@@ -47,14 +47,30 @@ class Corbado {
         const validSessionVersions = ['v1', 'v2'];
         assert(validSessionVersions.includes(this.#config.sessionVersion), 'Session version number not allowed');
 
-        this.#session = new SessionService(
-            this.#config.sessionVersion,
-            this.#config.shortSessionCookieName,
-            this.#config.authenticationURL,
-            this.#config.authenticationURL + "/.well-known/jwks",
-            this.#config.cacheMaxAge,
-            this.#config.client
-        );
+        if (this.#config.sessionVersion === 'v2') {
+            if (!this.#config.authenticationURL) {
+                throw new Error('No Authentication URL set');
+            }
+
+            this.#session = new SessionService(
+                this.#config.sessionVersion,
+                this.#config.client,
+                this.#config.shortSessionCookieName,
+                this.#config.authenticationURL,
+                this.#config.authenticationURL + "/.well-known/jwks",
+                this.#config.cacheMaxAge
+            );
+        } else {
+            this.#session = new SessionService(
+                this.#config.sessionVersion,
+                this.#config.client,
+                '',
+                '',
+                '',
+                null
+            )
+        }
+
 
     }
 
