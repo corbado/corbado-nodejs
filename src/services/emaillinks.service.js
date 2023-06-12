@@ -1,9 +1,7 @@
-const CorbadoApi = require("./CorbadoApi");
-
-class EmailLinkService {
+class EmailLinks {
 
     /**
-     * Creates a new instance of the EmailLinkService.
+     * Creates a new instance of the EmailLinks.
      * @param client
      * @param email_templates
      */
@@ -81,4 +79,4 @@ class EmailLinkService {
     }
 }
 
-module.exports = EmailLinkService;
+module.exports = EmailLinks;

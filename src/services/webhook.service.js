@@ -1,6 +1,6 @@
 const assert = require("assert");
 
-class WebhookService {
+class Webhook {
     WEBHOOK_ACTION = {
         AUTH_METHODS: "authMethods",
         PASSWORD_VERIFY: "passwordVerify",
@@ -143,4 +143,4 @@ class WebhookService {
     }
 }
 
-module.exports = WebhookService;
+module.exports = Webhook;

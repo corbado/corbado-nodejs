@@ -1,10 +1,10 @@
-const Passkeys = require('./services/passkey.service');
-const EmailLinks = require('./services/emaillink.service');
+const Passkeys = require('./services/passkeys.service');
+const EmailLinks = require('./services/emaillinks.service');
 const SessionV1 = require('./services/sessionv1.service');
 const SessionV2 = require('./services/sessionv2.service');
 const Webhook = require("./services/webhook.service");
 const webhookMiddleware = require('./middlewares/webhookMiddleware');
-const User = require("./services/User");
+const User = require("./services/user.service");
 
 
 /**
@@ -93,7 +93,7 @@ class Corbado {
                     throw new Error('No Authentication URL set');
                 }
 
-                this.#sessionV1 = new SessionV2(
+                this.#sessionV2 = new SessionV2(
                     this.#config.client,
                     this.#config.shortSessionCookieName,
                     this.#config.authenticationURL,

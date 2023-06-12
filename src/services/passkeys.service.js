@@ -1,4 +1,4 @@
-class PasskeyService {
+class Passkeys {
 
     constructor(client, emailLinkService) {
         this.client = client;
@@ -202,4 +202,4 @@ class PasskeyService {
     }
 }
 
-module.exports = PasskeyService;
+module.exports = Passkeys;

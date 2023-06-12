@@ -40,8 +40,8 @@ const corbado = new Corbado.SDK(config);
 
 Corbado provides several services, e.g.:
 
-- `PasskeyService`
-- `EmailLinkService`
+- `PasskeysService`
+- `EmaillinksService`
 - `Sessionv2Service`
 - `WebhookService`
 

@@ -1,8 +1,5 @@
-const assert = require("assert");
-const jose = require("jose");
-const User = require("../entities/User");
 
-class Sessionv1Service {
+class SessionV1 {
 
     #client;
 
@@ -46,4 +43,4 @@ class Sessionv1Service {
     }
 }
 
-module.exports = Sessionv1Service;
+module.exports = SessionV1;
