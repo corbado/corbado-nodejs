@@ -1,9 +1,10 @@
-const PasskeyService = require('./services/passkey.service');
-const EmailLinkService = require('./services/emaillink.service');
-const SessionService = require('./services/session.service');
-const WebhookService = require("./services/webhook.service");
+const Passkeys = require('./services/passkey.service');
+const EmailLinks = require('./services/emaillink.service');
+const SessionV1 = require('./services/sessionv1.service');
+const SessionV2 = require('./services/sessionv2.service');
+const Webhook = require("./services/webhook.service");
 const webhookMiddleware = require('./middlewares/webhookMiddleware');
-const assert = require('assert');
+const User = require("./services/User");
 
 
 /**
@@ -13,10 +14,12 @@ const assert = require('assert');
  */
 class Corbado {
 
-    #passkey = null
-    #emailLink = null
-    #session = null
+    #passkeys = null
+    #emailLinks = null
+    #sessionV1 = null
+    #sessionV2 = null;
     #webhook = null;
+    #users = null;
 
     /**
      * @type {Configuration}
@@ -29,82 +32,86 @@ class Corbado {
      */
     constructor(config) {
         this.#config = config;
+    }
 
-
-        // PasskeyService
-        this.#passkey = new PasskeyService(
-            this.#config.client,
-            this.emailLink,
-        )
-
-        // EmailLinkService
-        this.#emailLink = new EmailLinkService(
-            this.#config.client,
-            this.#config.emailTemplates,
-        )
-
-        // SessionService
-        const validSessionVersions = ['v1', 'v2'];
-        assert(validSessionVersions.includes(this.#config.sessionVersion), 'Session version number not allowed');
-
-        if (this.#config.sessionVersion === 'v2') {
-            if (!this.#config.authenticationURL) {
-                throw new Error('No Authentication URL set');
-            }
-
-            this.#session = new SessionService(
-                this.#config.sessionVersion,
+    /**
+     *
+     * @returns {*}
+     */
+    get passkey() {
+        if (this.#passkeys === null) {
+            this.#passkeys = new Passkeys(
                 this.#config.client,
-                this.#config.shortSessionCookieName,
-                this.#config.authenticationURL,
-                this.#config.authenticationURL + "/.well-known/jwks",
-                this.#config.cacheMaxAge
-            );
-        } else {
-            this.#session = new SessionService(
-                this.#config.sessionVersion,
-                this.#config.client,
-                '',
-                '',
-                '',
-                null
+                this.emailLink,
             )
         }
 
-
+        return this.#passkeys;
     }
 
     /**
      *
-     * @returns {PasskeyService}
-     */
-    get passkey() {
-        return this.#passkey
-    }
-
-    /**
-     *
-     * @returns {EmailLinkService}
+     * @returns {null}
      */
     get emailLink() {
-        return this.#emailLink
+        if (this.#emailLinks === null) {
+            // EmailLinkService
+            this.#emailLinks = new EmailLinks(
+                this.#config.client,
+                this.#config.emailTemplates,
+            )
+        }
+        return this.#emailLinks;
+    }
+
+    get users() {
+        if(this.#users === null) {
+
+            this.#users = new User(this.#config.client);
+        }
+
+        return this.#users;
+    }
+
+    get sessionV1() {
+        if(this.#sessionV1 === null) {
+            this.#sessionV1 = new SessionV1(
+                this.#config.client
+            )
+        }
+
+        return this.#sessionV1;
     }
 
     /**
      *
-     * @returns {SessionService}
+     * @returns {null}
      */
-    get session() {
-        return this.#session;
+    get sessionV2() {
+        if(this.#sessionV2 === null) {
+                if (!this.#config.authenticationURL) {
+                    throw new Error('No Authentication URL set');
+                }
+
+                this.#sessionV1 = new SessionV2(
+                    this.#config.client,
+                    this.#config.shortSessionCookieName,
+                    this.#config.authenticationURL,
+                    this.#config.authenticationURL + "/.well-known/jwks",
+                    this.#config.cacheMaxAge
+                );
+            }
+
+        return this.#sessionV2;
     }
 
     /**
      *
-     * @returns {WebhookService}
+     * @returns {null}
      */
     get webhook() {
         if (this.#webhook === null) {
-            this.#webhook = new WebhookService(
+            this.#webhook = new Webhook(
                 webhookMiddleware(this.#config.webhookUsername, this.#config.webhookPassword)
             )
         }

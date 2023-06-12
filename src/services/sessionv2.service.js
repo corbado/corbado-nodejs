@@ -2,9 +2,9 @@ const assert = require("assert");
 const jose = require("jose");
 const User = require("../entities/User");
 
-class SessionService {
+class Sessionv2Service {
 
-    #version;
+
     #shortSessionCookieName;
     #issuer;
     #jwksURI;
@@ -20,11 +20,10 @@ class SessionService {
      * @param cacheMaxAge
      * @param client
      */
-    constructor(version, client, shortSessionCookieName, issuer, jwksURI, cacheMaxAge) {
-        if (!version || !client) {
+    constructor(client, shortSessionCookieName, issuer, jwksURI, cacheMaxAge) {
+        if (!client) {
             throw new Error('Invalid argument(s)');
         }
-        this.#version = version;
         this.#client = client;
         this.#shortSessionCookieName = shortSessionCookieName;
         this.#issuer = issuer;
@@ -38,9 +37,6 @@ class SessionService {
      * @returns {*|string|null}
      */
     getShortSessionValue(req) {
-        if (this.#version === 'v1') {
-            throw new Error('This is only available on session v2');
-        }
 
         const token = req.cookies[this.#shortSessionCookieName] ?? this.#extractBearerToken(req);
         if (token !== null && token.length < 10) {
@@ -73,9 +69,6 @@ class SessionService {
      * @returns {Promise<User>}
      */
     async validateShortSessionValue(req) {
-        if (this.#version === 'v1') {
-            throw new Error('This is only available on session v2');
-        }
 
         assert(typeof req === 'object' && req !== null, 'RequestObject not given');
 
@@ -106,9 +99,6 @@ class SessionService {
      * @returns {Promise<User>}
      */
     async getCurrentUser() {
-        if (this.#version === 'v1') {
-            throw new Error('getCurrentUser() is only available in session v2');
-        }
 
         const guest = new User(false);
 
@@ -131,34 +121,6 @@ class SessionService {
         return guest;
     }
 
-    /**
-     * Verifies a session token by sending a request to Corbado.
-     * @param corbadoSessionToken
-     * @param clientInfo
-     * @param requestID
-     * @returns {Promise<*>}
-     */
-
-    async verify(corbadoSessionToken, clientInfo, requestID = null) {
-        if (this.#version === 'v2') {
-            throw new Error('This is only available on session v1');
-        }
-
-        if (!corbadoSessionToken) {
-            throw new Error('SessionToken is required');
-        }
-
-        const params = {
-            token: corbadoSessionToken,
-            clientInfo: clientInfo
-        }
-
-        if (requestID) {
-            params.requestID = requestID;
-        }
-
-        return await this.#client.request('/sessions/verify', 'POST', params);
-    }
 }
 
-module.exports = SessionService;
+module.exports = Sessionv2Service;

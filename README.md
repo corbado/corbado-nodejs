@@ -42,10 +42,10 @@ Corbado provides several services, e.g.:
 
 - `PasskeyService`
 - `EmailLinkService`
-- `SessionService`
+- `Sessionv2Service`
 - `WebhookService`
 
-To access specific methods in, e.g. ```SessionService```, you can call:
+To access specific methods in, e.g. ```Sessionv2Service```, you can call:
 
 ```
 corbado.session.validateShortSessionValue(req);
