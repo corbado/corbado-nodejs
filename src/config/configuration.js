@@ -17,19 +17,17 @@ class Configuration {
         PASSKEY_LOGIN_TEMPLATE: 'webauthn_login_user',
     }
 
-    #sessionVersion;
 
     #webhookUsername;
     #webhookPassword;f
 
-    constructor(projectID, apiSecret, sessionVersion = 'v2') {
+    constructor(projectID, apiSecret) {
         if (!projectID || !apiSecret) {
             throw new Error('Missing environment variables project ID and/or API secret.');
         }
 
         this.#projectID = projectID;
         this.#apiSecret = apiSecret;
-        this.#sessionVersion = sessionVersion;
         this.#client = new CorbadoApi(this.#projectID,this.#apiSecret, this.#apiURL);
     }
 
@@ -130,13 +128,6 @@ class Configuration {
         this.#webhookPassword = webhookPassword;
     }
 
-    get sessionVersion(){
-        return this.#sessionVersion;
-    }
-
-    set sessionVersion(sessionVersion){
-        this.#sessionVersion = sessionVersion;
-    }
 }
 
 module.exports = Configuration

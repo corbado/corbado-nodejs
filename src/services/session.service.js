@@ -2,7 +2,7 @@ const assert = require("assert");
 const jose = require("jose");
 const User = require("../entities/User");
 
-class SessionV2 {
+class Session {
 
 
     #shortSessionCookieName;
@@ -123,4 +123,4 @@ class SessionV2 {
 
 }
 
-module.exports = SessionV2;
+module.exports = Session;

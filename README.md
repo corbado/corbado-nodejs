@@ -20,7 +20,8 @@ npm install @corbado/nodejs --save
 
 ## Usage
 
-The package needs to be configured with your Corbado account's ```project ID``` and ```API secret```. All the parameters
+The package needs to be configured with your Corbado account's ```project ID```, ```API secret```
+and `Authentication URL`. All the parameters
 can be obtained from [Corbado developer panel](https://app.corbado.com).
 
 ```project ID``` and ```API secret``` should be provided when initializing the Corbado module:
@@ -30,8 +31,10 @@ const Corbado = require('@corbado/nodejs');
 
 const projectID = process.env.PROJECT_ID;
 const apiSecret = process.env.API_SECRET;
+const authenticationURL = process.env.AUTHENTICATION_URL;
 
 const config = new Corbado.Configuration(projectID, apiSecret);
+config.authenticationURL = authenticationURL;
 const corbado = new Corbado.SDK(config);
 
 ```
@@ -40,21 +43,27 @@ const corbado = new Corbado.SDK(config);
 
 Corbado provides several services, e.g.:
 
-- `PasskeysService`
-- `EmaillinksService`
-- `Sessionv2Service`
-- `WebhookService`
+- `Passkeys`
+- `EmailLinks`
+- `SessionV1`
+- `SessionV2`
+- `User`
+- `Webhook`
 
-To access specific methods in, e.g. ```Sessionv2Service```, you can call:
+To access specific methods in, e.g. `Sessionv2`, you can call:
 
 ```
-corbado.session.validateShortSessionValue(req);
+corbado.sessionV2.validateShortSessionValue(req);
 ```
 
-### Session management
+### Corbado session management
 
-By default session management will work on our version v2. It provides a validate method that returns a user object with
-all information about the current user. This state contains the current authentication state as well as user's id, name,
+Corbado offers easy and secure session management (see the [docs](https://docs.corbado.com/overview/welcome) for
+details)
+
+To validate a user after authentication, call `validateshortSessionValue(req)` which returns a user object with
+all information about the current user. This object contains the current authentication state as well as user's id,
+name,
 email and phone number.
 
 ```JavaScript
