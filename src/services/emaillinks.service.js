@@ -79,4 +79,4 @@ class EmailLinks {
     }
 }
 
-module.exports = EmailLinks;
+export default EmailLinks;

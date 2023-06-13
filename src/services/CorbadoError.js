@@ -5,4 +5,4 @@ class CorbadoError extends Error {
   }
 }
 
-module.exports = CorbadoError;
+export default CorbadoError;

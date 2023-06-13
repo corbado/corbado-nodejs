@@ -1,10 +1,12 @@
-var express = require('express');
-var app = express();
-var cors = require('cors');
-const Corbado = require('../corbado-nodejs');
-const cookieParser = require('cookie-parser')
-require('dotenv').config()
+import express from 'express';
+import cors from 'cors';
+import Corbado from '../corbado-nodejs';
+import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
 
+dotenv.config()
+
+const app = express();
 
 app.use(cors({
     credentials: true,
@@ -13,35 +15,28 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser())
 
-// Session management v1
-/*
-const projectID = process.env.PROJECT_ID_V1;
-const apiSecret = process.env.API_SECRET_V1;
 
-const config = new Corbado.Configuration(projectID, apiSecret, 'v1');
-const corbado = new Corbado.SDK(config);*/
-
-
-// Session management v2
-const projectID = process.env.PROJECT_ID_V2;
-const apiSecret = process.env.API_SECRET_V2;
+const authenticationURL = process.env.AUTHENTICATION_URL;
+const projectID = process.env.PROJECT_ID;
+const apiSecret = process.env.API_SECRET;
 
 const config = new Corbado.Configuration(projectID, apiSecret);
+config.authenticationURL = authenticationURL;
 const corbado = new Corbado.SDK(config);
 
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
 
-app.get('/logged-in', async function (req, res) {
+app.get('/logged-in', async (req, res) => {
 
-    // Session Management v1
+    // BRING YOUR OWN SESSION MANAGEMENT
 
     /* let corbadoSessionToken = req.query.corbadoSessionToken;
      let clientInfo = Corbado.getClientInfo(req);
-     let response = await corbado.session.verify(corbadoSessionToken, clientInfo);
+     let response = await corbado.authtoken.validate(corbadoSessionToken, clientInfo);
 
      let userData = response.data.user
 
@@ -53,7 +48,7 @@ app.get('/logged-in', async function (req, res) {
      });*/
 
 
-    // Session Management v2
+    // CORBADO SESSION MANAGEMENT
 
     try {
         const usr = await corbado.session.validateShortSessionValue(req);
@@ -69,7 +64,7 @@ app.get('/logged-in', async function (req, res) {
 })
 
 
-app.listen(3005, function () {
+app.listen(3005, () => {
     console.log('Example app listening on port 3005!');
 });
 

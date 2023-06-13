@@ -1,9 +1,11 @@
 {
   "name": "@corbado/nodejs",
   "version": "1.1.8",
+  "type": "module",
   "description": "",
-  "main": "./src/index.js",
+  "main": "./dist/index.js",
   "scripts": {
+    "build": "babel src --out-dir dist",
     "test": "mocha --reporter spec"
   },
   "repository": {
@@ -32,9 +34,12 @@
     "jwks-rsa": "^3.0.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.22.5",
+    "@babel/core": "^7.22.5",
+    "@babel/preset-env": "^7.22.5",
     "chai": "^4.3.7",
+    "dotenv": "^16.0.3",
     "mocha": "^10.2.0",
-    "sinon": "^15.0.4",
-    "dotenv": "^16.0.3"
+    "sinon": "^15.0.4"
   }
 }

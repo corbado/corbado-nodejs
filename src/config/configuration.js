@@ -1,5 +1,5 @@
-const assert = require('assert');
-const CorbadoApi = require("../services/CorbadoApi");
+import assert from 'assert';
+import CorbadoApi from "../services/CorbadoApi";
 
 class Configuration {
 
@@ -130,4 +130,4 @@ class Configuration {
 
 }
 
-module.exports = Configuration
+export default Configuration

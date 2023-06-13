@@ -1,11 +1,4 @@
-module.exports = getClientInfo = (req) => {
-    return {
-        remoteAddress: getRemoteAddress(req),
-        userAgent: req.get('user-agent'),
-    };
-};
-
-function getRemoteAddress (req) {
+const getRemoteAddress = (req) => {
     const forwardedFor = req.headers['x-forwarded-for'];
 
     if (forwardedFor) {
@@ -22,3 +15,11 @@ function getRemoteAddress (req) {
     return req.socket.remoteAddress ?? '';
 }
 
+const getClientInfo = (req) => {
+    return {
+        remoteAddress: getRemoteAddress(req),
+        userAgent: req.get('user-agent'),
+    };
+};
+
+export default getClientInfo;

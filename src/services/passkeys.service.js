@@ -202,4 +202,4 @@ class Passkeys {
     }
 }
 
-module.exports = Passkeys;
+export default Passkeys;

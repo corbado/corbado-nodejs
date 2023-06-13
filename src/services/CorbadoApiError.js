@@ -11,4 +11,4 @@ class CorbadoApiError extends Error {
   }
 }
 
-module.exports = CorbadoApiError
+export default CorbadoApiError

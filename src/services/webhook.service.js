@@ -1,4 +1,4 @@
-const assert = require("assert");
+import assert from "assert";
 
 class Webhook {
     WEBHOOK_ACTION = {
@@ -143,4 +143,4 @@ class Webhook {
     }
 }
 
-module.exports = Webhook;
+export default Webhook;

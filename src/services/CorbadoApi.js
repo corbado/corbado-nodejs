@@ -1,5 +1,5 @@
-const axios = require('axios');
-const CorbadoApiError = require('./CorbadoApiError');
+import axios from 'axios';
+import CorbadoApiError from './CorbadoApiError.js';
 
 class CorbadoApi {
     constructor(projectID, apiSecret, apiURL) {
@@ -30,4 +30,4 @@ class CorbadoApi {
     }
 }
 
-module.exports = CorbadoApi;
+export default CorbadoApi;

@@ -1,10 +1,10 @@
-const Passkeys = require('./services/passkeys.service');
-const EmailLinks = require('./services/emaillinks.service');
-const AuthToken = require('./services/authtoken.service');
-const Session = require('./services/session.service');
-const Webhook = require("./services/webhook.service");
-const webhookMiddleware = require('./middlewares/webhookMiddleware');
-const User = require("./services/user.service");
+import Passkeys from './services/passkeys.service.js';
+import EmailLinks from './services/emaillinks.service.js';
+import AuthToken from './services/authtoken.service.js';
+import Session from './services/session.service.js';
+import Webhook from "./services/webhook.service.js";
+import webhookMiddleware from './middlewares/webhookMiddleware.js';
+import User from "./services/user.service.js";
 
 
 /**
@@ -120,4 +120,4 @@ class Corbado {
 
 }
 
-module.exports = Corbado;
+export default Corbado;

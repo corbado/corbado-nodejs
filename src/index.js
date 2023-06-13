@@ -1,6 +1,6 @@
-const Corbado = require('./corbado')
-const Configuration = require("./config/configuration");
-const getClientInfo = require("./utils/clientInfo.utils");
+import Corbado from './corbado.js';
+import Configuration from "./config/configuration.js";
+import getClientInfo from "./utils/clientInfo.utils.js";
 
 module.exports = {
     SDK: Corbado,

@@ -1,6 +1,6 @@
-const assert = require("assert");
-const jose = require("jose");
-const User = require("../entities/User");
+import assert from "assert";
+import jose  from "jose";
+import User from "../entities/User.js";
 
 class Session {
 
@@ -123,4 +123,4 @@ class Session {
 
 }
 
-module.exports = Session;
+export default Session;
