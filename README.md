@@ -43,17 +43,17 @@ const corbado = new Corbado.SDK(config);
 
 Corbado provides several services, e.g.:
 
-- `Passkeys`
+- `AuthToken`
 - `EmailLinks`
-- `SessionV1`
-- `SessionV2`
+- `Passkeys`
+- `Session`
 - `User`
 - `Webhook`
 
-To access specific methods in, e.g. `Sessionv2`, you can call:
+To access specific methods in, e.g. `Session`, you can call:
 
 ```
-corbado.sessionV2.validateShortSessionValue(req);
+corbado.session.validateShortSessionValue(req);
 ```
 
 ### Corbado session management
