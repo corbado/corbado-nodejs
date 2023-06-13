@@ -20,7 +20,8 @@ npm install @corbado/nodejs --save
 
 ## Usage
 
-The package needs to be configured with your Corbado account's ```project ID``` and ```API secret```. All the parameters
+The package needs to be configured with your Corbado account's ```project ID```, ```API secret```
+and `Authentication URL`. All the parameters
 can be obtained from [Corbado developer panel](https://app.corbado.com).
 
 ```project ID``` and ```API secret``` should be provided when initializing the Corbado module:
@@ -61,7 +62,8 @@ Corbado offers easy and secure session management (see the [docs](https://docs.c
 details)
 
 To validate a user after authentication, call `validateshortSessionValue(req)` which returns a user object with
-all information about the current user. This object contains the current authentication state as well as user's id, name,
+all information about the current user. This object contains the current authentication state as well as user's id,
+name,
 email and phone number.
 
 ```JavaScript

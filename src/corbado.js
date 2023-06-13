@@ -1,7 +1,7 @@
 const Passkeys = require('./services/passkeys.service');
 const EmailLinks = require('./services/emaillinks.service');
-const SessionV1 = require('./services/sessionv1.service');
-const SessionV2 = require('./services/sessionv2.service');
+const AuthToken = require('./services/authtoken.service');
+const Session = require('./services/session.service');
 const Webhook = require("./services/webhook.service");
 const webhookMiddleware = require('./middlewares/webhookMiddleware');
 const User = require("./services/user.service");
@@ -16,8 +16,8 @@ class Corbado {
 
     #passkeys = null
     #emailLinks = null
-    #sessionV1 = null
-    #sessionV2 = null;
+    #authToken = null
+    #session = null;
     #webhook = null;
     #users = null;
 
@@ -73,27 +73,27 @@ class Corbado {
         return this.#users;
     }
 
-    get sessionV1() {
-        if(this.#sessionV1 === null) {
-            this.#sessionV1 = new SessionV1(
+    get authToken() {
+        if(this.#authToken === null) {
+            this.#authToken = new AuthToken(
                 this.#config.client
             )
         }
 
-        return this.#sessionV1;
+        return this.#authToken;
     }
 
     /**
      *
      * @returns {null}
      */
-    get sessionV2() {
-        if(this.#sessionV2 === null) {
+    get session() {
+        if(this.#session=== null) {
                 if (!this.#config.authenticationURL) {
                     throw new Error('No Authentication URL set');
                 }
 
-                this.#sessionV2 = new SessionV2(
+                this.#session = new Session(
                     this.#config.client,
                     this.#config.shortSessionCookieName,
                     this.#config.authenticationURL,
@@ -102,7 +102,7 @@ class Corbado {
                 );
             }
 
-        return this.#sessionV2;
+        return this.#session;
     }
 
     /**

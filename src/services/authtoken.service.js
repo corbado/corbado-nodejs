@@ -1,5 +1,5 @@
 
-class SessionV1 {
+class AuthToken {
 
     #client;
 
@@ -17,21 +17,21 @@ class SessionV1 {
 
     /**
      * Verifies a session token by sending a request to Corbado.
-     * @param corbadoSessionToken
+     * @param authToken
      * @param clientInfo
      * @param requestID
      * @returns {Promise<*>}
      */
 
-    async verify(corbadoSessionToken, clientInfo, requestID = null) {
+    async verify(authToken, clientInfo, requestID = null) {
 
 
-        if (!corbadoSessionToken) {
+        if (!authToken) {
             throw new Error('SessionToken is required');
         }
 
         const params = {
-            token: corbadoSessionToken,
+            token: authToken,
             clientInfo: clientInfo
         }
 
@@ -39,8 +39,8 @@ class SessionV1 {
             params.requestID = requestID;
         }
 
-        return await this.#client.request('/sessions/verify', 'POST', params);
+        return await this.#client.request('/sessions/verify', 'POST', params); // path will be renamed
     }
 }
 
-module.exports = SessionV1;
+module.exports = AuthToken;
