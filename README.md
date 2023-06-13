@@ -30,8 +30,10 @@ const Corbado = require('@corbado/nodejs');
 
 const projectID = process.env.PROJECT_ID;
 const apiSecret = process.env.API_SECRET;
+const authenticationURL = process.env.AUTHENTICATION_URL;
 
 const config = new Corbado.Configuration(projectID, apiSecret);
+config.authenticationURL = authenticationURL;
 const corbado = new Corbado.SDK(config);
 
 ```
@@ -40,15 +42,17 @@ const corbado = new Corbado.SDK(config);
 
 Corbado provides several services, e.g.:
 
-- `PasskeysService`
-- `EmaillinksService`
-- `Sessionv2Service`
-- `WebhookService`
+- `Passkeys`
+- `EmailLinks`
+- `SessionV1`
+- `SessionV2`
+- `User`
+- `Webhook`
 
-To access specific methods in, e.g. ```Sessionv2Service```, you can call:
+To access specific methods in, e.g. `Sessionv2`, you can call:
 
 ```
-corbado.session.validateShortSessionValue(req);
+corbado.sessionV2.validateShortSessionValue(req);
 ```
 
 ### Session management
