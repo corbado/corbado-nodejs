@@ -23,7 +23,7 @@ class AuthToken {
      * @returns {Promise<*>}
      */
 
-    async verify(authToken, clientInfo, requestID = null) {
+    async validate(authToken, clientInfo, requestID = null) {
 
 
         if (!authToken) {
