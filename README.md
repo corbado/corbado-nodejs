@@ -55,10 +55,13 @@ To access specific methods in, e.g. `Sessionv2`, you can call:
 corbado.sessionV2.validateShortSessionValue(req);
 ```
 
-### Session management
+### Corbado session management
 
-By default session management will work on our version v2. It provides a validate method that returns a user object with
-all information about the current user. This state contains the current authentication state as well as user's id, name,
+Corbado offers easy and secure session management (see the [docs](https://docs.corbado.com/overview/welcome) for
+details)
+
+To validate a user after authentication, call `validateshortSessionValue(req)` which returns a user object with
+all information about the current user. This object contains the current authentication state as well as user's id, name,
 email and phone number.
 
 ```JavaScript
