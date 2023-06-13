@@ -1,4 +1,5 @@
 const assert = require('assert');
+const CorbadoApi = require("../services/CorbadoApi");
 
 class Configuration {
 
@@ -6,13 +7,30 @@ class Configuration {
     #apiSecret;
     #apiURL = 'https://api.corbado.com/v1';
     #shortSessionCookieName = 'cbo_short_session';
-    #authenticationURL = undefined
+    #authenticationURL;
     #cacheMaxAge = 10 * 60 * 1000
+    #client;
     #emailTemplates = {
         EMAIL_SIGN_UP_TEMPLATE: 'email_signup_user',
         EMAIL_LOGIN_TEMPLATE: 'email_login_user',
         PASSKEY_SIGN_UP_TEMPLATE: 'webauthn_signup_user',
         PASSKEY_LOGIN_TEMPLATE: 'webauthn_login_user',
+    }
+
+    #sessionVersion;
+
+    #webhookUsername;
+    #webhookPassword;f
+
+    constructor(projectID, apiSecret, sessionVersion = 'v2') {
+        if (!projectID || !apiSecret) {
+            throw new Error('Missing environment variables project ID and/or API secret.');
+        }
+
+        this.#projectID = projectID;
+        this.#apiSecret = apiSecret;
+        this.#sessionVersion = sessionVersion;
+        this.#client = new CorbadoApi(this.#projectID,this.#apiSecret, this.#apiURL);
     }
 
     set projectID(value) {
@@ -78,6 +96,14 @@ class Configuration {
         this.#cacheMaxAge = value;
     }
 
+    get client() {
+        return this.#client;
+    }
+
+    set client(client) {
+        this.#client = client;
+    }
+
     get emailTemplates() {
         return this.#emailTemplates;
     }
@@ -86,6 +112,30 @@ class Configuration {
         assert(typeof value === "object", 'Email templates is invalid')
 
         this.#emailTemplates = value;
+    }
+
+    get webhookUsername(){
+        return this.#webhookUsername;
+    }
+
+    set webhookUsername(webhookUsername) {
+        this.#webhookUsername = webhookUsername;
+    }
+
+    get webhookPassword(){
+        return this.#webhookPassword;
+    }
+
+    set webhookPassword(webhookPassword){
+        this.#webhookPassword = webhookPassword;
+    }
+
+    get sessionVersion(){
+        return this.#sessionVersion;
+    }
+
+    set sessionVersion(sessionVersion){
+        this.#sessionVersion = sessionVersion;
     }
 }
 

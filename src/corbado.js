@@ -1,15 +1,25 @@
-const PasskeyService = require('./services/passkey.service');
-const EmailLinkService = require('./services/emaillink.service');
-const ShortSession = require('./services/shortsession.service');
-const SessionService = require('./services/session.service');
-const assert = require('assert')
+const Passkeys = require('./services/passkeys.service');
+const EmailLinks = require('./services/emaillinks.service');
+const SessionV1 = require('./services/sessionv1.service');
+const SessionV2 = require('./services/sessionv2.service');
+const Webhook = require("./services/webhook.service");
+const webhookMiddleware = require('./middlewares/webhookMiddleware');
+const User = require("./services/user.service");
 
+
+/**
+ * The Corbado class provides access to various services, including PasskeyService, EmailLinkService, SessionService, WebhookService.
+ * It also provides access to utility functions, and middleware, that can help to easily integrate Corbado into your application.
+ * @class
+ */
 class Corbado {
 
-    #shortSession = null
-    #passkeyService = null
-    #emailLinkService = null
-    #sessionService = null
+    #passkeys = null
+    #emailLinks = null
+    #sessionV1 = null
+    #sessionV2 = null;
+    #webhook = null;
+    #users = null;
 
     /**
      * @type {Configuration}
@@ -21,80 +31,93 @@ class Corbado {
      * @param {Configuration} config
      */
     constructor(config) {
-        this.#config = config
+        this.#config = config;
     }
 
     /**
      *
-     * @returns {PasskeyService}
+     * @returns {*}
      */
     get passkey() {
-        if (this.#passkeyService === null) {
-            this.#passkeyService = new PasskeyService(
-                this.#config.projectID,
-                this.#config.apiSecret,
-                this.#config.apiURL,
+        if (this.#passkeys === null) {
+            this.#passkeys = new Passkeys(
+                this.#config.client,
                 this.emailLink,
             )
         }
 
-        return this.#passkeyService
+        return this.#passkeys;
     }
 
     /**
      *
-     * @returns {EmailLinkService}
+     * @returns {null}
      */
     get emailLink() {
-        if (this.#emailLinkService === null) {
-            this.#emailLinkService = new EmailLinkService(
-                this.#config.projectID,
-                this.#config.apiSecret,
-                this.#config.apiURL,
+        if (this.#emailLinks === null) {
+            // EmailLinkService
+            this.#emailLinks = new EmailLinks(
+                this.#config.client,
                 this.#config.emailTemplates,
             )
         }
+        return this.#emailLinks;
+    }
 
-        return this.#emailLinkService
+    get users() {
+        if(this.#users === null) {
+
+            this.#users = new User(this.#config.client);
+        }
+
+        return this.#users;
+    }
+
+    get sessionV1() {
+        if(this.#sessionV1 === null) {
+            this.#sessionV1 = new SessionV1(
+                this.#config.client
+            )
+        }
+
+        return this.#sessionV1;
     }
 
     /**
      *
-     * @returns {SessionService}
+     * @returns {null}
      */
-    get session() {
-        if (this.#sessionService  === null) {
-            this.#sessionService = new SessionService(
-                this.#config.projectID,
-                this.#config.apiSecret,
-                this.#config.apiURL,
-            )
-        }
+    get sessionV2() {
+        if(this.#sessionV2 === null) {
+                if (!this.#config.authenticationURL) {
+                    throw new Error('No Authentication URL set');
+                }
 
-        return this.#sessionService
+                this.#sessionV2 = new SessionV2(
+                    this.#config.client,
+                    this.#config.shortSessionCookieName,
+                    this.#config.authenticationURL,
+                    this.#config.authenticationURL + "/.well-known/jwks",
+                    this.#config.cacheMaxAge
+                );
+            }
+
+        return this.#sessionV2;
     }
 
     /**
      *
-     * @returns {ShortSession}
+     * @returns {null}
      */
-    get shortSession() {
-        if (this.#shortSession === null) {
-
-            assert(this.#config.authenticationURL !== undefined, 'AuthenticationURL undefined')
-            assert(this.#config.authenticationURL.length > 0, 'AuthenticationURL is empty')
-            assert(this.#config.cacheMaxAge > 0, 'Cache max age is invalid')
-
-            this.#shortSession = new ShortSession(
-                this.#config.shortSessionCookieName,
-                this.#config.authenticationURL,
-                this.#config.authenticationURL + '/.well-known/jwks',
-                this.#config.cacheMaxAge,
+    get webhook() {
+        if (this.#webhook === null) {
+            this.#webhook = new Webhook(
+                webhookMiddleware(this.#config.webhookUsername, this.#config.webhookPassword)
             )
         }
-
-        return this.#shortSession
+        return this.#webhook
     }
+
 }
 
 module.exports = Corbado;
