@@ -26,6 +26,7 @@ can be obtained from [Corbado developer panel](https://app.corbado.com).
 
 ```project ID``` and ```API secret``` should be provided when initializing the Corbado module:
 
+ES5
 ```JavaScript
 const Corbado = require('@corbado/nodejs');
 
@@ -35,8 +36,18 @@ const authenticationURL = process.env.AUTHENTICATION_URL;
 
 const config = new Corbado.Configuration(projectID, apiSecret);
 config.authenticationURL = authenticationURL;
-const corbado = new Corbado.SDK(config);
+const corbado = new Corbado.CorbadoSDK(config);
+```
 
+ES6
+```JavaScript 
+import {CorbadoSDK, Configuration} from '@corbado/nodejs';
+
+const projectID = process.env.PROJECT_ID;
+const apiSecret = process.env.API_SECRET;
+const config = new Configuration(projectID, apiSecret);
+config.authenticationURL = authenticationURL;
+const corbado = new CorbadoSDK(config);
 ```
 
 ### Services

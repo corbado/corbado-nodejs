@@ -1,5 +1,5 @@
 import assert from 'assert';
-import CorbadoApi from "../services/CorbadoApi";
+import CorbadoApi from "../services/CorbadoApi.js";
 
 class Configuration {
 

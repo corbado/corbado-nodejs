@@ -1,5 +1,5 @@
 import assert from "assert";
-import jose  from "jose";
+import * as jose from "jose";
 import User from "../entities/User.js";
 
 class Session {

@@ -1,11 +1,14 @@
 {
   "name": "@corbado/nodejs",
   "version": "1.1.8",
-  "type": "module",
   "description": "",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.esm.js",
+  "type": "module",
   "scripts": {
-    "build": "babel src --out-dir dist",
+    "build-esm": "babel src --out-dir dist --presets=@babel/preset-env",
+    "build-cjs": "babel src --out-dir dist --presets=@babel/preset-env --plugins=@babel/plugin-transform-modules-commonjs",
+    "build": "npm run build-esm && npm run build-cjs",
     "test": "mocha --reporter spec"
   },
   "repository": {
@@ -25,6 +28,7 @@
   },
   "homepage": "https://github.com/corbado/corbado-nodejs#readme",
   "dependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.22.5",
     "assert": "^2.0.0",
     "axios": "^1.4.0",
     "cookie-parser": "^1.4.6",
@@ -41,5 +45,11 @@
     "dotenv": "^16.0.3",
     "mocha": "^10.2.0",
     "sinon": "^15.0.4"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ],
+    "plugins": []
   }
 }
