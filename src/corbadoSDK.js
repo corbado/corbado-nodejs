@@ -5,6 +5,7 @@ import Session from './services/session.service.js';
 import Webhook from "./services/webhook.service.js";
 import webhookMiddleware from './middlewares/webhookMiddleware.js';
 import User from "./services/user.service.js";
+import CorbadoApi from "./services/CorbadoApi.js";
 
 
 /**
@@ -14,17 +15,16 @@ import User from "./services/user.service.js";
  */
 class CorbadoSDK {
 
-    #passkeys = null
-    #emailLinks = null
-    #authToken = null
+    #config = null;
+    #client = null;
+    #passkeys = null;
+    #emailLinks = null;
+    #authToken = null;
     #session = null;
     #webhook = null;
     #users = null;
 
-    /**
-     * @type {Configuration}
-     */
-    #config = null
+
 
     /**
      *
@@ -32,6 +32,20 @@ class CorbadoSDK {
      */
     constructor(config) {
         this.#config = config;
+
+        if(this.#config.client === null) {
+            if(this.#config.projectID === null) {
+                throw new Error('No project ID set');
+            }
+
+            if(this.#config.apiSecret === null) {
+                throw new Error('No api secret set');
+            }
+
+            this.#client = new CorbadoApi(this.#config.projectID, this.#config.apiSecret, this.#config.backendAPI)
+        } else {
+            this.#client = this.#config.client;
+        }
     }
 
     /**
@@ -89,15 +103,15 @@ class CorbadoSDK {
      */
     get session() {
         if(this.#session=== null) {
-                if (!this.#config.authenticationURL) {
+                if (!this.#config.frontendAPI) {
                     throw new Error('No Authentication URL set');
                 }
 
                 this.#session = new Session(
                     this.#config.client,
                     this.#config.shortSessionCookieName,
-                    this.#config.authenticationURL,
-                    this.#config.authenticationURL + "/.well-known/jwks",
+                    this.#config.frontendAPI,
+                    this.#config.frontendAPI + "/.well-known/jwks",
                     this.#config.cacheMaxAge
                 );
             }

@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import Corbado from '../corbado-nodejs';
+import {CorbadoSDK, Configuration} from '../corbado-nodejs';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 
@@ -16,13 +16,11 @@ app.use(express.json());
 app.use(cookieParser())
 
 
-const authenticationURL = process.env.AUTHENTICATION_URL;
 const projectID = process.env.PROJECT_ID;
 const apiSecret = process.env.API_SECRET;
 
-const config = new Corbado.Configuration(projectID, apiSecret);
-config.authenticationURL = authenticationURL;
-const corbado = new Corbado.SDK(config);
+const config = new Configuration(projectID, apiSecret);
+const corbado = new CorbadoSDK(config);
 
 
 app.get('/', (req, res) => {

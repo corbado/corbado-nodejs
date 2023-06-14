@@ -1,13 +1,12 @@
 import assert from 'assert';
-import CorbadoApi from "../services/CorbadoApi.js";
 
 class Configuration {
 
-    #projectID;
-    #apiSecret;
-    #apiURL = 'https://api.corbado.com/v1';
+    #projectID = '';
+    #apiSecret = '';
+    #frontendAPI = '';
+    #backendAPI = 'https://backendapi.corbado.io';
     #shortSessionCookieName = 'cbo_short_session';
-    #authenticationURL;
     #cacheMaxAge = 10 * 60 * 1000
     #client;
     #emailTemplates = {
@@ -19,17 +18,9 @@ class Configuration {
 
 
     #webhookUsername;
-    #webhookPassword;f
+    #webhookPassword;
+    f
 
-    constructor(projectID, apiSecret) {
-        if (!projectID || !apiSecret) {
-            throw new Error('Missing environment variables project ID and/or API secret.');
-        }
-
-        this.#projectID = projectID;
-        this.#apiSecret = apiSecret;
-        this.#client = new CorbadoApi(this.#projectID,this.#apiSecret, this.#apiURL);
-    }
 
     set projectID(value) {
         assert(value.startsWith('pro-'), 'ProjectID is incorrect')
@@ -51,16 +42,35 @@ class Configuration {
         return this.#apiSecret;
     }
 
-    set apiURL(value) {
-        assert(value.length > 0, 'API url is invalid')
-        assert(value.startsWith('http://') || value.startsWith('https://'), 'API url is invalid')
+    set backendAPI(value) {
+        assert(value.length > 0, 'Backend API is invalid')
+        assert(value.startsWith('http://') || value.startsWith('https://'), 'Backend API url is invalid')
 
-        this.#apiURL = value;
+        this.#backendAPI = value;
     }
 
 
-    get apiURL() {
-        return this.#apiURL;
+    get backendAPI() {
+        return this.#backendAPI;
+    }
+
+    set frontendAPI(value) {
+        assert(value.length > 0, 'Frontend API is invalid')
+        assert(value.startsWith('http://') || value.startsWith('https://'), 'Frontend API is invalid')
+
+        this.#frontendAPI = value;
+    }
+
+    get frontendAPI() {
+        if (this.#frontendAPI === '') {
+            if (this.#projectID === '') {
+                throw new Error('Project ID empty, set Project ID first');
+            }
+
+            this.#frontendAPI = 'https://' + this.#projectID + 'frontendapi.corbado.io';
+        }
+
+        return this.#frontendAPI;
     }
 
     get shortSessionCookieName() {
@@ -71,17 +81,6 @@ class Configuration {
         assert(value.length > 0, 'Short session cookie name is invalid')
 
         this.#shortSessionCookieName = value;
-    }
-
-    get authenticationURL() {
-        return this.#authenticationURL;
-    }
-
-    set authenticationURL(value) {
-        assert(value.length > 0, 'Authentication url is invalid')
-        assert(value.startsWith('http://') || value.startsWith('https://'), 'Authentication url is invalid')
-
-        this.#authenticationURL = value;
     }
 
     get cacheMaxAge() {
@@ -112,7 +111,7 @@ class Configuration {
         this.#emailTemplates = value;
     }
 
-    get webhookUsername(){
+    get webhookUsername() {
         return this.#webhookUsername;
     }
 
@@ -120,11 +119,11 @@ class Configuration {
         this.#webhookUsername = webhookUsername;
     }
 
-    get webhookPassword(){
+    get webhookPassword() {
         return this.#webhookPassword;
     }
 
-    set webhookPassword(webhookPassword){
+    set webhookPassword(webhookPassword) {
         this.#webhookPassword = webhookPassword;
     }
 
