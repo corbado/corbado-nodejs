@@ -8,11 +8,11 @@ import User from "./services/user.service.js";
 
 
 /**
- * The Corbado class provides access to various services, including PasskeyService, EmailLinkService, SessionService, WebhookService.
- * It also provides access to utility functions, and middleware, that can help to easily integrate Corbado into your application.
+ * The CorbadoSDK class provides access to various services, including PasskeyService, EmailLinkService, SessionService, WebhookService.
+ * It also provides access to utility functions, and middleware, that can help to easily integrate CorbadoSDK into your application.
  * @class
  */
-class Corbado {
+class CorbadoSDK {
 
     #passkeys = null
     #emailLinks = null
@@ -120,4 +120,4 @@ class Corbado {
 
 }
 
-export default Corbado;
+export default CorbadoSDK;

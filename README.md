@@ -1,12 +1,12 @@
-# Corbado Node.js SDK
+# CorbadoSDK Node.js SDK
 
-The Corbado Node.js SDK provides convenient access to the Corbado Backend API from applications running on Node.js.
+The CorbadoSDK Node.js SDK provides convenient access to the CorbadoSDK Backend API from applications running on Node.js.
 
 ## Documentation
 
-See the [Corbado Backend API Reference](https://api.corbado.com/docs/api/)
-and [Corbado API-only integration guide](https://docs.corbado.com/integrations/api-only) to understand the usage of
-the Corbado Backend API.
+See the [CorbadoSDK Backend API Reference](https://api.corbado.com/docs/api/)
+and [CorbadoSDK API-only integration guide](https://docs.corbado.com/integrations/api-only) to understand the usage of
+the CorbadoSDK Backend API.
 
 ## Requirements
 
@@ -20,23 +20,23 @@ npm install @corbado/nodejs --save
 
 ## Usage
 
-The package needs to be configured with your Corbado account's ```project ID```, ```API secret```
+The package needs to be configured with your CorbadoSDK account's ```project ID```, ```API secret```
 and `Authentication URL`. All the parameters
-can be obtained from [Corbado developer panel](https://app.corbado.com).
+can be obtained from [CorbadoSDK developer panel](https://app.corbado.com).
 
-```project ID``` and ```API secret``` should be provided when initializing the Corbado module:
+```project ID``` and ```API secret``` should be provided when initializing the CorbadoSDK module:
 
 ES5
 ```JavaScript
-const Corbado = require('@corbado/nodejs');
+const CorbadoSDK = require('@corbado/nodejs');
 
 const projectID = process.env.PROJECT_ID;
 const apiSecret = process.env.API_SECRET;
 const authenticationURL = process.env.AUTHENTICATION_URL;
 
-const config = new Corbado.Configuration(projectID, apiSecret);
+const config = new CorbadoSDK.Configuration(projectID, apiSecret);
 config.authenticationURL = authenticationURL;
-const corbado = new Corbado.CorbadoSDK(config);
+const corbado = new CorbadoSDK.CorbadoSDK(config);
 ```
 
 ES6
@@ -52,7 +52,7 @@ const corbado = new CorbadoSDK(config);
 
 ### Services
 
-Corbado provides several services, e.g.:
+CorbadoSDK provides several services, e.g.:
 
 - `AuthToken`
 - `EmailLinks`
@@ -67,9 +67,9 @@ To access specific methods in, e.g. `Session`, you can call:
 corbado.session.validateShortSessionValue(req);
 ```
 
-### Corbado session management
+### CorbadoSDK session management
 
-Corbado offers easy and secure session management (see the [docs](https://docs.corbado.com/overview/welcome) for
+CorbadoSDK offers easy and secure session management (see the [docs](https://docs.corbado.com/overview/welcome) for
 details)
 
 To validate a user after authentication, call `validateshortSessionValue(req)` which returns a user object with
@@ -91,7 +91,7 @@ if (user.authenticated === true) {
 This SDK also provides several utility functions that can ease the development process, e.g.:
 
 ```JavaScript
-Corbado.getClientInfo(req);
+CorbadoSDK.getClientInfo(req);
 ```
 
 This function helps to obtain relevant client information (```UserAgent```, ```RemoteAddress```) object from

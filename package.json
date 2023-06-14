@@ -2,14 +2,19 @@
   "name": "@corbado/nodejs",
   "version": "1.1.8",
   "description": "",
-  "main": "./dist/index.cjs.js",
-  "module": "./dist/index.esm.js",
+  "main": "dist/cjs/index.js",
+  "module": "src/index.js",
   "type": "module",
   "scripts": {
-    "build-esm": "babel src --out-dir dist --presets=@babel/preset-env",
-    "build-cjs": "babel src --out-dir dist --presets=@babel/preset-env --plugins=@babel/plugin-transform-modules-commonjs",
-    "build": "npm run build-esm && npm run build-cjs",
+    "build-es5": "babel src -d dist/cjs --presets=@babel/preset-env --plugins=@babel/plugin-transform-modules-commonjs",
+    "build": "rm -fr dist/* && npm run build-es5 && ./fixup",
     "test": "mocha --reporter spec"
+  },
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "require": "./dist/cjs/index.js"
+    }
   },
   "repository": {
     "type": "git",
@@ -45,11 +50,5 @@
     "dotenv": "^16.0.3",
     "mocha": "^10.2.0",
     "sinon": "^15.0.4"
-  },
-  "babel": {
-    "presets": [
-      "@babel/preset-env"
-    ],
-    "plugins": []
   }
 }

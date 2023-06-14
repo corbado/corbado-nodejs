@@ -1,2 +1,9 @@
-require = require("esm")(module);
-module.exports = require("./index.mjs");
+import CorbadoSDK from './corbadoSDK.js';
+import Configuration from "./config/configuration.js";
+import getClientInfo from "./utils/clientInfo.utils.js";
+
+export {
+    CorbadoSDK,
+    Configuration,
+    getClientInfo,
+}

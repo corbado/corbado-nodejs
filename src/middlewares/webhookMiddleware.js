@@ -8,7 +8,7 @@ function webhookMiddleware(webhookUsername, webhookPassword) {
     return function (req, res, next) {
         const {headers, method} = req;
 
-        // Check if request has been made with POST. For Corbado webhooks
+        // Check if request has been made with POST. For CorbadoSDK webhooks
         // only POST is allowed/used.
         if (method !== ALLOWED_METHOD) {
             return res.status(405).send("Method Not Allowed");
