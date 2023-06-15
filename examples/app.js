@@ -33,7 +33,7 @@ app.get('/logged-in', async (req, res) => {
     // BRING YOUR OWN SESSION MANAGEMENT
 
     /* let corbadoSessionToken = req.query.corbadoSessionToken;
-     let clientInfo = SDK.getClientInfo(req);
+     let clientInfo = corbado.utils.getClientInfo(req);
      let response = await corbado.authtoken.validate(corbadoSessionToken, clientInfo);
 
      let userData = response.data.user
