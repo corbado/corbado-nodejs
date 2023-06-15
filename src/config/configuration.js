@@ -67,7 +67,7 @@ class Configuration {
                 throw new Error('Project ID empty, set Project ID first');
             }
 
-            this.#frontendAPI = 'https://' + this.#projectID + 'frontendapi.corbado.io';
+            this.#frontendAPI = 'https://' + this.#projectID + '.frontendapi.corbado.io';
         }
 
         return this.#frontendAPI;
