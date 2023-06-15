@@ -51,7 +51,7 @@ class EmailLinks {
     };
 
     /**
-     * Creates a Request CorbadoSDK Service to confirm tha validity of the linkID and the token that was sent to the client.
+     * Creates a Request SDK Service to confirm tha validity of the linkID and the token that was sent to the client.
      * Can be used after the user is redirected back to the via the email link.
      * @param emailLinkID
      * @param token

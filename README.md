@@ -36,18 +36,18 @@ const projectID = process.env.PROJECT_ID;
 const apiSecret = process.env.API_SECRET;
 
 const config = new Corbado.Configuration(projectID, apiSecret);
-const corbado = new Corbado.CorbadoSDK(config);
+const corbado = new Corbado.SDK(config);
 ```
 
 ES6
 
 ```JavaScript 
-import {CorbadoSDK, Configuration} from '@corbado/nodejs';
+import {SDK, Configuration} from '@corbado/nodejs';
 
 const projectID = process.env.PROJECT_ID;
 const apiSecret = process.env.API_SECRET;
 const config = new Configuration(projectID, apiSecret);
-const corbado = new CorbadoSDK(config);
+const corbado = new SDK(config);
 ```
 
 ### Services

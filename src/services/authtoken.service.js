@@ -16,7 +16,7 @@ class AuthToken {
     }
 
     /**
-     * Verifies a session token by sending a request to CorbadoSDK.
+     * Verifies a session token by sending a request to SDK.
      * @param authToken
      * @param clientInfo
      * @param requestID

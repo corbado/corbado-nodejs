@@ -27,7 +27,7 @@ class Webhook {
     }
 
     /**
-     * Returns webhook action (by reading the header field X-CorbadoSDK-Action)
+     * Returns webhook action (by reading the header field X-SDK-Action)
      *
      * @return {Object}
      */

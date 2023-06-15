@@ -9,11 +9,11 @@ import CorbadoApi from "./services/CorbadoApi.js";
 
 
 /**
- * The CorbadoSDK class provides access to various services, including PasskeyService, EmailLinkService, SessionService, WebhookService.
- * It also provides access to utility functions, and middleware, that can help to easily integrate CorbadoSDK into your application.
+ * The SDK class provides access to various services, including PasskeyService, EmailLinkService, SessionService, WebhookService.
+ * It also provides access to utility functions, and middleware, that can help to easily integrate SDK into your application.
  * @class
  */
-class CorbadoSDK {
+class SDK {
 
     #config = null;
     #client = null;
@@ -134,4 +134,4 @@ class CorbadoSDK {
 
 }
 
-export default CorbadoSDK;
+export default SDK;
