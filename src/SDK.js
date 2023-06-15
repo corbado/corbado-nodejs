@@ -6,6 +6,7 @@ import Webhook from "./services/webhook.service.js";
 import webhookMiddleware from './middlewares/webhookMiddleware.js';
 import User from "./services/user.service.js";
 import CorbadoApi from "./services/CorbadoApi.js";
+import {utils} from "./utils/clientInfo.utils.js";
 
 
 /**
@@ -23,6 +24,7 @@ class SDK {
     #session = null;
     #webhook = null;
     #users = null;
+    #utils = null;
 
 
 
@@ -46,6 +48,8 @@ class SDK {
         } else {
             this.#client = this.#config.client;
         }
+
+        this.#utils = utils;
     }
 
     /**

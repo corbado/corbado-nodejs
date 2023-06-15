@@ -22,4 +22,6 @@ const getClientInfo = (req) => {
     };
 };
 
-export default getClientInfo;
+export const utils = {
+    getClientInfo
+}
