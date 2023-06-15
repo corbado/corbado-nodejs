@@ -19,23 +19,18 @@ class Configuration {
 
     #webhookUsername;
     #webhookPassword;
-    f
 
+    constructor(projectID, apiSecret) {
+        if (!projectID || !apiSecret) {
+            throw new Error('Missing environment variables project ID and/or API secret.');
+        }
 
-    set projectID(value) {
-        assert(value.startsWith('pro-'), 'ProjectID is incorrect')
-
-        this.#projectID = value;
+        this.#projectID = projectID;
+        this.#apiSecret = apiSecret;
     }
 
     get projectID() {
         return this.#projectID;
-    }
-
-    set apiSecret(value) {
-        assert(value.length > 0, 'API is invalid')
-
-        this.#apiSecret = value;
     }
 
     get apiSecret() {
