@@ -104,7 +104,7 @@ class SDK {
     get session() {
         if(this.#session=== null) {
                 if (!this.#config.frontendAPI) {
-                    throw new Error('No Authentication URL set');
+                    throw new Error('No Frontend API set');
                 }
 
                 this.#session = new Session(
