@@ -65,7 +65,7 @@ The Corbado SDK provides a range of services including:
 To use a specific service, such as Session, invoke it as shown below:
 
 ```
-corbado.session.validateShortSessionValue(req);
+corbado.session.getCurrentUser(req);
 ```
 
 ### Corbado session management
