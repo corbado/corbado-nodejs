@@ -17,7 +17,7 @@ Ensure your environment runs Node 8 or higher.
 Use the following command to install the Corbado Node.js SDK:
 
 ```sh
-npm install @corbado/nodejs --save
+npm install @corbado/node-sdk --save
 ```
 
 ## Usage
@@ -31,7 +31,7 @@ from the [Corbado developer panel](https://app.corbado.com).
 ### ES5:
 
 ```JavaScript
-const Corbado = require('@corbado/nodejs');
+const Corbado = require('@corbado/node-sdk');
 
 const projectID = process.env.PROJECT_ID;
 const apiSecret = process.env.API_SECRET;
@@ -43,7 +43,7 @@ const corbado = new Corbado.SDK(config);
 ### ES6:
 
 ```JavaScript 
-import {SDK, Configuration} from '@corbado/nodejs';
+import {SDK, Configuration} from '@corbado/node-sdk';
 
 const projectID = process.env.PROJECT_ID;
 const apiSecret = process.env.API_SECRET;
