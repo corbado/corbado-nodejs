@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import {SDK, Configuration} from '../corbado-nodejs';
+import {SDK, Configuration} from '@corbado/node-sdk';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 

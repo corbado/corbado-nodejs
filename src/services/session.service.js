@@ -85,11 +85,12 @@ class Session {
             return new User(
                 true,
                 payload.sub,
-                payload.Name,
-                payload.Email,
-                payload.PhoneNumber
+                payload.name,
+                payload.email,
+                payload.phoneNumber
             )
         } catch (err) {
+            console.log(err)
             return new User(false);
         }
 

@@ -64,7 +64,6 @@ class Configuration {
 
             this.#frontendAPI = 'https://' + this.#projectID + '.frontendapi.corbado.io';
         }
-
         return this.#frontendAPI;
     }
 

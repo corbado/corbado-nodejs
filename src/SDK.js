@@ -27,7 +27,6 @@ class SDK {
     #utils = null;
 
 
-
     /**
      *
      * @param {Configuration} config
@@ -35,12 +34,12 @@ class SDK {
     constructor(config) {
         this.#config = config;
 
-        if(this.#config.client === null) {
-            if(this.#config.projectID === null) {
+        if (this.#config.client === undefined) {
+            if (this.#config.projectID === null) {
                 throw new Error('No project ID set');
             }
 
-            if(this.#config.apiSecret === null) {
+            if (this.#config.apiSecret === null) {
                 throw new Error('No api secret set');
             }
 
@@ -59,7 +58,7 @@ class SDK {
     get passkey() {
         if (this.#passkeys === null) {
             this.#passkeys = new Passkeys(
-                this.#config.client,
+                this.#client,
                 this.emailLink,
             )
         }
@@ -75,7 +74,7 @@ class SDK {
         if (this.#emailLinks === null) {
             // EmailLinkService
             this.#emailLinks = new EmailLinks(
-                this.#config.client,
+                this.#client,
                 this.#config.emailTemplates,
             )
         }
@@ -83,16 +82,16 @@ class SDK {
     }
 
     get users() {
-        if(this.#users === null) {
+        if (this.#users === null) {
 
-            this.#users = new User(this.#config.client);
+            this.#users = new User(this.#client);
         }
 
         return this.#users;
     }
 
     get corbadoAuthToken() {
-        if(this.#corbadoAuthToken === null) {
+        if (this.#corbadoAuthToken === null) {
             this.#corbadoAuthToken = new AuthToken(
                 this.#config.client
             )
@@ -106,19 +105,16 @@ class SDK {
      * @returns {null}
      */
     get session() {
-        if(this.#session=== null) {
-                if (!this.#config.frontendAPI) {
-                    throw new Error('No Frontend API set');
-                }
+        if (this.#session === null) {
 
-                this.#session = new Session(
-                    this.#config.client,
-                    this.#config.shortSessionCookieName,
-                    this.#config.frontendAPI,
-                    this.#config.frontendAPI + "/.well-known/jwks",
-                    this.#config.cacheMaxAge
-                );
-            }
+            this.#session = new Session(
+                this.#client,
+                this.#config.shortSessionCookieName,
+                this.#config.frontendAPI,
+                this.#config.frontendAPI + "/.well-known/jwks",
+                this.#config.cacheMaxAge
+            );
+        }
 
         return this.#session;
     }
