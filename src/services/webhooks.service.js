@@ -1,6 +1,6 @@
 import assert from "assert";
 
-class Webhook {
+class Webhooks {
     WEBHOOK_ACTION = {
         AUTH_METHODS: "authMethods",
         PASSWORD_VERIFY: "passwordVerify",
@@ -143,4 +143,4 @@ class Webhook {
     }
 }
 
-export default Webhook;
+export default Webhooks;

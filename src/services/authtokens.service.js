@@ -1,5 +1,5 @@
 
-class AuthToken {
+class AuthTokens {
 
     #client;
 
@@ -17,21 +17,21 @@ class AuthToken {
 
     /**
      * Verifies a session token by sending a request to SDK.
-     * @param corbadoAuthToken
+     * @param authToken
      * @param clientInfo
      * @param requestID
      * @returns {Promise<*>}
      */
 
-    async validate(corbadoAuthToken, clientInfo, requestID = null) {
+    async validate(authToken, clientInfo, requestID = null) {
 
 
-        if (!corbadoAuthToken) {
-            throw new Error('SessionToken is required');
+        if (!authToken) {
+            throw new Error('authToken is required');
         }
 
         const params = {
-            token: corbadoAuthToken,
+            token: authToken,
             clientInfo: clientInfo
         }
 
@@ -43,4 +43,4 @@ class AuthToken {
     }
 }
 
-export default AuthToken;
+export default AuthTokens;

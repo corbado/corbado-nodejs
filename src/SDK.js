@@ -1,10 +1,10 @@
 import Passkeys from './services/passkeys.service.js';
 import EmailLinks from './services/emaillinks.service.js';
-import AuthToken from './services/authtoken.service.js';
+import AuthTokens from './services/authtokens.service.js';
 import Session from './services/session.service.js';
-import Webhook from "./services/webhook.service.js";
+import Webhooks from "./services/webhooks.service.js";
 import webhookMiddleware from './middlewares/webhookMiddleware.js';
-import User from "./services/user.service.js";
+import UsersService from "./services/users.service.js";
 import CorbadoApi from "./services/CorbadoApi.js";
 import {utils} from "./utils/clientInfo.utils.js";
 
@@ -20,12 +20,11 @@ class SDK {
     #client = null;
     #passkeys = null;
     #emailLinks = null;
-    #corbadoAuthToken = null;
+    #authTokens = null;
     #session = null;
-    #webhook = null;
+    #webhooks = null;
     #users = null;
     #utils = null;
-
 
 
     /**
@@ -35,12 +34,12 @@ class SDK {
     constructor(config) {
         this.#config = config;
 
-        if(this.#config.client === null) {
-            if(this.#config.projectID === null) {
+        if (this.#config.client === undefined) {
+            if (this.#config.projectID === null) {
                 throw new Error('No project ID set');
             }
 
-            if(this.#config.apiSecret === null) {
+            if (this.#config.apiSecret === null) {
                 throw new Error('No api secret set');
             }
 
@@ -56,11 +55,11 @@ class SDK {
      *
      * @returns {*}
      */
-    get passkey() {
+    get passkeys() {
         if (this.#passkeys === null) {
             this.#passkeys = new Passkeys(
-                this.#config.client,
-                this.emailLink,
+                this.#client,
+                this.emailLinks,
             )
         }
 
@@ -71,11 +70,11 @@ class SDK {
      *
      * @returns {null}
      */
-    get emailLink() {
+    get emailLinks() {
         if (this.#emailLinks === null) {
             // EmailLinkService
             this.#emailLinks = new EmailLinks(
-                this.#config.client,
+                this.#client,
                 this.#config.emailTemplates,
             )
         }
@@ -83,22 +82,22 @@ class SDK {
     }
 
     get users() {
-        if(this.#users === null) {
+        if (this.#users === null) {
 
-            this.#users = new User(this.#config.client);
+            this.#users = new UsersService(this.#client);
         }
 
         return this.#users;
     }
 
-    get corbadoAuthToken() {
-        if(this.#corbadoAuthToken === null) {
-            this.#corbadoAuthToken = new AuthToken(
+    get authTokens() {
+        if (this.#authTokens === null) {
+            this.#authTokens = new AuthTokens(
                 this.#config.client
             )
         }
 
-        return this.#corbadoAuthToken;
+        return this.#authTokens;
     }
 
     /**
@@ -106,19 +105,16 @@ class SDK {
      * @returns {null}
      */
     get session() {
-        if(this.#session=== null) {
-                if (!this.#config.frontendAPI) {
-                    throw new Error('No Frontend API set');
-                }
+        if (this.#session === null) {
 
-                this.#session = new Session(
-                    this.#config.client,
-                    this.#config.shortSessionCookieName,
-                    this.#config.frontendAPI,
-                    this.#config.frontendAPI + "/.well-known/jwks",
-                    this.#config.cacheMaxAge
-                );
-            }
+            this.#session = new Session(
+                this.#client,
+                this.#config.shortSessionCookieName,
+                this.#config.frontendAPI,
+                this.#config.frontendAPI + "/.well-known/jwks",
+                this.#config.cacheMaxAge
+            );
+        }
 
         return this.#session;
     }
@@ -127,13 +123,13 @@ class SDK {
      *
      * @returns {null}
      */
-    get webhook() {
-        if (this.#webhook === null) {
-            this.#webhook = new Webhook(
+    get webhooks() {
+        if (this.#webhooks === null) {
+            this.#webhooks = new Webhooks(
                 webhookMiddleware(this.#config.webhookUsername, this.#config.webhookPassword)
             )
         }
-        return this.#webhook
+        return this.#webhooks
     }
 
 }

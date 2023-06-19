@@ -1,4 +1,4 @@
-class UserService {
+class UsersService {
 
     #authenticated;
     #id;
@@ -20,7 +20,7 @@ class UserService {
 
     getID = () => {
         if (this.isAuthenticated() === false) {
-            throw new Error('UserService is not authenticated');
+            throw new Error('UsersService is not authenticated');
         }
 
         return this.#id;
@@ -28,7 +28,7 @@ class UserService {
 
     getName = () => {
         if (this.isAuthenticated() === false) {
-            throw new Error('UserService is not authenticated');
+            throw new Error('UsersService is not authenticated');
         }
 
         return this.#name;
@@ -36,7 +36,7 @@ class UserService {
 
     getEmail = () => {
         if (this.isAuthenticated() === false) {
-            throw new Error('UserService is not authenticated');
+            throw new Error('UsersService is not authenticated');
         }
 
         return this.#email;
@@ -44,11 +44,11 @@ class UserService {
 
     getPhoneNumber = () => {
         if (this.isAuthenticated() === false) {
-            throw new Error('UserService is not authenticated');
+            throw new Error('UsersService is not authenticated');
         }
 
         return this.#phoneNumber;
     }
 }
 
-export default UserService;
+export default UsersService;
