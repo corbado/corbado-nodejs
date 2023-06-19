@@ -6,23 +6,25 @@ import Webhook from "./services/webhook.service.js";
 import webhookMiddleware from './middlewares/webhookMiddleware.js';
 import User from "./services/user.service.js";
 import CorbadoApi from "./services/CorbadoApi.js";
+import {utils} from "./utils/clientInfo.utils.js";
 
 
 /**
- * The CorbadoSDK class provides access to various services, including PasskeyService, EmailLinkService, SessionService, WebhookService.
- * It also provides access to utility functions, and middleware, that can help to easily integrate CorbadoSDK into your application.
+ * The SDK class provides access to various services, including PasskeyService, EmailLinkService, SessionService, WebhookService.
+ * It also provides access to utility functions, and middleware, that can help to easily integrate SDK into your application.
  * @class
  */
-class CorbadoSDK {
+class SDK {
 
     #config = null;
     #client = null;
     #passkeys = null;
     #emailLinks = null;
-    #authToken = null;
+    #corbadoAuthToken = null;
     #session = null;
     #webhook = null;
     #users = null;
+    #utils = null;
 
 
 
@@ -46,6 +48,8 @@ class CorbadoSDK {
         } else {
             this.#client = this.#config.client;
         }
+
+        this.#utils = utils;
     }
 
     /**
@@ -87,14 +91,14 @@ class CorbadoSDK {
         return this.#users;
     }
 
-    get authToken() {
-        if(this.#authToken === null) {
-            this.#authToken = new AuthToken(
+    get corbadoAuthToken() {
+        if(this.#corbadoAuthToken === null) {
+            this.#corbadoAuthToken = new AuthToken(
                 this.#config.client
             )
         }
 
-        return this.#authToken;
+        return this.#corbadoAuthToken;
     }
 
     /**
@@ -104,7 +108,7 @@ class CorbadoSDK {
     get session() {
         if(this.#session=== null) {
                 if (!this.#config.frontendAPI) {
-                    throw new Error('No Authentication URL set');
+                    throw new Error('No Frontend API set');
                 }
 
                 this.#session = new Session(
@@ -134,4 +138,4 @@ class CorbadoSDK {
 
 }
 
-export default CorbadoSDK;
+export default SDK;

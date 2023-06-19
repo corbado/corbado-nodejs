@@ -39,11 +39,8 @@ class Session {
     getShortSessionValue(req) {
 
         const token = req.cookies[this.#shortSessionCookieName] ?? this.#extractBearerToken(req);
-        if (token !== null && token.length < 10) {
-            return null;
-        }
 
-        return token;
+        return (token !== null && token.length >= 10) ? token : null;
     }
 
     /**
@@ -83,42 +80,33 @@ class Session {
             return new User(false)
         }
 
-        const {payload} = await jose.jwtVerify(token, JWKS, options)
+        try {
+            const {payload} = await jose.jwtVerify(token, JWKS, options)
+            return new User(
+                true,
+                payload.sub,
+                payload.Name,
+                payload.Email,
+                payload.PhoneNumber
+            )
+        } catch (err) {
+            return new User(false);
+        }
 
-        return new User(
-            true,
-            payload.sub,
-            payload.Name,
-            payload.Email,
-            payload.PhoneNumber
-        )
+
     }
 
     /**
      * Get information for the current user.
      * @returns {Promise<User>}
      */
-    async getCurrentUser() {
+    async getCurrentUser(req) {
 
         const guest = new User(false);
 
-        const value = this.getShortSessionValue();
-        if (value.length < 10) {
-            return guest;
-        }
+        const decoded = await this.validateShortSessionValue(req);
 
-        const decoded = await this.validateShortSessionValue(value);
-        if (decoded !== null) {
-            return new User(
-                true,
-                decoded.id,
-                decoded.name,
-                decoded.email,
-                decoded.phoneNumber
-            );
-        }
-
-        return guest;
+        return decoded ?? guest;
     }
 
 }

@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import {CorbadoSDK, Configuration} from '../corbado-nodejs';
+import {SDK, Configuration} from '../corbado-nodejs';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 
@@ -20,7 +20,7 @@ const projectID = process.env.PROJECT_ID;
 const apiSecret = process.env.API_SECRET;
 
 const config = new Configuration(projectID, apiSecret);
-const corbado = new CorbadoSDK(config);
+const corbado = new SDK(config);
 
 
 app.get('/', (req, res) => {
@@ -33,7 +33,7 @@ app.get('/logged-in', async (req, res) => {
     // BRING YOUR OWN SESSION MANAGEMENT
 
     /* let corbadoSessionToken = req.query.corbadoSessionToken;
-     let clientInfo = CorbadoSDK.getClientInfo(req);
+     let clientInfo = corbado.utils.getClientInfo(req);
      let response = await corbado.authtoken.validate(corbadoSessionToken, clientInfo);
 
      let userData = response.data.user

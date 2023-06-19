@@ -1,19 +1,20 @@
 # Corbado Node.js SDK
 
-The Corbado Node.js SDK provides convenient access to the Corbado Backend API from applications running on
-Node.js.
+This SDK facilitates effortless integration of Corbado's Backend API within your Node.js applications.
 
 ## Documentation
 
-See the [Corbado Backend API Reference](https://api.corbado.com/docs/api/)
-and [Corbado API-only integration guide](https://docs.corbado.com/integrations/api-only) to understand the usage of
-the Corbado Backend API.
+For a detailed understanding of how to use the Corbado Backend API, refer to
+the [Corbado Backend API Reference](https://api.corbado.com/docs/api/)
+and [Corbado API-only integration guide](https://docs.corbado.com/integrations/api-only).
 
 ## Requirements
 
-Node 8 or higher.
+Ensure your environment runs Node 8 or higher.
 
 ## Installation
+
+Use the following command to install the Corbado Node.js SDK:
 
 ```sh
 npm install @corbado/nodejs --save
@@ -21,13 +22,13 @@ npm install @corbado/nodejs --save
 
 ## Usage
 
-The package needs to be configured with your Corbado account's ```project ID``` and ```API secret```. All the
+To initialize the SDK, supply it with your Corbado account's ```project ID``` and ```API secret```. You can obtain these
 parameters
-can be obtained from [Corbado developer panel](https://app.corbado.com).
+from the [Corbado developer panel](https://app.corbado.com).
 
-```project ID``` and ```API secret``` should be provided when initializing the Corbado module:
+## Initialization
 
-ES5:
+### ES5:
 
 ```JavaScript
 const Corbado = require('@corbado/nodejs');
@@ -36,23 +37,23 @@ const projectID = process.env.PROJECT_ID;
 const apiSecret = process.env.API_SECRET;
 
 const config = new Corbado.Configuration(projectID, apiSecret);
-const corbado = new Corbado.CorbadoSDK(config);
+const corbado = new Corbado.SDK(config);
 ```
 
-ES6:
+### ES6:
 
 ```JavaScript 
-import {CorbadoSDK, Configuration} from '@corbado/nodejs';
+import {SDK, Configuration} from '@corbado/nodejs';
 
 const projectID = process.env.PROJECT_ID;
 const apiSecret = process.env.API_SECRET;
 const config = new Configuration(projectID, apiSecret);
-const corbado = new CorbadoSDK(config);
+const corbado = new SDK(config);
 ```
 
 ### Services
 
-Corbado provides several services, e.g.:
+The Corbado SDK provides a range of services including:
 
 - `AuthToken`
 - `EmailLinks`
@@ -61,31 +62,37 @@ Corbado provides several services, e.g.:
 - `User`
 - `Webhook`
 
+
+To use a specific service, such as Session, invoke it as shown below:
+
+```
+corbado.session.getCurrentUser(req);
+```
+
 ### Corbado session management
 
-Corbado offers easy and secure session management (see the [docs](https://docs.corbado.com/overview/welcome) for
-details)
+Corbado offers an efficient and secure session management system (refer to
+the [documentation](https://docs.corbado.com/overview/welcome) for more details).
 
 To validate a user after authentication, call `validateshortSessionValue(req)` which returns a user object with
 all information about the current user. This object contains the current authentication state as well as user's id,
-name,
-email and phone number.
+name, email and phone number.
 
 ```JavaScript
-const user = await corbado.session.validateShortSessionValue(req);
-if (user.authenticated === true) {
+const user = await corbado.session.getCurrentUser(req);
+if (user.isAuthenticated()) {
     // Do anything with authenticated user
 } else {
     // Perform login ceremony
 }
 ```
 
-### Utilities
+### Utility functions
 
-This SDK also provides several utility functions that can ease the development process, e.g.:
+The SDK also features utility functions to streamline the development process:
 
 ```JavaScript
-Corbado.getClientInfo(req);
+corbado.utils.getClientInfo(req);
 ```
 
 This function helps to obtain relevant client information (```UserAgent```, ```RemoteAddress```) object from
