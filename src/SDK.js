@@ -1,10 +1,10 @@
 import Passkeys from './services/passkeys.service.js';
 import EmailLinks from './services/emaillinks.service.js';
-import AuthToken from './services/authtoken.service.js';
+import AuthTokens from './services/authtokens.service.js';
 import Session from './services/session.service.js';
-import Webhook from "./services/webhook.service.js";
+import Webhooks from "./services/webhooks.service.js";
 import webhookMiddleware from './middlewares/webhookMiddleware.js';
-import User from "./services/user.service.js";
+import UsersService from "./services/users.service.js";
 import CorbadoApi from "./services/CorbadoApi.js";
 import {utils} from "./utils/clientInfo.utils.js";
 
@@ -20,9 +20,9 @@ class SDK {
     #client = null;
     #passkeys = null;
     #emailLinks = null;
-    #authToken = null;
+    #authTokens = null;
     #session = null;
-    #webhook = null;
+    #webhooks = null;
     #users = null;
     #utils = null;
 
@@ -55,11 +55,11 @@ class SDK {
      *
      * @returns {*}
      */
-    get passkey() {
+    get passkeys() {
         if (this.#passkeys === null) {
             this.#passkeys = new Passkeys(
                 this.#client,
-                this.emailLink,
+                this.emailLinks,
             )
         }
 
@@ -70,7 +70,7 @@ class SDK {
      *
      * @returns {null}
      */
-    get emailLink() {
+    get emailLinks() {
         if (this.#emailLinks === null) {
             // EmailLinkService
             this.#emailLinks = new EmailLinks(
@@ -84,20 +84,20 @@ class SDK {
     get users() {
         if (this.#users === null) {
 
-            this.#users = new User(this.#client);
+            this.#users = new UsersService(this.#client);
         }
 
         return this.#users;
     }
 
-    get authToken() {
-        if (this.#authToken === null) {
-            this.#authToken = new AuthToken(
+    get authTokens() {
+        if (this.#authTokens === null) {
+            this.#authTokens = new AuthTokens(
                 this.#config.client
             )
         }
 
-        return this.#authToken;
+        return this.#authTokens;
     }
 
     /**
@@ -123,13 +123,13 @@ class SDK {
      *
      * @returns {null}
      */
-    get webhook() {
-        if (this.#webhook === null) {
-            this.#webhook = new Webhook(
+    get webhooks() {
+        if (this.#webhooks === null) {
+            this.#webhooks = new Webhooks(
                 webhookMiddleware(this.#config.webhookUsername, this.#config.webhookPassword)
             )
         }
-        return this.#webhook
+        return this.#webhooks
     }
 
 }

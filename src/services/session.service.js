@@ -85,7 +85,7 @@ class Session {
             const {payload} = await jose.jwtVerify(token, JWKS, options)
 
             let issuerValid = false;
-            if (payload.issuer === this.#issuer) {
+            if (payload.iss === this.#issuer) {
                 issuerValid = true;
             } else {
                 this.#lastShortSessionValidationResult = 'Mismatch in issuer (configured through Frontend API: "' +

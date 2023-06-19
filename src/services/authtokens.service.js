@@ -1,5 +1,5 @@
 
-class AuthToken {
+class AuthTokens {
 
     #client;
 
@@ -43,4 +43,4 @@ class AuthToken {
     }
 }
 
-export default AuthToken;
+export default AuthTokens;
