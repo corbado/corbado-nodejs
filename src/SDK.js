@@ -20,7 +20,7 @@ class SDK {
     #client = null;
     #passkeys = null;
     #emailLinks = null;
-    #corbadoAuthToken = null;
+    #authToken = null;
     #session = null;
     #webhook = null;
     #users = null;
@@ -90,14 +90,14 @@ class SDK {
         return this.#users;
     }
 
-    get corbadoAuthToken() {
-        if (this.#corbadoAuthToken === null) {
-            this.#corbadoAuthToken = new AuthToken(
+    get authToken() {
+        if (this.#authToken === null) {
+            this.#authToken = new AuthToken(
                 this.#config.client
             )
         }
 
-        return this.#corbadoAuthToken;
+        return this.#authToken;
     }
 
     /**

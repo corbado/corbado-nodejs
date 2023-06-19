@@ -4,12 +4,13 @@ import User from "../entities/User.js";
 
 class Session {
 
-
+    #client;
     #shortSessionCookieName;
     #issuer;
     #jwksURI;
     #cacheMaxAge;
-    #client;
+    #lastShortSessionValidationResult;
+
 
     /**
      * Create a session service.
@@ -82,14 +83,28 @@ class Session {
 
         try {
             const {payload} = await jose.jwtVerify(token, JWKS, options)
-            return new User(
-                true,
-                payload.sub,
-                payload.name,
-                payload.email,
-                payload.phoneNumber
-            )
+
+            let issuerValid = false;
+            if (payload.issuer === this.#issuer) {
+                issuerValid = true;
+            } else {
+                this.#lastShortSessionValidationResult = 'Mismatch in issuer (configured through Frontend API: "' +
+                    this.#issuer + '", JWT: "' + payload.iss + ')'
+            }
+
+            if(issuerValid){
+                return new User(
+                    true,
+                    payload.sub,
+                    payload.name,
+                    payload.email,
+                    payload.phoneNumber
+                )
+            }
+
+            return null;
         } catch (err) {
+            this.#lastShortSessionValidationResult = 'JWT validation failed: ' + err.message;
             console.log(err)
             return new User(false);
         }
@@ -108,6 +123,10 @@ class Session {
         const decoded = await this.validateShortSessionValue(req);
 
         return decoded ?? guest;
+    }
+
+    getLastShortSessionValidationResult() {
+        return this.#lastShortSessionValidationResult;
     }
 
 }
