@@ -27,7 +27,7 @@ can be obtained from [Corbado developer panel](https://app.corbado.com).
 
 ```project ID``` and ```API secret``` should be provided when initializing the Corbado module:
 
-ES5
+ES5:
 
 ```JavaScript
 const Corbado = require('@corbado/nodejs');
@@ -39,7 +39,7 @@ const config = new Corbado.Configuration(projectID, apiSecret);
 const corbado = new Corbado.CorbadoSDK(config);
 ```
 
-ES6
+ES6:
 
 ```JavaScript 
 import {CorbadoSDK, Configuration} from '@corbado/nodejs';
@@ -60,12 +60,6 @@ Corbado provides several services, e.g.:
 - `Session`
 - `User`
 - `Webhook`
-
-To access specific methods in, e.g. `Session`, you can call:
-
-```
-corbado.session.validateShortSessionValue(req);
-```
 
 ### Corbado session management
 
