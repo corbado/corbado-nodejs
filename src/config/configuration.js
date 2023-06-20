@@ -20,9 +20,13 @@ class Configuration {
     #webhookUsername;
     #webhookPassword;
 
-    constructor(projectID, apiSecret) {
-        if (!projectID || !apiSecret) {
-            throw new Error('Missing environment variables project ID and/or API secret.');
+    constructor(projectID, apiSecret = '') {
+        if (!projectID.startsWith('pro-')) {
+            throw new Error('Invalid project ID "' + projectID + '" given, needs to start with "pro-"');
+        }
+
+        if (apiSecret !== '' && !apiSecret.startsWith('corbado1_')) {
+            throw new Error('Invalid API secret "' + apiSecret + '" given, needs to start with "corbado1_"');
         }
 
         this.#projectID = projectID;
