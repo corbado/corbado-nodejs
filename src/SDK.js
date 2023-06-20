@@ -39,10 +39,6 @@ class SDK {
                 throw new Error('No project ID set');
             }
 
-            if (this.#config.apiSecret === null) {
-                throw new Error('No api secret set');
-            }
-
             this.#client = new CorbadoApi(this.#config.projectID, this.#config.apiSecret, this.#config.backendAPI)
         } else {
             this.#client = this.#config.client;
