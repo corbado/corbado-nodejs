@@ -50,6 +50,7 @@ class Session {
      * @returns {string|null}
      */
     #extractBearerToken(req) {
+        console.log("req.headers.authorization", req.headers.authorization)
         if (!req.headers.authorization) {
             return null;
         }
@@ -76,14 +77,16 @@ class Session {
         const options = {
             issuer: this.#issuer,
         }
+        console.log("this.#issuer is: ", this.#issuer)
         const token = this.getShortSessionValue(req)
+        console.log("token ist ", token)
         if (token === null) {
             return new User(false)
         }
 
         try {
             const {payload} = await jose.jwtVerify(token, JWKS, options)
-
+            console.log("payload.iss", payload.iss)
             let issuerValid = false;
             if (payload.iss === this.#issuer) {
                 issuerValid = true;

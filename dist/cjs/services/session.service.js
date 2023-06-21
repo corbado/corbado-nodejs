@@ -120,19 +120,22 @@ var Session = /*#__PURE__*/function () {
               options = {
                 issuer: _classPrivateFieldGet(this, _issuer)
               };
+              console.log("this.#issuer is: ", _classPrivateFieldGet(this, _issuer));
               token = this.getShortSessionValue(req);
+              console.log("token ist ", token);
               if (!(token === null)) {
-                _context.next = 6;
+                _context.next = 8;
                 break;
               }
               return _context.abrupt("return", new _User["default"](false));
-            case 6:
-              _context.prev = 6;
-              _context.next = 9;
+            case 8:
+              _context.prev = 8;
+              _context.next = 11;
               return jose.jwtVerify(token, JWKS, options);
-            case 9:
+            case 11:
               _yield$jose$jwtVerify = _context.sent;
               payload = _yield$jose$jwtVerify.payload;
+              console.log("payload.iss", payload.iss);
               issuerValid = false;
               if (payload.iss === _classPrivateFieldGet(this, _issuer)) {
                 issuerValid = true;
@@ -140,23 +143,23 @@ var Session = /*#__PURE__*/function () {
                 _classPrivateFieldSet(this, _lastShortSessionValidationResult, 'Mismatch in issuer (configured through Frontend API: "' + _classPrivateFieldGet(this, _issuer) + '", JWT: "' + payload.iss + ')');
               }
               if (!issuerValid) {
-                _context.next = 15;
+                _context.next = 18;
                 break;
               }
               return _context.abrupt("return", new _User["default"](true, payload.sub, payload.name, payload.email, payload.phoneNumber));
-            case 15:
-              return _context.abrupt("return", null);
             case 18:
-              _context.prev = 18;
-              _context.t0 = _context["catch"](6);
+              return _context.abrupt("return", null);
+            case 21:
+              _context.prev = 21;
+              _context.t0 = _context["catch"](8);
               _classPrivateFieldSet(this, _lastShortSessionValidationResult, 'JWT validation failed: ' + _context.t0.message);
               console.log(_context.t0);
               return _context.abrupt("return", new _User["default"](false));
-            case 23:
+            case 26:
             case "end":
               return _context.stop();
           }
-        }, _callee, this, [[6, 18]]);
+        }, _callee, this, [[8, 21]]);
       }));
       function validateShortSessionValue(_x) {
         return _validateShortSessionValue.apply(this, arguments);
@@ -201,6 +204,7 @@ var Session = /*#__PURE__*/function () {
   return Session;
 }();
 function _extractBearerToken2(req) {
+  console.log("req.headers.authorization", req.headers.authorization);
   if (!req.headers.authorization) {
     return null;
   }

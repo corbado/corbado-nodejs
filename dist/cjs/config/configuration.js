@@ -112,6 +112,7 @@ var Configuration = /*#__PURE__*/function () {
         }
         _classPrivateFieldSet(this, _frontendAPI, 'https://' + _classPrivateFieldGet(this, _projectID) + '.frontendapi.corbado.io');
       }
+      console.log("this frontend api: ", _classPrivateFieldGet(this, _frontendAPI));
       return _classPrivateFieldGet(this, _frontendAPI);
     },
     set: function set(value) {
