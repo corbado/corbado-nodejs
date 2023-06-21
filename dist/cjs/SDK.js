@@ -82,7 +82,7 @@ var SDK = /*#__PURE__*/function () {
     });
     _classPrivateFieldInitSpec(this, _utils, {
       writable: true,
-      value: null
+      value: _clientInfoUtils.utils
     });
     _classPrivateFieldSet(this, _config, config);
     if (!_classPrivateFieldGet(this, _config).client) {
@@ -163,6 +163,16 @@ var SDK = /*#__PURE__*/function () {
         _classPrivateFieldSet(this, _webhooks, new _webhooksService["default"]((0, _webhookMiddleware["default"])(_classPrivateFieldGet(this, _config).webhookUsername, _classPrivateFieldGet(this, _config).webhookPassword)));
       }
       return _classPrivateFieldGet(this, _webhooks);
+    }
+
+    /**
+     *
+     * @returns {null}
+     */
+  }, {
+    key: "utils",
+    get: function get() {
+      return _classPrivateFieldGet(this, _utils);
     }
   }]);
   return SDK;

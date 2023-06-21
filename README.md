@@ -74,13 +74,13 @@ corbado.session.getCurrentUser(req);
 Corbado offers an efficient and secure session management system (refer to
 the [documentation](https://docs.corbado.com/overview/welcome) for more details).
 
-To validate a user after authentication, call `validateshortSessionValue(req)` which returns a user object with
+To validate a user after authentication, call `getCurrentUser(req)` which returns a user object with
 all information about the current user. This object contains the current authentication state as well as user's id,
 name, email and phone number.
 
 ```JavaScript
 const user = await corbado.session.getCurrentUser(req);
-if (user.isAuthenticated()) {
+if (user.authenticated) {
     // Do anything with authenticated user
 } else {
     // Perform login ceremony
