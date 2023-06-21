@@ -30,7 +30,8 @@ var _emailTemplates = /*#__PURE__*/new WeakMap();
 var _webhookUsername = /*#__PURE__*/new WeakMap();
 var _webhookPassword = /*#__PURE__*/new WeakMap();
 var Configuration = /*#__PURE__*/function () {
-  function Configuration(projectID, apiSecret) {
+  function Configuration(projectID) {
+    var apiSecret = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
     _classCallCheck(this, Configuration);
     _classPrivateFieldInitSpec(this, _projectID, {
       writable: true,
@@ -46,7 +47,7 @@ var Configuration = /*#__PURE__*/function () {
     });
     _classPrivateFieldInitSpec(this, _backendAPI, {
       writable: true,
-      value: 'https://backendapi.corbado.io'
+      value: 'https://backendapi.corbado.io/v1'
     });
     _classPrivateFieldInitSpec(this, _shortSessionCookieName, {
       writable: true,
@@ -77,8 +78,11 @@ var Configuration = /*#__PURE__*/function () {
       writable: true,
       value: void 0
     });
-    if (!projectID || !apiSecret) {
-      throw new Error('Missing environment variables project ID and/or API secret.');
+    if (!projectID.startsWith('pro-')) {
+      throw new Error('Invalid project ID "' + projectID + '" given, needs to start with "pro-"');
+    }
+    if (apiSecret !== '' && !apiSecret.startsWith('corbado1_')) {
+      throw new Error('Invalid API secret "' + apiSecret + '" given, needs to start with "corbado1_"');
     }
     _classPrivateFieldSet(this, _projectID, projectID);
     _classPrivateFieldSet(this, _apiSecret, apiSecret);

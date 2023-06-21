@@ -5,7 +5,7 @@ class Configuration {
     #projectID = '';
     #apiSecret = '';
     #frontendAPI = '';
-    #backendAPI = 'https://backendapi.corbado.io';
+    #backendAPI = 'https://backendapi.corbado.io/v1';
     #shortSessionCookieName = 'cbo_short_session';
     #cacheMaxAge = 10 * 60 * 1000
     #client;

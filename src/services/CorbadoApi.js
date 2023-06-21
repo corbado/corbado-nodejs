@@ -25,7 +25,8 @@ class CorbadoApi {
             const response = await axios(options);
             return response.data;
         } catch (error) {
-            throw new CorbadoApiError(error.response.status, error.response.statusText, error.request.method, error.config.url, error.response.data.error);
+            console.log(error);
+            throw new CorbadoApiError(error.status, error.statusText, error.method, error.url, error.data);
         }
     }
 }

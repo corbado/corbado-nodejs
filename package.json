@@ -1,6 +1,6 @@
 {
   "name": "@corbado/node-sdk",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "This Node.js SDK eases the integration of Corbado's passkey-first authentication solution.",
   "main": "dist/cjs/index.js",
   "module": "src/index.js",
