@@ -55,12 +55,12 @@ const corbado = new SDK(config);
 
 The Corbado SDK provides a range of services including:
 
-- `AuthToken`
+- `AuthTokens`
 - `EmailLinks`
 - `Passkeys`
 - `Session`
 - `User`
-- `Webhook`
+- `Webhooks`
 
 
 To use a specific service, such as Session, invoke it as shown below:
