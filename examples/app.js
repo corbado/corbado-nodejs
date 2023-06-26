@@ -34,7 +34,7 @@ app.get('/logged-in', async (req, res) => {
 
     /* let corbadoSessionToken = req.query.corbadoSessionToken;
      let clientInfo = corbado.utils.getClientInfo(req);
-     let response = await corbado.authtoken.validate(corbadoSessionToken, clientInfo);
+     let response = await corbado.authtokens.validate(corbadoSessionToken, clientInfo);
 
      let userData = response.data.user
 
@@ -49,7 +49,7 @@ app.get('/logged-in', async (req, res) => {
     // CORBADO SESSION MANAGEMENT
 
     try {
-        const usr = await corbado.session.validateShortSessionValue(req);
+        const usr = await corbado.session.getCurrentUser(req);
         res.json({
             name: usr.name,
             email: usr.email,

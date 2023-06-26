@@ -23,15 +23,15 @@ class AuthTokens {
      * @returns {Promise<*>}
      */
 
-    async validate(authToken, clientInfo, requestID = null) {
+    async validate(corbadoAuthToken, clientInfo, requestID = null) {
 
 
-        if (!authToken) {
-            throw new Error('authToken is required');
+        if (!corbadoAuthToken) {
+            throw new Error('corbadoAuthToken is required');
         }
 
         const params = {
-            token: authToken,
+            token: corbadoAuthToken,
             clientInfo: clientInfo
         }
 
@@ -39,7 +39,7 @@ class AuthTokens {
             params.requestID = requestID;
         }
 
-        return await this.#client.request('/sessions/verify', 'POST', params); // path will be renamed
+        return await this.#client.request('/authTokens/validate', 'POST', params); // path will be renamed
     }
 }
 

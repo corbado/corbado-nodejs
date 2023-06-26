@@ -50,7 +50,7 @@ var SDK = /*#__PURE__*/function () {
     _classCallCheck(this, SDK);
     _classPrivateFieldInitSpec(this, _config, {
       writable: true,
-      value: null
+      value: undefined
     });
     _classPrivateFieldInitSpec(this, _client, {
       writable: true,
@@ -82,15 +82,12 @@ var SDK = /*#__PURE__*/function () {
     });
     _classPrivateFieldInitSpec(this, _utils, {
       writable: true,
-      value: null
+      value: _clientInfoUtils.utils
     });
     _classPrivateFieldSet(this, _config, config);
-    if (_classPrivateFieldGet(this, _config).client === undefined) {
-      if (_classPrivateFieldGet(this, _config).projectID === null) {
+    if (!_classPrivateFieldGet(this, _config).client) {
+      if (!_classPrivateFieldGet(this, _config).projectID) {
         throw new Error('No project ID set');
-      }
-      if (_classPrivateFieldGet(this, _config).apiSecret === null) {
-        throw new Error('No api secret set');
       }
       _classPrivateFieldSet(this, _client, new _CorbadoApi["default"](_classPrivateFieldGet(this, _config).projectID, _classPrivateFieldGet(this, _config).apiSecret, _classPrivateFieldGet(this, _config).backendAPI));
     } else {
@@ -137,7 +134,7 @@ var SDK = /*#__PURE__*/function () {
     key: "authTokens",
     get: function get() {
       if (_classPrivateFieldGet(this, _authTokens) === null) {
-        _classPrivateFieldSet(this, _authTokens, new _authtokensService["default"](_classPrivateFieldGet(this, _config).client));
+        _classPrivateFieldSet(this, _authTokens, new _authtokensService["default"](_classPrivateFieldGet(this, _client)));
       }
       return _classPrivateFieldGet(this, _authTokens);
     }
@@ -166,6 +163,16 @@ var SDK = /*#__PURE__*/function () {
         _classPrivateFieldSet(this, _webhooks, new _webhooksService["default"]((0, _webhookMiddleware["default"])(_classPrivateFieldGet(this, _config).webhookUsername, _classPrivateFieldGet(this, _config).webhookPassword)));
       }
       return _classPrivateFieldGet(this, _webhooks);
+    }
+
+    /**
+     *
+     * @returns {null}
+     */
+  }, {
+    key: "utils",
+    get: function get() {
+      return _classPrivateFieldGet(this, _utils);
     }
   }]);
   return SDK;

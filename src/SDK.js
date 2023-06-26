@@ -16,7 +16,7 @@ import {utils} from "./utils/clientInfo.utils.js";
  */
 class SDK {
 
-    #config = null;
+    #config = undefined;
     #client = null;
     #passkeys = null;
     #emailLinks = null;
@@ -24,7 +24,7 @@ class SDK {
     #session = null;
     #webhooks = null;
     #users = null;
-    #utils = null;
+    #utils = utils;
 
 
     /**
@@ -33,14 +33,9 @@ class SDK {
      */
     constructor(config) {
         this.#config = config;
-
-        if (this.#config.client === undefined) {
-            if (this.#config.projectID === null) {
+        if (!this.#config.client) {
+            if (!this.#config.projectID) {
                 throw new Error('No project ID set');
-            }
-
-            if (this.#config.apiSecret === null) {
-                throw new Error('No api secret set');
             }
 
             this.#client = new CorbadoApi(this.#config.projectID, this.#config.apiSecret, this.#config.backendAPI)
@@ -93,7 +88,7 @@ class SDK {
     get authTokens() {
         if (this.#authTokens === null) {
             this.#authTokens = new AuthTokens(
-                this.#config.client
+                this.#client
             )
         }
 
@@ -130,6 +125,14 @@ class SDK {
             )
         }
         return this.#webhooks
+    }
+
+    /**
+     *
+     * @returns {null}
+     */
+    get utils() {
+        return this.#utils;
     }
 
 }

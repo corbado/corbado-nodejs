@@ -58,8 +58,9 @@ var CorbadoApi = /*#__PURE__*/function () {
             case 11:
               _context.prev = 11;
               _context.t0 = _context["catch"](4);
-              throw new _CorbadoApiError["default"](_context.t0.response.status, _context.t0.response.statusText, _context.t0.request.method, _context.t0.config.url, _context.t0.response.data.error);
-            case 14:
+              console.log(_context.t0);
+              throw new _CorbadoApiError["default"](_context.t0.status, _context.t0.statusText, _context.t0.method, _context.t0.url, _context.t0.data);
+            case 15:
             case "end":
               return _context.stop();
           }

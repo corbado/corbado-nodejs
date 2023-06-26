@@ -48,7 +48,7 @@ var AuthTokens = /*#__PURE__*/function () {
   _createClass(AuthTokens, [{
     key: "validate",
     value: function () {
-      var _validate = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(authToken, clientInfo) {
+      var _validate = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(corbadoAuthToken, clientInfo) {
         var requestID,
           params,
           _args = arguments;
@@ -56,21 +56,21 @@ var AuthTokens = /*#__PURE__*/function () {
           while (1) switch (_context.prev = _context.next) {
             case 0:
               requestID = _args.length > 2 && _args[2] !== undefined ? _args[2] : null;
-              if (authToken) {
+              if (corbadoAuthToken) {
                 _context.next = 3;
                 break;
               }
-              throw new Error('authToken is required');
+              throw new Error('corbadoAuthToken is required');
             case 3:
               params = {
-                token: authToken,
+                token: corbadoAuthToken,
                 clientInfo: clientInfo
               };
               if (requestID) {
                 params.requestID = requestID;
               }
               _context.next = 7;
-              return _classPrivateFieldGet(this, _client).request('/sessions/verify', 'POST', params);
+              return _classPrivateFieldGet(this, _client).request('/authTokens/validate', 'POST', params);
             case 7:
               return _context.abrupt("return", _context.sent);
             case 8:
