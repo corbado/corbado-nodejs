@@ -16,8 +16,9 @@ class AssociationTokens {
     }
 
     /**
-     * Verifies a session token by sending a request to SDK.
-     * @param authToken
+     *
+     * @param loginIdentifier
+     * @param loginIdentifierType
      * @param clientInfo
      * @param requestID
      * @returns {Promise<*>}
