@@ -7,6 +7,7 @@ import webhookMiddleware from './middlewares/webhookMiddleware.js';
 import UsersService from "./services/users.service.js";
 import CorbadoApi from "./services/CorbadoApi.js";
 import {utils} from "./utils/clientInfo.utils.js";
+import AssociationTokens from "./services/associationtokens.service.js";
 
 
 /**
@@ -20,6 +21,7 @@ class SDK {
     #client = null;
     #passkeys = null;
     #emailLinks = null;
+    #associationTokens = null;
     #authTokens = null;
     #session = null;
     #webhooks = null;
@@ -85,6 +87,15 @@ class SDK {
         return this.#users;
     }
 
+    get associationTokens() {
+        if (this.#associationTokens === null) {
+            this.#associationTokens = new AssociationTokens(
+                this.#client
+            )
+        }
+
+        return this.#associationTokens;
+    }
     get authTokens() {
         if (this.#authTokens === null) {
             this.#authTokens = new AuthTokens(
