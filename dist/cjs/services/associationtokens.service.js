@@ -70,7 +70,7 @@ var AssociationTokens = /*#__PURE__*/function () {
               throw new Error('loginIdentifierType is required');
             case 5:
               params = {
-                loginIdentifer: loginIdentifier,
+                loginIdentifier: loginIdentifier,
                 loginIdentifierType: loginIdentifierType,
                 clientInfo: clientInfo
               };

@@ -36,7 +36,7 @@ class AssociationTokens {
         }
 
         const params = {
-            loginIdentifer: loginIdentifier,
+            loginIdentifier: loginIdentifier,
             loginIdentifierType: loginIdentifierType,
             clientInfo: clientInfo
         }
