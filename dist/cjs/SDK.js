@@ -14,6 +14,7 @@ var _webhookMiddleware = _interopRequireDefault(require("./middlewares/webhookMi
 var _usersService = _interopRequireDefault(require("./services/users.service.js"));
 var _CorbadoApi = _interopRequireDefault(require("./services/CorbadoApi.js"));
 var _clientInfoUtils = require("./utils/clientInfo.utils.js");
+var _associationtokensService = _interopRequireDefault(require("./services/associationtokens.service.js"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
@@ -36,6 +37,7 @@ var _config = /*#__PURE__*/new WeakMap();
 var _client = /*#__PURE__*/new WeakMap();
 var _passkeys = /*#__PURE__*/new WeakMap();
 var _emailLinks = /*#__PURE__*/new WeakMap();
+var _associationTokens = /*#__PURE__*/new WeakMap();
 var _authTokens = /*#__PURE__*/new WeakMap();
 var _session = /*#__PURE__*/new WeakMap();
 var _webhooks = /*#__PURE__*/new WeakMap();
@@ -61,6 +63,10 @@ var SDK = /*#__PURE__*/function () {
       value: null
     });
     _classPrivateFieldInitSpec(this, _emailLinks, {
+      writable: true,
+      value: null
+    });
+    _classPrivateFieldInitSpec(this, _associationTokens, {
       writable: true,
       value: null
     });
@@ -129,6 +135,14 @@ var SDK = /*#__PURE__*/function () {
         _classPrivateFieldSet(this, _users, new _usersService["default"](_classPrivateFieldGet(this, _client)));
       }
       return _classPrivateFieldGet(this, _users);
+    }
+  }, {
+    key: "associationTokens",
+    get: function get() {
+      if (_classPrivateFieldGet(this, _associationTokens) === null) {
+        _classPrivateFieldSet(this, _associationTokens, new _associationtokensService["default"](_classPrivateFieldGet(this, _client)));
+      }
+      return _classPrivateFieldGet(this, _associationTokens);
     }
   }, {
     key: "authTokens",
