@@ -27,10 +27,6 @@ class Passkeys {
             throw new Error("Origin is required");
         }
 
-        if (!origin) {
-            throw new Error('Origin is required');
-        }
-
         let params = {
             username: username,
             clientInfo: clientInfo,
