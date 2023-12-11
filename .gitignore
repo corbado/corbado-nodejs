@@ -103,3 +103,5 @@ typings/
 .tern-port
 
 .idea/
+
+package-lock.json
