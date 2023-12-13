@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "generate-client": "openapi-generator-cli generate -g typescript-axios -i ../corbado/backend/openapi/backend_api_public.yml -o src/sdk/entity/api",
-    "test": "mocha --reporter spec"
+    "test": "mocha --reporter spec",
+    "build": "tsc"
   },
   "exports": {
     ".": {
@@ -33,6 +34,10 @@
   "dependencies": {
     "@openapitools/openapi-generator-cli": "^2.7.0",
     "assert": "^2.1.0",
-    "axios": "^1.6.2"
+    "axios": "^1.6.2",
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.4"
   }
 }
