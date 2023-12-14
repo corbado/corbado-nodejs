@@ -1,6 +1,3 @@
-import EmailLink from "./sdk/emailLink/emaillink"
-import {Configuration, ConfigurationParameters} from "./sdk/entity/api";
-
 export interface Config {
     ProjectID: string
     APISecret: string

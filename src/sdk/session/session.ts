@@ -1,43 +1,42 @@
 import * as jose from "jose";
 import { RemoteJWKSetOptions} from "jose";
-import {User} from "./User";
+import {User} from "./user";
 
 export default class Session {
 
-    #projectID: string
-    #frontendAPI: string
     #shortSessionCookieName: string
     #issuer: string
     #jwks: any
 
     constructor(version: string, projectID: string, frontendAPI: string, shortSessionCookieName: string, issuer: string, cacheMaxAge: number) {
-        this.#projectID = projectID
-        this.#frontendAPI = frontendAPI
         this.#shortSessionCookieName = shortSessionCookieName
         this.#issuer = issuer
-
 
         const jwkSetUrl = new URL(frontendAPI + "/.well-known/jwks")
         const joseOptions = new class implements RemoteJWKSetOptions {
             cacheMaxAge: number = cacheMaxAge;
-            headers: Record<string, string> = {"X-Corbado-SDK-Version": version};
+            headers: Record<string, string> = {
+                "X-Corbado-SDK-Version": version,
+                "X-Corbado-ProjectID": projectID,
+            };
         }
 
         this.#jwks = jose.createRemoteJWKSet(
             jwkSetUrl,
             joseOptions,
         )
-
     }
 
     async ValidateShortSessionValue(shortSession: string): Promise<User>
     {
         if (shortSession === "" || shortSession === undefined) {
-            return new User(false, "", "", "", "")
+            return this.createAnonymousUser()
         }
 
-        const options = {
-            issuer: this.#issuer,
+        let options = {}
+
+        if (this.#issuer !== "") {
+            options = Object.assign(options, {issuer: this.#issuer})
         }
 
         const {payload} = await jose.jwtVerify(shortSession, this.#jwks, options)
@@ -60,6 +59,11 @@ export default class Session {
             )
         }
 
+        return this.createAnonymousUser()
+    }
+
+    protected createAnonymousUser(): User
+    {
         return new User(false, "", "", "", "")
     }
 

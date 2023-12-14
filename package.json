@@ -4,10 +4,16 @@
   "description": "This Node.js SDK eases the integration of Corbado's passkey-first authentication solution.",
   "module": "src/sdk.ts",
   "type": "module",
+  "main": "lib/sdk.js",
+  "files": [
+    "lib/"
+  ],
   "scripts": {
     "generate-client": "openapi-generator-cli generate -g typescript-axios -i ../corbado/backend/openapi/backend_api_public.yml -o src/sdk/entity/api",
     "test": "mocha --reporter spec",
-    "build": "tsc"
+    "build": "tsc && sed -i \"s/process\\.env\\.npm_package_version/'$npm_package_version'/gI\" lib/sdk.js",
+
+    "test2": "echo $npm_package_version"
   },
   "exports": {
     ".": {
