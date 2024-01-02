@@ -1,15 +1,16 @@
-import assert from "assert";
+// convert this file to typescript (.ts) and add types
+import * as assert from "assert";
 import * as jose from "jose";
 import User from "../entities/User.js";
 
 class Session {
 
-    #client;
+    // #client;
     #shortSessionCookieName;
     #issuer;
     #jwksURI;
     #cacheMaxAge;
-    #lastShortSessionValidationResult;
+    #lastShortSessionValidationResult: string | null = null;
 
 
     /**
@@ -21,11 +22,11 @@ class Session {
      * @param cacheMaxAge
      * @param client
      */
-    constructor(client, shortSessionCookieName, issuer, jwksURI, cacheMaxAge) {
+    constructor(client: any, shortSessionCookieName: any, issuer: any, jwksURI: any, cacheMaxAge: any) {
         if (!client) {
             throw new Error('Invalid argument(s)');
         }
-        this.#client = client;
+        // this.#client = client;
         this.#shortSessionCookieName = shortSessionCookieName;
         this.#issuer = issuer;
         this.#jwksURI = jwksURI;
@@ -37,7 +38,7 @@ class Session {
      * @param req
      * @returns {*|string|null}
      */
-    getShortSessionValue(req) {
+    getShortSessionValue(req: { cookies: { [x: string]: any; }; headers: { authorization: string; }; }) {
 
         const token = req.cookies[this.#shortSessionCookieName] ?? this.#extractBearerToken(req);
 
@@ -49,7 +50,7 @@ class Session {
      * @param req
      * @returns {string|null}
      */
-    #extractBearerToken(req) {
+    #extractBearerToken(req: { headers: { authorization: string; }; }) {
         if (!req.headers.authorization) {
             return null;
         }
@@ -66,7 +67,7 @@ class Session {
      * @param req
      * @returns {Promise<User>}
      */
-    async validateShortSessionValue(req) {
+    async validateShortSessionValue(req: null) {
 
         assert(typeof req === 'object' && req !== null, 'RequestObject not given');
 
@@ -82,7 +83,7 @@ class Session {
         }
 
         try {
-            const {payload} = await jose.jwtVerify(token, JWKS, options)
+            const { payload } = await jose.jwtVerify(token, JWKS, options)
 
             let issuerValid = false;
             if (payload.iss === this.#issuer) {
@@ -92,7 +93,7 @@ class Session {
                     this.#issuer + '", JWT: "' + payload.iss + ')'
             }
 
-            if(issuerValid){
+            if (issuerValid) {
                 return new User(
                     true,
                     payload.sub,
@@ -104,7 +105,8 @@ class Session {
 
             return null;
         } catch (err) {
-            this.#lastShortSessionValidationResult = 'JWT validation failed: ' + err.message;
+            // this.#lastShortSessionValidationResult = 'JWT validation failed: ' + err.message;
+            this.#lastShortSessionValidationResult = 'JWT validation failed: ' + err;
             console.log(err)
             return new User(false);
         }
@@ -116,7 +118,7 @@ class Session {
      * Get information for the current user.
      * @returns {Promise<User>}
      */
-    async getCurrentUser(req) {
+    async getCurrentUser(req: any) {
 
         const guest = new User(false);
 

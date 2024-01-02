@@ -1,4 +1,5 @@
-import assert from "assert";
+// convert this file to typescript (.ts) and add types
+import * as assert from "assert";
 
 class Webhooks {
     WEBHOOK_ACTION = {
@@ -8,8 +9,8 @@ class Webhooks {
 
     ALLOWED_STATUS = ["exists", "not_exists", "blocked"];
 
-    #webhookUsername;
-    #webhookPassword;
+    // #webhookUsername;
+    // #webhookPassword;
 
     #webhookMiddleware;
 
@@ -22,7 +23,7 @@ class Webhooks {
      * @param cacheMaxAge
      * @param client
      */
-    constructor(webhookMiddleware) {
+    constructor(webhookMiddleware: (req: { headers: { authorization: string; }; method: string; }, res: { status: (arg0: number) => { (): any; new(): any; send: { (arg0: string): any; new(): any; }; json: { (arg0: { message: string; }): any; new(): any; }; }; setHeader: (arg0: string, arg1: string) => void; }, next: () => void) => any) {
         this.#webhookMiddleware = webhookMiddleware;
     }
 
@@ -31,7 +32,7 @@ class Webhooks {
      *
      * @return {Object}
      */
-    getAction(req) {
+    getAction(req: { get: (arg0: string) => string; }) {
         const corbadoAction = req.get("X-Corbado-Action") || "";
 
         if (!corbadoAction) {
@@ -55,7 +56,7 @@ class Webhooks {
      * @param {Object} req
      * @return {object}
      */
-    getAuthMethodsRequest(req) {
+    getAuthMethodsRequest(req: { body: any; }) {
         const data = req.body;
 
         assert.ok(data.id, "Missing id field");
@@ -84,14 +85,14 @@ class Webhooks {
      * @param {string} responseID
      */
 
-    getAuthMethodsResponse(status, responseID = "") {
+    getAuthMethodsResponse(status: string, responseID = "") {
         if (!this.ALLOWED_STATUS.includes(status)) {
             throw new Error("Invalid status value");
         }
 
         return {
             responseID,
-            data: {status},
+            data: { status },
         };
     }
 
@@ -101,7 +102,7 @@ class Webhooks {
      * @param {Object} req
      * @return {Object}
      */
-    getPasswordVerifyRequest(req) {
+    getPasswordVerifyRequest(req: { body: any; }) {
         const data = req.body;
         const requiredFields = ["id", "projectID"];
         const requiredDataKeys = ["username", "password"];
@@ -131,10 +132,10 @@ class Webhooks {
      * @param {Object} res
      * @param {string} responseID
      */
-    getPasswordVerifyResponse(success, responseID = "") {
+    getPasswordVerifyResponse(success: any, responseID = "") {
         return {
             responseID: responseID,
-            data: {success},
+            data: { success },
         };
     }
 

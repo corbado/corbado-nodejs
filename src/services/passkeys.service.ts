@@ -1,6 +1,9 @@
+// convert this file to typescript (.ts) and add types
 class Passkeys {
+    client: any;
+    emailLinkService: any;
 
-    constructor(client, emailLinkService) {
+    constructor(client: any, emailLinkService: any) {
         this.client = client;
         this.emailLinkService = emailLinkService
     }
@@ -14,7 +17,7 @@ class Passkeys {
      * @param credentialStatus
      * @returns {Promise<*>}
      */
-    registerStart = async (username, clientInfo, origin, requestID = null, credentialStatus = null) => {
+    registerStart = async (username: any, clientInfo: any, origin: any, requestID = null, credentialStatus = null) => {
         if (!username) {
             throw new Error('Username is required');
         }
@@ -32,11 +35,12 @@ class Passkeys {
             clientInfo: clientInfo,
             origin: origin,
             credentialStatus: 'active',
+            requestID: requestID
         }
 
-        if (requestID) {
-            params['requestID'] = requestID;
-        }
+        // if (requestID) {
+        //     params['requestID'] = requestID;
+        // }
 
         if (credentialStatus) {
             params['credentialStatus'] = credentialStatus;
@@ -44,7 +48,7 @@ class Passkeys {
 
         return await this.client.request('/webauthn/register/start', 'POST', params);
     }
-    ;
+        ;
 
     /**
      * Finishes the WebAuthn register flow.
@@ -55,9 +59,9 @@ class Passkeys {
      * @returns {Promise<*>}
      */
     registerFinish = async (
-        publicKeyCredential,
-        clientInfo,
-        origin,
+        publicKeyCredential: any,
+        clientInfo: any,
+        origin: any,
         requestID = null
     ) => {
         if (!publicKeyCredential) {
@@ -70,6 +74,13 @@ class Passkeys {
 
         if (!origin) {
             throw new Error("Origin is required");
+        }
+
+        let params = {
+            publicKeyCredential: publicKeyCredential,
+            clientInfo: clientInfo,
+            origin: origin,
+            requestID: requestID
         }
 
         return await this.client.request('/webauthn/register/finish', 'POST', params);
@@ -86,11 +97,11 @@ class Passkeys {
      * @returns {Promise<*>}
      */
     emailLinkSend = async (
-        email,
-        redirect,
+        email: any,
+        redirect: any,
         create = true,
-        additionalPayload,
-        clientInfo,
+        additionalPayload: any,
+        clientInfo: any,
         requestID = null
     ) => {
         return await this.emailLinkService.send(
@@ -111,7 +122,7 @@ class Passkeys {
      * @param requestID
      * @returns {Promise<*>}
      */
-    emailLinkValidate = async (emailLinkID, token, requestID = null) => {
+    emailLinkValidate = async (emailLinkID: any, token: any, requestID = null) => {
         return await this.emailLinkService.validate(emailLinkID, token, requestID);
     };
 
@@ -122,8 +133,8 @@ class Passkeys {
      * @param status
      * @returns {Promise<*>}
      */
-    credentialUpdate = async (credentialID, status) => {
-        const params = {status};
+    credentialUpdate = async (credentialID: any, status: any) => {
+        const params = { status };
 
         return await this.client.request('/webauthn/credential/${credentialID}', 'PUT', params);
 
@@ -137,7 +148,7 @@ class Passkeys {
      * @param requestID
      * @returns {Promise<*>}
      */
-    authenticateStart = async (username, clientInfo, origin, requestID = null) => {
+    authenticateStart = async (username: any, clientInfo: any, origin: any, requestID = null) => {
         if (!username) {
             throw new Error('Username is required');
         }
@@ -154,10 +165,11 @@ class Passkeys {
             username: username,
             clientInfo: clientInfo,
             origin: origin,
+            requestID: requestID
         }
-        if (requestID) {
-            params['requestID'] = requestID;
-        }
+        // if (requestID) {
+        //     params['requestID'] = requestID;
+        // }
 
         return await this.client.request('/webauthn/authenticate/start', 'POST', params);
     }
@@ -170,7 +182,7 @@ class Passkeys {
      * @param requestID
      * @returns {Promise<*>}
      */
-    authenticateFinish = async (publicKeyCredential, clientInfo, origin, requestID = null) => {
+    authenticateFinish = async (publicKeyCredential: any, clientInfo: any, origin: any, requestID = null) => {
         if (!publicKeyCredential) {
             throw new Error('Username is required');
         }
@@ -187,11 +199,12 @@ class Passkeys {
             publicKeyCredential: JSON.stringify(publicKeyCredential),
             clientInfo: clientInfo,
             origin: origin,
+            requestID: requestID
         };
 
-        if (requestID) {
-            params['requestID'] = requestID;
-        }
+        // if (requestID) {
+        //     params['requestID'] = requestID;
+        // }
 
 
         return await this.client.request('/webauthn/authenticate/finish', 'POST', params);

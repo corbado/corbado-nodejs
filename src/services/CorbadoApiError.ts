@@ -1,5 +1,11 @@
+// convert this file to typescript (.ts) and add types
 class CorbadoApiError extends Error {
-  constructor(httpStatusCode, statusText, method, url, data) {
+  httpStatusCode: any;
+  statusText: any;
+  method: any;
+  url: any;
+  data: any;
+  constructor(httpStatusCode: any, statusText: any, method: any, url: any, data: any) {
     super();
     this.httpStatusCode = httpStatusCode;
     this.statusText = statusText;

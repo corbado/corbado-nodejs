@@ -6,8 +6,9 @@ import Webhooks from "./services/webhooks.service.js";
 import webhookMiddleware from './middlewares/webhookMiddleware.js';
 import UsersService from "./services/users.service.js";
 import CorbadoApi from "./services/CorbadoApi.js";
-import {utils} from "./utils/clientInfo.utils.js";
+// import { utils } from "./utils/clientInfo.utils.js";
 import AssociationTokens from "./services/associationtokens.service.js";
+import Configuration from './config/configuration.js';
 
 
 /**
@@ -17,23 +18,24 @@ import AssociationTokens from "./services/associationtokens.service.js";
  */
 class SDK {
 
-    #config = undefined;
-    #client = null;
-    #passkeys = null;
-    #emailLinks = null;
-    #associationTokens = null;
-    #authTokens = null;
-    #session = null;
-    #webhooks = null;
-    #users = null;
-    #utils = utils;
+    #config: Configuration;
+    #client: CorbadoApi | null = null;
+    #utils: any;
+    #passkeys?: Passkeys | null;
+    #emailLinks?: EmailLinks | null;
+    #users: UsersService | null = null;
+    #associationTokens: AssociationTokens | null = null;
+    #authTokens: AuthTokens | null = null;
+    #session: Session | null = null;
+    #webhooks: Webhooks | null = null;
+
 
 
     /**
      *
      * @param {Configuration} config
      */
-    constructor(config) {
+    constructor(config: Configuration, utils: any) {
         this.#config = config;
         if (!this.#config.client) {
             if (!this.#config.projectID) {
@@ -52,7 +54,7 @@ class SDK {
      *
      * @returns {*}
      */
-    get passkeys() {
+    get passkeys(): any {
         if (this.#passkeys === null) {
             this.#passkeys = new Passkeys(
                 this.#client,
@@ -81,7 +83,7 @@ class SDK {
     get users() {
         if (this.#users === null) {
 
-            this.#users = new UsersService(this.#client);
+            // this.#users = new UsersService(this.#client);
         }
 
         return this.#users;
@@ -142,7 +144,7 @@ class SDK {
      *
      * @returns {null}
      */
-    get utils() {
+    get utils(): null {
         return this.#utils;
     }
 

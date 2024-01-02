@@ -2,38 +2,38 @@
   "name": "@corbado/node-sdk",
   "version": "1.1.16",
   "description": "This Node.js SDK eases the integration of Corbado's passkey-first authentication solution.",
-  "main": "dist/cjs/index.js",
-  "module": "src/index.js",
-  "type": "module",
-  "scripts": {
-    "build-es5": "babel src -d dist/cjs --presets=@babel/preset-env --plugins=@babel/plugin-transform-modules-commonjs",
-    "build": "rm -fr dist/* && npm run build-es5 && ./fixup",
-    "test": "mocha --reporter spec"
-  },
-  "exports": {
-    ".": {
-      "import": "./src/index.js",
-      "require": "./dist/cjs/index.js"
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/corbado/corbado-nodejs.git"
-  },
   "keywords": [
     "passkeys",
     "authentication",
     "webhooks",
     "fido2"
   ],
-  "author": "Corbado",
-  "license": "MIT",
+  "homepage": "https://github.com/corbado/corbado-nodejs#readme",
   "bugs": {
     "url": "https://github.com/corbado/corbado-nodejs/issues"
   },
-  "homepage": "https://github.com/corbado/corbado-nodejs#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/corbado/corbado-nodejs.git"
+  },
+  "license": "MIT",
+  "author": "Corbado",
+  "type": "module",
+  "exports": {
+    "import": "./esm/index.js",
+    "require": "./cjs/index.js"
+  },
+  "main": "cjs/index.js",
+  "module": "src/index.js",
+  "scripts": {
+    "prepublishOnly": "make build",
+    "test": "make test",
+    "lint": "make lint",
+    "fix": "make fix",
+    "tsc": "tsc",
+    "start": "make start"
+  },
   "dependencies": {
-    "@babel/plugin-transform-modules-commonjs": "^7.22.5",
     "assert": "^2.0.0",
     "axios": "^1.4.0",
     "cookie-parser": "^1.4.6",
@@ -43,12 +43,47 @@
     "jwks-rsa": "^3.0.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.22.5",
-    "@babel/core": "^7.22.5",
-    "@babel/preset-env": "^7.22.5",
+    "@types/axios": "^0.14.0",
+    "@types/chai": "^4.3.11",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.10.6",
+    "@types/node-fetch": "^2.6.10",
+    "@types/sinon": "^17.0.2",
     "chai": "^4.3.7",
     "dotenv": "^16.0.3",
     "mocha": "^10.2.0",
-    "sinon": "^15.0.4"
+    "sinon": "^15.0.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=16.1"
+  },
+  "files": [
+    "package.json",
+    "README.md",
+    "esm",
+    "cjs",
+    "LICENSE",
+    "src"
+  ],
+  "mocha": {
+    "require": [
+      "./test/polyfills.mjs"
+    ],
+    "loader": [
+      "ts-node/esm"
+    ],
+    "recursive": true,
+    "extension": [
+      "ts",
+      "js",
+      "tsx"
+    ]
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ]
   }
 }

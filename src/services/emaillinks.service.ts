@@ -1,11 +1,14 @@
+// convert this file to typescript (.ts) and add types
 class EmailLinks {
+    client: any;
+    email_templates: any;
 
     /**
      * Creates a new instance of the EmailLinks.
      * @param client
      * @param email_templates
      */
-    constructor(client, email_templates) {
+    constructor(client: any, email_templates: any) {
         this.client = client;
         this.email_templates = email_templates;
     }
@@ -21,7 +24,7 @@ class EmailLinks {
      * @param requestID
      * @returns {Promise<*>}
      */
-    send = async (email, redirect, create, additionalPayload, clientInfo, passkeySignUp = false, requestID = null) => {
+    send = async (email: any, redirect: any, create: any, additionalPayload: any, clientInfo: any, passkeySignUp = false, requestID = null) => {
         if (!email) {
             throw new Error('Email is required');
         }
@@ -37,6 +40,7 @@ class EmailLinks {
             create: create,
             additionalPayload: JSON.stringify(additionalPayload),
             clientInfo: clientInfo,
+            requestID: requestID,
         };
 
         if (passkeySignUp) {
@@ -58,7 +62,7 @@ class EmailLinks {
      * @param requestID
      * @returns {Promise<*>}
      */
-    validate = async (emailLinkID, token, requestID = null) => {
+    validate = async (emailLinkID: string, token: any, requestID = null) => {
         if (!emailLinkID) {
             throw new Error('EmailLinkID is required');
         }
@@ -69,11 +73,12 @@ class EmailLinks {
 
         let params = {
             token: token,
+            requestID: requestID,
         }
 
-        if (requestID) {
-            params['requestID'] = requestID;
-        }
+        // if (requestID) {
+        //     params['requestID'] = requestID;
+        // }
         return await this.client.request('/emailLinks/' + emailLinkID + '/validate', 'PUT', params);
 
     }

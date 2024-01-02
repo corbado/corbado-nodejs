@@ -1,12 +1,14 @@
+// convert this file to typescript (.ts) and add types
 class UsersService {
 
-    #authenticated;
+    // #authenticated;
     #id;
     #name;
     #email;
     #phoneNumber;
+    #authenticated: null;
 
-    constructor(authenticated, id = '', name = '', email = '', phoneNumber = '') {
+    constructor(authenticated: null, id = '', name = '', email = '', phoneNumber = '') {
         this.#authenticated = authenticated;
         this.#id = id;
         this.#name = name;

@@ -1,3 +1,5 @@
+// convert this file to typescript (.ts) and add types
+
 class User {
 
     #authenticated;
@@ -6,7 +8,7 @@ class User {
     #email;
     #phoneNumber;
 
-    constructor(authenticated, id, name, email, phoneNumber) {
+    constructor(authenticated?: boolean, id?: string, name?: string | unknown, email?: string | unknown, phoneNumber?: string | unknown) {
         this.#authenticated = authenticated
         this.#id = id
         this.#name = name

@@ -1,4 +1,6 @@
-import assert from 'assert';
+// convert this file to typescript (.ts) and add types
+
+import * as assert from 'assert';
 
 class Configuration {
 
@@ -7,8 +9,8 @@ class Configuration {
     #frontendAPI = '';
     #backendAPI = 'https://backendapi.corbado.io/v1';
     #shortSessionCookieName = 'cbo_short_session';
-    #cacheMaxAge = 10 * 60 * 1000
-    #client;
+    #cacheMaxAge = 10 * 60 * 1000 // What are these magic numbers? ):
+    #client = null;
     #emailTemplates = {
         EMAIL_SIGN_UP_TEMPLATE: 'email_signup_user',
         EMAIL_LOGIN_TEMPLATE: 'email_login_user',
@@ -17,10 +19,10 @@ class Configuration {
     }
 
 
-    #webhookUsername;
-    #webhookPassword;
+    #webhookUsername = '';
+    #webhookPassword = '';
 
-    constructor(projectID, apiSecret = '') {
+    constructor(projectID: string, apiSecret = '') {
         if (!projectID.startsWith('pro-')) {
             throw new Error('Invalid project ID "' + projectID + '" given, needs to start with "pro-"');
         }
