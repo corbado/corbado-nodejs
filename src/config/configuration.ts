@@ -4,12 +4,12 @@ import * as assert from 'assert';
 
 class Configuration {
 
-    #projectID = '';
-    #apiSecret = '';
-    #frontendAPI = '';
+    #projectID: string;
+    #apiSecret: string;
+    #frontendAPI: string = '';
     #backendAPI = 'https://backendapi.corbado.io/v1';
     #shortSessionCookieName = 'cbo_short_session';
-    #cacheMaxAge = 10 * 60 * 1000 // What are these magic numbers? ):
+    #cacheMaxAge = 10 * 60 * 1000 // What are these 'magic numbers'? ):
     #client = null;
     #emailTemplates = {
         EMAIL_SIGN_UP_TEMPLATE: 'email_signup_user',
@@ -19,10 +19,10 @@ class Configuration {
     }
 
 
-    #webhookUsername = '';
-    #webhookPassword = '';
+    #webhookUsername: string = '';
+    #webhookPassword: string = '';
 
-    constructor(projectID: string, apiSecret = '') {
+    constructor(projectID: string, apiSecret: string) {
         if (!projectID.startsWith('pro-')) {
             throw new Error('Invalid project ID "' + projectID + '" given, needs to start with "pro-"');
         }

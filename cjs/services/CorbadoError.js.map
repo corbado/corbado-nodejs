@@ -1,0 +1,1 @@
+{"version":3,"file":"CorbadoError.js","sourceRoot":"","sources":["../../src/services/CorbadoError.ts"],"names":[],"mappings":";;AAAA,sDAAsD;AACtD,MAAM,YAAa,SAAQ,KAAK;IAC9B,YAAY,OAA2B;QACrC,KAAK,CAAC,OAAO,CAAC,CAAC;QACf,IAAI,CAAC,IAAI,GAAG,cAAc,CAAC;IAC7B,CAAC;CACF;AAED,kBAAe,YAAY,CAAC"}

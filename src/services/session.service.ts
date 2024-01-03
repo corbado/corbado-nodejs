@@ -2,6 +2,7 @@
 import * as assert from "assert";
 import * as jose from "jose";
 import User from "../entities/User.js";
+import { ClientInfoType } from "./associationtokens.service.js";
 
 class Session {
 
@@ -22,7 +23,7 @@ class Session {
      * @param cacheMaxAge
      * @param client
      */
-    constructor(client: any, shortSessionCookieName: any, issuer: any, jwksURI: any, cacheMaxAge: any) {
+    constructor(client: ClientInfoType, shortSessionCookieName: string, issuer: string, jwksURI: string, cacheMaxAge: number) {
         if (!client) {
             throw new Error('Invalid argument(s)');
         }
@@ -97,7 +98,7 @@ class Session {
                 return new User(
                     true,
                     payload.sub,
-                    payload.name,
+                    payload.fullName,
                     payload.email,
                     payload.phoneNumber
                 )

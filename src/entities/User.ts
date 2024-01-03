@@ -4,14 +4,14 @@ class User {
 
     #authenticated;
     #id;
-    #name;
+    #fullName;
     #email;
     #phoneNumber;
 
-    constructor(authenticated?: boolean, id?: string, name?: string | unknown, email?: string | unknown, phoneNumber?: string | unknown) {
+    constructor(authenticated?: boolean, id?: string, fullName?: string | unknown, email?: string | unknown, phoneNumber?: string | unknown) {
         this.#authenticated = authenticated
         this.#id = id
-        this.#name = name
+        this.#fullName = fullName
         this.#email = email
         this.#phoneNumber = phoneNumber
     }
@@ -25,7 +25,7 @@ class User {
     }
 
     get name() {
-        return this.#name;
+        return this.#fullName;
     }
 
     get email() {
