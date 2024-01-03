@@ -1,39 +1,29 @@
+import { AxiosInstance, AxiosResponse } from 'axios';
 import {
-    EmailLinkGetRsp, EmailLinkSendReq, EmailLinkSendRsp, EmailLinksValidateReq, EmailLinkValidateRsp, EmailMagicLinksApi,
-} from "../entity/api";
-import {AxiosInstance, AxiosResponse} from "axios";
+  EmailLinkGetRsp,
+  EmailLinkSendReq,
+  EmailLinkSendRsp,
+  EmailLinksValidateReq,
+  EmailLinkValidateRsp,
+  EmailMagicLinksApi,
+} from '../entity/api';
 
 export default class EmailLink {
+  #api: EmailMagicLinksApi;
 
-    #api: EmailMagicLinksApi
+  constructor(axios: AxiosInstance) {
+    this.#api = new EmailMagicLinksApi(undefined, '', axios);
+  }
 
-    constructor(axios: AxiosInstance) {
-        this.#api = new EmailMagicLinksApi(undefined, '', axios)
-    }
+  Send(req: EmailLinkSendReq): Promise<AxiosResponse<EmailLinkSendRsp>> {
+    return this.#api.emailLinkSend(req);
+  }
 
-    Send(
-        req: EmailLinkSendReq
-    ) :Promise<AxiosResponse<EmailLinkSendRsp>> {
-        return this.#api.emailLinkSend(
-            req,
-        )
-    }
+  Validate(emailLinkID: string, req: EmailLinksValidateReq): Promise<AxiosResponse<EmailLinkValidateRsp>> {
+    return this.#api.emailLinkValidate(emailLinkID, req);
+  }
 
-    Validate(
-        emailLinkID: string,
-        req: EmailLinksValidateReq
-    ) :Promise<AxiosResponse<EmailLinkValidateRsp>> {
-        return this.#api.emailLinkValidate(
-            emailLinkID, req,
-        )
-    }
-
-    Get(
-        emailLinkID: string,
-    ) :Promise<AxiosResponse<EmailLinkGetRsp>> {
-        return this.#api.emailLinkGet(
-            emailLinkID,
-        )
-    }
-
+  Get(emailLinkID: string): Promise<AxiosResponse<EmailLinkGetRsp>> {
+    return this.#api.emailLinkGet(emailLinkID);
+  }
 }

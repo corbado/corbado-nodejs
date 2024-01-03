@@ -1,3 +1,4 @@
+import { AxiosInstance, AxiosResponse } from 'axios';
 import {
   ValidateEmailReq,
   ValidateEmailRsp,
@@ -5,7 +6,6 @@ import {
   ValidatePhoneNumberRsp,
   ValidationApi,
 } from '../entity/api';
-import { AxiosInstance, AxiosResponse } from 'axios';
 
 export default class Validation {
   #api: ValidationApi;

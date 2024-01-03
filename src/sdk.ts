@@ -1,81 +1,75 @@
-import { Config } from "./config";
-import axios, { AxiosInstance } from "axios";
-import AuthToken from "./sdk/authToken/authToken";
-import Validation from "./sdk/validation/validation";
-import User from "./sdk/user/user";
-import Session from "./sdk/session/session";
-import { AxiosBasicCredentials, AxiosHeaderValue } from "axios";
-import EmailLink from "./sdk/emailLink/emailLink";
+import axios, { AxiosInstance, AxiosBasicCredentials, AxiosHeaderValue } from 'axios';
+import { Config } from './config';
+import AuthToken from './sdk/authToken/authToken';
+import Validation from './sdk/validation/validation';
+import User from './sdk/user/user';
+import Session from './sdk/session/session';
+import EmailLink from './sdk/emailLink/emailLink';
 
 export default class SDK {
+  #authToken: AuthToken;
 
-    #authToken: AuthToken
-    #emailLink: EmailLink
-    #session: Session
-    #user: User
-    #validation: Validation
+  #emailLink: EmailLink;
 
-    constructor(config: Config) {
+  #session: Session;
 
-        this.#emailLink = new EmailLink(
-            this.#createClient(config),
-        )
+  #user: User;
 
-        this.#authToken = new AuthToken(
-            this.#createClient(config),
-        )
+  #validation: Validation;
 
-        this.#session = new Session(
-            process.env.npm_package_version as string,
-            config.ProjectID,
-            config.FrontendAPI,
-            config.ShortSessionCookieName,
-            config.JWTIssuer,
-            config.CacheMaxAge,
-        )
-        this.#user = new User(
-            this.#createClient(config)
-        )
+  constructor(config: Config) {
+    this.#emailLink = new EmailLink(this.#createClient(config));
 
-        this.#validation = new Validation(
-            this.#createClient(config)
-        )
-    }
+    this.#authToken = new AuthToken(this.#createClient(config));
 
-    #createClient(config: Config): AxiosInstance {
-        const instance = axios.create()
-        instance.defaults.auth = new class implements AxiosBasicCredentials {
-            password: string = config.APISecret;
-            username: string = config.ProjectID;
-        }
+    this.#session = new Session(
+      process.env.npm_package_version as string,
+      config.ProjectID,
+      config.FrontendAPI,
+      config.ShortSessionCookieName,
+      config.JWTIssuer,
+      config.CacheMaxAge,
+    );
+    this.#user = new User(this.#createClient(config));
 
-        instance.defaults.baseURL = config.BackendAPI
-        instance.defaults.headers['X-Corbado-SDK-Version'] = process.env.npm_package_version as AxiosHeaderValue
+    this.#validation = new Validation(this.#createClient(config));
+  }
 
-        return instance
-    }
+  #createClient(config: Config): AxiosInstance {
+    const instance = axios.create();
+    instance.defaults.auth = new (class implements AxiosBasicCredentials {
+      password: string = config.APISecret;
 
-    get EmailLinks(): EmailLink {
-        return this.#emailLink
-    }
+      username: string = config.ProjectID;
+    })();
 
-    get authTokens(): AuthToken {
-        return this.#authToken;
-    }
+    instance.defaults.baseURL = config.BackendAPI;
+    instance.defaults.headers['X-Corbado-SDK-Version'] = process.env.npm_package_version as AxiosHeaderValue;
 
-    get emailLinks(): EmailLink {
-        return this.#emailLink;
-    }
+    return instance;
+  }
 
-    get sessions(): Session {
-        return this.#session;
-    }
+  get EmailLinks(): EmailLink {
+    return this.#emailLink;
+  }
 
-    get users(): User {
-        return this.#user;
-    }
+  get authTokens(): AuthToken {
+    return this.#authToken;
+  }
 
-    get validations(): Validation {
-        return this.#validation;
-    }
+  get emailLinks(): EmailLink {
+    return this.#emailLink;
+  }
+
+  get sessions(): Session {
+    return this.#session;
+  }
+
+  get users(): User {
+    return this.#user;
+  }
+
+  get validations(): Validation {
+    return this.#validation;
+  }
 }

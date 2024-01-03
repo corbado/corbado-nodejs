@@ -1,22 +1,14 @@
-import {
-    AuthTokensApi, AuthTokenValidateReq, AuthTokenValidateRsp,
-} from "../entity/api";
-import {AxiosInstance, AxiosResponse} from "axios";
+import { AxiosInstance, AxiosResponse } from 'axios';
+import { AuthTokensApi, AuthTokenValidateReq, AuthTokenValidateRsp } from '../entity/api';
 
 export default class AuthToken {
+  #api: AuthTokensApi;
 
-    #api: AuthTokensApi
+  constructor(axios: AxiosInstance) {
+    this.#api = new AuthTokensApi(undefined, '', axios);
+  }
 
-    constructor(axios: AxiosInstance) {
-        this.#api = new AuthTokensApi(undefined, '', axios)
-    }
-
-    Validate(
-        req: AuthTokenValidateReq
-    ) :Promise<AxiosResponse<AuthTokenValidateRsp>> {
-        return this.#api.authTokenValidate(
-            req,
-        )
-    }
-
+  Validate(req: AuthTokenValidateReq): Promise<AxiosResponse<AuthTokenValidateRsp>> {
+    return this.#api.authTokenValidate(req);
+  }
 }
