@@ -9,7 +9,7 @@
     "lib/"
   ],
   "scripts": {
-    "generate-client": "openapi-generator-cli generate -g typescript-axios -i ../corbado/backend/openapi/backend_api_public.yml -o src/sdk/entity/api",
+    "generate-openapi": "node scripts/generate-open-api.js",
     "test": "mocha --reporter spec",
     "build": "tsc && sed -i \"s/process\\.env\\.npm_package_version/'$npm_package_version'/gI\" lib/sdk.js",
     "test2": "echo $npm_package_version",
