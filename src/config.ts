@@ -13,8 +13,7 @@ export const DefaultFrontendAPI = "https://[projectID].frontendapi.corbado.io"
 export const DefaultShortSessionCookieName = "cbo_short_session"
 export const DefaultCacheMaxAge = 60 * 1000
 
-export function ConfigFactory(projectID: string, apiSecret: string): Config
-{
+export function ConfigFactory(projectID: string, apiSecret: string): Config {
     return new class implements Config {
         APISecret: string = apiSecret;
         BackendAPI: string = DefaultBackendAPI;

@@ -1,10 +1,10 @@
-import {Config} from "./config";
-import axios, {AxiosInstance} from "axios";
+import { Config } from "./config";
+import axios, { AxiosInstance } from "axios";
 import AuthToken from "./sdk/authToken/authToken";
 import Validation from "./sdk/validation/validation";
 import User from "./sdk/user/user";
 import Session from "./sdk/session/session";
-import {AxiosBasicCredentials, AxiosHeaderValue} from "axios";
+import { AxiosBasicCredentials, AxiosHeaderValue } from "axios";
 import EmailLink from "./sdk/emailLink/emailLink";
 
 export default class SDK {
@@ -42,8 +42,7 @@ export default class SDK {
         )
     }
 
-    #createClient(config: Config): AxiosInstance
-    {
+    #createClient(config: Config): AxiosInstance {
         const instance = axios.create()
         instance.defaults.auth = new class implements AxiosBasicCredentials {
             password: string = config.APISecret;

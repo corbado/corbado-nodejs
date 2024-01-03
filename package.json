@@ -12,8 +12,9 @@
     "generate-client": "openapi-generator-cli generate -g typescript-axios -i ../corbado/backend/openapi/backend_api_public.yml -o src/sdk/entity/api",
     "test": "mocha --reporter spec",
     "build": "tsc && sed -i \"s/process\\.env\\.npm_package_version/'$npm_package_version'/gI\" lib/sdk.js",
-
-    "test2": "echo $npm_package_version"
+    "test2": "echo $npm_package_version",
+    "lint": "eslint --ext .js,.ts ",
+    "format": "eslint src/**/*.ts --fix"
   },
   "exports": {
     ".": {
@@ -45,6 +46,14 @@
     "typescript": "^5.3.3"
   },
   "devDependencies": {
-    "@types/node": "^20.10.4"
+    "@types/node": "^20.10.4",
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.17.0",
+    "eslint": "^8.56.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-prettier": "^5.1.2",
+    "prettier": "^3.1.1"
   }
 }

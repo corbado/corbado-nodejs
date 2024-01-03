@@ -1,34 +1,24 @@
 import {
-    ValidateEmailReq,
-    ValidateEmailRsp,
-    ValidatePhoneNumberReq,
-    ValidatePhoneNumberRsp,
-    ValidationApi,
-} from "../entity/api";
-import {AxiosInstance, AxiosResponse} from "axios";
+  ValidateEmailReq,
+  ValidateEmailRsp,
+  ValidatePhoneNumberReq,
+  ValidatePhoneNumberRsp,
+  ValidationApi,
+} from '../entity/api';
+import { AxiosInstance, AxiosResponse } from 'axios';
 
 export default class Validation {
+  #api: ValidationApi;
 
-    #api: ValidationApi
+  constructor(axios: AxiosInstance) {
+    this.#api = new ValidationApi(undefined, '', axios);
+  }
 
-    constructor(axios: AxiosInstance) {
-        this.#api = new ValidationApi(undefined, '', axios)
-    }
+  ValidateEmail(req: ValidateEmailReq): Promise<AxiosResponse<ValidateEmailRsp>> {
+    return this.#api.validateEmail(req);
+  }
 
-    ValidateEmail(
-        req: ValidateEmailReq
-    ) :Promise<AxiosResponse<ValidateEmailRsp>> {
-        return this.#api.validateEmail(
-            req,
-        )
-    }
-
-    ValidatePhoneNumber(
-        req: ValidatePhoneNumberReq
-    ) :Promise<AxiosResponse<ValidatePhoneNumberRsp>> {
-        return this.#api.validatePhoneNumber(
-            req,
-        )
-    }
-
+  ValidatePhoneNumber(req: ValidatePhoneNumberReq): Promise<AxiosResponse<ValidatePhoneNumberRsp>> {
+    return this.#api.validatePhoneNumber(req);
+  }
 }
