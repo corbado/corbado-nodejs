@@ -44,13 +44,13 @@ export default class SDK {
     })();
 
     instance.defaults.baseURL = config.BackendAPI;
-    instance.defaults.headers['X-Corbado-SDK-Version'] = process.env.npm_package_version as AxiosHeaderValue;
+    instance.defaults.headers['X-Corbado-SDK-Version'] = JSON.stringify({
+      name: 'Node.js SDK',
+      sdkVersion: process.env.npm_package_version,
+      languageVersion: process.version,
+    });
 
     return instance;
-  }
-
-  get EmailLinks(): EmailLink {
-    return this.#emailLink;
   }
 
   get authTokens(): AuthToken {
