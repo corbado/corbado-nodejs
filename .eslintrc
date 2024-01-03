@@ -11,11 +11,14 @@
     "airbnb-typescript/base",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking"
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:prettier/recommended"
   ],
   "ignorePatterns": ["lib/**/*.js"],
   "rules": {
     "@typescript-eslint/restrict-template-expressions": 0,
+    "max-classes-per-file": ["error", { "ignoreExpressions": true }],
+    "class-methods-use-this": ["error", { "exceptMethods": ["createAnonymousUser", "#createClient"] }],
     "object-curly-newline": [
       "error",
       {
