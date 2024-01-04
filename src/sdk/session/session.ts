@@ -1,4 +1,11 @@
-import jose, { FlattenedJWSInput, JWSHeaderParameters, KeyLike, RemoteJWKSetOptions } from 'jose';
+import {
+  FlattenedJWSInput,
+  JWSHeaderParameters,
+  KeyLike,
+  RemoteJWKSetOptions,
+  createRemoteJWKSet,
+  jwtVerify,
+} from 'jose';
 import User from './user';
 
 export default class Session {
@@ -29,7 +36,10 @@ export default class Session {
       };
     })();
 
-    this.#jwks = jose.createRemoteJWKSet(jwkSetUrl, joseOptions);
+    this.#jwks = createRemoteJWKSet(jwkSetUrl, joseOptions);
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const ignore = this.#shortSessionCookieName;
   }
 
   async ValidateShortSessionValue(shortSession: string): Promise<User> {
@@ -43,7 +53,7 @@ export default class Session {
       options = Object.assign(options, { issuer: this.#issuer });
     }
 
-    const { payload } = await jose.jwtVerify(shortSession, this.#jwks, options);
+    const { payload } = await jwtVerify(shortSession, this.#jwks, options);
 
     let issuerValid = false;
     if (payload.iss === this.#issuer) {

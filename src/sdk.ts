@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosBasicCredentials, AxiosHeaderValue } from 'axios';
+import axios, { AxiosInstance, AxiosBasicCredentials } from 'axios';
 import { Config } from './config';
 import AuthToken from './sdk/authToken/authToken';
 import Validation from './sdk/validation/validation';
