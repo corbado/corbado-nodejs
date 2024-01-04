@@ -2,59 +2,99 @@
   "name": "@corbado/node-sdk",
   "version": "2.0.0",
   "description": "This Node.js SDK eases the integration of Corbado's passkey-first authentication solution.",
-  "module": "src/sdk.ts",
-  "type": "module",
-  "main": "lib/sdk.js",
-  "files": [
-    "lib/"
-  ],
-  "scripts": {
-    "generate-openapi": "node scripts/generate-open-api.js",
-    "test": "mocha --reporter spec",
-    "build": "tsc && sed -i \"s/process\\.env\\.npm_package_version/'$npm_package_version'/gI\" lib/sdk.js",
-    "test2": "echo $npm_package_version",
-    "lint": "eslint --ext .js,.ts ",
-    "format": "eslint src/**/*.ts --fix"
-  },
-  "exports": {
-    ".": {
-      "import": "./src/index.js",
-      "require": "./dist/cjs/index.js"
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/corbado/corbado-nodejs.git"
-  },
   "keywords": [
     "passkeys",
     "authentication",
     "webhooks",
     "fido2"
   ],
-  "author": "Corbado",
-  "license": "MIT",
+  "homepage": "https://github.com/corbado/corbado-nodejs#readme",
   "bugs": {
     "url": "https://github.com/corbado/corbado-nodejs/issues"
   },
-  "homepage": "https://github.com/corbado/corbado-nodejs#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/corbado/corbado-nodejs.git"
+  },
+  "license": "MIT",
+  "author": "Corbado",
+  "type": "module",
+  "exports": {
+    "import": "./esm/index.js",
+    "require": "./cjs/index.js"
+  },
+  "main": "cjs/index.js",
+  "module": "src/index.js",
+  "scripts": {
+    "generate-openapi": "make openapi_generate",
+    "prepublishOnly": "make build",
+    "test": "make test",
+    "lint": "make lint",
+    "fix": "make fix",
+    "tsc": "tsc",
+    "start": "make start"
+  },
   "dependencies": {
     "@openapitools/openapi-generator-cli": "^2.7.0",
     "assert": "^2.1.0",
     "axios": "^1.6.2",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
     "jose": "^5.1.3",
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.1.0",
     "typescript": "^5.3.3"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/mocha": "^10.0.6",
     "@types/node": "^20.10.4",
+    "@types/node-fetch": "^2.6.10",
+    "@types/sinon": "^17.0.2",
     "@typescript-eslint/eslint-plugin": "^6.17.0",
     "@typescript-eslint/parser": "^6.17.0",
+    "chai": "^5.0.0",
+    "dotenv": "^16.3.1",
     "eslint": "^8.56.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.1.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-prettier": "^5.1.2",
-    "prettier": "^3.1.1"
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0",
+    "prettier": "^3.1.1",
+    "sinon": "^17.0.1",
+    "ts-node": "^10.9.2"
+  },
+  "engines": {
+    "node": ">=16.1"
+  },
+  "files": [
+    "package.json",
+    "README.md",
+    "esm",
+    "cjs",
+    "LICENSE",
+    "src"
+  ],
+  "mocha": {
+    "require": [
+      "./test/polyfills.mjs"
+    ],
+    "loader": [
+      "ts-node/esm"
+    ],
+    "recursive": true,
+    "extension": [
+      "ts",
+      "js",
+      "tsx"
+    ]
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ]
   }
 }
