@@ -2,16 +2,22 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Corbado NodeJS",
   "compilerOptions": {
-    "lib": ["es2022"],
-    "module": "commonjs",
-    "target": "es2022",
+    "lib": ["DOM", "ES2020"],
+    "module": "esnext",
+    "target": "es2020",
+
     "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "outDir": "lib",
+    "noFallthroughCasesInSwitch": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "outDir": "esm",
+    "baseUrl": ".",
+    "paths": {
+      "*": ["src/types/*"]
+    },
+
     "declaration": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "/tests/**/*"]
+  "include": ["src/**/*"]
 }
