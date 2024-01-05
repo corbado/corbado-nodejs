@@ -1,9 +1,9 @@
 import axios, { AxiosInstance, AxiosBasicCredentials } from 'axios';
 import { Config } from './config';
-import AuthToken from './sdk/authToken/authToken';
+import AuthToken from './services/authTokenService';
 import Validation from './sdk/validation/validation';
 import User from './sdk/user/user';
-import Session from './services/session';
+import Session from './services/sessionService';
 import EmailLink from './sdk/emailLink/emailLink';
 
 export default class SDK {

@@ -19,6 +19,7 @@ const customErrorCodes: Record<string, HttpStatusCode> = {
   EMPTY_STRING: { description: 'Provided string is empty', code: 1003, isOperational: false },
   INVALID_DATA: { description: 'Provided data is invalid', code: 1004, isOperational: false },
   INVALID_KEY: { description: 'Provided key not found in set', code: 1005, isOperational: false },
+  STRINGIFY_FAILURE: { description: 'JSON stringify failed', code: 1006, isOperational: false },
 };
 
 const httpStatusCodes = { ...standardStatusCodes, ...customErrorCodes };
