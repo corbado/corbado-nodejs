@@ -1,5 +1,6 @@
 GEN_DIR := ./.gen
-TARGET_DIR := src/generated
+# TARGET_DIR := src/generated
+TARGET_DIR := src/sdk/entity/api
 OPENAPI_SPEC_URL := https://api.corbado.com/docs/api/openapi/backend_api_public.yml
 OPENAPI_IMAGE := openapitools/openapi-generator-cli
 SOURCE_FILES := $(shell find src/ -type f -name '*.ts')
@@ -28,16 +29,28 @@ watch:
 .PHONY:start
 start: build
 
+# .PHONY: openapi_generate
+# openapi_generate:
+# 	@echo "Generating OpenAPI code..."
+# 	@mkdir -p $(GEN_DIR) $(TARGET_DIR)
+# 	@curl -s -o $(GEN_DIR)/backend_api_public.yml $(OPENAPI_SPEC_URL)
+# 	@docker pull $(OPENAPI_IMAGE)
+# 	@docker run -v $(GEN_DIR):/local $(OPENAPI_IMAGE) generate -i /local/backend_api_public.yml -g nodejs-express-server -o /local --additional-properties=invokerPackage=Corbado\\Generated
+# 	@cp -r $(GEN_DIR)/* $(TARGET_DIR)
+# 	@rm -rf $(GEN_DIR)
+# 	@echo "OpenAPI code generation done!"
+
 .PHONY: openapi_generate
 openapi_generate:
-	@echo "Generating OpenAPI code..."
+	@echo "Generating OpenAPI TypeScript Axios code..."
 	@mkdir -p $(GEN_DIR) $(TARGET_DIR)
 	@curl -s -o $(GEN_DIR)/backend_api_public.yml $(OPENAPI_SPEC_URL)
-	@docker pull $(OPENAPI_IMAGE)
-	@docker run -v $(GEN_DIR):/local $(OPENAPI_IMAGE) generate -i /local/backend_api_public.yml -g nodejs-express-server -o /local --additional-properties=invokerPackage=Corbado\\Generated
+	@docker pull openapitools/openapi-generator-cli
+	@docker run -v $(GEN_DIR):/local openapitools/openapi-generator-cli generate -g typescript-axios -i /local/backend_api_public.yml -o /local --additional-properties=invokerPackage=Corbado\\Generated
 	@cp -r $(GEN_DIR)/* $(TARGET_DIR)
 	@rm -rf $(GEN_DIR)
-	@echo "OpenAPI code generation done!"
+	@echo "OpenAPI TypeScript Axios code generation done!"
+
 
 .PHONY:clean
 clean:

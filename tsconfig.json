@@ -14,7 +14,7 @@
     "outDir": "esm",
     "baseUrl": ".",
     "paths": {
-      "*": ["src/types/*"]
+      "src/*": ["src/*"]
     },
 
     "declaration": true

@@ -1,5 +1,5 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
-import { AuthTokensApi, AuthTokenValidateReq, AuthTokenValidateRsp } from '../entity/api';
+import { AuthTokensApi, AuthTokenValidateReq, AuthTokenValidateRsp } from '../../generated';
 
 export default class AuthToken {
   #api: AuthTokensApi;

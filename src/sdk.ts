@@ -3,7 +3,7 @@ import { Config } from './config';
 import AuthToken from './sdk/authToken/authToken';
 import Validation from './sdk/validation/validation';
 import User from './sdk/user/user';
-import Session from './sdk/session/session';
+import Session from './services/session';
 import EmailLink from './sdk/emailLink/emailLink';
 
 export default class SDK {

@@ -6,7 +6,7 @@ import {
   EmailLinksValidateReq,
   EmailLinkValidateRsp,
   EmailMagicLinksApi,
-} from '../entity/api';
+} from '../../generated';
 
 export default class EmailLink {
   #api: EmailMagicLinksApi;

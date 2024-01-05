@@ -1,4 +1,7 @@
-class UserEntity {
+import BaseError from 'src/exceptions/baseError';
+import httpStatusCodes from 'src/exceptions/httpStatusCodes';
+
+class User {
   constructor(
     private authenticated: boolean,
     private id: string = '',
@@ -9,7 +12,12 @@ class UserEntity {
 
   private ensureAuthenticated(): void {
     if (!this.authenticated) {
-      throw new Error('User is not authenticated');
+      throw new BaseError(
+        'Not Authenticated',
+        httpStatusCodes.USER_NOT_AUTHENTICATED.code,
+        httpStatusCodes.USER_NOT_AUTHENTICATED.description,
+        httpStatusCodes.USER_NOT_AUTHENTICATED.isOperational,
+      );
     }
   }
 
@@ -38,4 +46,4 @@ class UserEntity {
   }
 }
 
-export default UserEntity;
+export default User;

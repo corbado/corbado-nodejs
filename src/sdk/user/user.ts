@@ -1,5 +1,5 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
-import { UserApi, UserListRsp, UserUpdateReq, UserUpdateRsp } from '../entity/api';
+import { UserApi, UserListRsp, UserUpdateReq, UserUpdateRsp } from '../../generated';
 
 export default class User {
   #api: UserApi;

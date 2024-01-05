@@ -6,7 +6,7 @@ import {
   createRemoteJWKSet,
   jwtVerify,
 } from 'jose';
-import User from './user';
+import User from '../entities/user';
 
 export default class Session {
   #shortSessionCookieName: string;

@@ -5,7 +5,7 @@ import {
   ValidatePhoneNumberReq,
   ValidatePhoneNumberRsp,
   ValidationApi,
-} from '../entity/api';
+} from '../../generated';
 
 export default class Validation {
   #api: ValidationApi;
