@@ -30,8 +30,7 @@
           "multiline": true
         },
         "ImportDeclaration": {
-          "multiline": true,
-          "minProperties": 5
+          "multiline": true
         },
         "ExportDeclaration": {
           "multiline": true,

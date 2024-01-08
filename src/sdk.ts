@@ -4,7 +4,7 @@ import AuthToken from './services/authTokenService';
 import Validation from './sdk/validation/validation';
 import User from './sdk/user/user';
 import Session from './services/sessionService';
-import EmailLink from './sdk/emailLink/emailLink';
+import EmailLink from './services/emailLinkService';
 
 export default class SDK {
   #authToken: AuthToken;
