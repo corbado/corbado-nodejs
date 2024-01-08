@@ -1,7 +1,8 @@
-import { BaseError, ServerError } from 'src/exceptions';
+import { BaseError, ServerError } from 'src/errors';
 // import { RequestData, GenericRsp } from './YourTypeDefinitions'; // Adjust the import path
-import { RequestData, ServerErrorType } from 'src/exceptions/serverError';
+import { RequestData, ServerErrorType } from 'src/errors/serverError';
 import { GenericRsp } from 'src/generated';
+import httpStatusCodes from 'src/errors/httpStatusCodes';
 import Assert from './assert'; // Assuming you have an Assert utility
 
 export type ErrorWithBody = {
@@ -48,7 +49,12 @@ class Helper {
     const error = errorObj as ErrorWithBody;
     const body = error.getResponseBody ? error.getResponseBody() : '';
     if (typeof body !== 'string') {
-      throw new BaseError('ApiResponseError', 500, 'Response body is not a string', true);
+      throw new BaseError(
+        'ApiResponseError',
+        httpStatusCodes.API_RESPONSE_ERROR.code,
+        httpStatusCodes.API_RESPONSE_ERROR.description,
+        httpStatusCodes.API_RESPONSE_ERROR.isOperational,
+      );
     }
 
     const data = Helper.jsonDecode(body);

@@ -1,5 +1,6 @@
-import BaseError from 'src/exceptions/baseError';
-import httpStatusCodes from 'src/exceptions/httpStatusCodes';
+import BaseError from 'src/errors/baseError';
+import httpStatusCodes from 'src/errors/httpStatusCodes';
+import { ErrorRsp } from 'src/generated';
 
 const { NULL_DATA, EMPTY_STRING, INVALID_DATA, INVALID_KEY } = httpStatusCodes;
 
@@ -28,6 +29,10 @@ class Assert {
       validate(!(key in data), INVALID_KEY.code, INVALID_KEY.description, INVALID_KEY.isOperational);
     });
   }
+}
+
+export function isErrorRsp(obj: unknown): obj is ErrorRsp {
+  return typeof obj === 'object' && obj !== null && 'error' in obj && typeof (obj as ErrorRsp).error === 'string';
 }
 
 export default Assert;
