@@ -1,15 +1,15 @@
-import { AxiosInstance, AxiosResponse } from 'axios';
-import Assert from 'src/heplers/assert';
+import { AxiosInstance } from 'axios';
+import Assert, { isErrorRsp } from 'src/heplers/assert';
 import Helper from 'src/heplers/helpers';
-import { ErrorRsp } from 'src/generated/api';
-import { BaseError } from 'src/exceptions';
+import { BaseError } from 'src/errors';
+import httpStatusCodes from 'src/errors/httpStatusCodes';
 import { AuthTokensApi, AuthTokenValidateReq, AuthTokenValidateRsp } from '../generated';
 
-function isErrorRsp(obj: unknown): obj is ErrorRsp {
-  return typeof obj === 'object' && obj !== null && 'error' in obj && typeof (obj as ErrorRsp).error === 'string';
+interface AuthTokenInterface {
+  validate(req: AuthTokenValidateReq): Promise<AuthTokenValidateRsp>;
 }
 
-class AuthToken {
+class AuthToken implements AuthTokenInterface {
   #api: AuthTokensApi;
 
   constructor(axios: AxiosInstance) {
@@ -17,24 +17,34 @@ class AuthToken {
     this.#api = new AuthTokensApi(undefined, '', axios);
   }
 
-  async validate(req: AuthTokenValidateReq): Promise<AxiosResponse<AuthTokenValidateRsp>> {
+  async validate(req: AuthTokenValidateReq): Promise<AuthTokenValidateRsp> {
     Assert.notNull(req);
-    let response;
 
     try {
-      response = await this.#api.authTokenValidate(req);
+      const validateRsp = await this.#api.authTokenValidate(req);
+      const response = validateRsp.data;
+
+      if (isErrorRsp(response)) {
+        throw new BaseError(
+          'ErrorRsp',
+          httpStatusCodes.AUTH_RSP_ERROR.code,
+          httpStatusCodes.AUTH_RSP_ERROR.description,
+          httpStatusCodes.AUTH_RSP_ERROR.isOperational,
+        );
+      }
+
+      return response;
     } catch (error) {
       if (error instanceof Error) {
         throw Helper.convertToServerException(error);
       }
-      throw new BaseError('Unknown auth token error', 500, 'Unknown auth error response received', true);
+      throw new BaseError(
+        'Unknown auth token error',
+        httpStatusCodes.AUTH_TOKEN_ERROR.code,
+        httpStatusCodes.AUTH_TOKEN_ERROR.description,
+        httpStatusCodes.AUTH_TOKEN_ERROR.isOperational,
+      );
     }
-
-    if (isErrorRsp(response)) {
-      throw new BaseError('ErrorRsp', 500, 'Error response received', true);
-    }
-
-    return response;
   }
 }
 

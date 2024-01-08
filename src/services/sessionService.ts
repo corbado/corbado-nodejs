@@ -6,9 +6,15 @@ import {
   createRemoteJWKSet,
   jwtVerify,
 } from 'jose';
+import { BaseError } from 'src/errors';
+import httpStatusCodes from 'src/errors/httpStatusCodes';
 import User from '../entities/user';
 
-export default class Session {
+interface SessionInterface {
+  validateShortSessionValue(shortSession: string): Promise<User>;
+}
+
+class Session implements SessionInterface {
   #shortSessionCookieName: string;
 
   #issuer: string;
@@ -42,7 +48,7 @@ export default class Session {
     const ignore = this.#shortSessionCookieName;
   }
 
-  async ValidateShortSessionValue(shortSession: string): Promise<User> {
+  async validateShortSessionValue(shortSession: string): Promise<User> {
     if (shortSession === '' || shortSession === undefined) {
       return this.createAnonymousUser();
     }
@@ -59,7 +65,12 @@ export default class Session {
     if (payload.iss === this.#issuer) {
       issuerValid = true;
     } else {
-      throw new Error(`Mismatch in issuer (configured through Frontend API: "${this.#issuer}", JWT: "${payload.iss})`);
+      throw new BaseError(
+        'Issuer mismatch',
+        httpStatusCodes.ISSUER_MISMATCH_ERROR.code,
+        `Mismatch in issuer (configured through Frontend API: "${this.#issuer}", JWT: "${payload.iss})`,
+        httpStatusCodes.ISSUER_MISMATCH_ERROR.isOperational,
+      );
     }
 
     if (issuerValid) {
@@ -79,3 +90,5 @@ export default class Session {
     return new User(false, '', '', '', '');
   }
 }
+
+export default Session;
