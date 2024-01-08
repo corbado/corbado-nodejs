@@ -25,17 +25,70 @@ function validateAPISecret(apiSecret: string): void {
   }
 }
 
-export function ConfigFactory(projectID: string, apiSecret: string): Config {
+function ConfigFactory(projectID: string, apiSecret: string): Config {
   validateProjectID(projectID);
   validateAPISecret(apiSecret);
 
   return {
     ProjectID: projectID,
     APISecret: apiSecret,
-    BackendAPI: DefaultBackendAPI,
     FrontendAPI: DefaultFrontendAPI.replace('[projectID]', projectID),
+    BackendAPI: DefaultBackendAPI,
     ShortSessionCookieName: DefaultShortSessionCookieName,
     CacheMaxAge: DefaultCacheMaxAge,
     JWTIssuer: '',
   };
 }
+
+// class ConfigFactory {
+//   ProjectID: string;
+
+//   APISecret: string;
+
+//   FrontendAPI: string;
+
+//   BackendAPI: string = DefaultBackendAPI;
+
+//   ShortSessionCookieName: string = DefaultShortSessionCookieName;
+
+//   CacheMaxAge: number = DefaultCacheMaxAge;
+
+//   JWTIssuer: string = '';
+
+//   // private httpClient?: ClientInterface;
+
+//   // private jwksCachePool?: CacheItemPoolInterface;
+
+//   constructor(projectID: string, apiSecret: string) {
+//     validateProjectID(projectID);
+//     validateAPISecret(apiSecret);
+
+//     this.ProjectID = projectID;
+//     this.APISecret = apiSecret;
+//     this.FrontendAPI = DefaultFrontendAPI.replace('[projectID]', projectID);
+//   }
+
+//   // Getters and Setters for httpClient and jwksCachePool if needed
+
+//   // setHttpClient(httpClient: ClientInterface): this {
+//   //   this.httpClient = httpClient;
+//   //   return this;
+//   // }
+
+//   // setJwksCachePool(jwksCachePool: CacheItemPoolInterface): this {
+//   //   this.jwksCachePool = jwksCachePool;
+//   //   return this;
+//   // }
+
+//   // getHttpClient(): ClientInterface | undefined {
+//   //   return this.httpClient;
+//   // }
+
+//   // getJwksCachePool(): CacheItemPoolInterface | undefined {
+//   //   return this.jwksCachePool;
+//   // }
+
+//   // Additional methods if needed
+// }
+
+export default ConfigFactory;

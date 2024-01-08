@@ -12,7 +12,7 @@ class BaseError extends Error {
     this.statusCode = statusCode;
     this.isOperational = isOperational;
 
-    // We're attaching a stack trace to the error object. V8 finds it useful.
+    // We're attaching a stack trace to the error object. Certain engines like V8 finds it useful.
     if (typeof Error.captureStackTrace === 'function') {
       Error.captureStackTrace(this, this.constructor);
     }

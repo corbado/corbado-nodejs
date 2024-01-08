@@ -10,16 +10,21 @@ import { BaseError } from 'src/errors';
 import httpStatusCodes from 'src/errors/httpStatusCodes';
 import User from '../entities/user';
 
-interface SessionInterface {
+export interface SessionInterface {
   validateShortSessionValue(shortSession: string): Promise<User>;
 }
 
 class Session implements SessionInterface {
-  #shortSessionCookieName: string;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // TODO: Consider removing this because it is not used
+  private shortSessionCookieName: string;
 
-  #issuer: string;
+  private issuer: string;
 
-  #jwks: (protectedHeader?: JWSHeaderParameters | undefined, token?: FlattenedJWSInput | undefined) => Promise<KeyLike>;
+  private jwks: (
+    protectedHeader?: JWSHeaderParameters | undefined,
+    token?: FlattenedJWSInput | undefined,
+  ) => Promise<KeyLike>;
 
   constructor(
     version: string,
@@ -29,8 +34,8 @@ class Session implements SessionInterface {
     issuer: string,
     cacheMaxAge: number,
   ) {
-    this.#shortSessionCookieName = shortSessionCookieName;
-    this.#issuer = issuer;
+    this.shortSessionCookieName = shortSessionCookieName;
+    this.issuer = issuer;
 
     const jwkSetUrl = new URL(`${frontendAPI}/.well-known/jwks`);
     const joseOptions = new (class implements RemoteJWKSetOptions {
@@ -42,10 +47,7 @@ class Session implements SessionInterface {
       };
     })();
 
-    this.#jwks = createRemoteJWKSet(jwkSetUrl, joseOptions);
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const ignore = this.#shortSessionCookieName;
+    this.jwks = createRemoteJWKSet(jwkSetUrl, joseOptions);
   }
 
   async validateShortSessionValue(shortSession: string): Promise<User> {
@@ -55,20 +57,20 @@ class Session implements SessionInterface {
 
     let options = {};
 
-    if (this.#issuer !== '') {
-      options = Object.assign(options, { issuer: this.#issuer });
+    if (this.issuer !== '') {
+      options = Object.assign(options, { issuer: this.issuer });
     }
 
-    const { payload } = await jwtVerify(shortSession, this.#jwks, options);
+    const { payload } = await jwtVerify(shortSession, this.jwks, options);
 
     let issuerValid = false;
-    if (payload.iss === this.#issuer) {
+    if (payload.iss === this.issuer) {
       issuerValid = true;
     } else {
       throw new BaseError(
         'Issuer mismatch',
         httpStatusCodes.ISSUER_MISMATCH_ERROR.code,
-        `Mismatch in issuer (configured through Frontend API: "${this.#issuer}", JWT: "${payload.iss})`,
+        `Mismatch in issuer (configured through Frontend API: "${this.issuer}", JWT: "${payload.iss})`,
         httpStatusCodes.ISSUER_MISMATCH_ERROR.isOperational,
       );
     }

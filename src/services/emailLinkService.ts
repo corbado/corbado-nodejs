@@ -12,25 +12,25 @@ import {
   EmailMagicLinksApi,
 } from '../generated';
 
-interface EmailLinkInterface {
+export interface EmailLinkInterface {
   send(req: EmailLinkSendReq): Promise<EmailLinkSendRsp>;
   validate(emailLinkID: string, req: EmailLinksValidateReq): Promise<EmailLinkValidateRsp>;
   get(emailLinkID: string): Promise<EmailLinkGetRsp>;
 }
 
 class EmailLink implements EmailLinkInterface {
-  #api: EmailMagicLinksApi;
+  private client: EmailMagicLinksApi;
 
   constructor(axios: AxiosInstance) {
     Assert.notNull(axios);
-    this.#api = new EmailMagicLinksApi(undefined, '', axios);
+    this.client = new EmailMagicLinksApi(undefined, '', axios);
   }
 
   async send(req: EmailLinkSendReq): Promise<EmailLinkSendRsp> {
     Assert.notNull(req);
 
     try {
-      const sendRsp = await this.#api.emailLinkSend(req);
+      const sendRsp = await this.client.emailLinkSend(req);
       const sendResponse = sendRsp.data;
       return sendResponse;
     } catch (error) {
@@ -43,7 +43,7 @@ class EmailLink implements EmailLinkInterface {
     Assert.notNull(req);
 
     try {
-      const validationRsp = await this.#api.emailLinkValidate(emailLinkID, req);
+      const validationRsp = await this.client.emailLinkValidate(emailLinkID, req);
       const validationResponse = validationRsp.data;
 
       if (isErrorRsp(validationResponse)) {
@@ -65,7 +65,7 @@ class EmailLink implements EmailLinkInterface {
     Assert.notEmptyString(emailLinkID);
 
     try {
-      const getEmailRsp = await this.#api.emailLinkGet(emailLinkID);
+      const getEmailRsp = await this.client.emailLinkGet(emailLinkID);
       const getEmailResponse = getEmailRsp.data;
       return getEmailResponse;
     } catch (error) {

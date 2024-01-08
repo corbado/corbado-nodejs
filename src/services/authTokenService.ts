@@ -5,23 +5,23 @@ import { BaseError } from 'src/errors';
 import httpStatusCodes from 'src/errors/httpStatusCodes';
 import { AuthTokensApi, AuthTokenValidateReq, AuthTokenValidateRsp } from '../generated';
 
-interface AuthTokenInterface {
+export interface AuthTokenInterface {
   validate(req: AuthTokenValidateReq): Promise<AuthTokenValidateRsp>;
 }
 
 class AuthToken implements AuthTokenInterface {
-  #api: AuthTokensApi;
+  private client: AuthTokensApi;
 
   constructor(axios: AxiosInstance) {
     Assert.notNull(axios);
-    this.#api = new AuthTokensApi(undefined, '', axios);
+    this.client = new AuthTokensApi(undefined, '', axios);
   }
 
   async validate(req: AuthTokenValidateReq): Promise<AuthTokenValidateRsp> {
     Assert.notNull(req);
 
     try {
-      const validateRsp = await this.#api.authTokenValidate(req);
+      const validateRsp = await this.client.authTokenValidate(req);
       const response = validateRsp.data;
 
       if (isErrorRsp(response)) {

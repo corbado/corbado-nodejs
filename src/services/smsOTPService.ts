@@ -2,19 +2,20 @@ import httpStatusCodes from 'src/errors/httpStatusCodes';
 import { BaseError } from 'src/errors';
 import Assert, { isErrorRsp } from 'src/heplers/assert';
 import Helper from 'src/heplers/helpers';
+import { AxiosInstance } from 'axios';
 import { SmsCodeSendReq, SmsCodeSendRsp, SmsCodeValidateReq, SmsCodeValidateRsp, SMSOTPApi } from '../generated';
 
-interface SmsOTPInterface {
+export interface SmsOTPInterface {
   send(req: SmsCodeSendReq): Promise<SmsCodeSendRsp>;
   validate(id: string, req: SmsCodeValidateReq): Promise<SmsCodeValidateRsp>;
 }
 
-class SmsOTPService implements SmsOTPInterface {
+class SmsOTP implements SmsOTPInterface {
   private client: SMSOTPApi;
 
-  constructor(client: SMSOTPApi) {
-    Assert.notNull(client);
-    this.client = client;
+  constructor(axios: AxiosInstance) {
+    Assert.notNull(axios);
+    this.client = new SMSOTPApi(undefined, '', axios);
   }
 
   async send(req: SmsCodeSendReq): Promise<SmsCodeSendRsp> {
@@ -63,4 +64,4 @@ class SmsOTPService implements SmsOTPInterface {
   }
 }
 
-export default SmsOTPService;
+export default SmsOTP;

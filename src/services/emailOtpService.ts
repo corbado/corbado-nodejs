@@ -2,6 +2,7 @@ import { BaseError } from 'src/errors';
 import Assert, { isErrorRsp } from 'src/heplers/assert';
 import Helper from 'src/heplers/helpers';
 import httpStatusCodes from 'src/errors/httpStatusCodes';
+import { AxiosInstance } from 'axios';
 import {
   EmailCodeSendReq,
   EmailCodeSendRsp,
@@ -10,17 +11,17 @@ import {
   EmailOTPApi,
 } from '../generated';
 
-interface EmailOTPInterface {
+export interface EmailOTPInterface {
   send(req: EmailCodeSendReq): Promise<EmailCodeSendRsp>;
   validate(id: string, req: EmailCodeValidateReq): Promise<EmailCodeValidateRsp>;
 }
 
-class EmailOTPService implements EmailOTPInterface {
+class EmailOTP implements EmailOTPInterface {
   private client: EmailOTPApi;
 
-  constructor(client: EmailOTPApi) {
-    Assert.notNull(client);
-    this.client = client;
+  constructor(axios: AxiosInstance) {
+    Assert.notNull(axios);
+    this.client = new EmailOTPApi(undefined, '', axios);
   }
 
   async send(req: EmailCodeSendReq): Promise<EmailCodeSendRsp> {
@@ -51,7 +52,7 @@ class EmailOTPService implements EmailOTPInterface {
 
     try {
       const response = await this.client.emailCodeValidate(id, req);
-      const rsp = response.data; // Extract the data property from Axios
+      const rsp = response.data;
 
       if (isErrorRsp(rsp)) {
         throw new BaseError(
@@ -69,4 +70,4 @@ class EmailOTPService implements EmailOTPInterface {
   }
 }
 
-export default EmailOTPService;
+export default EmailOTP;

@@ -1,28 +1,31 @@
 import axios, { AxiosInstance, AxiosBasicCredentials } from 'axios';
 import { Config } from './config';
+import { EmailLink, EmailOTP, Session, SmsOTP, User, Validation } from './services';
 import AuthToken from './services/authTokenService';
-import Validation from './sdk/validation/validation';
-import User from './sdk/user/user';
-import Session from './services/sessionService';
-import EmailLink from './services/emailLinkService';
 
-export default class SDK {
-  #authToken: AuthToken;
+class SDK {
+  private authToken: AuthToken;
 
-  #emailLink: EmailLink;
+  private emailLink: EmailLink;
 
-  #session: Session;
+  private emailOTP: EmailOTP;
 
-  #user: User;
+  private session: Session;
 
-  #validation: Validation;
+  private smsOTP: SmsOTP;
+
+  private user: User;
+
+  private validation: Validation;
 
   constructor(config: Config) {
-    this.#emailLink = new EmailLink(this.#createClient(config));
+    this.authToken = new AuthToken(SDK.createClient(config));
 
-    this.#authToken = new AuthToken(this.#createClient(config));
+    this.emailLink = new EmailLink(SDK.createClient(config));
 
-    this.#session = new Session(
+    this.emailOTP = new EmailOTP(SDK.createClient(config));
+
+    this.session = new Session(
       process.env.npm_package_version as string,
       config.ProjectID,
       config.FrontendAPI,
@@ -30,12 +33,15 @@ export default class SDK {
       config.JWTIssuer,
       config.CacheMaxAge,
     );
-    this.#user = new User(this.#createClient(config));
 
-    this.#validation = new Validation(this.#createClient(config));
+    this.smsOTP = new SmsOTP(SDK.createClient(config));
+
+    this.user = new User(SDK.createClient(config));
+
+    this.validation = new Validation(SDK.createClient(config));
   }
 
-  #createClient(config: Config): AxiosInstance {
+  static createClient(config: Config): AxiosInstance {
     const instance = axios.create();
     instance.defaults.auth = new (class implements AxiosBasicCredentials {
       password: string = config.APISecret;
@@ -53,23 +59,33 @@ export default class SDK {
     return instance;
   }
 
-  get authTokens(): AuthToken {
-    return this.#authToken;
+  authTokens(): AuthToken {
+    return this.authToken;
   }
 
-  get emailLinks(): EmailLink {
-    return this.#emailLink;
+  emailLinks(): EmailLink {
+    return this.emailLink;
   }
 
-  get sessions(): Session {
-    return this.#session;
+  emailOtp(): EmailOTP {
+    return this.emailOTP;
   }
 
-  get users(): User {
-    return this.#user;
+  sessions(): Session {
+    return this.session;
   }
 
-  get validations(): Validation {
-    return this.#validation;
+  smsOtp(): SmsOTP {
+    return this.smsOTP;
+  }
+
+  getusers(): User {
+    return this.user;
+  }
+
+  validations(): Validation {
+    return this.validation;
   }
 }
+
+export default SDK;

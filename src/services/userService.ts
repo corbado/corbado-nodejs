@@ -2,6 +2,7 @@ import httpStatusCodes from 'src/errors/httpStatusCodes';
 import { BaseError } from 'src/errors';
 import Assert, { isErrorRsp } from 'src/heplers/assert';
 import Helper from 'src/heplers/helpers';
+import { AxiosInstance } from 'axios';
 import {
   GenericRsp,
   UserApi,
@@ -12,7 +13,7 @@ import {
   UserListRsp,
 } from '../generated';
 
-interface UserInterface {
+export interface UserInterface {
   create(req: UserCreateReq): Promise<UserCreateRsp>;
   delete(id: string, req: UserDeleteReq): Promise<GenericRsp>;
   get(id: string, remoteAddr?: string, userAgent?: string): Promise<UserGetRsp>;
@@ -26,12 +27,12 @@ interface UserInterface {
   ): Promise<UserListRsp>;
 }
 
-class UserService implements UserInterface {
+class User implements UserInterface {
   private client: UserApi;
 
-  constructor(client: UserApi) {
-    Assert.notNull(client);
-    this.client = client;
+  constructor(axios: AxiosInstance) {
+    Assert.notNull(axios);
+    this.client = new UserApi(undefined, '', axios);
   }
 
   async create(req: UserCreateReq): Promise<UserCreateRsp> {
@@ -79,8 +80,6 @@ class UserService implements UserInterface {
     }
   }
 
-  // Similarly implement 'get' and 'list' methods
-
   async get(id: string, remoteAddr = '', userAgent = ''): Promise<UserGetRsp> {
     Assert.notEmptyString(id);
 
@@ -124,4 +123,4 @@ class UserService implements UserInterface {
   }
 }
 
-export default UserService;
+export default User;

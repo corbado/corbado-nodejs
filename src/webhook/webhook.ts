@@ -3,14 +3,17 @@ import { BaseError } from 'src/errors';
 import httpStatusCodes from 'src/errors/httpStatusCodes';
 import Assert from 'src/heplers/assert';
 import Helper from 'src/heplers/helpers';
-import AuthMethodsRequest from './entities/authMethodsRequest';
-import AuthMethodsDataRequest from './entities/authMethodsDataRequest';
-import { AuthMethodsDataResponse, AuthMethodsDataResponseStatusEnum } from './entities/authMethodsDataResponse';
-import AuthMethodsResponse from './entities/authMethodsResponse';
-import PasswordVerifyRequest from './entities/passwordVerifyRequest';
-import PasswordVerifyDataRequest from './entities/passwordVerifyDataRequest';
-import PasswordVerifyDataResponse from './entities/passwordVerifyDataResponse';
-import PasswordVerifyResponse from './entities/passwordVerifyResponse';
+import {
+  AuthMethodsRequest,
+  AuthMethodsDataRequest,
+  AuthMethodsDataResponse,
+  AuthMethodsResponse,
+  PasswordVerifyRequest,
+  PasswordVerifyDataRequest,
+  PasswordVerifyDataResponse,
+  PasswordVerifyResponse,
+} from './entities';
+import { AuthMethodsDataResponseStatusEnum } from './entities/authMethodsDataResponse';
 
 interface NestedBody {
   id: string;
