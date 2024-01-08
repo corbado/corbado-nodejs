@@ -6,6 +6,7 @@
     "esbenp.prettier-vscode",
 
     // Highly recommended
+    "jgclark.vscode-todo-highlight",
     "EditorConfig.editorconfig"
   ]
 }
