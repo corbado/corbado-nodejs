@@ -1,5 +1,5 @@
-import BaseError from 'src/exceptions/baseError';
-import httpStatusCodes from 'src/exceptions/httpStatusCodes';
+import BaseError from 'src/errors/baseError';
+import httpStatusCodes from 'src/errors/httpStatusCodes';
 
 class User {
   constructor(
