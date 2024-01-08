@@ -1,9 +1,8 @@
 import { BaseError, ServerError } from 'src/errors';
-// import { RequestData, GenericRsp } from './YourTypeDefinitions'; // Adjust the import path
-import { RequestData, ServerErrorType } from 'src/errors/serverError';
+import { ErrorDetails, RequestData, ServerErrorType } from 'src/errors/serverError';
 import { GenericRsp } from 'src/generated';
 import httpStatusCodes from 'src/errors/httpStatusCodes';
-import Assert from './assert'; // Assuming you have an Assert utility
+import Assert from './assert';
 
 export type ErrorWithBody = {
   getResponseBody?: () => string;
@@ -18,11 +17,11 @@ class Helper {
     return json;
   }
 
-  public static jsonDecode(data: string): ServerErrorType {
+  public static jsonDecode(data: string): Record<string, unknown> {
     Assert.notEmptyString(data);
 
     try {
-      return JSON.parse(data) as ServerErrorType;
+      return JSON.parse(data) as Record<string, unknown>;
     } catch (error) {
       throw new BaseError('JSONDecodeError', 500, 'json_decode() failed', true);
     }
@@ -57,7 +56,12 @@ class Helper {
       );
     }
 
-    const data = Helper.jsonDecode(body);
+    const data = Helper.jsonDecode(body) as {
+      httpStatusCode: number;
+      requestData: RequestData;
+      runtime: number;
+      error: ErrorDetails;
+    };
     return new ServerError(data.httpStatusCode, 'ServerError', data.requestData, data.runtime, data.error);
   }
 

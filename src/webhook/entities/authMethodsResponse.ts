@@ -1,9 +1,10 @@
+import { AuthMethodsDataResponseStatusEnum } from './authMethodsDataResponse';
 import CommonResponse from './commonResponse';
 
 class AuthMethodsResponse extends CommonResponse {
-  data: string;
+  data: AuthMethodsDataResponseStatusEnum;
 
-  constructor(data: string, responseId: string) {
+  constructor(data: AuthMethodsDataResponseStatusEnum, responseId: string) {
     super(responseId);
     this.data = data;
   }
