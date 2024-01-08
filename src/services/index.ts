@@ -2,7 +2,7 @@ import Authoken, { AuthTokenInterface } from './authTokenService';
 import EmailLink, { EmailLinkInterface } from './emailLinkService';
 import EmailOTP, { EmailOTPInterface } from './emailOtpService';
 import Session, { SessionInterface } from './sessionService';
-import SmsOTP, { SmsOTPInterface } from './smsOTPService';
+import SmsOTP, { SmsOTPInterface } from './smsOtpService';
 import User, { UserInterface } from './userService';
 import Validation, { ValidationInterface } from './validationService';
 

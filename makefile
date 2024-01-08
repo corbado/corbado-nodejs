@@ -1,6 +1,5 @@
 GEN_DIR := ./.gen
-# TARGET_DIR := src/generated
-TARGET_DIR := src/sdk/entity/api
+TARGET_DIR := src/generated
 OPENAPI_SPEC_URL := https://api.corbado.com/docs/api/openapi/backend_api_public.yml
 OPENAPI_IMAGE := openapitools/openapi-generator-cli
 SOURCE_FILES := $(shell find src/ -type f -name '*.ts')
