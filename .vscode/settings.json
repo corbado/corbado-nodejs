@@ -5,7 +5,7 @@
   // Formatting
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.codeActionsOnSave": ["source.fixAll.format", "source.fixAll.eslint"],
+  "editor.codeActionsOnSave": ["source.fixAll.format", "source.fixAll.eslint", "source.removeUnusedImports"],
 
   // Extension settings
   "npm.packageManager": "npm"
