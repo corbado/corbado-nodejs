@@ -1,47 +1,74 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+/* eslint-disable class-methods-use-this */
 const jose_1 = require("jose");
-const index_js_1 = require("../errors/index.js");
 const user_js_1 = require("../entities/user.js");
+const index_js_1 = require("../heplers/index.js");
+const MIN_TOKEN_LENGTH = 10;
 class Session {
-    constructor(version, projectID, frontendAPI, shortSessionCookieName, issuer, cacheMaxAge) {
+    constructor(jwksURI, shortSessionCookieName, issuer, cacheMaxAge) {
+        this.lastShortSessionValidationResult = '';
+        index_js_1.Assert.notEmptyString(shortSessionCookieName);
+        index_js_1.Assert.notEmptyString(issuer);
+        index_js_1.Assert.notEmptyString(jwksURI);
+        // this.client = client;
         this.shortSessionCookieName = shortSessionCookieName;
         this.issuer = issuer;
-        const jwkSetUrl = new URL(`${frontendAPI}/.well-known/jwks`);
-        const joseOptions = new (class {
-            constructor() {
-                this.cacheMaxAge = cacheMaxAge;
-                this.headers = {
-                    'X-Corbado-SDK-Version': version,
-                    'X-Corbado-ProjectID': projectID,
-                };
-            }
-        })();
-        this.jwks = (0, jose_1.createRemoteJWKSet)(jwkSetUrl, joseOptions);
+        this.jwksURI = jwksURI;
+        this.cacheMaxAge = cacheMaxAge;
     }
-    async validateShortSessionValue(shortSession) {
-        if (shortSession === '' || shortSession === undefined) {
-            return this.createAnonymousUser();
+    getShortSessionValue(req) {
+        return req.cookies?.[this.shortSessionCookieName] ?? this.extractBearerToken(req.headers.authorization);
+    }
+    async validateShortSessionValue(value) {
+        index_js_1.Assert.notEmptyString(value);
+        try {
+            const keySet = (0, jose_1.createRemoteJWKSet)(new URL(this.jwksURI));
+            const { payload } = await (0, jose_1.jwtVerify)(value, keySet);
+            if (payload.iss && payload.iss !== this.issuer) {
+                this.setIssuerMismatchError(payload.iss);
+                return null;
+            }
+            return payload;
         }
-        let options = {};
-        if (this.issuer !== '') {
-            options = Object.assign(options, { issuer: this.issuer });
+        catch (error) {
+            this.setValidationError(error);
+            return null;
         }
-        const { payload } = await (0, jose_1.jwtVerify)(shortSession, this.jwks, options);
-        let issuerValid = false;
-        if (payload.iss === this.issuer) {
-            issuerValid = true;
+    }
+    getLastShortSessionValidationResult() {
+        return this.lastShortSessionValidationResult;
+    }
+    async getCurrentUser(req) {
+        const value = this.getShortSessionValue(req);
+        if (value.length < MIN_TOKEN_LENGTH) {
+            return new user_js_1.default(false);
+        }
+        const decoded = await this.validateShortSessionValue(value);
+        if (decoded) {
+            return this.createUserFromDecodedValue(decoded);
+        }
+        return new user_js_1.default(false);
+    }
+    extractBearerToken(header) {
+        if (header?.startsWith('Bearer ')) {
+            return header.split(' ')[1];
+        }
+        return '';
+    }
+    setIssuerMismatchError(issuer) {
+        this.lastShortSessionValidationResult = `Mismatch in issuer (configured: ${this.issuer}, JWT: ${issuer})`;
+    }
+    setValidationError(error) {
+        if (error instanceof Error) {
+            this.lastShortSessionValidationResult = `JWT validation failed: ${error.message}`;
         }
         else {
-            throw new index_js_1.BaseError('Issuer mismatch', index_js_1.httpStatusCodes.ISSUER_MISMATCH_ERROR.code, `Mismatch in issuer (configured through Frontend API: "${this.issuer}", JWT: "${payload.iss})`, index_js_1.httpStatusCodes.ISSUER_MISMATCH_ERROR.isOperational);
+            this.lastShortSessionValidationResult = `JWT validation failed: ${error}`;
         }
-        if (issuerValid) {
-            return new user_js_1.default(true, payload.sub, payload.name, payload.email, payload.phoneNumber);
-        }
-        return this.createAnonymousUser();
     }
-    createAnonymousUser() {
-        return new user_js_1.default(false, '', '', '', '');
+    createUserFromDecodedValue(decoded) {
+        return new user_js_1.default(true, decoded.sub, decoded.name ?? '', decoded.email ?? '', decoded.phone_number ?? '');
     }
 }
 exports.default = Session;

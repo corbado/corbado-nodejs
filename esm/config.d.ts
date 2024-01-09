@@ -4,8 +4,8 @@ export interface ConfigInterface {
     FrontendAPI: string;
     BackendAPI: string;
     ShortSessionCookieName: string;
-    CacheMaxAge: number;
     JWTIssuer: string;
+    CacheMaxAge: number;
 }
 export declare const DefaultBackendAPI = "https://backendapi.blabla.io";
 export declare const DefaultFrontendAPI = "https://[projectID].frontendapi.blabla.io";

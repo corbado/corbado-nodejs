@@ -8,7 +8,7 @@ class SDK {
         this.authToken = new index_js_1.AuthToken(this.createClient(config));
         this.emailLink = new index_js_1.EmailLink(this.createClient(config));
         this.emailOTP = new index_js_1.EmailOTP(this.createClient(config));
-        this.session = new index_js_1.Session(process.env.npm_package_version, config.ProjectID, config.FrontendAPI, config.ShortSessionCookieName, config.JWTIssuer, config.CacheMaxAge);
+        this.session = new index_js_1.Session(config.FrontendAPI, config.ShortSessionCookieName, config.JWTIssuer, config.CacheMaxAge);
         this.smsOTP = new index_js_1.SmsOTP(this.createClient(config));
         this.user = new index_js_1.User(this.createClient(config));
         this.validation = new index_js_1.Validation(this.createClient(config));

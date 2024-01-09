@@ -6,7 +6,7 @@ class SDK {
         this.authToken = new AuthToken(this.createClient(config));
         this.emailLink = new EmailLink(this.createClient(config));
         this.emailOTP = new EmailOTP(this.createClient(config));
-        this.session = new Session(process.env.npm_package_version, config.ProjectID, config.FrontendAPI, config.ShortSessionCookieName, config.JWTIssuer, config.CacheMaxAge);
+        this.session = new Session(config.FrontendAPI, config.ShortSessionCookieName, config.JWTIssuer, config.CacheMaxAge);
         this.smsOTP = new SmsOTP(this.createClient(config));
         this.user = new User(this.createClient(config));
         this.validation = new Validation(this.createClient(config));

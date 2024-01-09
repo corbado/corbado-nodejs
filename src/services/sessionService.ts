@@ -1,94 +1,115 @@
-import {
-  FlattenedJWSInput,
-  JWSHeaderParameters,
-  KeyLike,
-  RemoteJWKSetOptions,
-  createRemoteJWKSet,
-  jwtVerify,
-} from 'jose';
-import { BaseError, httpStatusCodes } from '../errors/index.js';
+/* eslint-disable class-methods-use-this */
+import { JWTPayload, createRemoteJWKSet, jwtVerify } from 'jose';
+
+import { Request } from 'express';
 import User from '../entities/user.js';
+import { Assert } from '../heplers/index.js';
 
 export interface SessionInterface {
-  validateShortSessionValue(shortSession: string): Promise<User>;
+  validateShortSessionValue(shortSession: string): Promise<object | null>;
 }
 
+interface DecodedValue extends JWTPayload {
+  name?: string;
+  email?: string;
+  phone_number?: string;
+  sub?: string;
+}
+
+interface RequestWithCookies extends Request {
+  cookies: {
+    [key: string]: string;
+  };
+}
+
+const MIN_TOKEN_LENGTH = 10;
+
 class Session implements SessionInterface {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // TODO: Consider removing this because it is not used
   private shortSessionCookieName: string;
 
   private issuer: string;
 
-  private jwks: (
-    protectedHeader?: JWSHeaderParameters | undefined,
-    token?: FlattenedJWSInput | undefined,
-  ) => Promise<KeyLike>;
+  private jwksURI: string;
 
-  constructor(
-    version: string,
-    projectID: string,
-    frontendAPI: string,
-    shortSessionCookieName: string,
-    issuer: string,
-    cacheMaxAge: number,
-  ) {
+  private cacheMaxAge: number;
+
+  private lastShortSessionValidationResult = '';
+
+  constructor(jwksURI: string, shortSessionCookieName: string, issuer: string, cacheMaxAge: number) {
+    Assert.notEmptyString(shortSessionCookieName);
+    Assert.notEmptyString(issuer);
+    Assert.notEmptyString(jwksURI);
+
+    // this.client = client;
     this.shortSessionCookieName = shortSessionCookieName;
     this.issuer = issuer;
-
-    const jwkSetUrl = new URL(`${frontendAPI}/.well-known/jwks`);
-    const joseOptions = new (class implements RemoteJWKSetOptions {
-      cacheMaxAge: number = cacheMaxAge;
-
-      headers: Record<string, string> = {
-        'X-Corbado-SDK-Version': version,
-        'X-Corbado-ProjectID': projectID,
-      };
-    })();
-
-    this.jwks = createRemoteJWKSet(jwkSetUrl, joseOptions);
+    this.jwksURI = jwksURI;
+    this.cacheMaxAge = cacheMaxAge;
   }
 
-  async validateShortSessionValue(shortSession: string): Promise<User> {
-    if (shortSession === '' || shortSession === undefined) {
-      return this.createAnonymousUser();
+  public getShortSessionValue(req: RequestWithCookies): string {
+    return req.cookies?.[this.shortSessionCookieName] ?? this.extractBearerToken(req.headers.authorization);
+  }
+
+  public async validateShortSessionValue(value: string): Promise<DecodedValue | null> {
+    Assert.notEmptyString(value);
+
+    try {
+      const keySet = createRemoteJWKSet(new URL(this.jwksURI));
+      const { payload } = await jwtVerify(value, keySet);
+
+      if (payload.iss && payload.iss !== this.issuer) {
+        this.setIssuerMismatchError(payload.iss);
+        return null;
+      }
+
+      return payload;
+    } catch (error) {
+      this.setValidationError(error);
+      return null;
+    }
+  }
+
+  public getLastShortSessionValidationResult(): string {
+    return this.lastShortSessionValidationResult;
+  }
+
+  public async getCurrentUser(req: Request): Promise<User> {
+    const value = this.getShortSessionValue(req);
+
+    if (value.length < MIN_TOKEN_LENGTH) {
+      return new User(false);
     }
 
-    let options = {};
-
-    if (this.issuer !== '') {
-      options = Object.assign(options, { issuer: this.issuer });
+    const decoded = await this.validateShortSessionValue(value);
+    if (decoded) {
+      return this.createUserFromDecodedValue(decoded);
     }
 
-    const { payload } = await jwtVerify(shortSession, this.jwks, options);
+    return new User(false);
+  }
 
-    let issuerValid = false;
-    if (payload.iss === this.issuer) {
-      issuerValid = true;
+  private extractBearerToken(header?: string): string {
+    if (header?.startsWith('Bearer ')) {
+      return header.split(' ')[1];
+    }
+    return '';
+  }
+
+  private setIssuerMismatchError(issuer: string): void {
+    this.lastShortSessionValidationResult = `Mismatch in issuer (configured: ${this.issuer}, JWT: ${issuer})`;
+  }
+
+  private setValidationError(error: unknown): void {
+    if (error instanceof Error) {
+      this.lastShortSessionValidationResult = `JWT validation failed: ${error.message}`;
     } else {
-      throw new BaseError(
-        'Issuer mismatch',
-        httpStatusCodes.ISSUER_MISMATCH_ERROR.code,
-        `Mismatch in issuer (configured through Frontend API: "${this.issuer}", JWT: "${payload.iss})`,
-        httpStatusCodes.ISSUER_MISMATCH_ERROR.isOperational,
-      );
+      this.lastShortSessionValidationResult = `JWT validation failed: ${error}`;
     }
-
-    if (issuerValid) {
-      return new User(
-        true,
-        payload.sub as string,
-        payload.name as string,
-        payload.email as string,
-        payload.phoneNumber as string,
-      );
-    }
-
-    return this.createAnonymousUser();
   }
 
-  protected createAnonymousUser(): User {
-    return new User(false, '', '', '', '');
+  private createUserFromDecodedValue(decoded: DecodedValue): User {
+    return new User(true, decoded.sub, decoded.name ?? '', decoded.email ?? '', decoded.phone_number ?? '');
   }
 }
 

@@ -25,14 +25,7 @@ class SDK {
 
     this.emailOTP = new EmailOTP(this.createClient(config));
 
-    this.session = new Session(
-      process.env.npm_package_version as string,
-      config.ProjectID,
-      config.FrontendAPI,
-      config.ShortSessionCookieName,
-      config.JWTIssuer,
-      config.CacheMaxAge,
-    );
+    this.session = new Session(config.FrontendAPI, config.ShortSessionCookieName, config.JWTIssuer, config.CacheMaxAge);
 
     this.smsOTP = new SmsOTP(this.createClient(config));
 
