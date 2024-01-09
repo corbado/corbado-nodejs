@@ -6,9 +6,8 @@ import {
   createRemoteJWKSet,
   jwtVerify,
 } from 'jose';
-import { BaseError } from 'src/errors';
-import httpStatusCodes from 'src/errors/httpStatusCodes';
-import User from '../entities/user';
+import { BaseError, httpStatusCodes } from '../errors/index.js';
+import User from '../entities/user.js';
 
 export interface SessionInterface {
   validateShortSessionValue(shortSession: string): Promise<User>;

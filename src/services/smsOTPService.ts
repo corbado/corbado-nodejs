@@ -1,9 +1,13 @@
-import httpStatusCodes from 'src/errors/httpStatusCodes';
-import { BaseError } from 'src/errors';
-import Assert, { isErrorRsp } from 'src/heplers/assert';
-import Helper from 'src/heplers/helpers';
 import { AxiosInstance } from 'axios';
-import { SmsCodeSendReq, SmsCodeSendRsp, SmsCodeValidateReq, SmsCodeValidateRsp, SMSOTPApi } from '../generated';
+import { BaseError, httpStatusCodes } from '../errors/index.js';
+import { Assert, isErrorRsp, Helper } from '../heplers/index.js';
+import {
+  SmsCodeSendReq,
+  SmsCodeSendRsp,
+  SmsCodeValidateReq,
+  SmsCodeValidateRsp,
+  SMSOTPApi,
+} from '../generated/index.js';
 
 export interface SmsOTPInterface {
   send(req: SmsCodeSendReq): Promise<SmsCodeSendRsp>;

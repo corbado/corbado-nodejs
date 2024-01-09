@@ -1,19 +1,17 @@
 import { Request, Response } from 'express';
-import { BaseError } from 'src/errors';
-import httpStatusCodes from 'src/errors/httpStatusCodes';
-import Assert from 'src/heplers/assert';
-import Helper from 'src/heplers/helpers';
+import { BaseError, httpStatusCodes } from '../errors/index.js';
+import { Assert, Helper } from '../heplers/index.js';
 import {
   AuthMethodsRequest,
   AuthMethodsDataRequest,
   AuthMethodsDataResponse,
+  AuthMethodsDataResponseStatusEnum,
   AuthMethodsResponse,
   PasswordVerifyRequest,
   PasswordVerifyDataRequest,
   PasswordVerifyDataResponse,
   PasswordVerifyResponse,
-} from './entities';
-import { AuthMethodsDataResponseStatusEnum } from './entities/authMethodsDataResponse';
+} from './entities/index.js';
 
 interface NestedBody {
   id: string;

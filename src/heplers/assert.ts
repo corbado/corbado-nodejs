@@ -1,11 +1,10 @@
-import BaseError from 'src/errors/baseError';
-import httpStatusCodes from 'src/errors/httpStatusCodes';
-import { ErrorRsp } from 'src/generated';
+import { ErrorRsp } from '../generated/index.js';
+import { BaseError, httpStatusCodes } from '../errors/index.js';
 
 const { NULL_DATA, EMPTY_STRING, INVALID_DATA, INVALID_KEY } = httpStatusCodes;
 
 export function validate(condition: boolean, code: number, description: string, isOperational = false): void {
-  if (!condition) {
+  if (condition) {
     throw new BaseError('Assertion Error', code, description, isOperational);
   }
 }

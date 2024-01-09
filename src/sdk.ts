@@ -1,7 +1,7 @@
+/* eslint-disable class-methods-use-this */
 import axios, { AxiosInstance, AxiosBasicCredentials } from 'axios';
-import { Config } from './config';
-import { EmailLink, EmailOTP, Session, SmsOTP, User, Validation } from './services';
-import AuthToken from './services/authTokenService';
+import Configuration from './config.js';
+import { AuthToken, EmailOTP, Session, SmsOTP, Validation, EmailLink, User } from './services/index.js';
 
 class SDK {
   private authToken: AuthToken;
@@ -18,12 +18,12 @@ class SDK {
 
   private validation: Validation;
 
-  constructor(config: Config) {
-    this.authToken = new AuthToken(SDK.createClient(config));
+  constructor(config: Configuration) {
+    this.authToken = new AuthToken(this.createClient(config));
 
-    this.emailLink = new EmailLink(SDK.createClient(config));
+    this.emailLink = new EmailLink(this.createClient(config));
 
-    this.emailOTP = new EmailOTP(SDK.createClient(config));
+    this.emailOTP = new EmailOTP(this.createClient(config));
 
     this.session = new Session(
       process.env.npm_package_version as string,
@@ -34,15 +34,16 @@ class SDK {
       config.CacheMaxAge,
     );
 
-    this.smsOTP = new SmsOTP(SDK.createClient(config));
+    this.smsOTP = new SmsOTP(this.createClient(config));
 
-    this.user = new User(SDK.createClient(config));
+    this.user = new User(this.createClient(config));
 
-    this.validation = new Validation(SDK.createClient(config));
+    this.validation = new Validation(this.createClient(config));
   }
 
-  static createClient(config: Config): AxiosInstance {
+  createClient(config: Configuration): AxiosInstance {
     const instance = axios.create();
+
     instance.defaults.auth = new (class implements AxiosBasicCredentials {
       password: string = config.APISecret;
 

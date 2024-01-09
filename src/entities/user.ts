@@ -1,5 +1,4 @@
-import BaseError from 'src/errors/baseError';
-import httpStatusCodes from 'src/errors/httpStatusCodes';
+import { BaseError, httpStatusCodes } from '../errors/index.js';
 
 class User {
   constructor(

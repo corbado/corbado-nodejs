@@ -1,8 +1,6 @@
-import httpStatusCodes from 'src/errors/httpStatusCodes';
-import { BaseError } from 'src/errors';
-import Assert, { isErrorRsp } from 'src/heplers/assert';
-import Helper from 'src/heplers/helpers';
 import { AxiosInstance } from 'axios';
+import { BaseError, httpStatusCodes } from '../errors/index.js';
+import { Assert, Helper, isErrorRsp } from '../heplers/index.js';
 import {
   GenericRsp,
   UserApi,
@@ -11,7 +9,7 @@ import {
   UserDeleteReq,
   UserGetRsp,
   UserListRsp,
-} from '../generated';
+} from '../generated/index.js';
 
 export interface UserInterface {
   create(req: UserCreateReq): Promise<UserCreateRsp>;

@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * Corbado Backend API
- *  # Introduction This documentation gives an overview of all Corbado Backend API calls to implement passwordless authentication with Passkeys.  The Corbado Backend API is organized around REST principles. It uses resource-oriented URLs with verbs (HTTP methods) and HTTP status codes. Requests need to be valid JSON payloads. We always return JSON.  The Corbado Backend API specification is written in **OpenAPI Version 3.0.3**. You can download it via the download button at the top and use it to generate clients in languages we do not provide officially for example.  # Authentication To authenticate your API requests HTTP Basic Auth is used.  You need to set the projectID as username and the API secret as password. The authorization header looks as follows:  `Basic <<projectID>:<API secret>>`  The **authorization header** needs to be **Base64 encoded** to be working. If the authorization header is missing or incorrect, the API will respond with status code 401.  # Error types As mentioned above we make use of HTTP status codes. **4xx** errors indicate so called client errors, meaning the error occurred on client side and you need to fix it. **5xx** errors indicate server errors, which means the error occurred on server side and outside your control.  Besides HTTP status codes Corbado uses what we call error types which gives more details in error cases and help you to debug your request.  ## internal_error The error type **internal_error** is used when some internal error occurred at Corbado. You can retry your request but usually there is nothing you can do about it. All internal errors get logged and will triggert an alert to our operations team which takes care of the situation as soon as possible.  ## not_found The error type **not_found** is used when you try to get a resource which cannot be found. Most common case is that you provided a wrong ID.  ## method_not_allowed The error type **method_not_allowed** is used when you use a HTTP method (GET for example) on a resource/endpoint which it not supports.   ## validation_error The error type **validation_error** is used when there is validation error on the data you provided in the request payload or path. There will be detailed information in the JSON response about the validation error like what exactly went wrong on what field.   ## project_id_mismatch The error type **project_id_mismatch** is used when there is a project ID you provided mismatch.  ## login_error The error type **login_error** is used when the authentication failed. Most common case is that you provided a wrong pair of project ID and API secret. As mentioned above with use HTTP Basic Auth for authentication.  ## invalid_json The error type **invalid_json** is used when you send invalid JSON as request body. There will be detailed information in the JSON response about what went wrong.  ## rate_limited The error type **rate_limited** is used when ran into rate limiting of the Corbado Backend API. Right now you can do a maximum of **2000 requests** within **10 seconds** from a **single IP**. Throttle your requests and try again. If you think you need more contact support@corbado.com.  ## invalid_origin The error type **invalid_origin** is used when the API has been called from a origin which is not authorized (CORS). Add the origin to your project at https://app.corbado.com/app/settings/credentials/authorized-origins.  ## already_exists The error type **already_exists** is used when you try create a resource which already exists. Most common case is that there is some unique constraint on one of the fields.  # Security and privacy Corbado services are designed, developed, monitored, and updated with security at our core to protect you and your customers’ data and privacy.  ## Security  ### Infrastructure security Corbado leverages highly available and secure cloud infrastructure to ensure that our services are always available and securely delivered. Corbado\'s services are operated in uvensys GmbH\'s data centers in Germany and comply with ISO standard 27001. All data centers have redundant power and internet connections to avoid failure. The main location of the servers used is in Linden and offers 24/7 support. We do not use any AWS, GCP or Azure services.  Each server is monitored 24/7 and in the event of problems, automated information is sent via SMS and e-mail. The monitoring is done by the external service provider Serverguard24 GmbH.   All Corbado hardware and networking is routinely updated and audited to ensure systems are secure and that least privileged access is followed. Additionally we implement robust logging and audit protocols that allow us high visibility into system use.  ### Responsible disclosure program Here at Corbado, we take the security of our user’s data and of our services seriously. As such, we encourage responsible security research on Corbado services and products. If you believe you’ve discovered a potential vulnerability, please let us know by emailing us at [security@corbado.com](mailto:security@corbado.com). We will acknowledge your email within 2 business days. As public disclosures of a security vulnerability could put the entire Corbado community at risk, we ask that you keep such potential vulnerabilities confidential until we are able to address them. We aim to resolve critical issues within 30 days of disclosure. Please make a good faith effort to avoid violating privacy, destroying data, or interrupting or degrading the Corbado service. Please only interact with accounts you own or for which you have explicit permission from the account holder. While researching, please refrain from:  - Distributed Denial of Service (DDoS) - Spamming - Social engineering or phishing of Corbado employees or contractors - Any attacks against Corbado\'s physical property or data centers  Thank you for helping to keep Corbado and our users safe!  ### Rate limiting At Corbado, we apply rate limit policies on our APIs in order to protect your application and user management infrastructure, so your users will have a frictionless non-interrupted experience.  Corbado responds with HTTP status code 429 (too many requests) when the rate limits exceed. Your code logic should be able to handle such cases by checking the status code on the response and recovering from such cases. If a retry is needed, it is best to allow for a back-off to avoid going into an infinite retry loop.  The current rate limit for all our API endpoints is **max. 100 requests per 10 seconds**.  ## Privacy Corbado is committed to protecting the personal data of our customers and their customers. Corbado has in place appropriate data security measures that meet industry standards. We regularly review and make enhancements to our processes, products, documentation, and contracts to help support ours and our customers’ compliance for the processing of personal data.  We try to minimize the usage and processing of personally identifiable information. Therefore, all our services are constructed to avoid unnecessary data consumption.  To make our services work, we only require the following data: - any kind of identifier (e.g. UUID, phone number, email address) - IP address (only temporarily for rate limiting aspects) - User agent (for device management) 
+ *  # Introduction This documentation gives an overview of all Corbado Backend API calls to implement passwordless authentication with Passkeys.  The Corbado Backend API is organized around REST principles. It uses resource-oriented URLs with verbs (HTTP methods) and HTTP status codes. Requests need to be valid JSON payloads. We always return JSON.  The Corbado Backend API specification is written in **OpenAPI Version 3.0.3**. You can download it via the download button at the top and use it to generate clients in languages we do not provide officially for example.  # Authentication To authenticate your API requests HTTP Basic Auth is used.  You need to set the projectID as username and the API secret as password. The authorization header looks as follows:  `Basic <<projectID>:<API secret>>`  The **authorization header** needs to be **Base64 encoded** to be working. If the authorization header is missing or incorrect, the API will respond with status code 401.  # Error types As mentioned above we make use of HTTP status codes. **4xx** errors indicate so called client errors, meaning the error occurred on client side and you need to fix it. **5xx** errors indicate server errors, which means the error occurred on server side and outside your control.  Besides HTTP status codes Corbado uses what we call error types which gives more details in error cases and help you to debug your request.  ## internal_error The error type **internal_error** is used when some internal error occurred at Corbado. You can retry your request but usually there is nothing you can do about it. All internal errors get logged and will triggert an alert to our operations team which takes care of the situation as soon as possible.  ## not_found The error type **not_found** is used when you try to get a resource which cannot be found. Most common case is that you provided a wrong ID.  ## method_not_allowed The error type **method_not_allowed** is used when you use a HTTP method (GET for example) on a resource/endpoint which it not supports.   ## validation_error The error type **validation_error** is used when there is validation error on the data you provided in the request payload or path. There will be detailed information in the JSON response about the validation error like what exactly went wrong on what field.   ## project_id_mismatch The error type **project_id_mismatch** is used when there is a project ID you provided mismatch.  ## login_error The error type **login_error** is used when the authentication failed. Most common case is that you provided a wrong pair of project ID and API secret. As mentioned above with use HTTP Basic Auth for authentication.  ## invalid_json The error type **invalid_json** is used when you send invalid JSON as request body. There will be detailed information in the JSON response about what went wrong.  ## rate_limited The error type **rate_limited** is used when ran into rate limiting of the Corbado Backend API. Right now you can do a maximum of **2000 requests** within **10 seconds** from a **single IP**. Throttle your requests and try again. If you think you need more contact support@corbado.com.  ## invalid_origin The error type **invalid_origin** is used when the API has been called from a origin which is not authorized (CORS). Add the origin to your project at https://app.corbado.com/app/settings/credentials/authorized-origins.  ## already_exists The error type **already_exists** is used when you try create a resource which already exists. Most common case is that there is some unique constraint on one of the fields.  # Security and privacy Corbado services are designed, developed, monitored, and updated with security at our core to protect you and your customers’ data and privacy.  ## Security  ### Infrastructure security Corbado leverages highly available and secure cloud infrastructure to ensure that our services are always available and securely delivered. Corbado\'s services are operated in uvensys GmbH\'s data centers in Germany and comply with ISO standard 27001. All data centers have redundant power and internet connections to avoid failure. The main location of the servers used is in Linden and offers 24/7 support. We do not use any AWS, GCP or Azure services.  Each server is monitored 24/7 and in the event of problems, automated information is sent via SMS and e-mail. The monitoring is done by the external service provider Serverguard24 GmbH.   All Corbado hardware and networking is routinely updated and audited to ensure systems are secure and that least privileged access is followed. Additionally we implement robust logging and audit protocols that allow us high visibility into system use.  ### Responsible disclosure program Here at Corbado, we take the security of our user’s data and of our services seriously. As such, we encourage responsible security research on Corbado services and products. If you believe you’ve discovered a potential vulnerability, please let us know by emailing us at [security@corbado.com](mailto:security@corbado.com). We will acknowledge your email within 2 business days. As public disclosures of a security vulnerability could put the entire Corbado community at risk, we ask that you keep such potential vulnerabilities confidential until we are able to address them. We aim to resolve critical issues within 30 days of disclosure. Please make a good faith effort to avoid violating privacy, destroying data, or interrupting or degrading the Corbado service. Please only interact with accounts you own or for which you have explicit permission from the account holder. While researching, please refrain from:  - Distributed Denial of Service (DDoS) - Spamming - Social engineering or phishing of Corbado employees or contractors - Any attacks against Corbado\'s physical property or data centers  Thank you for helping to keep Corbado and our users safe!  ### Rate limiting At Corbado, we apply rate limit policies on our APIs in order to protect your application and user management infrastructure, so your users will have a frictionless non-interrupted experience.  Corbado responds with HTTP status code 429 (too many requests) when the rate limits exceed. Your code logic should be able to handle such cases by checking the status code on the response and recovering from such cases. If a retry is needed, it is best to allow for a back-off to avoid going into an infinite retry loop.  The current rate limit for all our API endpoints is **max. 100 requests per 10 seconds**.  ## Privacy Corbado is committed to protecting the personal data of our customers and their customers. Corbado has in place appropriate data security measures that meet industry standards. We regularly review and make enhancements to our processes, products, documentation, and contracts to help support ours and our customers’ compliance for the processing of personal data.  We try to minimize the usage and processing of personally identifiable information. Therefore, all our services are constructed to avoid unnecessary data consumption.  To make our services work, we only require the following data: - any kind of identifier (e.g. UUID, phone number, email address) - IP address (only temporarily for rate limiting aspects) - User agent (for device management)
  *
  * The version of the OpenAPI document: 1.0.0
  * Contact: support@corbado.com
@@ -13,18 +13,18 @@
  */
 
 
-import type { Configuration } from './configuration';
+import type { Configuration } from './configuration.js';
 import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
-import type { RequestArgs } from './base';
+import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common.js';
+import type { RequestArgs } from './base.js';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
+import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base.js';
 
 /**
- * 
+ *
  * @export
  * @interface AndroidAppConfigDeleteReq
  */
@@ -36,14 +36,14 @@ export interface AndroidAppConfigDeleteReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof AndroidAppConfigDeleteReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface AndroidAppConfigItem
  */
@@ -61,19 +61,19 @@ export interface AndroidAppConfigItem {
      */
     'projectID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof AndroidAppConfigItem
      */
     'packageName': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof AndroidAppConfigItem
      */
     'fingerprint': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof AndroidAppConfigItem
      */
@@ -92,7 +92,7 @@ export interface AndroidAppConfigItem {
     'updated': string;
 }
 /**
- * 
+ *
  * @export
  * @interface AndroidAppConfigListRsp
  */
@@ -104,13 +104,13 @@ export interface AndroidAppConfigListRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof AndroidAppConfigListRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof AndroidAppConfigListRsp
      */
@@ -122,32 +122,32 @@ export interface AndroidAppConfigListRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {Array<AndroidAppConfigItem>}
      * @memberof AndroidAppConfigListRsp
      */
     'rows': Array<AndroidAppConfigItem>;
     /**
-     * 
+     *
      * @type {Paging}
      * @memberof AndroidAppConfigListRsp
      */
     'paging': Paging;
 }
 /**
- * 
+ *
  * @export
  * @interface AndroidAppConfigSaveReq
  */
 export interface AndroidAppConfigSaveReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof AndroidAppConfigSaveReq
      */
     'packageName': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof AndroidAppConfigSaveReq
      */
@@ -159,14 +159,14 @@ export interface AndroidAppConfigSaveReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof AndroidAppConfigSaveReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface AndroidAppConfigSaveRsp
  */
@@ -178,13 +178,13 @@ export interface AndroidAppConfigSaveRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof AndroidAppConfigSaveRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof AndroidAppConfigSaveRsp
      */
@@ -208,19 +208,19 @@ export interface AndroidAppConfigSaveRsp {
      */
     'projectID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof AndroidAppConfigSaveRsp
      */
     'packageName': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof AndroidAppConfigSaveRsp
      */
     'fingerprint': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof AndroidAppConfigSaveRsp
      */
@@ -239,19 +239,19 @@ export interface AndroidAppConfigSaveRsp {
     'updated': string;
 }
 /**
- * 
+ *
  * @export
  * @interface AndroidAppConfigUpdateReq
  */
 export interface AndroidAppConfigUpdateReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof AndroidAppConfigUpdateReq
      */
     'packageName': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof AndroidAppConfigUpdateReq
      */
@@ -263,14 +263,14 @@ export interface AndroidAppConfigUpdateReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof AndroidAppConfigUpdateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface AndroidAppConfigUpdateRsp
  */
@@ -282,13 +282,13 @@ export interface AndroidAppConfigUpdateRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof AndroidAppConfigUpdateRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof AndroidAppConfigUpdateRsp
      */
@@ -312,19 +312,19 @@ export interface AndroidAppConfigUpdateRsp {
      */
     'projectID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof AndroidAppConfigUpdateRsp
      */
     'packageName': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof AndroidAppConfigUpdateRsp
      */
     'fingerprint': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof AndroidAppConfigUpdateRsp
      */
@@ -358,19 +358,19 @@ export type AppType = typeof AppType[keyof typeof AppType];
 
 
 /**
- * 
+ *
  * @export
  * @interface AssociationTokenCreateReq
  */
 export interface AssociationTokenCreateReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof AssociationTokenCreateReq
      */
     'loginIdentifier': string;
     /**
-     * 
+     *
      * @type {LoginIdentifierType}
      * @memberof AssociationTokenCreateReq
      */
@@ -382,7 +382,7 @@ export interface AssociationTokenCreateReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof AssociationTokenCreateReq
      */
@@ -391,7 +391,7 @@ export interface AssociationTokenCreateReq {
 
 
 /**
- * 
+ *
  * @export
  * @interface AssociationTokenCreateRsp
  */
@@ -403,13 +403,13 @@ export interface AssociationTokenCreateRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof AssociationTokenCreateRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof AssociationTokenCreateRsp
      */
@@ -421,26 +421,26 @@ export interface AssociationTokenCreateRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {AssociationTokenCreateRspAllOfData}
      * @memberof AssociationTokenCreateRsp
      */
     'data': AssociationTokenCreateRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface AssociationTokenCreateRspAllOfData
  */
 export interface AssociationTokenCreateRspAllOfData {
     /**
-     * 
+     *
      * @type {string}
      * @memberof AssociationTokenCreateRspAllOfData
      */
     'token'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof AssociationTokenCreateRspAllOfData
      */
@@ -463,7 +463,7 @@ export type AuthMethod = typeof AuthMethod[keyof typeof AuthMethod];
 
 
 /**
- * 
+ *
  * @export
  * @interface AuthMethodsListReq
  */
@@ -481,14 +481,14 @@ export interface AuthMethodsListReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof AuthMethodsListReq
      */
     'clientInfo': ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface AuthMethodsListRsp
  */
@@ -500,13 +500,13 @@ export interface AuthMethodsListRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof AuthMethodsListRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof AuthMethodsListRsp
      */
@@ -518,45 +518,45 @@ export interface AuthMethodsListRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {AuthMethodsListRspAllOfData}
      * @memberof AuthMethodsListRsp
      */
     'data': AuthMethodsListRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface AuthMethodsListRspAllOfData
  */
 export interface AuthMethodsListRspAllOfData {
     /**
-     * 
+     *
      * @type {Array<AuthMethod>}
      * @memberof AuthMethodsListRspAllOfData
      */
     'selectMethods': Array<AuthMethod>;
     /**
-     * 
+     *
      * @type {Array<AuthMethod>}
      * @memberof AuthMethodsListRspAllOfData
      */
     'possibleMethods': Array<AuthMethod>;
     /**
-     * 
+     *
      * @type {Paging}
      * @memberof AuthMethodsListRspAllOfData
      */
     'paging': Paging;
 }
 /**
- * 
+ *
  * @export
  * @interface AuthTokenValidateReq
  */
 export interface AuthTokenValidateReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof AuthTokenValidateReq
      */
@@ -568,14 +568,14 @@ export interface AuthTokenValidateReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof AuthTokenValidateReq
      */
     'clientInfo': ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface AuthTokenValidateRsp
  */
@@ -587,13 +587,13 @@ export interface AuthTokenValidateRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof AuthTokenValidateRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof AuthTokenValidateRsp
      */
@@ -605,14 +605,14 @@ export interface AuthTokenValidateRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {SessionTokenVerifyRspAllOfData}
      * @memberof AuthTokenValidateRsp
      */
     'data': SessionTokenVerifyRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface ClientInfo
  */
@@ -631,7 +631,7 @@ export interface ClientInfo {
     'userAgent': string;
 }
 /**
- * 
+ *
  * @export
  * @interface CustomLoginIdentifier
  */
@@ -643,13 +643,13 @@ export interface CustomLoginIdentifier {
      */
     'ID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof CustomLoginIdentifier
      */
     'identifier': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof CustomLoginIdentifier
      */
@@ -668,7 +668,7 @@ export interface CustomLoginIdentifier {
     'updated': string;
 }
 /**
- * 
+ *
  * @export
  * @interface Email
  */
@@ -680,7 +680,7 @@ export interface Email {
      */
     'ID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof Email
      */
@@ -704,7 +704,7 @@ export interface Email {
      */
     'deleted'?: string;
     /**
-     * 
+     *
      * @type {Status}
      * @memberof Email
      */
@@ -713,7 +713,7 @@ export interface Email {
 
 
 /**
- * 
+ *
  * @export
  * @interface EmailCode
  */
@@ -731,13 +731,13 @@ export interface EmailCode {
      */
     'userID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailCode
      */
     'email': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailCode
      */
@@ -776,7 +776,7 @@ export const EmailCodeStatusEnum = {
 export type EmailCodeStatusEnum = typeof EmailCodeStatusEnum[keyof typeof EmailCodeStatusEnum];
 
 /**
- * 
+ *
  * @export
  * @interface EmailCodeGetRsp
  */
@@ -788,13 +788,13 @@ export interface EmailCodeGetRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailCodeGetRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof EmailCodeGetRsp
      */
@@ -806,27 +806,27 @@ export interface EmailCodeGetRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {EmailCodeGetRspAllOfData}
      * @memberof EmailCodeGetRsp
      */
     'data': EmailCodeGetRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface EmailCodeGetRspAllOfData
  */
 export interface EmailCodeGetRspAllOfData {
     /**
-     * 
+     *
      * @type {EmailCode}
      * @memberof EmailCodeGetRspAllOfData
      */
     'emailCode': EmailCode;
 }
 /**
- * 
+ *
  * @export
  * @interface EmailCodeSendReq
  */
@@ -874,14 +874,14 @@ export interface EmailCodeSendReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof EmailCodeSendReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface EmailCodeSendRsp
  */
@@ -893,13 +893,13 @@ export interface EmailCodeSendRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailCodeSendRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof EmailCodeSendRsp
      */
@@ -911,27 +911,27 @@ export interface EmailCodeSendRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {EmailCodeSendRspAllOfData}
      * @memberof EmailCodeSendRsp
      */
     'data': EmailCodeSendRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface EmailCodeSendRspAllOfData
  */
 export interface EmailCodeSendRspAllOfData {
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailCodeSendRspAllOfData
      */
     'emailCodeID': string;
 }
 /**
- * 
+ *
  * @export
  * @interface EmailCodeValidateReq
  */
@@ -943,7 +943,7 @@ export interface EmailCodeValidateReq {
      */
     'code': string;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof EmailCodeValidateReq
      */
@@ -955,14 +955,14 @@ export interface EmailCodeValidateReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof EmailCodeValidateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface EmailCodeValidateRsp
  */
@@ -974,13 +974,13 @@ export interface EmailCodeValidateRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailCodeValidateRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof EmailCodeValidateRsp
      */
@@ -1004,26 +1004,26 @@ export interface EmailCodeValidateRsp {
      */
     'userID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailCodeValidateRsp
      */
     'userFullName': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailCodeValidateRsp
      */
     'userEmail': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailCodeValidateRsp
      */
     'loginToken'?: string;
 }
 /**
- * 
+ *
  * @export
  * @interface EmailLink
  */
@@ -1041,19 +1041,19 @@ export interface EmailLink {
      */
     'userID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailLink
      */
     'email': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailLink
      */
     'userFullName'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailLink
      */
@@ -1092,7 +1092,7 @@ export const EmailLinkStatusEnum = {
 export type EmailLinkStatusEnum = typeof EmailLinkStatusEnum[keyof typeof EmailLinkStatusEnum];
 
 /**
- * 
+ *
  * @export
  * @interface EmailLinkGetRsp
  */
@@ -1104,13 +1104,13 @@ export interface EmailLinkGetRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailLinkGetRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof EmailLinkGetRsp
      */
@@ -1122,27 +1122,27 @@ export interface EmailLinkGetRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {EmailLinkGetRspAllOfData}
      * @memberof EmailLinkGetRsp
      */
     'data': EmailLinkGetRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface EmailLinkGetRspAllOfData
  */
 export interface EmailLinkGetRspAllOfData {
     /**
-     * 
+     *
      * @type {EmailLink}
      * @memberof EmailLinkGetRspAllOfData
      */
     'emailLink': EmailLink;
 }
 /**
- * 
+ *
  * @export
  * @interface EmailLinkSendReq
  */
@@ -1202,7 +1202,7 @@ export interface EmailLinkSendReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof EmailLinkSendReq
      */
@@ -1218,7 +1218,7 @@ export const EmailLinkSendReqPurposeEnum = {
 export type EmailLinkSendReqPurposeEnum = typeof EmailLinkSendReqPurposeEnum[keyof typeof EmailLinkSendReqPurposeEnum];
 
 /**
- * 
+ *
  * @export
  * @interface EmailLinkSendRsp
  */
@@ -1230,13 +1230,13 @@ export interface EmailLinkSendRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailLinkSendRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof EmailLinkSendRsp
      */
@@ -1248,27 +1248,27 @@ export interface EmailLinkSendRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {EmailLinkSendRspAllOfData}
      * @memberof EmailLinkSendRsp
      */
     'data': EmailLinkSendRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface EmailLinkSendRspAllOfData
  */
 export interface EmailLinkSendRspAllOfData {
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailLinkSendRspAllOfData
      */
     'emailLinkID': string;
 }
 /**
- * 
+ *
  * @export
  * @interface EmailLinkValidateRsp
  */
@@ -1280,13 +1280,13 @@ export interface EmailLinkValidateRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailLinkValidateRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof EmailLinkValidateRsp
      */
@@ -1310,26 +1310,26 @@ export interface EmailLinkValidateRsp {
      */
     'userID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailLinkValidateRsp
      */
     'userFullName': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailLinkValidateRsp
      */
     'userEmail': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailLinkValidateRsp
      */
     'loginToken'?: string;
 }
 /**
- * 
+ *
  * @export
  * @interface EmailLinksDeleteReq
  */
@@ -1341,14 +1341,14 @@ export interface EmailLinksDeleteReq {
      */
     'requestID': string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof EmailLinksDeleteReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface EmailLinksValidateReq
  */
@@ -1360,7 +1360,7 @@ export interface EmailLinksValidateReq {
      */
     'token': string;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof EmailLinksValidateReq
      */
@@ -1372,104 +1372,104 @@ export interface EmailLinksValidateReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof EmailLinksValidateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface EmailTemplateCreateReq
  */
 export interface EmailTemplateCreateReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'lang': EmailTemplateCreateReqLangEnum;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'type': EmailTemplateCreateReqTypeEnum;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'name': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'subject': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'action'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'plainTextBody': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'htmlTextTitle': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'htmlTextBody': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'htmlTextButton': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'htmlColorFont': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'htmlColorBackgroundOuter': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'htmlColorBackgroundInner': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'htmlColorButton': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'htmlColorButtonFont': string;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof EmailTemplateCreateReq
      */
@@ -1481,7 +1481,7 @@ export interface EmailTemplateCreateReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof EmailTemplateCreateReq
      */
@@ -1506,7 +1506,7 @@ export const EmailTemplateCreateReqTypeEnum = {
 export type EmailTemplateCreateReqTypeEnum = typeof EmailTemplateCreateReqTypeEnum[keyof typeof EmailTemplateCreateReqTypeEnum];
 
 /**
- * 
+ *
  * @export
  * @interface EmailTemplateCreateRsp
  */
@@ -1518,13 +1518,13 @@ export interface EmailTemplateCreateRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailTemplateCreateRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof EmailTemplateCreateRsp
      */
@@ -1536,27 +1536,27 @@ export interface EmailTemplateCreateRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {EmailTemplateCreateRspAllOfData}
      * @memberof EmailTemplateCreateRsp
      */
     'data': EmailTemplateCreateRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface EmailTemplateCreateRspAllOfData
  */
 export interface EmailTemplateCreateRspAllOfData {
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailTemplateCreateRspAllOfData
      */
     'emailTemplateID': string;
 }
 /**
- * 
+ *
  * @export
  * @interface EmailTemplateDeleteReq
  */
@@ -1568,38 +1568,38 @@ export interface EmailTemplateDeleteReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof EmailTemplateDeleteReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface EmailValidationResult
  */
 export interface EmailValidationResult {
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof EmailValidationResult
      */
     'isValid': boolean;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailValidationResult
      */
     'validationCode': EmailValidationResultValidationCodeEnum;
     /**
-     * 
+     *
      * @type {string}
      * @memberof EmailValidationResult
      */
     'suggestion'?: string;
     /**
-     * 
+     *
      * @type {ValidationEmail}
      * @memberof EmailValidationResult
      */
@@ -1617,7 +1617,7 @@ export const EmailValidationResultValidationCodeEnum = {
 export type EmailValidationResultValidationCodeEnum = typeof EmailValidationResultValidationCodeEnum[keyof typeof EmailValidationResultValidationCodeEnum];
 
 /**
- * 
+ *
  * @export
  * @interface EmptyReq
  */
@@ -1629,14 +1629,14 @@ export interface EmptyReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof EmptyReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface ErrorRsp
  */
@@ -1648,13 +1648,13 @@ export interface ErrorRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ErrorRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof ErrorRsp
      */
@@ -1666,20 +1666,20 @@ export interface ErrorRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {object}
      * @memberof ErrorRsp
      */
     'data'?: object;
     /**
-     * 
+     *
      * @type {ErrorRspAllOfError}
      * @memberof ErrorRsp
      */
     'error': ErrorRspAllOfError;
 }
 /**
- * 
+ *
  * @export
  * @interface ErrorRspAllOfError
  */
@@ -1710,26 +1710,26 @@ export interface ErrorRspAllOfError {
     'links': Array<string>;
 }
 /**
- * 
+ *
  * @export
  * @interface ErrorRspAllOfErrorValidation
  */
 export interface ErrorRspAllOfErrorValidation {
     /**
-     * 
+     *
      * @type {string}
      * @memberof ErrorRspAllOfErrorValidation
      */
     'field': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ErrorRspAllOfErrorValidation
      */
     'message': string;
 }
 /**
- * 
+ *
  * @export
  * @interface ExampleGetRsp
  */
@@ -1741,13 +1741,13 @@ export interface ExampleGetRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ExampleGetRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof ExampleGetRsp
      */
@@ -1792,13 +1792,13 @@ export interface FullUser {
      */
     'ID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof FullUser
      */
     'name': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof FullUser
      */
@@ -1816,19 +1816,19 @@ export interface FullUser {
      */
     'updated': string;
     /**
-     * 
+     *
      * @type {Status}
      * @memberof FullUser
      */
     'status': Status;
     /**
-     * 
+     *
      * @type {Array<UserEmail>}
      * @memberof FullUser
      */
     'emails': Array<UserEmail>;
     /**
-     * 
+     *
      * @type {Array<UserPhoneNumber>}
      * @memberof FullUser
      */
@@ -1837,7 +1837,7 @@ export interface FullUser {
 
 
 /**
- * 
+ *
  * @export
  * @interface GenericRsp
  */
@@ -1849,13 +1849,13 @@ export interface GenericRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof GenericRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof GenericRsp
      */
@@ -1868,7 +1868,7 @@ export interface GenericRsp {
     'runtime': number;
 }
 /**
- * 
+ *
  * @export
  * @interface IOSAppConfigDeleteReq
  */
@@ -1880,14 +1880,14 @@ export interface IOSAppConfigDeleteReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof IOSAppConfigDeleteReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface IOSAppConfigItem
  */
@@ -1905,13 +1905,13 @@ export interface IOSAppConfigItem {
      */
     'projectID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof IOSAppConfigItem
      */
     'appIDPrefix': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof IOSAppConfigItem
      */
@@ -1930,7 +1930,7 @@ export interface IOSAppConfigItem {
     'updated': string;
 }
 /**
- * 
+ *
  * @export
  * @interface IOSAppConfigListRsp
  */
@@ -1942,13 +1942,13 @@ export interface IOSAppConfigListRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof IOSAppConfigListRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof IOSAppConfigListRsp
      */
@@ -1960,32 +1960,32 @@ export interface IOSAppConfigListRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {Array<IOSAppConfigItem>}
      * @memberof IOSAppConfigListRsp
      */
     'rows': Array<IOSAppConfigItem>;
     /**
-     * 
+     *
      * @type {Paging}
      * @memberof IOSAppConfigListRsp
      */
     'paging': Paging;
 }
 /**
- * 
+ *
  * @export
  * @interface IOSAppConfigSaveReq
  */
 export interface IOSAppConfigSaveReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof IOSAppConfigSaveReq
      */
     'appIDPrefix': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof IOSAppConfigSaveReq
      */
@@ -1997,14 +1997,14 @@ export interface IOSAppConfigSaveReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof IOSAppConfigSaveReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface IOSAppConfigSaveRsp
  */
@@ -2016,13 +2016,13 @@ export interface IOSAppConfigSaveRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof IOSAppConfigSaveRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof IOSAppConfigSaveRsp
      */
@@ -2046,13 +2046,13 @@ export interface IOSAppConfigSaveRsp {
      */
     'projectID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof IOSAppConfigSaveRsp
      */
     'appIDPrefix': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof IOSAppConfigSaveRsp
      */
@@ -2071,19 +2071,19 @@ export interface IOSAppConfigSaveRsp {
     'updated': string;
 }
 /**
- * 
+ *
  * @export
  * @interface IOSAppConfigUpdateReq
  */
 export interface IOSAppConfigUpdateReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof IOSAppConfigUpdateReq
      */
     'appIDPrefix': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof IOSAppConfigUpdateReq
      */
@@ -2095,14 +2095,14 @@ export interface IOSAppConfigUpdateReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof IOSAppConfigUpdateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface IOSAppConfigUpdateRsp
  */
@@ -2114,13 +2114,13 @@ export interface IOSAppConfigUpdateRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof IOSAppConfigUpdateRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof IOSAppConfigUpdateRsp
      */
@@ -2144,13 +2144,13 @@ export interface IOSAppConfigUpdateRsp {
      */
     'projectID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof IOSAppConfigUpdateRsp
      */
     'appIDPrefix': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof IOSAppConfigUpdateRsp
      */
@@ -2184,13 +2184,13 @@ export type LoginIdentifierType = typeof LoginIdentifierType[keyof typeof LoginI
 
 
 /**
- * 
+ *
  * @export
  * @interface LongSession
  */
 export interface LongSession {
     /**
-     * 
+     *
      * @type {string}
      * @memberof LongSession
      */
@@ -2202,13 +2202,13 @@ export interface LongSession {
      */
     'userID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof LongSession
      */
     'userIdentifier': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof LongSession
      */
@@ -2220,25 +2220,25 @@ export interface LongSession {
      */
     'deviceID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof LongSession
      */
     'browserName': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof LongSession
      */
     'browserVersion': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof LongSession
      */
     'osName': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof LongSession
      */
@@ -2286,7 +2286,7 @@ export const LongSessionStatusEnum = {
 export type LongSessionStatusEnum = typeof LongSessionStatusEnum[keyof typeof LongSessionStatusEnum];
 
 /**
- * 
+ *
  * @export
  * @interface LongSessionGetRsp
  */
@@ -2298,13 +2298,13 @@ export interface LongSessionGetRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof LongSessionGetRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof LongSessionGetRsp
      */
@@ -2316,27 +2316,27 @@ export interface LongSessionGetRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {LongSessionGetRspAllOfData}
      * @memberof LongSessionGetRsp
      */
     'data': LongSessionGetRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface LongSessionGetRspAllOfData
  */
 export interface LongSessionGetRspAllOfData {
     /**
-     * 
+     *
      * @type {LongSession}
      * @memberof LongSessionGetRspAllOfData
      */
     'longSession': LongSession;
 }
 /**
- * 
+ *
  * @export
  * @interface LongSessionListRsp
  */
@@ -2348,13 +2348,13 @@ export interface LongSessionListRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof LongSessionListRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof LongSessionListRsp
      */
@@ -2366,33 +2366,33 @@ export interface LongSessionListRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {LongSessionListRspAllOfData}
      * @memberof LongSessionListRsp
      */
     'data': LongSessionListRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface LongSessionListRspAllOfData
  */
 export interface LongSessionListRspAllOfData {
     /**
-     * 
+     *
      * @type {Array<LongSession>}
      * @memberof LongSessionListRspAllOfData
      */
     'longSessions': Array<LongSession>;
     /**
-     * 
+     *
      * @type {Paging}
      * @memberof LongSessionListRspAllOfData
      */
     'paging': Paging;
 }
 /**
- * 
+ *
  * @export
  * @interface LongSessionRevokeReq
  */
@@ -2404,14 +2404,14 @@ export interface LongSessionRevokeReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof LongSessionRevokeReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface Paging
  */
@@ -2436,7 +2436,7 @@ export interface Paging {
     'totalItems': number;
 }
 /**
- * 
+ *
  * @export
  * @interface PhoneNumber
  */
@@ -2448,7 +2448,7 @@ export interface PhoneNumber {
      */
     'ID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof PhoneNumber
      */
@@ -2466,7 +2466,7 @@ export interface PhoneNumber {
      */
     'updated': string;
     /**
-     * 
+     *
      * @type {Status}
      * @memberof PhoneNumber
      */
@@ -2475,25 +2475,25 @@ export interface PhoneNumber {
 
 
 /**
- * 
+ *
  * @export
  * @interface PhoneNumberValidationResult
  */
 export interface PhoneNumberValidationResult {
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof PhoneNumberValidationResult
      */
     'isValid': boolean;
     /**
-     * 
+     *
      * @type {string}
      * @memberof PhoneNumberValidationResult
      */
     'validationCode': PhoneNumberValidationResultValidationCodeEnum;
     /**
-     * 
+     *
      * @type {ValidationPhoneNumber}
      * @memberof PhoneNumberValidationResult
      */
@@ -2510,7 +2510,7 @@ export const PhoneNumberValidationResultValidationCodeEnum = {
 export type PhoneNumberValidationResultValidationCodeEnum = typeof PhoneNumberValidationResultValidationCodeEnum[keyof typeof PhoneNumberValidationResultValidationCodeEnum];
 
 /**
- * 
+ *
  * @export
  * @interface ProjectConfig
  */
@@ -2522,331 +2522,331 @@ export interface ProjectConfig {
      */
     'projectID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'externalName': string;
     /**
-     * 
+     *
      * @type {AppType}
      * @memberof ProjectConfig
      */
     'appType': AppType;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'productKey': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'emailFrom': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'smsFrom': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'externalApplicationProtocolVersion': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'webhookURL': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'webhookUsername': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'webhookPassword': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'webhookTestInvalidUsername': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'webhookTestValidUsername': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'webhookTestValidPassword': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'externalApplicationUsername': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'externalApplicationPassword': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'legacyAuthMethodsUrl': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'passwordVerifyUrl': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'authSuccessRedirectUrl': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'passwordResetUrl': string;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'allowUserRegistration': boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'allowIPStickiness': boolean;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'passkeyAppendInterval': ProjectConfigPasskeyAppendIntervalEnum;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'cliSecret': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'fallbackLanguage': string;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'autoDetectLanguage': boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'integrationModeHosted': boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'integrationModeAPI': boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'integrationModeWebComponent': boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'hasExistingUsers': boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'hasVerifiedSession': boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'hasGeneratedSession': boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'hasStartedUsingPasskeys': boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'hasStartedUsingSessions': boolean;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'environment': ProjectConfigEnvironmentEnum;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'frontendFramework': ProjectConfigFrontendFrameworkEnum;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'backendLanguage': ProjectConfigBackendLanguageEnum;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'backendAPIUrl': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'frontendAPIUrl': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'applicationUrl': string;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'useCli': boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'doubleOptIn': boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'userFullNameRequired': boolean;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'webauthnRPID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'domain': string;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'webComponentDebug': boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'smtpUseCustom': boolean;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'smtpHost': string;
     /**
-     * 
+     *
      * @type {number}
      * @memberof ProjectConfig
      */
     'smtpPort': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'smtpUsername': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'smtpPassword': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'supportEmail': string;
     /**
-     * 
+     *
      * @type {Array<string>}
      * @memberof ProjectConfig
      */
     'webhookActions': Array<string>;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'signupFlow': ProjectConfigSignupFlowEnum;
     /**
-     * 
+     *
      * @type {object}
      * @memberof ProjectConfig
      */
     'signupFlowOptions': object;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
     'loginFlow': ProjectConfigLoginFlowEnum;
     /**
-     * 
+     *
      * @type {object}
      * @memberof ProjectConfig
      */
@@ -2864,7 +2864,7 @@ export interface ProjectConfig {
      */
     'updated': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfig
      */
@@ -2924,7 +2924,7 @@ export const ProjectConfigStatusEnum = {
 export type ProjectConfigStatusEnum = typeof ProjectConfigStatusEnum[keyof typeof ProjectConfigStatusEnum];
 
 /**
- * 
+ *
  * @export
  * @interface ProjectConfigGetRsp
  */
@@ -2936,13 +2936,13 @@ export interface ProjectConfigGetRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigGetRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof ProjectConfigGetRsp
      */
@@ -2954,44 +2954,44 @@ export interface ProjectConfigGetRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {ProjectConfig}
      * @memberof ProjectConfigGetRsp
      */
     'data': ProjectConfig;
 }
 /**
- * 
+ *
  * @export
  * @interface ProjectConfigSaveReq
  */
 export interface ProjectConfigSaveReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'externalName'?: string;
     /**
-     * 
+     *
      * @type {AppType}
      * @memberof ProjectConfigSaveReq
      */
     'appType'?: AppType;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'productKey'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'emailFrom'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
@@ -3003,277 +3003,277 @@ export interface ProjectConfigSaveReq {
      */
     'externalApplicationProtocolVersion'?: ProjectConfigSaveReqExternalApplicationProtocolVersionEnum;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'webhookURL'?: string;
     /**
-     * 
+     *
      * @type {Array<string>}
      * @memberof ProjectConfigSaveReq
      */
     'webhookActions'?: Array<string>;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'webhookUsername'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'webhookPassword'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'webhookTestInvalidUsername'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'webhookTestValidUsername'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'webhookTestValidPassword'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'externalApplicationUsername'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'externalApplicationPassword'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'legacyAuthMethodsUrl'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'passwordVerifyUrl'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'authSuccessRedirectUrl'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'passwordResetUrl'?: string;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'allowUserRegistration'?: boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'allowIPStickiness'?: boolean;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'passkeyAppendInterval'?: ProjectConfigSaveReqPasskeyAppendIntervalEnum;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'fallbackLanguage'?: string;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'autoDetectLanguage'?: boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'integrationModeHosted'?: boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'integrationModeAPI'?: boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'integrationModeWebComponent'?: boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'hasExistingUsers'?: boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'hasVerifiedSession'?: boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'hasGeneratedSession'?: boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'hasStartedUsingPasskeys'?: boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'hasStartedUsingSessions'?: boolean;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'applicationUrl'?: string;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'useCli'?: boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'doubleOptIn'?: boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'userFullNameRequired'?: boolean;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'webauthnRPID'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'domain'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'environment'?: ProjectConfigSaveReqEnvironmentEnum;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'frontendFramework'?: ProjectConfigSaveReqFrontendFrameworkEnum;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'backendLanguage'?: ProjectConfigSaveReqBackendLanguageEnum;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'webComponentDebug'?: boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'smtpUseCustom'?: boolean;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'smtpHost'?: string;
     /**
-     * 
+     *
      * @type {number}
      * @memberof ProjectConfigSaveReq
      */
     'smtpPort'?: number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'smtpUsername'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'smtpPassword'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'supportEmail'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'signupFlow'?: ProjectConfigSaveReqSignupFlowEnum;
     /**
-     * 
+     *
      * @type {object}
      * @memberof ProjectConfigSaveReq
      */
     'signupFlowOptions'?: object;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'loginFlow'?: ProjectConfigSaveReqLoginFlowEnum;
     /**
-     * 
+     *
      * @type {object}
      * @memberof ProjectConfigSaveReq
      */
@@ -3285,7 +3285,7 @@ export interface ProjectConfigSaveReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof ProjectConfigSaveReq
      */
@@ -3342,13 +3342,13 @@ export const ProjectConfigSaveReqLoginFlowEnum = {
 export type ProjectConfigSaveReqLoginFlowEnum = typeof ProjectConfigSaveReqLoginFlowEnum[keyof typeof ProjectConfigSaveReqLoginFlowEnum];
 
 /**
- * 
+ *
  * @export
  * @interface ProjectConfigWebhookTestReq
  */
 export interface ProjectConfigWebhookTestReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigWebhookTestReq
      */
@@ -3360,7 +3360,7 @@ export interface ProjectConfigWebhookTestReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof ProjectConfigWebhookTestReq
      */
@@ -3375,7 +3375,7 @@ export const ProjectConfigWebhookTestReqActionEnum = {
 export type ProjectConfigWebhookTestReqActionEnum = typeof ProjectConfigWebhookTestReqActionEnum[keyof typeof ProjectConfigWebhookTestReqActionEnum];
 
 /**
- * 
+ *
  * @export
  * @interface ProjectConfigWebhookTestRsp
  */
@@ -3387,13 +3387,13 @@ export interface ProjectConfigWebhookTestRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigWebhookTestRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof ProjectConfigWebhookTestRsp
      */
@@ -3405,39 +3405,39 @@ export interface ProjectConfigWebhookTestRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {ProjectConfigWebhookTestRspAllOfData}
      * @memberof ProjectConfigWebhookTestRsp
      */
     'data': ProjectConfigWebhookTestRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface ProjectConfigWebhookTestRspAllOfData
  */
 export interface ProjectConfigWebhookTestRspAllOfData {
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigWebhookTestRspAllOfData
      */
     'code': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectConfigWebhookTestRspAllOfData
      */
     'details': string;
     /**
-     * 
+     *
      * @type {number}
      * @memberof ProjectConfigWebhookTestRspAllOfData
      */
     'runtime': number;
 }
 /**
- * 
+ *
  * @export
  * @interface ProjectSecretCreateReq
  */
@@ -3449,14 +3449,14 @@ export interface ProjectSecretCreateReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof ProjectSecretCreateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface ProjectSecretCreateRsp
  */
@@ -3468,13 +3468,13 @@ export interface ProjectSecretCreateRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectSecretCreateRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof ProjectSecretCreateRsp
      */
@@ -3511,7 +3511,7 @@ export interface ProjectSecretCreateRsp {
     'created': string;
 }
 /**
- * 
+ *
  * @export
  * @interface ProjectSecretDeleteReq
  */
@@ -3523,14 +3523,14 @@ export interface ProjectSecretDeleteReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof ProjectSecretDeleteReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface ProjectSecretItem
  */
@@ -3561,7 +3561,7 @@ export interface ProjectSecretItem {
     'created': string;
 }
 /**
- * 
+ *
  * @export
  * @interface ProjectSecretListRsp
  */
@@ -3573,13 +3573,13 @@ export interface ProjectSecretListRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ProjectSecretListRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof ProjectSecretListRsp
      */
@@ -3591,13 +3591,13 @@ export interface ProjectSecretListRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {Array<ProjectSecretItem>}
      * @memberof ProjectSecretListRsp
      */
     'rows': Array<ProjectSecretItem>;
     /**
-     * 
+     *
      * @type {Paging}
      * @memberof ProjectSecretListRsp
      */
@@ -3732,7 +3732,7 @@ export interface RequestLog {
     'details': Array<string>;
 }
 /**
- * 
+ *
  * @export
  * @interface RequestLogGetRsp
  */
@@ -3744,13 +3744,13 @@ export interface RequestLogGetRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof RequestLogGetRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof RequestLogGetRsp
      */
@@ -3762,14 +3762,14 @@ export interface RequestLogGetRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {RequestLog}
      * @memberof RequestLogGetRsp
      */
     'data': RequestLog;
 }
 /**
- * 
+ *
  * @export
  * @interface RequestLogsListRsp
  */
@@ -3781,13 +3781,13 @@ export interface RequestLogsListRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof RequestLogsListRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof RequestLogsListRsp
      */
@@ -3799,33 +3799,33 @@ export interface RequestLogsListRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {RequestLogsListRspAllOfData}
      * @memberof RequestLogsListRsp
      */
     'data': RequestLogsListRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface RequestLogsListRspAllOfData
  */
 export interface RequestLogsListRspAllOfData {
     /**
-     * 
+     *
      * @type {Array<RequestLog>}
      * @memberof RequestLogsListRspAllOfData
      */
     'logs': Array<RequestLog>;
     /**
-     * 
+     *
      * @type {Paging}
      * @memberof RequestLogsListRspAllOfData
      */
     'paging': Paging;
 }
 /**
- * 
+ *
  * @export
  * @interface SessionConfig
  */
@@ -3837,67 +3837,67 @@ export interface SessionConfig {
      */
     'projectID': string;
     /**
-     * 
+     *
      * @type {AppType}
      * @memberof SessionConfig
      */
     'appType': AppType;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof SessionConfig
      */
     'active'?: boolean;
     /**
-     * 
+     *
      * @type {number}
      * @memberof SessionConfig
      */
     'shortLifetimeMinutes': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof SessionConfig
      */
     'shortCookieDomain': string;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof SessionConfig
      */
     'shortCookieSecure': boolean;
     /**
-     * 
+     *
      * @type {string}
      * @memberof SessionConfig
      */
     'shortCookieSameSite': SessionConfigShortCookieSameSiteEnum;
     /**
-     * 
+     *
      * @type {number}
      * @memberof SessionConfig
      */
     'longLifetimeValue': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof SessionConfig
      */
     'longLifetimeUnit': SessionConfigLongLifetimeUnitEnum;
     /**
-     * 
+     *
      * @type {number}
      * @memberof SessionConfig
      */
     'longInactivityValue': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof SessionConfig
      */
     'longInactivityUnit': SessionConfigLongInactivityUnitEnum;
     /**
-     * 
+     *
      * @type {string}
      * @memberof SessionConfig
      */
@@ -3939,7 +3939,7 @@ export const SessionConfigLongInactivityUnitEnum = {
 export type SessionConfigLongInactivityUnitEnum = typeof SessionConfigLongInactivityUnitEnum[keyof typeof SessionConfigLongInactivityUnitEnum];
 
 /**
- * 
+ *
  * @export
  * @interface SessionConfigGetRsp
  */
@@ -3951,13 +3951,13 @@ export interface SessionConfigGetRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof SessionConfigGetRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof SessionConfigGetRsp
      */
@@ -3969,74 +3969,74 @@ export interface SessionConfigGetRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {SessionConfig}
      * @memberof SessionConfigGetRsp
      */
     'data': SessionConfig;
 }
 /**
- * 
+ *
  * @export
  * @interface SessionConfigUpdateReq
  */
 export interface SessionConfigUpdateReq {
     /**
-     * 
+     *
      * @type {AppType}
      * @memberof SessionConfigUpdateReq
      */
     'appType': AppType;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof SessionConfigUpdateReq
      */
     'active'?: boolean;
     /**
-     * 
+     *
      * @type {number}
      * @memberof SessionConfigUpdateReq
      */
     'shortLifetimeMinutes'?: number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof SessionConfigUpdateReq
      */
     'shortCookieDomain'?: string;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof SessionConfigUpdateReq
      */
     'shortCookieSecure'?: boolean;
     /**
-     * 
+     *
      * @type {string}
      * @memberof SessionConfigUpdateReq
      */
     'shortCookieSameSite'?: SessionConfigUpdateReqShortCookieSameSiteEnum;
     /**
-     * 
+     *
      * @type {number}
      * @memberof SessionConfigUpdateReq
      */
     'longLifetimeValue'?: number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof SessionConfigUpdateReq
      */
     'longLifetimeUnit'?: SessionConfigUpdateReqLongLifetimeUnitEnum;
     /**
-     * 
+     *
      * @type {number}
      * @memberof SessionConfigUpdateReq
      */
     'longInactivityValue'?: number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof SessionConfigUpdateReq
      */
@@ -4048,7 +4048,7 @@ export interface SessionConfigUpdateReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof SessionConfigUpdateReq
      */
@@ -4076,7 +4076,7 @@ export const SessionConfigUpdateReqLongInactivityUnitEnum = {
 export type SessionConfigUpdateReqLongInactivityUnitEnum = typeof SessionConfigUpdateReqLongInactivityUnitEnum[keyof typeof SessionConfigUpdateReqLongInactivityUnitEnum];
 
 /**
- * 
+ *
  * @export
  * @interface SessionTokenCreateReq
  */
@@ -4100,14 +4100,14 @@ export interface SessionTokenCreateReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof SessionTokenCreateReq
      */
     'clientInfo': ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface SessionTokenCreateRsp
  */
@@ -4119,13 +4119,13 @@ export interface SessionTokenCreateRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof SessionTokenCreateRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof SessionTokenCreateRsp
      */
@@ -4137,33 +4137,33 @@ export interface SessionTokenCreateRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {SessionTokenCreateRspAllOfData}
      * @memberof SessionTokenCreateRsp
      */
     'data': SessionTokenCreateRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface SessionTokenCreateRspAllOfData
  */
 export interface SessionTokenCreateRspAllOfData {
     /**
-     * 
+     *
      * @type {string}
      * @memberof SessionTokenCreateRspAllOfData
      */
     'token': string;
 }
 /**
- * 
+ *
  * @export
  * @interface SessionTokenVerifyReq
  */
 export interface SessionTokenVerifyReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof SessionTokenVerifyReq
      */
@@ -4175,14 +4175,14 @@ export interface SessionTokenVerifyReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof SessionTokenVerifyReq
      */
     'clientInfo': ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface SessionTokenVerifyRsp
  */
@@ -4194,13 +4194,13 @@ export interface SessionTokenVerifyRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof SessionTokenVerifyRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof SessionTokenVerifyRsp
      */
@@ -4212,14 +4212,14 @@ export interface SessionTokenVerifyRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {SessionTokenVerifyRspAllOfData}
      * @memberof SessionTokenVerifyRsp
      */
     'data': SessionTokenVerifyRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface SessionTokenVerifyRspAllOfData
  */
@@ -4231,20 +4231,20 @@ export interface SessionTokenVerifyRspAllOfData {
      */
     'userID': string;
     /**
-     * 
+     *
      * @type {FullUser}
      * @memberof SessionTokenVerifyRspAllOfData
      */
     'user': FullUser;
     /**
-     * 
+     *
      * @type {string}
      * @memberof SessionTokenVerifyRspAllOfData
      */
     'userData': string;
 }
 /**
- * 
+ *
  * @export
  * @interface SmsCodeSendReq
  */
@@ -4280,14 +4280,14 @@ export interface SmsCodeSendReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof SmsCodeSendReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface SmsCodeSendRsp
  */
@@ -4299,13 +4299,13 @@ export interface SmsCodeSendRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof SmsCodeSendRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof SmsCodeSendRsp
      */
@@ -4317,27 +4317,27 @@ export interface SmsCodeSendRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {SmsCodeSendRspAllOfData}
      * @memberof SmsCodeSendRsp
      */
     'data': SmsCodeSendRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface SmsCodeSendRspAllOfData
  */
 export interface SmsCodeSendRspAllOfData {
     /**
-     * 
+     *
      * @type {string}
      * @memberof SmsCodeSendRspAllOfData
      */
     'smsCodeID': string;
 }
 /**
- * 
+ *
  * @export
  * @interface SmsCodeValidateReq
  */
@@ -4349,7 +4349,7 @@ export interface SmsCodeValidateReq {
      */
     'smsCode': string;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof SmsCodeValidateReq
      */
@@ -4361,14 +4361,14 @@ export interface SmsCodeValidateReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof SmsCodeValidateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface SmsCodeValidateRsp
  */
@@ -4380,13 +4380,13 @@ export interface SmsCodeValidateRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof SmsCodeValidateRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof SmsCodeValidateRsp
      */
@@ -4398,38 +4398,38 @@ export interface SmsCodeValidateRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof SmsCodeValidateRsp
      */
     'loginToken'?: string;
 }
 /**
- * 
+ *
  * @export
  * @interface SmsTemplateCreateReq
  */
 export interface SmsTemplateCreateReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof SmsTemplateCreateReq
      */
     'type': SmsTemplateCreateReqTypeEnum;
     /**
-     * 
+     *
      * @type {string}
      * @memberof SmsTemplateCreateReq
      */
     'name': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof SmsTemplateCreateReq
      */
     'textPlain': string;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof SmsTemplateCreateReq
      */
@@ -4441,7 +4441,7 @@ export interface SmsTemplateCreateReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof SmsTemplateCreateReq
      */
@@ -4456,7 +4456,7 @@ export const SmsTemplateCreateReqTypeEnum = {
 export type SmsTemplateCreateReqTypeEnum = typeof SmsTemplateCreateReqTypeEnum[keyof typeof SmsTemplateCreateReqTypeEnum];
 
 /**
- * 
+ *
  * @export
  * @interface SmsTemplateCreateRsp
  */
@@ -4468,13 +4468,13 @@ export interface SmsTemplateCreateRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof SmsTemplateCreateRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof SmsTemplateCreateRsp
      */
@@ -4486,27 +4486,27 @@ export interface SmsTemplateCreateRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {SmsTemplateCreateRspAllOfData}
      * @memberof SmsTemplateCreateRsp
      */
     'data': SmsTemplateCreateRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface SmsTemplateCreateRspAllOfData
  */
 export interface SmsTemplateCreateRspAllOfData {
     /**
-     * 
+     *
      * @type {string}
      * @memberof SmsTemplateCreateRspAllOfData
      */
     'smsTemplateID': string;
 }
 /**
- * 
+ *
  * @export
  * @interface SmsTemplateDeleteReq
  */
@@ -4518,7 +4518,7 @@ export interface SmsTemplateDeleteReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof SmsTemplateDeleteReq
      */
@@ -4540,26 +4540,26 @@ export type Status = typeof Status[keyof typeof Status];
 
 
 /**
- * 
+ *
  * @export
  * @interface TrackingBackupState
  */
 export interface TrackingBackupState {
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingBackupState
      */
     'backedUp': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingBackupState
      */
     'notBackedUp': number;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingBackupStateGetRsp
  */
@@ -4571,13 +4571,13 @@ export interface TrackingBackupStateGetRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingBackupStateGetRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof TrackingBackupStateGetRsp
      */
@@ -4589,63 +4589,63 @@ export interface TrackingBackupStateGetRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {TrackingBackupState}
      * @memberof TrackingBackupStateGetRsp
      */
     'data': TrackingBackupState;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingBrowserDetailedStats
  */
 export interface TrackingBrowserDetailedStats {
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingBrowserDetailedStats
      */
     'timePoint': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingBrowserDetailedStats
      */
     'browserName': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingBrowserDetailedStats
      */
     'browserVersion': string;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingBrowserDetailedStats
      */
     'cnt': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingBrowserDetailedStats
      */
     'webauthn': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingBrowserDetailedStats
      */
     'platform': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingBrowserDetailedStats
      */
     'conditional_ui': number;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingBrowserDetailedStatsListRsp
  */
@@ -4657,13 +4657,13 @@ export interface TrackingBrowserDetailedStatsListRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingBrowserDetailedStatsListRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof TrackingBrowserDetailedStatsListRsp
      */
@@ -4675,76 +4675,76 @@ export interface TrackingBrowserDetailedStatsListRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {TrackingBrowserDetailedStatsListRspAllOfData}
      * @memberof TrackingBrowserDetailedStatsListRsp
      */
     'data': TrackingBrowserDetailedStatsListRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingBrowserDetailedStatsListRspAllOfData
  */
 export interface TrackingBrowserDetailedStatsListRspAllOfData {
     /**
-     * 
+     *
      * @type {Array<TrackingBrowserDetailedStats>}
      * @memberof TrackingBrowserDetailedStatsListRspAllOfData
      */
     'stats': Array<TrackingBrowserDetailedStats>;
     /**
-     * 
+     *
      * @type {Paging}
      * @memberof TrackingBrowserDetailedStatsListRspAllOfData
      */
     'paging': Paging;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingBrowserStats
  */
 export interface TrackingBrowserStats {
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingBrowserStats
      */
     'timePoint': string;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingBrowserStats
      */
     'chrome': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingBrowserStats
      */
     'safari': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingBrowserStats
      */
     'edge': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingBrowserStats
      */
     'firefox': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingBrowserStats
      */
     'other': number;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingBrowserStatsListRsp
  */
@@ -4756,13 +4756,13 @@ export interface TrackingBrowserStatsListRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingBrowserStatsListRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof TrackingBrowserStatsListRsp
      */
@@ -4774,70 +4774,70 @@ export interface TrackingBrowserStatsListRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {TrackingBrowserStatsListRspAllOfData}
      * @memberof TrackingBrowserStatsListRsp
      */
     'data': TrackingBrowserStatsListRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingBrowserStatsListRspAllOfData
  */
 export interface TrackingBrowserStatsListRspAllOfData {
     /**
-     * 
+     *
      * @type {Array<TrackingBrowserStats>}
      * @memberof TrackingBrowserStatsListRspAllOfData
      */
     'stats': Array<TrackingBrowserStats>;
     /**
-     * 
+     *
      * @type {Paging}
      * @memberof TrackingBrowserStatsListRspAllOfData
      */
     'paging': Paging;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingDetailedStats
  */
 export interface TrackingDetailedStats {
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingDetailedStats
      */
     'timePoint': string;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingDetailedStats
      */
     'visits': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingDetailedStats
      */
     'webauthn': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingDetailedStats
      */
     'platform': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingDetailedStats
      */
     'conditionalUi': number;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingDetailedStatsListRsp
  */
@@ -4849,13 +4849,13 @@ export interface TrackingDetailedStatsListRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingDetailedStatsListRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof TrackingDetailedStatsListRsp
      */
@@ -4867,58 +4867,58 @@ export interface TrackingDetailedStatsListRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {TrackingDetailedStatsListRspAllOfData}
      * @memberof TrackingDetailedStatsListRsp
      */
     'data': TrackingDetailedStatsListRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingDetailedStatsListRspAllOfData
  */
 export interface TrackingDetailedStatsListRspAllOfData {
     /**
-     * 
+     *
      * @type {Array<TrackingDetailedStats>}
      * @memberof TrackingDetailedStatsListRspAllOfData
      */
     'stats': Array<TrackingDetailedStats>;
     /**
-     * 
+     *
      * @type {Paging}
      * @memberof TrackingDetailedStatsListRspAllOfData
      */
     'paging': Paging;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingEnums
  */
 export interface TrackingEnums {
     /**
-     * 
+     *
      * @type {Array<string>}
      * @memberof TrackingEnums
      */
     'browserNames': Array<string>;
     /**
-     * 
+     *
      * @type {Array<string>}
      * @memberof TrackingEnums
      */
     'osNames': Array<string>;
     /**
-     * 
+     *
      * @type {Array<string>}
      * @memberof TrackingEnums
      */
     'osPlatforms': Array<string>;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingEnumsGetRsp
  */
@@ -4930,13 +4930,13 @@ export interface TrackingEnumsGetRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingEnumsGetRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof TrackingEnumsGetRsp
      */
@@ -4948,62 +4948,62 @@ export interface TrackingEnumsGetRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {TrackingEnums}
      * @memberof TrackingEnumsGetRsp
      */
     'data': TrackingEnums;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingOSDetailedStats
  */
 export interface TrackingOSDetailedStats {
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingOSDetailedStats
      */
     'timePoint': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingOSDetailedStats
      */
     'osName': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingOSDetailedStats
      */
     'osVersion': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingOSDetailedStats
      */
     'osPlatform': TrackingOSDetailedStatsOsPlatformEnum;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingOSDetailedStats
      */
     'cnt': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingOSDetailedStats
      */
     'webauthn': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingOSDetailedStats
      */
     'platform': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingOSDetailedStats
      */
@@ -5019,7 +5019,7 @@ export const TrackingOSDetailedStatsOsPlatformEnum = {
 export type TrackingOSDetailedStatsOsPlatformEnum = typeof TrackingOSDetailedStatsOsPlatformEnum[keyof typeof TrackingOSDetailedStatsOsPlatformEnum];
 
 /**
- * 
+ *
  * @export
  * @interface TrackingOSDetailedStatsListRsp
  */
@@ -5031,13 +5031,13 @@ export interface TrackingOSDetailedStatsListRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingOSDetailedStatsListRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof TrackingOSDetailedStatsListRsp
      */
@@ -5049,76 +5049,76 @@ export interface TrackingOSDetailedStatsListRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {TrackingOSDetailedStatsListRspAllOfData}
      * @memberof TrackingOSDetailedStatsListRsp
      */
     'data': TrackingOSDetailedStatsListRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingOSDetailedStatsListRspAllOfData
  */
 export interface TrackingOSDetailedStatsListRspAllOfData {
     /**
-     * 
+     *
      * @type {Array<TrackingOSDetailedStats>}
      * @memberof TrackingOSDetailedStatsListRspAllOfData
      */
     'stats': Array<TrackingOSDetailedStats>;
     /**
-     * 
+     *
      * @type {Paging}
      * @memberof TrackingOSDetailedStatsListRspAllOfData
      */
     'paging': Paging;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingOSStats
  */
 export interface TrackingOSStats {
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingOSStats
      */
     'timePoint': string;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingOSStats
      */
     'macos': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingOSStats
      */
     'windows': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingOSStats
      */
     'ios': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingOSStats
      */
     'android': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingOSStats
      */
     'other': number;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingOSStatsListRsp
  */
@@ -5130,13 +5130,13 @@ export interface TrackingOSStatsListRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingOSStatsListRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof TrackingOSStatsListRsp
      */
@@ -5148,76 +5148,76 @@ export interface TrackingOSStatsListRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {TrackingOSStatsListRspAllOfData}
      * @memberof TrackingOSStatsListRsp
      */
     'data': TrackingOSStatsListRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingOSStatsListRspAllOfData
  */
 export interface TrackingOSStatsListRspAllOfData {
     /**
-     * 
+     *
      * @type {Array<TrackingOSStats>}
      * @memberof TrackingOSStatsListRspAllOfData
      */
     'stats': Array<TrackingOSStats>;
     /**
-     * 
+     *
      * @type {Paging}
      * @memberof TrackingOSStatsListRspAllOfData
      */
     'paging': Paging;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingRawListRow
  */
 export interface TrackingRawListRow {
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingRawListRow
      */
     'timePoint': string;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof TrackingRawListRow
      */
     'hasWebauthn': boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof TrackingRawListRow
      */
     'hasPlatformAuth': boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof TrackingRawListRow
      */
     'hasConditionalUi': boolean;
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingRawListRow
      */
     'osId': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingRawListRow
      */
     'browserId': string;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingRawListRsp
  */
@@ -5229,13 +5229,13 @@ export interface TrackingRawListRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingRawListRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof TrackingRawListRsp
      */
@@ -5247,57 +5247,57 @@ export interface TrackingRawListRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {Array<TrackingRawListRow>}
      * @memberof TrackingRawListRsp
      */
     'rows': Array<TrackingRawListRow>;
     /**
-     * 
+     *
      * @type {Paging}
      * @memberof TrackingRawListRsp
      */
     'paging': Paging;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingStats
  */
 export interface TrackingStats {
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingStats
      */
     'timePoint': string;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingStats
      */
     'aggregateVisits': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingStats
      */
     'aggregateWebauthn': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingStats
      */
     'aggregatePlatform': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof TrackingStats
      */
     'aggregateConditionalUi': number;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingStatsListRsp
  */
@@ -5309,13 +5309,13 @@ export interface TrackingStatsListRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof TrackingStatsListRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof TrackingStatsListRsp
      */
@@ -5327,26 +5327,26 @@ export interface TrackingStatsListRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {TrackingStatsListRspAllOfData}
      * @memberof TrackingStatsListRsp
      */
     'data': TrackingStatsListRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface TrackingStatsListRspAllOfData
  */
 export interface TrackingStatsListRspAllOfData {
     /**
-     * 
+     *
      * @type {Array<TrackingStats>}
      * @memberof TrackingStatsListRspAllOfData
      */
     'stats': Array<TrackingStats>;
     /**
-     * 
+     *
      * @type {Paging}
      * @memberof TrackingStatsListRspAllOfData
      */
@@ -5365,13 +5365,13 @@ export interface User {
      */
     'ID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof User
      */
     'name': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof User
      */
@@ -5389,14 +5389,14 @@ export interface User {
      */
     'updated': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof User
      */
     'status': string;
 }
 /**
- * 
+ *
  * @export
  * @interface UserAuthLog
  */
@@ -5408,25 +5408,25 @@ export interface UserAuthLog {
      */
     'userID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserAuthLog
      */
     'userName': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserAuthLog
      */
     'method': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserAuthLog
      */
     'eventType': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserAuthLog
      */
@@ -5439,7 +5439,7 @@ export interface UserAuthLog {
     'created': string;
 }
 /**
- * 
+ *
  * @export
  * @interface UserAuthLogListRsp
  */
@@ -5451,13 +5451,13 @@ export interface UserAuthLogListRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserAuthLogListRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof UserAuthLogListRsp
      */
@@ -5469,57 +5469,57 @@ export interface UserAuthLogListRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {UserAuthLogListRspAllOfData}
      * @memberof UserAuthLogListRsp
      */
     'data': UserAuthLogListRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface UserAuthLogListRspAllOfData
  */
 export interface UserAuthLogListRspAllOfData {
     /**
-     * 
+     *
      * @type {Array<UserAuthLog>}
      * @memberof UserAuthLogListRspAllOfData
      */
     'rows': Array<UserAuthLog>;
     /**
-     * 
+     *
      * @type {Paging}
      * @memberof UserAuthLogListRspAllOfData
      */
     'paging': Paging;
 }
 /**
- * 
+ *
  * @export
  * @interface UserCreateReq
  */
 export interface UserCreateReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserCreateReq
      */
     'name': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserCreateReq
      */
     'fullName'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserCreateReq
      */
     'email'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserCreateReq
      */
@@ -5531,14 +5531,14 @@ export interface UserCreateReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof UserCreateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface UserCreateRsp
  */
@@ -5550,13 +5550,13 @@ export interface UserCreateRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserCreateRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof UserCreateRsp
      */
@@ -5568,51 +5568,51 @@ export interface UserCreateRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {UserCreateRspAllOfData}
      * @memberof UserCreateRsp
      */
     'data': UserCreateRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface UserCreateRspAllOfData
  */
 export interface UserCreateRspAllOfData {
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserCreateRspAllOfData
      */
     'userID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserCreateRspAllOfData
      */
     'emailID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserCreateRspAllOfData
      */
     'phoneNumberID': string;
 }
 /**
- * 
+ *
  * @export
  * @interface UserCustomLoginIdentifierCreateReq
  */
 export interface UserCustomLoginIdentifierCreateReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserCustomLoginIdentifierCreateReq
      */
     'customLoginIdentifier': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserCustomLoginIdentifierCreateReq
      */
@@ -5624,14 +5624,14 @@ export interface UserCustomLoginIdentifierCreateReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof UserCustomLoginIdentifierCreateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface UserCustomLoginIdentifierCreateRsp
  */
@@ -5643,13 +5643,13 @@ export interface UserCustomLoginIdentifierCreateRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserCustomLoginIdentifierCreateRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof UserCustomLoginIdentifierCreateRsp
      */
@@ -5661,27 +5661,27 @@ export interface UserCustomLoginIdentifierCreateRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {UserCustomLoginIdentifierCreateRspAllOfData}
      * @memberof UserCustomLoginIdentifierCreateRsp
      */
     'data': UserCustomLoginIdentifierCreateRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface UserCustomLoginIdentifierCreateRspAllOfData
  */
 export interface UserCustomLoginIdentifierCreateRspAllOfData {
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserCustomLoginIdentifierCreateRspAllOfData
      */
     'customLoginIdentifierID': string;
 }
 /**
- * 
+ *
  * @export
  * @interface UserCustomLoginIdentifierDeleteReq
  */
@@ -5693,14 +5693,14 @@ export interface UserCustomLoginIdentifierDeleteReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof UserCustomLoginIdentifierDeleteReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface UserCustomLoginIdentifierGetRsp
  */
@@ -5712,13 +5712,13 @@ export interface UserCustomLoginIdentifierGetRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserCustomLoginIdentifierGetRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof UserCustomLoginIdentifierGetRsp
      */
@@ -5730,27 +5730,27 @@ export interface UserCustomLoginIdentifierGetRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {UserCustomLoginIdentifierGetRspAllOfData}
      * @memberof UserCustomLoginIdentifierGetRsp
      */
     'data': UserCustomLoginIdentifierGetRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface UserCustomLoginIdentifierGetRspAllOfData
  */
 export interface UserCustomLoginIdentifierGetRspAllOfData {
     /**
-     * 
+     *
      * @type {CustomLoginIdentifier}
      * @memberof UserCustomLoginIdentifierGetRspAllOfData
      */
     'customLoginIdentifier': CustomLoginIdentifier;
 }
 /**
- * 
+ *
  * @export
  * @interface UserDeleteReq
  */
@@ -5762,75 +5762,75 @@ export interface UserDeleteReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof UserDeleteReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface UserDevice
  */
 export interface UserDevice {
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserDevice
      */
     'name': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserDevice
      */
     'fingerprint': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserDevice
      */
     'status': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserDevice
      */
     'device': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserDevice
      */
     'created': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserDevice
      */
     'browserName': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserDevice
      */
     'browserVersion': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserDevice
      */
     'osName': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserDevice
      */
     'osVersion': string;
 }
 /**
- * 
+ *
  * @export
  * @interface UserDeviceListRsp
  */
@@ -5842,13 +5842,13 @@ export interface UserDeviceListRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserDeviceListRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof UserDeviceListRsp
      */
@@ -5860,13 +5860,13 @@ export interface UserDeviceListRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {Array<UserDevice>}
      * @memberof UserDeviceListRsp
      */
     'devices': Array<UserDevice>;
     /**
-     * 
+     *
      * @type {Paging}
      * @memberof UserDeviceListRsp
      */
@@ -5885,7 +5885,7 @@ export interface UserEmail {
      */
     'ID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserEmail
      */
@@ -5903,7 +5903,7 @@ export interface UserEmail {
      */
     'updated': string;
     /**
-     * 
+     *
      * @type {Status}
      * @memberof UserEmail
      */
@@ -5912,13 +5912,13 @@ export interface UserEmail {
 
 
 /**
- * 
+ *
  * @export
  * @interface UserEmailCreateReq
  */
 export interface UserEmailCreateReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserEmailCreateReq
      */
@@ -5930,14 +5930,14 @@ export interface UserEmailCreateReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof UserEmailCreateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface UserEmailCreateRsp
  */
@@ -5949,13 +5949,13 @@ export interface UserEmailCreateRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserEmailCreateRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof UserEmailCreateRsp
      */
@@ -5967,27 +5967,27 @@ export interface UserEmailCreateRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {UserEmailCreateRspAllOfData}
      * @memberof UserEmailCreateRsp
      */
     'data': UserEmailCreateRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface UserEmailCreateRspAllOfData
  */
 export interface UserEmailCreateRspAllOfData {
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserEmailCreateRspAllOfData
      */
     'emailID': string;
 }
 /**
- * 
+ *
  * @export
  * @interface UserEmailDeleteReq
  */
@@ -5999,14 +5999,14 @@ export interface UserEmailDeleteReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof UserEmailDeleteReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface UserEmailGetRsp
  */
@@ -6018,13 +6018,13 @@ export interface UserEmailGetRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserEmailGetRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof UserEmailGetRsp
      */
@@ -6036,27 +6036,27 @@ export interface UserEmailGetRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {UserEmailGetRspAllOfData}
      * @memberof UserEmailGetRsp
      */
     'data': UserEmailGetRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface UserEmailGetRspAllOfData
  */
 export interface UserEmailGetRspAllOfData {
     /**
-     * 
+     *
      * @type {Email}
      * @memberof UserEmailGetRspAllOfData
      */
     'email': Email;
 }
 /**
- * 
+ *
  * @export
  * @interface UserGetRsp
  */
@@ -6068,13 +6068,13 @@ export interface UserGetRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserGetRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof UserGetRsp
      */
@@ -6086,14 +6086,14 @@ export interface UserGetRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {FullUser}
      * @memberof UserGetRsp
      */
     'data': FullUser;
 }
 /**
- * 
+ *
  * @export
  * @interface UserListRsp
  */
@@ -6105,13 +6105,13 @@ export interface UserListRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserListRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof UserListRsp
      */
@@ -6123,26 +6123,26 @@ export interface UserListRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {UserListRspAllOfData}
      * @memberof UserListRsp
      */
     'data': UserListRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface UserListRspAllOfData
  */
 export interface UserListRspAllOfData {
     /**
-     * 
+     *
      * @type {Array<FullUser>}
      * @memberof UserListRspAllOfData
      */
     'users': Array<FullUser>;
     /**
-     * 
+     *
      * @type {Paging}
      * @memberof UserListRspAllOfData
      */
@@ -6161,7 +6161,7 @@ export interface UserPhoneNumber {
      */
     'ID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserPhoneNumber
      */
@@ -6179,7 +6179,7 @@ export interface UserPhoneNumber {
      */
     'updated': string;
     /**
-     * 
+     *
      * @type {Status}
      * @memberof UserPhoneNumber
      */
@@ -6188,13 +6188,13 @@ export interface UserPhoneNumber {
 
 
 /**
- * 
+ *
  * @export
  * @interface UserPhoneNumberCreateReq
  */
 export interface UserPhoneNumberCreateReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserPhoneNumberCreateReq
      */
@@ -6206,14 +6206,14 @@ export interface UserPhoneNumberCreateReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof UserPhoneNumberCreateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface UserPhoneNumberCreateRsp
  */
@@ -6225,13 +6225,13 @@ export interface UserPhoneNumberCreateRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserPhoneNumberCreateRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof UserPhoneNumberCreateRsp
      */
@@ -6243,27 +6243,27 @@ export interface UserPhoneNumberCreateRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {UserPhoneNumberCreateRspAllOfData}
      * @memberof UserPhoneNumberCreateRsp
      */
     'data': UserPhoneNumberCreateRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface UserPhoneNumberCreateRspAllOfData
  */
 export interface UserPhoneNumberCreateRspAllOfData {
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserPhoneNumberCreateRspAllOfData
      */
     'phoneNumberID': string;
 }
 /**
- * 
+ *
  * @export
  * @interface UserPhoneNumberDeleteReq
  */
@@ -6275,14 +6275,14 @@ export interface UserPhoneNumberDeleteReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof UserPhoneNumberDeleteReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface UserPhoneNumberGetRsp
  */
@@ -6294,13 +6294,13 @@ export interface UserPhoneNumberGetRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserPhoneNumberGetRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof UserPhoneNumberGetRsp
      */
@@ -6312,88 +6312,88 @@ export interface UserPhoneNumberGetRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {UserPhoneNumberGetRspAllOfData}
      * @memberof UserPhoneNumberGetRsp
      */
     'data': UserPhoneNumberGetRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface UserPhoneNumberGetRspAllOfData
  */
 export interface UserPhoneNumberGetRspAllOfData {
     /**
-     * 
+     *
      * @type {PhoneNumber}
      * @memberof UserPhoneNumberGetRspAllOfData
      */
     'phoneNumber': PhoneNumber;
 }
 /**
- * 
+ *
  * @export
  * @interface UserStats
  */
 export interface UserStats {
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserStats
      */
     'timePoint': string;
     /**
-     * 
+     *
      * @type {number}
      * @memberof UserStats
      */
     'totalUsers': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof UserStats
      */
     'signUps': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof UserStats
      */
     'activeUsers': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof UserStats
      */
     'countPasskeyLogin': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof UserStats
      */
     'countEmailLogin': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof UserStats
      */
     'countPasswordLogin': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof UserStats
      */
     'successfulLogins': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof UserStats
      */
     'failedLogins': number;
 }
 /**
- * 
+ *
  * @export
  * @interface UserStatsListRsp
  */
@@ -6405,13 +6405,13 @@ export interface UserStatsListRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserStatsListRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof UserStatsListRsp
      */
@@ -6423,51 +6423,51 @@ export interface UserStatsListRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {UserStatsListRspAllOfData}
      * @memberof UserStatsListRsp
      */
     'data': UserStatsListRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface UserStatsListRspAllOfData
  */
 export interface UserStatsListRspAllOfData {
     /**
-     * 
+     *
      * @type {Array<UserStats>}
      * @memberof UserStatsListRspAllOfData
      */
     'stats': Array<UserStats>;
     /**
-     * 
+     *
      * @type {Paging}
      * @memberof UserStatsListRspAllOfData
      */
     'paging': Paging;
 }
 /**
- * 
+ *
  * @export
  * @interface UserUpdateReq
  */
 export interface UserUpdateReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserUpdateReq
      */
     'name'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserUpdateReq
      */
     'fullName'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserUpdateReq
      */
@@ -6479,7 +6479,7 @@ export interface UserUpdateReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof UserUpdateReq
      */
@@ -6494,7 +6494,7 @@ export const UserUpdateReqStatusEnum = {
 export type UserUpdateReqStatusEnum = typeof UserUpdateReqStatusEnum[keyof typeof UserUpdateReqStatusEnum];
 
 /**
- * 
+ *
  * @export
  * @interface UserUpdateRsp
  */
@@ -6506,13 +6506,13 @@ export interface UserUpdateRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof UserUpdateRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof UserUpdateRsp
      */
@@ -6524,14 +6524,14 @@ export interface UserUpdateRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {User}
      * @memberof UserUpdateRsp
      */
     'data': User;
 }
 /**
- * 
+ *
  * @export
  * @interface ValidateEmailReq
  */
@@ -6561,14 +6561,14 @@ export interface ValidateEmailReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof ValidateEmailReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface ValidateEmailRsp
  */
@@ -6580,13 +6580,13 @@ export interface ValidateEmailRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ValidateEmailRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof ValidateEmailRsp
      */
@@ -6598,14 +6598,14 @@ export interface ValidateEmailRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {EmailValidationResult}
      * @memberof ValidateEmailRsp
      */
     'data': EmailValidationResult;
 }
 /**
- * 
+ *
  * @export
  * @interface ValidatePhoneNumberReq
  */
@@ -6629,14 +6629,14 @@ export interface ValidatePhoneNumberReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof ValidatePhoneNumberReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface ValidatePhoneNumberRsp
  */
@@ -6648,13 +6648,13 @@ export interface ValidatePhoneNumberRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ValidatePhoneNumberRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof ValidatePhoneNumberRsp
      */
@@ -6666,100 +6666,100 @@ export interface ValidatePhoneNumberRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {PhoneNumberValidationResult}
      * @memberof ValidatePhoneNumberRsp
      */
     'data': PhoneNumberValidationResult;
 }
 /**
- * 
+ *
  * @export
  * @interface ValidationEmail
  */
 export interface ValidationEmail {
     /**
-     * 
+     *
      * @type {string}
      * @memberof ValidationEmail
      */
     'username': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ValidationEmail
      */
     'domain': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ValidationEmail
      */
     'reachable': string;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ValidationEmail
      */
     'disposable': boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ValidationEmail
      */
     'free': boolean;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof ValidationEmail
      */
     'hasMxRecords': boolean;
 }
 /**
- * 
+ *
  * @export
  * @interface ValidationPhoneNumber
  */
 export interface ValidationPhoneNumber {
     /**
-     * 
+     *
      * @type {number}
      * @memberof ValidationPhoneNumber
      */
     'nationalNumber': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof ValidationPhoneNumber
      */
     'countryCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ValidationPhoneNumber
      */
     'regionCode': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ValidationPhoneNumber
      */
     'nationalFormatted': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ValidationPhoneNumber
      */
     'internationalFormatted': string;
 }
 /**
- * 
+ *
  * @export
  * @interface WebAuthnAssociateStartReq
  */
 export interface WebAuthnAssociateStartReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnAssociateStartReq
      */
@@ -6771,14 +6771,14 @@ export interface WebAuthnAssociateStartReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof WebAuthnAssociateStartReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface WebAuthnAssociateStartRsp
  */
@@ -6790,13 +6790,13 @@ export interface WebAuthnAssociateStartRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnAssociateStartRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof WebAuthnAssociateStartRsp
      */
@@ -6829,7 +6829,7 @@ export const WebAuthnAssociateStartRspStatusEnum = {
 export type WebAuthnAssociateStartRspStatusEnum = typeof WebAuthnAssociateStartRspStatusEnum[keyof typeof WebAuthnAssociateStartRspStatusEnum];
 
 /**
- * 
+ *
  * @export
  * @interface WebAuthnAuthenticateFinishRsp
  */
@@ -6841,13 +6841,13 @@ export interface WebAuthnAuthenticateFinishRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnAuthenticateFinishRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof WebAuthnAuthenticateFinishRsp
      */
@@ -6898,13 +6898,13 @@ export const WebAuthnAuthenticateFinishRspStatusEnum = {
 export type WebAuthnAuthenticateFinishRspStatusEnum = typeof WebAuthnAuthenticateFinishRspStatusEnum[keyof typeof WebAuthnAuthenticateFinishRspStatusEnum];
 
 /**
- * 
+ *
  * @export
  * @interface WebAuthnAuthenticateStartReq
  */
 export interface WebAuthnAuthenticateStartReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnAuthenticateStartReq
      */
@@ -6916,14 +6916,14 @@ export interface WebAuthnAuthenticateStartReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof WebAuthnAuthenticateStartReq
      */
     'clientInfo': ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface WebAuthnAuthenticateStartRsp
  */
@@ -6935,13 +6935,13 @@ export interface WebAuthnAuthenticateStartRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnAuthenticateStartRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof WebAuthnAuthenticateStartRsp
      */
@@ -6975,7 +6975,7 @@ export const WebAuthnAuthenticateStartRspStatusEnum = {
 export type WebAuthnAuthenticateStartRspStatusEnum = typeof WebAuthnAuthenticateStartRspStatusEnum[keyof typeof WebAuthnAuthenticateStartRspStatusEnum];
 
 /**
- * 
+ *
  * @export
  * @interface WebAuthnAuthenticateSuccess
  */
@@ -6987,13 +6987,13 @@ export interface WebAuthnAuthenticateSuccess {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnAuthenticateSuccess
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof WebAuthnAuthenticateSuccess
      */
@@ -7030,13 +7030,13 @@ export interface WebAuthnAuthenticateSuccess {
     'userFullName'?: string;
 }
 /**
- * 
+ *
  * @export
  * @interface WebAuthnAuthenticatorUpdateReq
  */
 export interface WebAuthnAuthenticatorUpdateReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnAuthenticatorUpdateReq
      */
@@ -7048,26 +7048,26 @@ export interface WebAuthnAuthenticatorUpdateReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof WebAuthnAuthenticatorUpdateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface WebAuthnCredentialExistsReq
  */
 export interface WebAuthnCredentialExistsReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnCredentialExistsReq
      */
     'loginIdentifier': string;
     /**
-     * 
+     *
      * @type {LoginIdentifierType}
      * @memberof WebAuthnCredentialExistsReq
      */
@@ -7079,7 +7079,7 @@ export interface WebAuthnCredentialExistsReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof WebAuthnCredentialExistsReq
      */
@@ -7088,7 +7088,7 @@ export interface WebAuthnCredentialExistsReq {
 
 
 /**
- * 
+ *
  * @export
  * @interface WebAuthnCredentialExistsRsp
  */
@@ -7100,13 +7100,13 @@ export interface WebAuthnCredentialExistsRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnCredentialExistsRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof WebAuthnCredentialExistsRsp
      */
@@ -7118,14 +7118,14 @@ export interface WebAuthnCredentialExistsRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof WebAuthnCredentialExistsRsp
      */
     'exists': boolean;
 }
 /**
- * 
+ *
  * @export
  * @interface WebAuthnCredentialItemRsp
  */
@@ -7137,13 +7137,13 @@ export interface WebAuthnCredentialItemRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnCredentialItemRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof WebAuthnCredentialItemRsp
      */
@@ -7161,19 +7161,19 @@ export interface WebAuthnCredentialItemRsp {
      */
     'id': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnCredentialItemRsp
      */
     'credentialHash': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnCredentialItemRsp
      */
     'aaguid': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnCredentialItemRsp
      */
@@ -7221,7 +7221,7 @@ export interface WebAuthnCredentialItemRsp {
      */
     'authenticatorID': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnCredentialItemRsp
      */
@@ -7233,7 +7233,7 @@ export interface WebAuthnCredentialItemRsp {
      */
     'lastUsed': string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnCredentialItemRsp
      */
@@ -7258,7 +7258,7 @@ export const WebAuthnCredentialItemRspStatusEnum = {
 export type WebAuthnCredentialItemRspStatusEnum = typeof WebAuthnCredentialItemRspStatusEnum[keyof typeof WebAuthnCredentialItemRspStatusEnum];
 
 /**
- * 
+ *
  * @export
  * @interface WebAuthnCredentialListRsp
  */
@@ -7270,13 +7270,13 @@ export interface WebAuthnCredentialListRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnCredentialListRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof WebAuthnCredentialListRsp
      */
@@ -7288,26 +7288,26 @@ export interface WebAuthnCredentialListRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {Array<WebAuthnCredentialItemRsp>}
      * @memberof WebAuthnCredentialListRsp
      */
     'rows': Array<WebAuthnCredentialItemRsp>;
     /**
-     * 
+     *
      * @type {Paging}
      * @memberof WebAuthnCredentialListRsp
      */
     'paging': Paging;
 }
 /**
- * 
+ *
  * @export
  * @interface WebAuthnCredentialReq
  */
 export interface WebAuthnCredentialReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnCredentialReq
      */
@@ -7319,7 +7319,7 @@ export interface WebAuthnCredentialReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof WebAuthnCredentialReq
      */
@@ -7335,7 +7335,7 @@ export const WebAuthnCredentialReqStatusEnum = {
 export type WebAuthnCredentialReqStatusEnum = typeof WebAuthnCredentialReqStatusEnum[keyof typeof WebAuthnCredentialReqStatusEnum];
 
 /**
- * 
+ *
  * @export
  * @interface WebAuthnCredentialRsp
  */
@@ -7347,13 +7347,13 @@ export interface WebAuthnCredentialRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnCredentialRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof WebAuthnCredentialRsp
      */
@@ -7381,7 +7381,7 @@ export const WebAuthnCredentialRspStatusEnum = {
 export type WebAuthnCredentialRspStatusEnum = typeof WebAuthnCredentialRspStatusEnum[keyof typeof WebAuthnCredentialRspStatusEnum];
 
 /**
- * 
+ *
  * @export
  * @interface WebAuthnFinishReq
  */
@@ -7399,14 +7399,14 @@ export interface WebAuthnFinishReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof WebAuthnFinishReq
      */
     'clientInfo': ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface WebAuthnMediationStartReq
  */
@@ -7424,14 +7424,14 @@ export interface WebAuthnMediationStartReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof WebAuthnMediationStartReq
      */
     'clientInfo': ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface WebAuthnMediationStartRsp
  */
@@ -7443,13 +7443,13 @@ export interface WebAuthnMediationStartRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnMediationStartRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof WebAuthnMediationStartRsp
      */
@@ -7468,7 +7468,7 @@ export interface WebAuthnMediationStartRsp {
     'challenge': string;
 }
 /**
- * 
+ *
  * @export
  * @interface WebAuthnRegisterFinishRsp
  */
@@ -7480,13 +7480,13 @@ export interface WebAuthnRegisterFinishRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnRegisterFinishRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof WebAuthnRegisterFinishRsp
      */
@@ -7537,13 +7537,13 @@ export const WebAuthnRegisterFinishRspStatusEnum = {
 export type WebAuthnRegisterFinishRspStatusEnum = typeof WebAuthnRegisterFinishRspStatusEnum[keyof typeof WebAuthnRegisterFinishRspStatusEnum];
 
 /**
- * 
+ *
  * @export
  * @interface WebAuthnRegisterStartReq
  */
 export interface WebAuthnRegisterStartReq {
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnRegisterStartReq
      */
@@ -7561,7 +7561,7 @@ export interface WebAuthnRegisterStartReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof WebAuthnRegisterStartReq
      */
@@ -7582,7 +7582,7 @@ export const WebAuthnRegisterStartReqCredentialStatusEnum = {
 export type WebAuthnRegisterStartReqCredentialStatusEnum = typeof WebAuthnRegisterStartReqCredentialStatusEnum[keyof typeof WebAuthnRegisterStartReqCredentialStatusEnum];
 
 /**
- * 
+ *
  * @export
  * @interface WebAuthnRegisterStartRsp
  */
@@ -7594,13 +7594,13 @@ export interface WebAuthnRegisterStartRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebAuthnRegisterStartRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof WebAuthnRegisterStartRsp
      */
@@ -7633,7 +7633,7 @@ export const WebAuthnRegisterStartRspStatusEnum = {
 export type WebAuthnRegisterStartRspStatusEnum = typeof WebAuthnRegisterStartRspStatusEnum[keyof typeof WebAuthnRegisterStartRspStatusEnum];
 
 /**
- * 
+ *
  * @export
  * @interface WebauthnSettingCreate
  */
@@ -7652,7 +7652,7 @@ export interface WebauthnSettingCreate {
     'origin': string;
 }
 /**
- * 
+ *
  * @export
  * @interface WebauthnSettingCreateReq
  */
@@ -7676,14 +7676,14 @@ export interface WebauthnSettingCreateReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof WebauthnSettingCreateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface WebauthnSettingCreateRsp
  */
@@ -7695,13 +7695,13 @@ export interface WebauthnSettingCreateRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebauthnSettingCreateRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof WebauthnSettingCreateRsp
      */
@@ -7744,7 +7744,7 @@ export interface WebauthnSettingCreateRsp {
     'updated': string;
 }
 /**
- * 
+ *
  * @export
  * @interface WebauthnSettingDeleteReq
  */
@@ -7756,14 +7756,14 @@ export interface WebauthnSettingDeleteReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof WebauthnSettingDeleteReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface WebauthnSettingGetRsp
  */
@@ -7775,13 +7775,13 @@ export interface WebauthnSettingGetRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebauthnSettingGetRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof WebauthnSettingGetRsp
      */
@@ -7824,7 +7824,7 @@ export interface WebauthnSettingGetRsp {
     'updated': string;
 }
 /**
- * 
+ *
  * @export
  * @interface WebauthnSettingItem
  */
@@ -7861,7 +7861,7 @@ export interface WebauthnSettingItem {
     'updated': string;
 }
 /**
- * 
+ *
  * @export
  * @interface WebauthnSettingListRsp
  */
@@ -7873,13 +7873,13 @@ export interface WebauthnSettingListRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebauthnSettingListRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof WebauthnSettingListRsp
      */
@@ -7891,20 +7891,20 @@ export interface WebauthnSettingListRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {Array<WebauthnSettingItem>}
      * @memberof WebauthnSettingListRsp
      */
     'rows': Array<WebauthnSettingItem>;
     /**
-     * 
+     *
      * @type {Paging}
      * @memberof WebauthnSettingListRsp
      */
     'paging': Paging;
 }
 /**
- * 
+ *
  * @export
  * @interface WebauthnSettingUpdateReq
  */
@@ -7928,14 +7928,14 @@ export interface WebauthnSettingUpdateReq {
      */
     'requestID'?: string;
     /**
-     * 
+     *
      * @type {ClientInfo}
      * @memberof WebauthnSettingUpdateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- * 
+ *
  * @export
  * @interface WebauthnSettingUpdateRsp
  */
@@ -7947,13 +7947,13 @@ export interface WebauthnSettingUpdateRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebauthnSettingUpdateRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof WebauthnSettingUpdateRsp
      */
@@ -8020,7 +8020,7 @@ export interface WebhookLog {
      */
     'action': string;
     /**
-     * Unique ID of response, you can provide your own while responding to the webhook, if not the ID will be randomly generated on server side. This has the same meaning as overriding requestID for API requests. 
+     * Unique ID of response, you can provide your own while responding to the webhook, if not the ID will be randomly generated on server side. This has the same meaning as overriding requestID for API requests.
      * @type {string}
      * @memberof WebhookLog
      */
@@ -8075,7 +8075,7 @@ export interface WebhookLog {
     'created': string;
 }
 /**
- * 
+ *
  * @export
  * @interface WebhookLogsListRsp
  */
@@ -8087,13 +8087,13 @@ export interface WebhookLogsListRsp {
      */
     'httpStatusCode': number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof WebhookLogsListRsp
      */
     'message': string;
     /**
-     * 
+     *
      * @type {RequestData}
      * @memberof WebhookLogsListRsp
      */
@@ -8105,26 +8105,26 @@ export interface WebhookLogsListRsp {
      */
     'runtime': number;
     /**
-     * 
+     *
      * @type {WebhookLogsListRspAllOfData}
      * @memberof WebhookLogsListRsp
      */
     'data': WebhookLogsListRspAllOfData;
 }
 /**
- * 
+ *
  * @export
  * @interface WebhookLogsListRspAllOfData
  */
 export interface WebhookLogsListRspAllOfData {
     /**
-     * 
+     *
      * @type {Array<WebhookLog>}
      * @memberof WebhookLogsListRspAllOfData
      */
     'logs': Array<WebhookLog>;
     /**
-     * 
+     *
      * @type {Paging}
      * @memberof WebhookLogsListRspAllOfData
      */
@@ -8139,7 +8139,7 @@ export const APISecretsApiAxiosParamCreator = function (configuration?: Configur
     return {
         /**
          * Creates an API secret
-         * @param {ProjectSecretCreateReq} [projectSecretCreateReq] 
+         * @param {ProjectSecretCreateReq} [projectSecretCreateReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -8168,7 +8168,7 @@ export const APISecretsApiAxiosParamCreator = function (configuration?: Configur
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -8184,7 +8184,7 @@ export const APISecretsApiAxiosParamCreator = function (configuration?: Configur
         /**
          * Deletes API secret
          * @param {string} secretID Secret ID from create
-         * @param {ProjectSecretDeleteReq} [projectSecretDeleteReq] 
+         * @param {ProjectSecretDeleteReq} [projectSecretDeleteReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -8216,7 +8216,7 @@ export const APISecretsApiAxiosParamCreator = function (configuration?: Configur
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -8259,7 +8259,7 @@ export const APISecretsApiAxiosParamCreator = function (configuration?: Configur
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8281,7 +8281,7 @@ export const APISecretsApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Creates an API secret
-         * @param {ProjectSecretCreateReq} [projectSecretCreateReq] 
+         * @param {ProjectSecretCreateReq} [projectSecretCreateReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -8294,7 +8294,7 @@ export const APISecretsApiFp = function(configuration?: Configuration) {
         /**
          * Deletes API secret
          * @param {string} secretID Secret ID from create
-         * @param {ProjectSecretDeleteReq} [projectSecretDeleteReq] 
+         * @param {ProjectSecretDeleteReq} [projectSecretDeleteReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -8327,7 +8327,7 @@ export const APISecretsApiFactory = function (configuration?: Configuration, bas
     return {
         /**
          * Creates an API secret
-         * @param {ProjectSecretCreateReq} [projectSecretCreateReq] 
+         * @param {ProjectSecretCreateReq} [projectSecretCreateReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -8337,7 +8337,7 @@ export const APISecretsApiFactory = function (configuration?: Configuration, bas
         /**
          * Deletes API secret
          * @param {string} secretID Secret ID from create
-         * @param {ProjectSecretDeleteReq} [projectSecretDeleteReq] 
+         * @param {ProjectSecretDeleteReq} [projectSecretDeleteReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -8364,7 +8364,7 @@ export const APISecretsApiFactory = function (configuration?: Configuration, bas
 export class APISecretsApi extends BaseAPI {
     /**
      * Creates an API secret
-     * @param {ProjectSecretCreateReq} [projectSecretCreateReq] 
+     * @param {ProjectSecretCreateReq} [projectSecretCreateReq]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof APISecretsApi
@@ -8376,7 +8376,7 @@ export class APISecretsApi extends BaseAPI {
     /**
      * Deletes API secret
      * @param {string} secretID Secret ID from create
-     * @param {ProjectSecretDeleteReq} [projectSecretDeleteReq] 
+     * @param {ProjectSecretDeleteReq} [projectSecretDeleteReq]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof APISecretsApi
@@ -8464,7 +8464,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8514,7 +8514,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8591,7 +8591,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8668,7 +8668,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8745,7 +8745,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8795,7 +8795,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8872,7 +8872,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8949,7 +8949,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9026,7 +9026,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9494,7 +9494,7 @@ export const AndroidAppConfigApiAxiosParamCreator = function (configuration?: Co
     return {
         /**
          * Creates a new Android App Configuration
-         * @param {AndroidAppConfigSaveReq} androidAppConfigSaveReq 
+         * @param {AndroidAppConfigSaveReq} androidAppConfigSaveReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9525,7 +9525,7 @@ export const AndroidAppConfigApiAxiosParamCreator = function (configuration?: Co
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -9541,7 +9541,7 @@ export const AndroidAppConfigApiAxiosParamCreator = function (configuration?: Co
         /**
          * Deletes an Android App Config
          * @param {string} androidAppConfigID Android App Config ID from create
-         * @param {AndroidAppConfigDeleteReq} [androidAppConfigDeleteReq] 
+         * @param {AndroidAppConfigDeleteReq} [androidAppConfigDeleteReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9573,7 +9573,7 @@ export const AndroidAppConfigApiAxiosParamCreator = function (configuration?: Co
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -9616,7 +9616,7 @@ export const AndroidAppConfigApiAxiosParamCreator = function (configuration?: Co
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9629,7 +9629,7 @@ export const AndroidAppConfigApiAxiosParamCreator = function (configuration?: Co
         /**
          * Updates an Android app config by id
          * @param {string} androidAppConfigID ID from Android config create
-         * @param {AndroidAppConfigUpdateReq} [androidAppConfigUpdateReq] 
+         * @param {AndroidAppConfigUpdateReq} [androidAppConfigUpdateReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9661,7 +9661,7 @@ export const AndroidAppConfigApiAxiosParamCreator = function (configuration?: Co
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -9686,7 +9686,7 @@ export const AndroidAppConfigApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Creates a new Android App Configuration
-         * @param {AndroidAppConfigSaveReq} androidAppConfigSaveReq 
+         * @param {AndroidAppConfigSaveReq} androidAppConfigSaveReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9699,7 +9699,7 @@ export const AndroidAppConfigApiFp = function(configuration?: Configuration) {
         /**
          * Deletes an Android App Config
          * @param {string} androidAppConfigID Android App Config ID from create
-         * @param {AndroidAppConfigDeleteReq} [androidAppConfigDeleteReq] 
+         * @param {AndroidAppConfigDeleteReq} [androidAppConfigDeleteReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9723,7 +9723,7 @@ export const AndroidAppConfigApiFp = function(configuration?: Configuration) {
         /**
          * Updates an Android app config by id
          * @param {string} androidAppConfigID ID from Android config create
-         * @param {AndroidAppConfigUpdateReq} [androidAppConfigUpdateReq] 
+         * @param {AndroidAppConfigUpdateReq} [androidAppConfigUpdateReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9745,7 +9745,7 @@ export const AndroidAppConfigApiFactory = function (configuration?: Configuratio
     return {
         /**
          * Creates a new Android App Configuration
-         * @param {AndroidAppConfigSaveReq} androidAppConfigSaveReq 
+         * @param {AndroidAppConfigSaveReq} androidAppConfigSaveReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9755,7 +9755,7 @@ export const AndroidAppConfigApiFactory = function (configuration?: Configuratio
         /**
          * Deletes an Android App Config
          * @param {string} androidAppConfigID Android App Config ID from create
-         * @param {AndroidAppConfigDeleteReq} [androidAppConfigDeleteReq] 
+         * @param {AndroidAppConfigDeleteReq} [androidAppConfigDeleteReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9773,7 +9773,7 @@ export const AndroidAppConfigApiFactory = function (configuration?: Configuratio
         /**
          * Updates an Android app config by id
          * @param {string} androidAppConfigID ID from Android config create
-         * @param {AndroidAppConfigUpdateReq} [androidAppConfigUpdateReq] 
+         * @param {AndroidAppConfigUpdateReq} [androidAppConfigUpdateReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9792,7 +9792,7 @@ export const AndroidAppConfigApiFactory = function (configuration?: Configuratio
 export class AndroidAppConfigApi extends BaseAPI {
     /**
      * Creates a new Android App Configuration
-     * @param {AndroidAppConfigSaveReq} androidAppConfigSaveReq 
+     * @param {AndroidAppConfigSaveReq} androidAppConfigSaveReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AndroidAppConfigApi
@@ -9804,7 +9804,7 @@ export class AndroidAppConfigApi extends BaseAPI {
     /**
      * Deletes an Android App Config
      * @param {string} androidAppConfigID Android App Config ID from create
-     * @param {AndroidAppConfigDeleteReq} [androidAppConfigDeleteReq] 
+     * @param {AndroidAppConfigDeleteReq} [androidAppConfigDeleteReq]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AndroidAppConfigApi
@@ -9826,7 +9826,7 @@ export class AndroidAppConfigApi extends BaseAPI {
     /**
      * Updates an Android app config by id
      * @param {string} androidAppConfigID ID from Android config create
-     * @param {AndroidAppConfigUpdateReq} [androidAppConfigUpdateReq] 
+     * @param {AndroidAppConfigUpdateReq} [androidAppConfigUpdateReq]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AndroidAppConfigApi
@@ -9846,7 +9846,7 @@ export const AssociationTokensApiAxiosParamCreator = function (configuration?: C
     return {
         /**
          * Creates a new association token
-         * @param {AssociationTokenCreateReq} associationTokenCreateReq 
+         * @param {AssociationTokenCreateReq} associationTokenCreateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9877,7 +9877,7 @@ export const AssociationTokensApiAxiosParamCreator = function (configuration?: C
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -9902,7 +9902,7 @@ export const AssociationTokensApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Creates a new association token
-         * @param {AssociationTokenCreateReq} associationTokenCreateReq 
+         * @param {AssociationTokenCreateReq} associationTokenCreateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9924,7 +9924,7 @@ export const AssociationTokensApiFactory = function (configuration?: Configurati
     return {
         /**
          * Creates a new association token
-         * @param {AssociationTokenCreateReq} associationTokenCreateReq 
+         * @param {AssociationTokenCreateReq} associationTokenCreateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9943,7 +9943,7 @@ export const AssociationTokensApiFactory = function (configuration?: Configurati
 export class AssociationTokensApi extends BaseAPI {
     /**
      * Creates a new association token
-     * @param {AssociationTokenCreateReq} associationTokenCreateReq 
+     * @param {AssociationTokenCreateReq} associationTokenCreateReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssociationTokensApi
@@ -9963,7 +9963,7 @@ export const AuthMethodsApiAxiosParamCreator = function (configuration?: Configu
     return {
         /**
          * Retrieves possible authentication methods for provided username
-         * @param {AuthMethodsListReq} authMethodsListReq 
+         * @param {AuthMethodsListReq} authMethodsListReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9990,7 +9990,7 @@ export const AuthMethodsApiAxiosParamCreator = function (configuration?: Configu
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -10015,7 +10015,7 @@ export const AuthMethodsApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Retrieves possible authentication methods for provided username
-         * @param {AuthMethodsListReq} authMethodsListReq 
+         * @param {AuthMethodsListReq} authMethodsListReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10037,7 +10037,7 @@ export const AuthMethodsApiFactory = function (configuration?: Configuration, ba
     return {
         /**
          * Retrieves possible authentication methods for provided username
-         * @param {AuthMethodsListReq} authMethodsListReq 
+         * @param {AuthMethodsListReq} authMethodsListReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10056,7 +10056,7 @@ export const AuthMethodsApiFactory = function (configuration?: Configuration, ba
 export class AuthMethodsApi extends BaseAPI {
     /**
      * Retrieves possible authentication methods for provided username
-     * @param {AuthMethodsListReq} authMethodsListReq 
+     * @param {AuthMethodsListReq} authMethodsListReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AuthMethodsApi
@@ -10076,7 +10076,7 @@ export const AuthTokensApiAxiosParamCreator = function (configuration?: Configur
     return {
         /**
          * Validates auth token and returns attached user data
-         * @param {AuthTokenValidateReq} authTokenValidateReq 
+         * @param {AuthTokenValidateReq} authTokenValidateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10099,7 +10099,7 @@ export const AuthTokensApiAxiosParamCreator = function (configuration?: Configur
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -10124,7 +10124,7 @@ export const AuthTokensApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Validates auth token and returns attached user data
-         * @param {AuthTokenValidateReq} authTokenValidateReq 
+         * @param {AuthTokenValidateReq} authTokenValidateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10146,7 +10146,7 @@ export const AuthTokensApiFactory = function (configuration?: Configuration, bas
     return {
         /**
          * Validates auth token and returns attached user data
-         * @param {AuthTokenValidateReq} authTokenValidateReq 
+         * @param {AuthTokenValidateReq} authTokenValidateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10165,7 +10165,7 @@ export const AuthTokensApiFactory = function (configuration?: Configuration, bas
 export class AuthTokensApi extends BaseAPI {
     /**
      * Validates auth token and returns attached user data
-     * @param {AuthTokenValidateReq} authTokenValidateReq 
+     * @param {AuthTokenValidateReq} authTokenValidateReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AuthTokensApi
@@ -10186,7 +10186,7 @@ export const EmailMagicLinksApiAxiosParamCreator = function (configuration?: Con
         /**
          * Deletes an email magic link
          * @param {string} emailLinkID ID of email magic link
-         * @param {EmailLinksDeleteReq} [emailLinksDeleteReq] 
+         * @param {EmailLinksDeleteReq} [emailLinksDeleteReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10214,7 +10214,7 @@ export const EmailMagicLinksApiAxiosParamCreator = function (configuration?: Con
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -10257,7 +10257,7 @@ export const EmailMagicLinksApiAxiosParamCreator = function (configuration?: Con
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10269,7 +10269,7 @@ export const EmailMagicLinksApiAxiosParamCreator = function (configuration?: Con
         },
         /**
          * Creates email magic link and sends it to given email address
-         * @param {EmailLinkSendReq} emailLinkSendReq 
+         * @param {EmailLinkSendReq} emailLinkSendReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10296,7 +10296,7 @@ export const EmailMagicLinksApiAxiosParamCreator = function (configuration?: Con
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -10312,7 +10312,7 @@ export const EmailMagicLinksApiAxiosParamCreator = function (configuration?: Con
         /**
          * Validates email magic link token
          * @param {string} emailLinkID ID of email magic link
-         * @param {EmailLinksValidateReq} emailLinksValidateReq 
+         * @param {EmailLinksValidateReq} emailLinksValidateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10342,7 +10342,7 @@ export const EmailMagicLinksApiAxiosParamCreator = function (configuration?: Con
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -10368,7 +10368,7 @@ export const EmailMagicLinksApiFp = function(configuration?: Configuration) {
         /**
          * Deletes an email magic link
          * @param {string} emailLinkID ID of email magic link
-         * @param {EmailLinksDeleteReq} [emailLinksDeleteReq] 
+         * @param {EmailLinksDeleteReq} [emailLinksDeleteReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10392,7 +10392,7 @@ export const EmailMagicLinksApiFp = function(configuration?: Configuration) {
         },
         /**
          * Creates email magic link and sends it to given email address
-         * @param {EmailLinkSendReq} emailLinkSendReq 
+         * @param {EmailLinkSendReq} emailLinkSendReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10405,7 +10405,7 @@ export const EmailMagicLinksApiFp = function(configuration?: Configuration) {
         /**
          * Validates email magic link token
          * @param {string} emailLinkID ID of email magic link
-         * @param {EmailLinksValidateReq} emailLinksValidateReq 
+         * @param {EmailLinksValidateReq} emailLinksValidateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10428,7 +10428,7 @@ export const EmailMagicLinksApiFactory = function (configuration?: Configuration
         /**
          * Deletes an email magic link
          * @param {string} emailLinkID ID of email magic link
-         * @param {EmailLinksDeleteReq} [emailLinksDeleteReq] 
+         * @param {EmailLinksDeleteReq} [emailLinksDeleteReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10446,7 +10446,7 @@ export const EmailMagicLinksApiFactory = function (configuration?: Configuration
         },
         /**
          * Creates email magic link and sends it to given email address
-         * @param {EmailLinkSendReq} emailLinkSendReq 
+         * @param {EmailLinkSendReq} emailLinkSendReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10456,7 +10456,7 @@ export const EmailMagicLinksApiFactory = function (configuration?: Configuration
         /**
          * Validates email magic link token
          * @param {string} emailLinkID ID of email magic link
-         * @param {EmailLinksValidateReq} emailLinksValidateReq 
+         * @param {EmailLinksValidateReq} emailLinksValidateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10476,7 +10476,7 @@ export class EmailMagicLinksApi extends BaseAPI {
     /**
      * Deletes an email magic link
      * @param {string} emailLinkID ID of email magic link
-     * @param {EmailLinksDeleteReq} [emailLinksDeleteReq] 
+     * @param {EmailLinksDeleteReq} [emailLinksDeleteReq]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmailMagicLinksApi
@@ -10498,7 +10498,7 @@ export class EmailMagicLinksApi extends BaseAPI {
 
     /**
      * Creates email magic link and sends it to given email address
-     * @param {EmailLinkSendReq} emailLinkSendReq 
+     * @param {EmailLinkSendReq} emailLinkSendReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmailMagicLinksApi
@@ -10510,7 +10510,7 @@ export class EmailMagicLinksApi extends BaseAPI {
     /**
      * Validates email magic link token
      * @param {string} emailLinkID ID of email magic link
-     * @param {EmailLinksValidateReq} emailLinksValidateReq 
+     * @param {EmailLinksValidateReq} emailLinksValidateReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmailMagicLinksApi
@@ -10558,7 +10558,7 @@ export const EmailOTPApiAxiosParamCreator = function (configuration?: Configurat
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10570,7 +10570,7 @@ export const EmailOTPApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          * Creates email code and sends it to given email address
-         * @param {EmailCodeSendReq} emailCodeSendReq 
+         * @param {EmailCodeSendReq} emailCodeSendReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10597,7 +10597,7 @@ export const EmailOTPApiAxiosParamCreator = function (configuration?: Configurat
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -10613,7 +10613,7 @@ export const EmailOTPApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * Validates email code
          * @param {string} emailCodeID ID of email OTP
-         * @param {EmailCodeValidateReq} emailCodeValidateReq 
+         * @param {EmailCodeValidateReq} emailCodeValidateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10643,7 +10643,7 @@ export const EmailOTPApiAxiosParamCreator = function (configuration?: Configurat
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -10680,7 +10680,7 @@ export const EmailOTPApiFp = function(configuration?: Configuration) {
         },
         /**
          * Creates email code and sends it to given email address
-         * @param {EmailCodeSendReq} emailCodeSendReq 
+         * @param {EmailCodeSendReq} emailCodeSendReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10693,7 +10693,7 @@ export const EmailOTPApiFp = function(configuration?: Configuration) {
         /**
          * Validates email code
          * @param {string} emailCodeID ID of email OTP
-         * @param {EmailCodeValidateReq} emailCodeValidateReq 
+         * @param {EmailCodeValidateReq} emailCodeValidateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10724,7 +10724,7 @@ export const EmailOTPApiFactory = function (configuration?: Configuration, baseP
         },
         /**
          * Creates email code and sends it to given email address
-         * @param {EmailCodeSendReq} emailCodeSendReq 
+         * @param {EmailCodeSendReq} emailCodeSendReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10734,7 +10734,7 @@ export const EmailOTPApiFactory = function (configuration?: Configuration, baseP
         /**
          * Validates email code
          * @param {string} emailCodeID ID of email OTP
-         * @param {EmailCodeValidateReq} emailCodeValidateReq 
+         * @param {EmailCodeValidateReq} emailCodeValidateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10764,7 +10764,7 @@ export class EmailOTPApi extends BaseAPI {
 
     /**
      * Creates email code and sends it to given email address
-     * @param {EmailCodeSendReq} emailCodeSendReq 
+     * @param {EmailCodeSendReq} emailCodeSendReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmailOTPApi
@@ -10776,7 +10776,7 @@ export class EmailOTPApi extends BaseAPI {
     /**
      * Validates email code
      * @param {string} emailCodeID ID of email OTP
-     * @param {EmailCodeValidateReq} emailCodeValidateReq 
+     * @param {EmailCodeValidateReq} emailCodeValidateReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmailOTPApi
@@ -10796,7 +10796,7 @@ export const EmailTemplatesApiAxiosParamCreator = function (configuration?: Conf
     return {
         /**
          * Creates a new email template
-         * @param {EmailTemplateCreateReq} emailTemplateCreateReq 
+         * @param {EmailTemplateCreateReq} emailTemplateCreateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10819,7 +10819,7 @@ export const EmailTemplatesApiAxiosParamCreator = function (configuration?: Conf
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -10835,7 +10835,7 @@ export const EmailTemplatesApiAxiosParamCreator = function (configuration?: Conf
         /**
          * Deletes an email template
          * @param {string} emailTemplateID ID of email template
-         * @param {EmailTemplateDeleteReq} emailTemplateDeleteReq 
+         * @param {EmailTemplateDeleteReq} emailTemplateDeleteReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10861,7 +10861,7 @@ export const EmailTemplatesApiAxiosParamCreator = function (configuration?: Conf
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -10886,7 +10886,7 @@ export const EmailTemplatesApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Creates a new email template
-         * @param {EmailTemplateCreateReq} emailTemplateCreateReq 
+         * @param {EmailTemplateCreateReq} emailTemplateCreateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10899,7 +10899,7 @@ export const EmailTemplatesApiFp = function(configuration?: Configuration) {
         /**
          * Deletes an email template
          * @param {string} emailTemplateID ID of email template
-         * @param {EmailTemplateDeleteReq} emailTemplateDeleteReq 
+         * @param {EmailTemplateDeleteReq} emailTemplateDeleteReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10921,7 +10921,7 @@ export const EmailTemplatesApiFactory = function (configuration?: Configuration,
     return {
         /**
          * Creates a new email template
-         * @param {EmailTemplateCreateReq} emailTemplateCreateReq 
+         * @param {EmailTemplateCreateReq} emailTemplateCreateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10931,7 +10931,7 @@ export const EmailTemplatesApiFactory = function (configuration?: Configuration,
         /**
          * Deletes an email template
          * @param {string} emailTemplateID ID of email template
-         * @param {EmailTemplateDeleteReq} emailTemplateDeleteReq 
+         * @param {EmailTemplateDeleteReq} emailTemplateDeleteReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10950,7 +10950,7 @@ export const EmailTemplatesApiFactory = function (configuration?: Configuration,
 export class EmailTemplatesApi extends BaseAPI {
     /**
      * Creates a new email template
-     * @param {EmailTemplateCreateReq} emailTemplateCreateReq 
+     * @param {EmailTemplateCreateReq} emailTemplateCreateReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmailTemplatesApi
@@ -10962,7 +10962,7 @@ export class EmailTemplatesApi extends BaseAPI {
     /**
      * Deletes an email template
      * @param {string} emailTemplateID ID of email template
-     * @param {EmailTemplateDeleteReq} emailTemplateDeleteReq 
+     * @param {EmailTemplateDeleteReq} emailTemplateDeleteReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmailTemplatesApi
@@ -11014,7 +11014,7 @@ export const ExamplesApiAxiosParamCreator = function (configuration?: Configurat
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -11105,7 +11105,7 @@ export const IOSAppConfigApiAxiosParamCreator = function (configuration?: Config
     return {
         /**
          * Creates a new iOS App Config
-         * @param {IOSAppConfigSaveReq} iOSAppConfigSaveReq 
+         * @param {IOSAppConfigSaveReq} iOSAppConfigSaveReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11136,7 +11136,7 @@ export const IOSAppConfigApiAxiosParamCreator = function (configuration?: Config
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -11152,7 +11152,7 @@ export const IOSAppConfigApiAxiosParamCreator = function (configuration?: Config
         /**
          * Deletes an iOS App Config
          * @param {string} iosAppConfigID iOS App Config ID from create
-         * @param {IOSAppConfigDeleteReq} [iOSAppConfigDeleteReq] 
+         * @param {IOSAppConfigDeleteReq} [iOSAppConfigDeleteReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11184,7 +11184,7 @@ export const IOSAppConfigApiAxiosParamCreator = function (configuration?: Config
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -11227,7 +11227,7 @@ export const IOSAppConfigApiAxiosParamCreator = function (configuration?: Config
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -11240,7 +11240,7 @@ export const IOSAppConfigApiAxiosParamCreator = function (configuration?: Config
         /**
          * Updates an iOS app config by id
          * @param {string} iosAppConfigID ID from iOS config create
-         * @param {IOSAppConfigUpdateReq} [iOSAppConfigUpdateReq] 
+         * @param {IOSAppConfigUpdateReq} [iOSAppConfigUpdateReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11272,7 +11272,7 @@ export const IOSAppConfigApiAxiosParamCreator = function (configuration?: Config
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -11297,7 +11297,7 @@ export const IOSAppConfigApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Creates a new iOS App Config
-         * @param {IOSAppConfigSaveReq} iOSAppConfigSaveReq 
+         * @param {IOSAppConfigSaveReq} iOSAppConfigSaveReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11310,7 +11310,7 @@ export const IOSAppConfigApiFp = function(configuration?: Configuration) {
         /**
          * Deletes an iOS App Config
          * @param {string} iosAppConfigID iOS App Config ID from create
-         * @param {IOSAppConfigDeleteReq} [iOSAppConfigDeleteReq] 
+         * @param {IOSAppConfigDeleteReq} [iOSAppConfigDeleteReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11334,7 +11334,7 @@ export const IOSAppConfigApiFp = function(configuration?: Configuration) {
         /**
          * Updates an iOS app config by id
          * @param {string} iosAppConfigID ID from iOS config create
-         * @param {IOSAppConfigUpdateReq} [iOSAppConfigUpdateReq] 
+         * @param {IOSAppConfigUpdateReq} [iOSAppConfigUpdateReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11356,7 +11356,7 @@ export const IOSAppConfigApiFactory = function (configuration?: Configuration, b
     return {
         /**
          * Creates a new iOS App Config
-         * @param {IOSAppConfigSaveReq} iOSAppConfigSaveReq 
+         * @param {IOSAppConfigSaveReq} iOSAppConfigSaveReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11366,7 +11366,7 @@ export const IOSAppConfigApiFactory = function (configuration?: Configuration, b
         /**
          * Deletes an iOS App Config
          * @param {string} iosAppConfigID iOS App Config ID from create
-         * @param {IOSAppConfigDeleteReq} [iOSAppConfigDeleteReq] 
+         * @param {IOSAppConfigDeleteReq} [iOSAppConfigDeleteReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11384,7 +11384,7 @@ export const IOSAppConfigApiFactory = function (configuration?: Configuration, b
         /**
          * Updates an iOS app config by id
          * @param {string} iosAppConfigID ID from iOS config create
-         * @param {IOSAppConfigUpdateReq} [iOSAppConfigUpdateReq] 
+         * @param {IOSAppConfigUpdateReq} [iOSAppConfigUpdateReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11403,7 +11403,7 @@ export const IOSAppConfigApiFactory = function (configuration?: Configuration, b
 export class IOSAppConfigApi extends BaseAPI {
     /**
      * Creates a new iOS App Config
-     * @param {IOSAppConfigSaveReq} iOSAppConfigSaveReq 
+     * @param {IOSAppConfigSaveReq} iOSAppConfigSaveReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof IOSAppConfigApi
@@ -11415,7 +11415,7 @@ export class IOSAppConfigApi extends BaseAPI {
     /**
      * Deletes an iOS App Config
      * @param {string} iosAppConfigID iOS App Config ID from create
-     * @param {IOSAppConfigDeleteReq} [iOSAppConfigDeleteReq] 
+     * @param {IOSAppConfigDeleteReq} [iOSAppConfigDeleteReq]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof IOSAppConfigApi
@@ -11437,7 +11437,7 @@ export class IOSAppConfigApi extends BaseAPI {
     /**
      * Updates an iOS app config by id
      * @param {string} iosAppConfigID ID from iOS config create
-     * @param {IOSAppConfigUpdateReq} [iOSAppConfigUpdateReq] 
+     * @param {IOSAppConfigUpdateReq} [iOSAppConfigUpdateReq]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof IOSAppConfigApi
@@ -11485,7 +11485,7 @@ export const LongSessionsApiAxiosParamCreator = function (configuration?: Config
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -11555,7 +11555,7 @@ export const LongSessionsApiAxiosParamCreator = function (configuration?: Config
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -11568,7 +11568,7 @@ export const LongSessionsApiAxiosParamCreator = function (configuration?: Config
         /**
          * Revokes an active long session by sessionID
          * @param {string} sessionID ID of session
-         * @param {LongSessionRevokeReq} [longSessionRevokeReq] 
+         * @param {LongSessionRevokeReq} [longSessionRevokeReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11596,7 +11596,7 @@ export const LongSessionsApiAxiosParamCreator = function (configuration?: Config
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -11651,7 +11651,7 @@ export const LongSessionsApiFp = function(configuration?: Configuration) {
         /**
          * Revokes an active long session by sessionID
          * @param {string} sessionID ID of session
-         * @param {LongSessionRevokeReq} [longSessionRevokeReq] 
+         * @param {LongSessionRevokeReq} [longSessionRevokeReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11697,7 +11697,7 @@ export const LongSessionsApiFactory = function (configuration?: Configuration, b
         /**
          * Revokes an active long session by sessionID
          * @param {string} sessionID ID of session
-         * @param {LongSessionRevokeReq} [longSessionRevokeReq] 
+         * @param {LongSessionRevokeReq} [longSessionRevokeReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11744,7 +11744,7 @@ export class LongSessionsApi extends BaseAPI {
     /**
      * Revokes an active long session by sessionID
      * @param {string} sessionID ID of session
-     * @param {LongSessionRevokeReq} [longSessionRevokeReq] 
+     * @param {LongSessionRevokeReq} [longSessionRevokeReq]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof LongSessionsApi
@@ -11764,7 +11764,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
     return {
         /**
          * Starts association token flow for Passkeys (Biometrics)
-         * @param {WebAuthnAssociateStartReq} webAuthnAssociateStartReq 
+         * @param {WebAuthnAssociateStartReq} webAuthnAssociateStartReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11791,7 +11791,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -11806,7 +11806,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * Completes authentication of a user for Passkeys (Biometrics)
-         * @param {WebAuthnFinishReq} webAuthnFinishReq 
+         * @param {WebAuthnFinishReq} webAuthnFinishReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11833,7 +11833,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -11848,7 +11848,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * Starts authentication of a user for Passkeys (Biometrics)
-         * @param {WebAuthnAuthenticateStartReq} webAuthnAuthenticateStartReq 
+         * @param {WebAuthnAuthenticateStartReq} webAuthnAuthenticateStartReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11875,7 +11875,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -11891,7 +11891,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         /**
          * Update authenticator
          * @param {string} authenticatorID ID of authenticator
-         * @param {WebAuthnAuthenticatorUpdateReq} webAuthnAuthenticatorUpdateReq 
+         * @param {WebAuthnAuthenticatorUpdateReq} webAuthnAuthenticatorUpdateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11921,7 +11921,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -11938,7 +11938,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
          * Delete credential
          * @param {string} userID ID of user
          * @param {string} credentialID ID of credential
-         * @param {EmptyReq} emptyReq 
+         * @param {EmptyReq} emptyReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11971,7 +11971,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -11986,7 +11986,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * Checks if active webauthn credential exists for provided user and device
-         * @param {WebAuthnCredentialExistsReq} webAuthnCredentialExistsReq 
+         * @param {WebAuthnCredentialExistsReq} webAuthnCredentialExistsReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12013,7 +12013,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -12086,7 +12086,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -12099,7 +12099,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         /**
          * Update credential
          * @param {string} credentialID ID of credential
-         * @param {WebAuthnCredentialReq} webAuthnCredentialReq 
+         * @param {WebAuthnCredentialReq} webAuthnCredentialReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12129,7 +12129,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -12144,7 +12144,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * Starts mediation for Passkeys (Biometrics)
-         * @param {WebAuthnMediationStartReq} webAuthnMediationStartReq 
+         * @param {WebAuthnMediationStartReq} webAuthnMediationStartReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12171,7 +12171,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -12186,7 +12186,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * Completes registration of a user for Passkeys (Biometrics)
-         * @param {WebAuthnFinishReq} webAuthnFinishReq 
+         * @param {WebAuthnFinishReq} webAuthnFinishReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12213,7 +12213,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -12228,7 +12228,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * Starts registration of a user for Passkeys (Biometrics)
-         * @param {WebAuthnRegisterStartReq} [webAuthnRegisterStartReq] 
+         * @param {WebAuthnRegisterStartReq} [webAuthnRegisterStartReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12253,7 +12253,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -12268,7 +12268,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * Creates a new setting for Passkeys (Biometrics)
-         * @param {WebauthnSettingCreateReq} [webauthnSettingCreateReq] 
+         * @param {WebauthnSettingCreateReq} [webauthnSettingCreateReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12297,7 +12297,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -12313,7 +12313,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         /**
          * Deletes a setting by id for Passkeys (Biometrics)
          * @param {string} settingID ID from create
-         * @param {WebauthnSettingDeleteReq} [webauthnSettingDeleteReq] 
+         * @param {WebauthnSettingDeleteReq} [webauthnSettingDeleteReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12345,7 +12345,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -12392,7 +12392,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -12462,7 +12462,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -12475,7 +12475,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         /**
          * Updates a setting by id for Passkeys (Biometrics)
          * @param {string} settingID ID from create
-         * @param {WebauthnSettingUpdateReq} [webauthnSettingUpdateReq] 
+         * @param {WebauthnSettingUpdateReq} [webauthnSettingUpdateReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12507,7 +12507,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -12532,7 +12532,7 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Starts association token flow for Passkeys (Biometrics)
-         * @param {WebAuthnAssociateStartReq} webAuthnAssociateStartReq 
+         * @param {WebAuthnAssociateStartReq} webAuthnAssociateStartReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12544,7 +12544,7 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         },
         /**
          * Completes authentication of a user for Passkeys (Biometrics)
-         * @param {WebAuthnFinishReq} webAuthnFinishReq 
+         * @param {WebAuthnFinishReq} webAuthnFinishReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12556,7 +12556,7 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         },
         /**
          * Starts authentication of a user for Passkeys (Biometrics)
-         * @param {WebAuthnAuthenticateStartReq} webAuthnAuthenticateStartReq 
+         * @param {WebAuthnAuthenticateStartReq} webAuthnAuthenticateStartReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12569,7 +12569,7 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         /**
          * Update authenticator
          * @param {string} authenticatorID ID of authenticator
-         * @param {WebAuthnAuthenticatorUpdateReq} webAuthnAuthenticatorUpdateReq 
+         * @param {WebAuthnAuthenticatorUpdateReq} webAuthnAuthenticatorUpdateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12583,7 +12583,7 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
          * Delete credential
          * @param {string} userID ID of user
          * @param {string} credentialID ID of credential
-         * @param {EmptyReq} emptyReq 
+         * @param {EmptyReq} emptyReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12595,7 +12595,7 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         },
         /**
          * Checks if active webauthn credential exists for provided user and device
-         * @param {WebAuthnCredentialExistsReq} webAuthnCredentialExistsReq 
+         * @param {WebAuthnCredentialExistsReq} webAuthnCredentialExistsReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12625,7 +12625,7 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         /**
          * Update credential
          * @param {string} credentialID ID of credential
-         * @param {WebAuthnCredentialReq} webAuthnCredentialReq 
+         * @param {WebAuthnCredentialReq} webAuthnCredentialReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12637,7 +12637,7 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         },
         /**
          * Starts mediation for Passkeys (Biometrics)
-         * @param {WebAuthnMediationStartReq} webAuthnMediationStartReq 
+         * @param {WebAuthnMediationStartReq} webAuthnMediationStartReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12649,7 +12649,7 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         },
         /**
          * Completes registration of a user for Passkeys (Biometrics)
-         * @param {WebAuthnFinishReq} webAuthnFinishReq 
+         * @param {WebAuthnFinishReq} webAuthnFinishReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12661,7 +12661,7 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         },
         /**
          * Starts registration of a user for Passkeys (Biometrics)
-         * @param {WebAuthnRegisterStartReq} [webAuthnRegisterStartReq] 
+         * @param {WebAuthnRegisterStartReq} [webAuthnRegisterStartReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12673,7 +12673,7 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         },
         /**
          * Creates a new setting for Passkeys (Biometrics)
-         * @param {WebauthnSettingCreateReq} [webauthnSettingCreateReq] 
+         * @param {WebauthnSettingCreateReq} [webauthnSettingCreateReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12686,7 +12686,7 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         /**
          * Deletes a setting by id for Passkeys (Biometrics)
          * @param {string} settingID ID from create
-         * @param {WebauthnSettingDeleteReq} [webauthnSettingDeleteReq] 
+         * @param {WebauthnSettingDeleteReq} [webauthnSettingDeleteReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12728,7 +12728,7 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         /**
          * Updates a setting by id for Passkeys (Biometrics)
          * @param {string} settingID ID from create
-         * @param {WebauthnSettingUpdateReq} [webauthnSettingUpdateReq] 
+         * @param {WebauthnSettingUpdateReq} [webauthnSettingUpdateReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12750,7 +12750,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
     return {
         /**
          * Starts association token flow for Passkeys (Biometrics)
-         * @param {WebAuthnAssociateStartReq} webAuthnAssociateStartReq 
+         * @param {WebAuthnAssociateStartReq} webAuthnAssociateStartReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12759,7 +12759,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         },
         /**
          * Completes authentication of a user for Passkeys (Biometrics)
-         * @param {WebAuthnFinishReq} webAuthnFinishReq 
+         * @param {WebAuthnFinishReq} webAuthnFinishReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12768,7 +12768,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         },
         /**
          * Starts authentication of a user for Passkeys (Biometrics)
-         * @param {WebAuthnAuthenticateStartReq} webAuthnAuthenticateStartReq 
+         * @param {WebAuthnAuthenticateStartReq} webAuthnAuthenticateStartReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12778,7 +12778,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         /**
          * Update authenticator
          * @param {string} authenticatorID ID of authenticator
-         * @param {WebAuthnAuthenticatorUpdateReq} webAuthnAuthenticatorUpdateReq 
+         * @param {WebAuthnAuthenticatorUpdateReq} webAuthnAuthenticatorUpdateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12789,7 +12789,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
          * Delete credential
          * @param {string} userID ID of user
          * @param {string} credentialID ID of credential
-         * @param {EmptyReq} emptyReq 
+         * @param {EmptyReq} emptyReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12798,7 +12798,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         },
         /**
          * Checks if active webauthn credential exists for provided user and device
-         * @param {WebAuthnCredentialExistsReq} webAuthnCredentialExistsReq 
+         * @param {WebAuthnCredentialExistsReq} webAuthnCredentialExistsReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12822,7 +12822,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         /**
          * Update credential
          * @param {string} credentialID ID of credential
-         * @param {WebAuthnCredentialReq} webAuthnCredentialReq 
+         * @param {WebAuthnCredentialReq} webAuthnCredentialReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12831,7 +12831,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         },
         /**
          * Starts mediation for Passkeys (Biometrics)
-         * @param {WebAuthnMediationStartReq} webAuthnMediationStartReq 
+         * @param {WebAuthnMediationStartReq} webAuthnMediationStartReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12840,7 +12840,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         },
         /**
          * Completes registration of a user for Passkeys (Biometrics)
-         * @param {WebAuthnFinishReq} webAuthnFinishReq 
+         * @param {WebAuthnFinishReq} webAuthnFinishReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12849,7 +12849,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         },
         /**
          * Starts registration of a user for Passkeys (Biometrics)
-         * @param {WebAuthnRegisterStartReq} [webAuthnRegisterStartReq] 
+         * @param {WebAuthnRegisterStartReq} [webAuthnRegisterStartReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12858,7 +12858,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         },
         /**
          * Creates a new setting for Passkeys (Biometrics)
-         * @param {WebauthnSettingCreateReq} [webauthnSettingCreateReq] 
+         * @param {WebauthnSettingCreateReq} [webauthnSettingCreateReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12868,7 +12868,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         /**
          * Deletes a setting by id for Passkeys (Biometrics)
          * @param {string} settingID ID from create
-         * @param {WebauthnSettingDeleteReq} [webauthnSettingDeleteReq] 
+         * @param {WebauthnSettingDeleteReq} [webauthnSettingDeleteReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12901,7 +12901,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         /**
          * Updates a setting by id for Passkeys (Biometrics)
          * @param {string} settingID ID from create
-         * @param {WebauthnSettingUpdateReq} [webauthnSettingUpdateReq] 
+         * @param {WebauthnSettingUpdateReq} [webauthnSettingUpdateReq]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12920,7 +12920,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
 export class PasskeysBiometricsApi extends BaseAPI {
     /**
      * Starts association token flow for Passkeys (Biometrics)
-     * @param {WebAuthnAssociateStartReq} webAuthnAssociateStartReq 
+     * @param {WebAuthnAssociateStartReq} webAuthnAssociateStartReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
@@ -12931,7 +12931,7 @@ export class PasskeysBiometricsApi extends BaseAPI {
 
     /**
      * Completes authentication of a user for Passkeys (Biometrics)
-     * @param {WebAuthnFinishReq} webAuthnFinishReq 
+     * @param {WebAuthnFinishReq} webAuthnFinishReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
@@ -12942,7 +12942,7 @@ export class PasskeysBiometricsApi extends BaseAPI {
 
     /**
      * Starts authentication of a user for Passkeys (Biometrics)
-     * @param {WebAuthnAuthenticateStartReq} webAuthnAuthenticateStartReq 
+     * @param {WebAuthnAuthenticateStartReq} webAuthnAuthenticateStartReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
@@ -12954,7 +12954,7 @@ export class PasskeysBiometricsApi extends BaseAPI {
     /**
      * Update authenticator
      * @param {string} authenticatorID ID of authenticator
-     * @param {WebAuthnAuthenticatorUpdateReq} webAuthnAuthenticatorUpdateReq 
+     * @param {WebAuthnAuthenticatorUpdateReq} webAuthnAuthenticatorUpdateReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
@@ -12967,7 +12967,7 @@ export class PasskeysBiometricsApi extends BaseAPI {
      * Delete credential
      * @param {string} userID ID of user
      * @param {string} credentialID ID of credential
-     * @param {EmptyReq} emptyReq 
+     * @param {EmptyReq} emptyReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
@@ -12978,7 +12978,7 @@ export class PasskeysBiometricsApi extends BaseAPI {
 
     /**
      * Checks if active webauthn credential exists for provided user and device
-     * @param {WebAuthnCredentialExistsReq} webAuthnCredentialExistsReq 
+     * @param {WebAuthnCredentialExistsReq} webAuthnCredentialExistsReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
@@ -13006,7 +13006,7 @@ export class PasskeysBiometricsApi extends BaseAPI {
     /**
      * Update credential
      * @param {string} credentialID ID of credential
-     * @param {WebAuthnCredentialReq} webAuthnCredentialReq 
+     * @param {WebAuthnCredentialReq} webAuthnCredentialReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
@@ -13017,7 +13017,7 @@ export class PasskeysBiometricsApi extends BaseAPI {
 
     /**
      * Starts mediation for Passkeys (Biometrics)
-     * @param {WebAuthnMediationStartReq} webAuthnMediationStartReq 
+     * @param {WebAuthnMediationStartReq} webAuthnMediationStartReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
@@ -13028,7 +13028,7 @@ export class PasskeysBiometricsApi extends BaseAPI {
 
     /**
      * Completes registration of a user for Passkeys (Biometrics)
-     * @param {WebAuthnFinishReq} webAuthnFinishReq 
+     * @param {WebAuthnFinishReq} webAuthnFinishReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
@@ -13039,7 +13039,7 @@ export class PasskeysBiometricsApi extends BaseAPI {
 
     /**
      * Starts registration of a user for Passkeys (Biometrics)
-     * @param {WebAuthnRegisterStartReq} [webAuthnRegisterStartReq] 
+     * @param {WebAuthnRegisterStartReq} [webAuthnRegisterStartReq]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
@@ -13050,7 +13050,7 @@ export class PasskeysBiometricsApi extends BaseAPI {
 
     /**
      * Creates a new setting for Passkeys (Biometrics)
-     * @param {WebauthnSettingCreateReq} [webauthnSettingCreateReq] 
+     * @param {WebauthnSettingCreateReq} [webauthnSettingCreateReq]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
@@ -13062,7 +13062,7 @@ export class PasskeysBiometricsApi extends BaseAPI {
     /**
      * Deletes a setting by id for Passkeys (Biometrics)
      * @param {string} settingID ID from create
-     * @param {WebauthnSettingDeleteReq} [webauthnSettingDeleteReq] 
+     * @param {WebauthnSettingDeleteReq} [webauthnSettingDeleteReq]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
@@ -13101,7 +13101,7 @@ export class PasskeysBiometricsApi extends BaseAPI {
     /**
      * Updates a setting by id for Passkeys (Biometrics)
      * @param {string} settingID ID from create
-     * @param {WebauthnSettingUpdateReq} [webauthnSettingUpdateReq] 
+     * @param {WebauthnSettingUpdateReq} [webauthnSettingUpdateReq]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
@@ -13121,7 +13121,7 @@ export const ProjectConfigApiAxiosParamCreator = function (configuration?: Confi
     return {
         /**
          * Activates the project
-         * @param {EmptyReq} emptyReq 
+         * @param {EmptyReq} emptyReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13152,7 +13152,7 @@ export const ProjectConfigApiAxiosParamCreator = function (configuration?: Confi
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -13195,7 +13195,7 @@ export const ProjectConfigApiAxiosParamCreator = function (configuration?: Confi
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -13207,7 +13207,7 @@ export const ProjectConfigApiAxiosParamCreator = function (configuration?: Confi
         },
         /**
          * Saves project config
-         * @param {ProjectConfigSaveReq} projectConfigSaveReq 
+         * @param {ProjectConfigSaveReq} projectConfigSaveReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13238,7 +13238,7 @@ export const ProjectConfigApiAxiosParamCreator = function (configuration?: Confi
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -13253,7 +13253,7 @@ export const ProjectConfigApiAxiosParamCreator = function (configuration?: Confi
         },
         /**
          * Tests webhook backend
-         * @param {ProjectConfigWebhookTestReq} projectConfigWebhookTestReq 
+         * @param {ProjectConfigWebhookTestReq} projectConfigWebhookTestReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13284,7 +13284,7 @@ export const ProjectConfigApiAxiosParamCreator = function (configuration?: Confi
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -13309,7 +13309,7 @@ export const ProjectConfigApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Activates the project
-         * @param {EmptyReq} emptyReq 
+         * @param {EmptyReq} emptyReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13332,7 +13332,7 @@ export const ProjectConfigApiFp = function(configuration?: Configuration) {
         },
         /**
          * Saves project config
-         * @param {ProjectConfigSaveReq} projectConfigSaveReq 
+         * @param {ProjectConfigSaveReq} projectConfigSaveReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13344,7 +13344,7 @@ export const ProjectConfigApiFp = function(configuration?: Configuration) {
         },
         /**
          * Tests webhook backend
-         * @param {ProjectConfigWebhookTestReq} projectConfigWebhookTestReq 
+         * @param {ProjectConfigWebhookTestReq} projectConfigWebhookTestReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13366,7 +13366,7 @@ export const ProjectConfigApiFactory = function (configuration?: Configuration, 
     return {
         /**
          * Activates the project
-         * @param {EmptyReq} emptyReq 
+         * @param {EmptyReq} emptyReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13383,7 +13383,7 @@ export const ProjectConfigApiFactory = function (configuration?: Configuration, 
         },
         /**
          * Saves project config
-         * @param {ProjectConfigSaveReq} projectConfigSaveReq 
+         * @param {ProjectConfigSaveReq} projectConfigSaveReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13392,7 +13392,7 @@ export const ProjectConfigApiFactory = function (configuration?: Configuration, 
         },
         /**
          * Tests webhook backend
-         * @param {ProjectConfigWebhookTestReq} projectConfigWebhookTestReq 
+         * @param {ProjectConfigWebhookTestReq} projectConfigWebhookTestReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13411,7 +13411,7 @@ export const ProjectConfigApiFactory = function (configuration?: Configuration, 
 export class ProjectConfigApi extends BaseAPI {
     /**
      * Activates the project
-     * @param {EmptyReq} emptyReq 
+     * @param {EmptyReq} emptyReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProjectConfigApi
@@ -13432,7 +13432,7 @@ export class ProjectConfigApi extends BaseAPI {
 
     /**
      * Saves project config
-     * @param {ProjectConfigSaveReq} projectConfigSaveReq 
+     * @param {ProjectConfigSaveReq} projectConfigSaveReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProjectConfigApi
@@ -13443,7 +13443,7 @@ export class ProjectConfigApi extends BaseAPI {
 
     /**
      * Tests webhook backend
-     * @param {ProjectConfigWebhookTestReq} projectConfigWebhookTestReq 
+     * @param {ProjectConfigWebhookTestReq} projectConfigWebhookTestReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProjectConfigApi
@@ -13505,7 +13505,7 @@ export const RequestLogsApiAxiosParamCreator = function (configuration?: Configu
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -13575,7 +13575,7 @@ export const RequestLogsApiAxiosParamCreator = function (configuration?: Configu
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -13711,7 +13711,7 @@ export const SMSOTPApiAxiosParamCreator = function (configuration?: Configuratio
     return {
         /**
          * Creates SMS OTP and sends it to given phone number
-         * @param {SmsCodeSendReq} smsCodeSendReq 
+         * @param {SmsCodeSendReq} smsCodeSendReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13738,7 +13738,7 @@ export const SMSOTPApiAxiosParamCreator = function (configuration?: Configuratio
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -13754,7 +13754,7 @@ export const SMSOTPApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * Validates SMS OTP
          * @param {string} smsCodeID ID of SMS OTP
-         * @param {SmsCodeValidateReq} smsCodeValidateReq 
+         * @param {SmsCodeValidateReq} smsCodeValidateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13784,7 +13784,7 @@ export const SMSOTPApiAxiosParamCreator = function (configuration?: Configuratio
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -13809,7 +13809,7 @@ export const SMSOTPApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Creates SMS OTP and sends it to given phone number
-         * @param {SmsCodeSendReq} smsCodeSendReq 
+         * @param {SmsCodeSendReq} smsCodeSendReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13822,7 +13822,7 @@ export const SMSOTPApiFp = function(configuration?: Configuration) {
         /**
          * Validates SMS OTP
          * @param {string} smsCodeID ID of SMS OTP
-         * @param {SmsCodeValidateReq} smsCodeValidateReq 
+         * @param {SmsCodeValidateReq} smsCodeValidateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13844,7 +13844,7 @@ export const SMSOTPApiFactory = function (configuration?: Configuration, basePat
     return {
         /**
          * Creates SMS OTP and sends it to given phone number
-         * @param {SmsCodeSendReq} smsCodeSendReq 
+         * @param {SmsCodeSendReq} smsCodeSendReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13854,7 +13854,7 @@ export const SMSOTPApiFactory = function (configuration?: Configuration, basePat
         /**
          * Validates SMS OTP
          * @param {string} smsCodeID ID of SMS OTP
-         * @param {SmsCodeValidateReq} smsCodeValidateReq 
+         * @param {SmsCodeValidateReq} smsCodeValidateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13873,7 +13873,7 @@ export const SMSOTPApiFactory = function (configuration?: Configuration, basePat
 export class SMSOTPApi extends BaseAPI {
     /**
      * Creates SMS OTP and sends it to given phone number
-     * @param {SmsCodeSendReq} smsCodeSendReq 
+     * @param {SmsCodeSendReq} smsCodeSendReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SMSOTPApi
@@ -13885,7 +13885,7 @@ export class SMSOTPApi extends BaseAPI {
     /**
      * Validates SMS OTP
      * @param {string} smsCodeID ID of SMS OTP
-     * @param {SmsCodeValidateReq} smsCodeValidateReq 
+     * @param {SmsCodeValidateReq} smsCodeValidateReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SMSOTPApi
@@ -13905,7 +13905,7 @@ export const SMSTemplatesApiAxiosParamCreator = function (configuration?: Config
     return {
         /**
          * Creates a new SMS template
-         * @param {SmsTemplateCreateReq} smsTemplateCreateReq 
+         * @param {SmsTemplateCreateReq} smsTemplateCreateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13928,7 +13928,7 @@ export const SMSTemplatesApiAxiosParamCreator = function (configuration?: Config
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -13944,7 +13944,7 @@ export const SMSTemplatesApiAxiosParamCreator = function (configuration?: Config
         /**
          * Deletes an SMS template
          * @param {string} smsTemplateID ID of SMS template
-         * @param {SmsTemplateDeleteReq} smsTemplateDeleteReq 
+         * @param {SmsTemplateDeleteReq} smsTemplateDeleteReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13970,7 +13970,7 @@ export const SMSTemplatesApiAxiosParamCreator = function (configuration?: Config
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -13995,7 +13995,7 @@ export const SMSTemplatesApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Creates a new SMS template
-         * @param {SmsTemplateCreateReq} smsTemplateCreateReq 
+         * @param {SmsTemplateCreateReq} smsTemplateCreateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -14008,7 +14008,7 @@ export const SMSTemplatesApiFp = function(configuration?: Configuration) {
         /**
          * Deletes an SMS template
          * @param {string} smsTemplateID ID of SMS template
-         * @param {SmsTemplateDeleteReq} smsTemplateDeleteReq 
+         * @param {SmsTemplateDeleteReq} smsTemplateDeleteReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -14030,7 +14030,7 @@ export const SMSTemplatesApiFactory = function (configuration?: Configuration, b
     return {
         /**
          * Creates a new SMS template
-         * @param {SmsTemplateCreateReq} smsTemplateCreateReq 
+         * @param {SmsTemplateCreateReq} smsTemplateCreateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -14040,7 +14040,7 @@ export const SMSTemplatesApiFactory = function (configuration?: Configuration, b
         /**
          * Deletes an SMS template
          * @param {string} smsTemplateID ID of SMS template
-         * @param {SmsTemplateDeleteReq} smsTemplateDeleteReq 
+         * @param {SmsTemplateDeleteReq} smsTemplateDeleteReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -14059,7 +14059,7 @@ export const SMSTemplatesApiFactory = function (configuration?: Configuration, b
 export class SMSTemplatesApi extends BaseAPI {
     /**
      * Creates a new SMS template
-     * @param {SmsTemplateCreateReq} smsTemplateCreateReq 
+     * @param {SmsTemplateCreateReq} smsTemplateCreateReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SMSTemplatesApi
@@ -14071,7 +14071,7 @@ export class SMSTemplatesApi extends BaseAPI {
     /**
      * Deletes an SMS template
      * @param {string} smsTemplateID ID of SMS template
-     * @param {SmsTemplateDeleteReq} smsTemplateDeleteReq 
+     * @param {SmsTemplateDeleteReq} smsTemplateDeleteReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SMSTemplatesApi
@@ -14124,7 +14124,7 @@ export const SessionConfigApiAxiosParamCreator = function (configuration?: Confi
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -14136,7 +14136,7 @@ export const SessionConfigApiAxiosParamCreator = function (configuration?: Confi
         },
         /**
          * Updates session config
-         * @param {SessionConfigUpdateReq} sessionConfigUpdateReq 
+         * @param {SessionConfigUpdateReq} sessionConfigUpdateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -14167,7 +14167,7 @@ export const SessionConfigApiAxiosParamCreator = function (configuration?: Confi
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -14204,7 +14204,7 @@ export const SessionConfigApiFp = function(configuration?: Configuration) {
         },
         /**
          * Updates session config
-         * @param {SessionConfigUpdateReq} sessionConfigUpdateReq 
+         * @param {SessionConfigUpdateReq} sessionConfigUpdateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -14235,7 +14235,7 @@ export const SessionConfigApiFactory = function (configuration?: Configuration, 
         },
         /**
          * Updates session config
-         * @param {SessionConfigUpdateReq} sessionConfigUpdateReq 
+         * @param {SessionConfigUpdateReq} sessionConfigUpdateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -14265,7 +14265,7 @@ export class SessionConfigApi extends BaseAPI {
 
     /**
      * Updates session config
-     * @param {SessionConfigUpdateReq} sessionConfigUpdateReq 
+     * @param {SessionConfigUpdateReq} sessionConfigUpdateReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SessionConfigApi
@@ -14343,7 +14343,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -14355,7 +14355,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * Creates a new user
-         * @param {UserCreateReq} userCreateReq 
+         * @param {UserCreateReq} userCreateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -14386,7 +14386,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -14402,7 +14402,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * Add a custom login identifier to an existing user
          * @param {string} userID ID of user
-         * @param {UserCustomLoginIdentifierCreateReq} userCustomLoginIdentifierCreateReq 
+         * @param {UserCustomLoginIdentifierCreateReq} userCustomLoginIdentifierCreateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -14436,7 +14436,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -14453,7 +14453,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * Delete a user\'s custom login identifier
          * @param {string} userID ID of user
          * @param {string} customLoginIdentifierID ID of custom login identifier
-         * @param {UserCustomLoginIdentifierDeleteReq} userCustomLoginIdentifierDeleteReq 
+         * @param {UserCustomLoginIdentifierDeleteReq} userCustomLoginIdentifierDeleteReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -14490,7 +14490,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -14551,7 +14551,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -14564,7 +14564,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * Deletes a user
          * @param {string} userID ID of user
-         * @param {UserDeleteReq} userDeleteReq 
+         * @param {UserDeleteReq} userDeleteReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -14598,7 +14598,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -14675,7 +14675,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -14688,7 +14688,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * Add an email to an existing user
          * @param {string} userID ID of user
-         * @param {UserEmailCreateReq} userEmailCreateReq 
+         * @param {UserEmailCreateReq} userEmailCreateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -14722,7 +14722,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -14739,7 +14739,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * Delete a user\'s email
          * @param {string} userID ID of user
          * @param {string} emailID ID of email
-         * @param {UserEmailDeleteReq} userEmailDeleteReq 
+         * @param {UserEmailDeleteReq} userEmailDeleteReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -14776,7 +14776,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -14837,7 +14837,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -14891,7 +14891,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -14961,7 +14961,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -14974,7 +14974,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * Add a phone number to an existing user
          * @param {string} userID ID of user
-         * @param {UserPhoneNumberCreateReq} userPhoneNumberCreateReq 
+         * @param {UserPhoneNumberCreateReq} userPhoneNumberCreateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15008,7 +15008,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -15025,7 +15025,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * Delete a user\'s phone number
          * @param {string} userID ID of user
          * @param {string} phoneNumberID ID of phone number
-         * @param {UserPhoneNumberDeleteReq} userPhoneNumberDeleteReq 
+         * @param {UserPhoneNumberDeleteReq} userPhoneNumberDeleteReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15062,7 +15062,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -15115,7 +15115,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -15192,7 +15192,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -15205,7 +15205,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * Updates a user
          * @param {string} userID ID of user
-         * @param {UserUpdateReq} userUpdateReq 
+         * @param {UserUpdateReq} userUpdateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15239,7 +15239,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -15281,7 +15281,7 @@ export const UserApiFp = function(configuration?: Configuration) {
         },
         /**
          * Creates a new user
-         * @param {UserCreateReq} userCreateReq 
+         * @param {UserCreateReq} userCreateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15294,7 +15294,7 @@ export const UserApiFp = function(configuration?: Configuration) {
         /**
          * Add a custom login identifier to an existing user
          * @param {string} userID ID of user
-         * @param {UserCustomLoginIdentifierCreateReq} userCustomLoginIdentifierCreateReq 
+         * @param {UserCustomLoginIdentifierCreateReq} userCustomLoginIdentifierCreateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15308,7 +15308,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * Delete a user\'s custom login identifier
          * @param {string} userID ID of user
          * @param {string} customLoginIdentifierID ID of custom login identifier
-         * @param {UserCustomLoginIdentifierDeleteReq} userCustomLoginIdentifierDeleteReq 
+         * @param {UserCustomLoginIdentifierDeleteReq} userCustomLoginIdentifierDeleteReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15336,7 +15336,7 @@ export const UserApiFp = function(configuration?: Configuration) {
         /**
          * Deletes a user
          * @param {string} userID ID of user
-         * @param {UserDeleteReq} userDeleteReq 
+         * @param {UserDeleteReq} userDeleteReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15367,7 +15367,7 @@ export const UserApiFp = function(configuration?: Configuration) {
         /**
          * Add an email to an existing user
          * @param {string} userID ID of user
-         * @param {UserEmailCreateReq} userEmailCreateReq 
+         * @param {UserEmailCreateReq} userEmailCreateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15381,7 +15381,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * Delete a user\'s email
          * @param {string} userID ID of user
          * @param {string} emailID ID of email
-         * @param {UserEmailDeleteReq} userEmailDeleteReq 
+         * @param {UserEmailDeleteReq} userEmailDeleteReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15440,7 +15440,7 @@ export const UserApiFp = function(configuration?: Configuration) {
         /**
          * Add a phone number to an existing user
          * @param {string} userID ID of user
-         * @param {UserPhoneNumberCreateReq} userPhoneNumberCreateReq 
+         * @param {UserPhoneNumberCreateReq} userPhoneNumberCreateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15454,7 +15454,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * Delete a user\'s phone number
          * @param {string} userID ID of user
          * @param {string} phoneNumberID ID of phone number
-         * @param {UserPhoneNumberDeleteReq} userPhoneNumberDeleteReq 
+         * @param {UserPhoneNumberDeleteReq} userPhoneNumberDeleteReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15500,7 +15500,7 @@ export const UserApiFp = function(configuration?: Configuration) {
         /**
          * Updates a user
          * @param {string} userID ID of user
-         * @param {UserUpdateReq} userUpdateReq 
+         * @param {UserUpdateReq} userUpdateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15536,7 +15536,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * Creates a new user
-         * @param {UserCreateReq} userCreateReq 
+         * @param {UserCreateReq} userCreateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15546,7 +15546,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         /**
          * Add a custom login identifier to an existing user
          * @param {string} userID ID of user
-         * @param {UserCustomLoginIdentifierCreateReq} userCustomLoginIdentifierCreateReq 
+         * @param {UserCustomLoginIdentifierCreateReq} userCustomLoginIdentifierCreateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15557,7 +15557,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * Delete a user\'s custom login identifier
          * @param {string} userID ID of user
          * @param {string} customLoginIdentifierID ID of custom login identifier
-         * @param {UserCustomLoginIdentifierDeleteReq} userCustomLoginIdentifierDeleteReq 
+         * @param {UserCustomLoginIdentifierDeleteReq} userCustomLoginIdentifierDeleteReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15579,7 +15579,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         /**
          * Deletes a user
          * @param {string} userID ID of user
-         * @param {UserDeleteReq} userDeleteReq 
+         * @param {UserDeleteReq} userDeleteReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15604,7 +15604,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         /**
          * Add an email to an existing user
          * @param {string} userID ID of user
-         * @param {UserEmailCreateReq} userEmailCreateReq 
+         * @param {UserEmailCreateReq} userEmailCreateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15615,7 +15615,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * Delete a user\'s email
          * @param {string} userID ID of user
          * @param {string} emailID ID of email
-         * @param {UserEmailDeleteReq} userEmailDeleteReq 
+         * @param {UserEmailDeleteReq} userEmailDeleteReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15662,7 +15662,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         /**
          * Add a phone number to an existing user
          * @param {string} userID ID of user
-         * @param {UserPhoneNumberCreateReq} userPhoneNumberCreateReq 
+         * @param {UserPhoneNumberCreateReq} userPhoneNumberCreateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15673,7 +15673,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * Delete a user\'s phone number
          * @param {string} userID ID of user
          * @param {string} phoneNumberID ID of phone number
-         * @param {UserPhoneNumberDeleteReq} userPhoneNumberDeleteReq 
+         * @param {UserPhoneNumberDeleteReq} userPhoneNumberDeleteReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15710,7 +15710,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         /**
          * Updates a user
          * @param {string} userID ID of user
-         * @param {UserUpdateReq} userUpdateReq 
+         * @param {UserUpdateReq} userUpdateReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15745,7 +15745,7 @@ export class UserApi extends BaseAPI {
 
     /**
      * Creates a new user
-     * @param {UserCreateReq} userCreateReq 
+     * @param {UserCreateReq} userCreateReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
@@ -15757,7 +15757,7 @@ export class UserApi extends BaseAPI {
     /**
      * Add a custom login identifier to an existing user
      * @param {string} userID ID of user
-     * @param {UserCustomLoginIdentifierCreateReq} userCustomLoginIdentifierCreateReq 
+     * @param {UserCustomLoginIdentifierCreateReq} userCustomLoginIdentifierCreateReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
@@ -15770,7 +15770,7 @@ export class UserApi extends BaseAPI {
      * Delete a user\'s custom login identifier
      * @param {string} userID ID of user
      * @param {string} customLoginIdentifierID ID of custom login identifier
-     * @param {UserCustomLoginIdentifierDeleteReq} userCustomLoginIdentifierDeleteReq 
+     * @param {UserCustomLoginIdentifierDeleteReq} userCustomLoginIdentifierDeleteReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
@@ -15796,7 +15796,7 @@ export class UserApi extends BaseAPI {
     /**
      * Deletes a user
      * @param {string} userID ID of user
-     * @param {UserDeleteReq} userDeleteReq 
+     * @param {UserDeleteReq} userDeleteReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
@@ -15825,7 +15825,7 @@ export class UserApi extends BaseAPI {
     /**
      * Add an email to an existing user
      * @param {string} userID ID of user
-     * @param {UserEmailCreateReq} userEmailCreateReq 
+     * @param {UserEmailCreateReq} userEmailCreateReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
@@ -15838,7 +15838,7 @@ export class UserApi extends BaseAPI {
      * Delete a user\'s email
      * @param {string} userID ID of user
      * @param {string} emailID ID of email
-     * @param {UserEmailDeleteReq} userEmailDeleteReq 
+     * @param {UserEmailDeleteReq} userEmailDeleteReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
@@ -15893,7 +15893,7 @@ export class UserApi extends BaseAPI {
     /**
      * Add a phone number to an existing user
      * @param {string} userID ID of user
-     * @param {UserPhoneNumberCreateReq} userPhoneNumberCreateReq 
+     * @param {UserPhoneNumberCreateReq} userPhoneNumberCreateReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
@@ -15906,7 +15906,7 @@ export class UserApi extends BaseAPI {
      * Delete a user\'s phone number
      * @param {string} userID ID of user
      * @param {string} phoneNumberID ID of phone number
-     * @param {UserPhoneNumberDeleteReq} userPhoneNumberDeleteReq 
+     * @param {UserPhoneNumberDeleteReq} userPhoneNumberDeleteReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
@@ -15949,7 +15949,7 @@ export class UserApi extends BaseAPI {
     /**
      * Updates a user
      * @param {string} userID ID of user
-     * @param {UserUpdateReq} userUpdateReq 
+     * @param {UserUpdateReq} userUpdateReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
@@ -15969,7 +15969,7 @@ export const ValidationApiAxiosParamCreator = function (configuration?: Configur
     return {
         /**
          * Validates email
-         * @param {ValidateEmailReq} validateEmailReq 
+         * @param {ValidateEmailReq} validateEmailReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15996,7 +15996,7 @@ export const ValidationApiAxiosParamCreator = function (configuration?: Configur
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -16011,7 +16011,7 @@ export const ValidationApiAxiosParamCreator = function (configuration?: Configur
         },
         /**
          * Validates phone number
-         * @param {ValidatePhoneNumberReq} validatePhoneNumberReq 
+         * @param {ValidatePhoneNumberReq} validatePhoneNumberReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -16038,7 +16038,7 @@ export const ValidationApiAxiosParamCreator = function (configuration?: Configur
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -16063,7 +16063,7 @@ export const ValidationApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Validates email
-         * @param {ValidateEmailReq} validateEmailReq 
+         * @param {ValidateEmailReq} validateEmailReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -16075,7 +16075,7 @@ export const ValidationApiFp = function(configuration?: Configuration) {
         },
         /**
          * Validates phone number
-         * @param {ValidatePhoneNumberReq} validatePhoneNumberReq 
+         * @param {ValidatePhoneNumberReq} validatePhoneNumberReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -16097,7 +16097,7 @@ export const ValidationApiFactory = function (configuration?: Configuration, bas
     return {
         /**
          * Validates email
-         * @param {ValidateEmailReq} validateEmailReq 
+         * @param {ValidateEmailReq} validateEmailReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -16106,7 +16106,7 @@ export const ValidationApiFactory = function (configuration?: Configuration, bas
         },
         /**
          * Validates phone number
-         * @param {ValidatePhoneNumberReq} validatePhoneNumberReq 
+         * @param {ValidatePhoneNumberReq} validatePhoneNumberReq
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -16125,7 +16125,7 @@ export const ValidationApiFactory = function (configuration?: Configuration, bas
 export class ValidationApi extends BaseAPI {
     /**
      * Validates email
-     * @param {ValidateEmailReq} validateEmailReq 
+     * @param {ValidateEmailReq} validateEmailReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ValidationApi
@@ -16136,7 +16136,7 @@ export class ValidationApi extends BaseAPI {
 
     /**
      * Validates phone number
-     * @param {ValidatePhoneNumberReq} validatePhoneNumberReq 
+     * @param {ValidatePhoneNumberReq} validatePhoneNumberReq
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ValidationApi
@@ -16214,7 +16214,7 @@ export const WebhookLogsApiAxiosParamCreator = function (configuration?: Configu
             }
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};

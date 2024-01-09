@@ -1,8 +1,13 @@
-import { BaseError, ServerError } from 'src/errors';
-import { ErrorDetails, RequestData, ServerErrorType } from 'src/errors/serverError';
-import { GenericRsp } from 'src/generated';
-import httpStatusCodes from 'src/errors/httpStatusCodes';
-import Assert from './assert';
+import {
+  BaseError,
+  ServerError,
+  httpStatusCodes,
+  ErrorDetails,
+  RequestData,
+  ServerErrorType,
+} from '../errors/index.js';
+import { GenericRsp } from '../generated/index.js';
+import Assert from './assert.js';
 
 export type ErrorWithBody = {
   getResponseBody?: () => string;
@@ -34,7 +39,7 @@ class Helper {
   public static throwServerExceptionOld(data: ServerErrorType): void {
     Assert.keysInObject(['httpStatusCode', 'message', 'requestData', 'runtime'], data);
 
-    const errorData = { ...data, error: data.error || [] };
+    const errorData = { ...data, error: data.error || {} };
     throw new ServerError(
       errorData.httpStatusCode,
       'ServerError',

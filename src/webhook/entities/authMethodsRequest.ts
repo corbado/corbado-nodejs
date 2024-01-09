@@ -1,4 +1,4 @@
-import CommonRequest from './commonRequest';
+import CommonRequest from './commonRequest.js';
 
 class AuthMethodsRequest extends CommonRequest {
   data: string;

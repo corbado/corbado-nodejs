@@ -1,15 +1,13 @@
-import { BaseError } from 'src/errors';
-import Assert, { isErrorRsp } from 'src/heplers/assert';
-import Helper from 'src/heplers/helpers';
-import httpStatusCodes from 'src/errors/httpStatusCodes';
 import { AxiosInstance } from 'axios';
+import { BaseError, httpStatusCodes } from '../errors/index.js';
+import { Assert, isErrorRsp, Helper } from '../heplers/index.js';
 import {
   EmailCodeSendReq,
   EmailCodeSendRsp,
   EmailCodeValidateReq,
   EmailCodeValidateRsp,
   EmailOTPApi,
-} from '../generated';
+} from '../generated/index.js';
 
 export interface EmailOTPInterface {
   send(req: EmailCodeSendReq): Promise<EmailCodeSendRsp>;

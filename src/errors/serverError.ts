@@ -1,4 +1,4 @@
-import BaseError from './baseError';
+import BaseError from './baseError.js';
 
 export type ErrorDetails = {
   validation?: { field: string; message: string }[];
