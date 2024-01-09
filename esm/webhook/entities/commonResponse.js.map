@@ -1,0 +1,1 @@
+{"version":3,"file":"commonResponse.js","sourceRoot":"","sources":["../../../src/webhook/entities/commonResponse.ts"],"names":[],"mappings":"AAAA,MAAM,cAAc;IAGlB,YAAY,UAAkB;QAC5B,IAAI,CAAC,UAAU,GAAG,UAAU,CAAC;IAC/B,CAAC;CACF;AAED,eAAe,cAAc,CAAC"}

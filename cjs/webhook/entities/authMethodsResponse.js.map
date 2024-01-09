@@ -1,0 +1,1 @@
+{"version":3,"file":"authMethodsResponse.js","sourceRoot":"","sources":["../../../src/webhook/entities/authMethodsResponse.ts"],"names":[],"mappings":";;AACA,2DAAiD;AAEjD,MAAM,mBAAoB,SAAQ,2BAAc;IAG9C,YAAY,IAAuC,EAAE,UAAkB;QACrE,KAAK,CAAC,UAAU,CAAC,CAAC;QAClB,IAAI,CAAC,IAAI,GAAG,IAAI,CAAC;IACnB,CAAC;CACF;AAED,kBAAe,mBAAmB,CAAC"}
