@@ -28,17 +28,6 @@ watch:
 .PHONY:start
 start: build
 
-# .PHONY: openapi_generate
-# openapi_generate:
-# 	@echo "Generating OpenAPI code..."
-# 	@mkdir -p $(GEN_DIR) $(TARGET_DIR)
-# 	@curl -s -o $(GEN_DIR)/backend_api_public.yml $(OPENAPI_SPEC_URL)
-# 	@docker pull $(OPENAPI_IMAGE)
-# 	@docker run -v $(GEN_DIR):/local $(OPENAPI_IMAGE) generate -i /local/backend_api_public.yml -g nodejs-express-server -o /local --additional-properties=invokerPackage=Corbado\\Generated
-# 	@cp -r $(GEN_DIR)/* $(TARGET_DIR)
-# 	@rm -rf $(GEN_DIR)
-# 	@echo "OpenAPI code generation done!"
-
 .PHONY: openapi_generate
 openapi_generate:
 	@echo "Generating OpenAPI TypeScript Axios code..."
@@ -55,15 +44,21 @@ openapi_generate:
 clean:
 	rm -rf dist esm cjs cjs-test $(TARGET_DIR)
 
+# cjs/build: $(SOURCE_FILES)
+# 	npx tsc --module commonjs --outDir cjs/
+# 	echo '{"type": "commonjs"}' > cjs/package.json
+# 	@# Creating a small file to keep track of the last build time
+# 	touch cjs/build
+.PHONY: cjs/build
 cjs/build: $(SOURCE_FILES)
-	npx tsc --module commonjs --outDir cjs/
+	npx tsc -p tsconfig.cjs.json
 	echo '{"type": "commonjs"}' > cjs/package.json
 	@# Creating a small file to keep track of the last build time
 	touch cjs/build
 
-
+.PHONY: esm/build
 esm/build: $(SOURCE_FILES)
-	npx tsc --module es2022 --outDir esm/
+	npx tsc -p tsconfig.esm.json
 	echo '{"type": "module"}' > esm/package.json
 	@# Creating a small file to keep track of the last build time
 	touch esm/build
