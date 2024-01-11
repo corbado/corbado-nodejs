@@ -44,11 +44,10 @@ openapi_generate:
 clean:
 	rm -rf dist esm cjs cjs-test $(TARGET_DIR)
 
-# cjs/build: $(SOURCE_FILES)
-# 	npx tsc --module commonjs --outDir cjs/
-# 	echo '{"type": "commonjs"}' > cjs/package.json
-# 	@# Creating a small file to keep track of the last build time
-# 	touch cjs/build
+.PHONY: test
+test:
+  npx jest
+  
 .PHONY: cjs/build
 cjs/build: $(SOURCE_FILES)
 	npx tsc -p tsconfig.cjs.json
