@@ -39,5 +39,10 @@
     },
     "declaration": true // Generates corresponding '.d.ts' file for each output '.js' file
   },
+  "ts-node": {
+    "moduleTypes": {
+      "jest.config.ts": "cjs"
+    }
+  },
   "include": ["src/**/*"] // Specify files to be included in the compilation
 }
