@@ -18,12 +18,12 @@ class EmailOTP implements EmailOTPInterface {
   private client: EmailOTPApi;
 
   constructor(axios: AxiosInstance) {
-    Assert.notNull(axios);
+    Assert.notNull(axios, 'EmailOtp Axios instance must not be null');
     this.client = new EmailOTPApi(undefined, '', axios);
   }
 
   async send(req: EmailCodeSendReq): Promise<EmailCodeSendRsp> {
-    Assert.notNull(req);
+    Assert.notNull(req, 'EmailOtp.send() param must not be null');
 
     try {
       const response = await this.client.emailCodeSend(req);
@@ -45,16 +45,16 @@ class EmailOTP implements EmailOTPInterface {
   }
 
   async validate(id: string, req: EmailCodeValidateReq): Promise<EmailCodeValidateRsp> {
-    Assert.notEmptyString(id);
-    Assert.notNull(req);
+    Assert.notEmptyString(id, 'EmailOtp.validate() "id" param must not be an empty string');
+    Assert.notNull(req, 'EmailOtp.validate() "req" param must not be null');
 
     try {
-      const response = await this.client.emailCodeValidate(id, req);
+      const response = await this.client.emailCodeValidate(id, req); // error here is freezing the test
       const rsp = response.data;
 
       if (isErrorRsp(rsp)) {
         throw new BaseError(
-          'Emaiil OTP validation ErrorRsp',
+          'Email OTP validation ErrorRsp',
           httpStatusCodes.AUTH_RSP_ERROR.code,
           httpStatusCodes.AUTH_RSP_ERROR.description,
           httpStatusCodes.AUTH_RSP_ERROR.isOperational,

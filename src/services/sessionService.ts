@@ -36,9 +36,12 @@ class Session implements SessionInterface {
   private lastShortSessionValidationResult = '';
 
   constructor(issuer: string, shortSessionCookieName: string, jwksURI: string, cacheMaxAge: number) {
-    Assert.notEmptyString(shortSessionCookieName);
-    Assert.notEmptyString(issuer);
-    Assert.notEmptyString(jwksURI);
+    Assert.notEmptyString(
+      shortSessionCookieName,
+      'Session instance "shortSessionCookieName" param must not be an empty string',
+    );
+    Assert.notEmptyString(issuer, 'Session instance "issuer" param must not be an empty string');
+    Assert.notEmptyString(jwksURI, 'Session instance "jwksURI" param must not be an empty string');
 
     // this.client = client;
     this.shortSessionCookieName = shortSessionCookieName;
@@ -52,7 +55,7 @@ class Session implements SessionInterface {
   }
 
   public async validateShortSessionValue(value: string): Promise<DecodedValue | null> {
-    Assert.notEmptyString(value);
+    Assert.notEmptyString(value, 'Session.validateShotSessionValue() "value" param must not be an empty string');
 
     try {
       const keySet = createRemoteJWKSet(new URL(this.jwksURI));

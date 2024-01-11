@@ -18,12 +18,12 @@ class SmsOTP implements SmsOTPInterface {
   private client: SMSOTPApi;
 
   constructor(axios: AxiosInstance) {
-    Assert.notNull(axios);
+    Assert.notNull(axios, 'SmsOtp Axios instance must not be null');
     this.client = new SMSOTPApi(undefined, '', axios);
   }
 
   async send(req: SmsCodeSendReq): Promise<SmsCodeSendRsp> {
-    Assert.notNull(req);
+    Assert.notNull(req, 'SmsOtp.send() "req" param must not be null');
 
     try {
       const sendRsp = await this.client.smsCodeSend(req);
@@ -45,8 +45,8 @@ class SmsOTP implements SmsOTPInterface {
   }
 
   async validate(id: string, req: SmsCodeValidateReq): Promise<SmsCodeValidateRsp> {
-    Assert.notEmptyString(id);
-    Assert.notNull(req);
+    Assert.notEmptyString(id, 'SmsOtp.validate() "id" param must not be empty');
+    Assert.notNull(req, 'SmsOtp.validate() "req" param must not be null');
 
     try {
       const validationRsp = await this.client.smsCodeValidate(id, req);

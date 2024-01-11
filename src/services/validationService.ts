@@ -18,12 +18,12 @@ class Validation implements ValidationInterface {
   private client: ValidationApi;
 
   constructor(axios: AxiosInstance) {
-    Assert.notNull(axios);
+    Assert.notNull(axios, 'Validation Axios instance must not be null');
     this.client = new ValidationApi(undefined, '', axios);
   }
 
   async validateEmail(req: ValidateEmailReq): Promise<ValidateEmailRsp> {
-    Assert.notNull(req);
+    Assert.notNull(req, 'Validation.email() "req" param must not be null');
 
     try {
       const emailValidationRsp = await this.client.validateEmail(req);
@@ -45,7 +45,7 @@ class Validation implements ValidationInterface {
   }
 
   async validatePhoneNumber(req: ValidatePhoneNumberReq): Promise<ValidatePhoneNumberRsp> {
-    Assert.notNull(req);
+    Assert.notNull(req, 'Validation.validatePhoneNumber() "req" param must not be null');
 
     try {
       const phoneValidationRsp = await this.client.validatePhoneNumber(req);

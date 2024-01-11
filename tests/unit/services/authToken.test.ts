@@ -1,3 +1,5 @@
+import axios, { AxiosInstance } from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 import { Configuration, SDK } from '../../../src';
 import { BaseError } from '../../../src/errors';
 import { AuthToken } from '../../../src/services';
@@ -7,6 +9,7 @@ describe('AuthToken class', () => {
   let apiSecret;
   let config: Configuration;
   let sdk: SDK;
+  let axiosInstance: AxiosInstance;
 
   beforeEach(() => {
     projectID = process.env.PROJECT_ID;
@@ -18,10 +21,22 @@ describe('AuthToken class', () => {
 
     config = new Configuration(projectID, apiSecret);
     sdk = new SDK(config);
+
+    axiosInstance = axios.create();
+    const mock = new MockAdapter(axiosInstance);
+    mock.onPost('/smsCodeSend').reply(200, {
+      data: {
+        httpStatusCode: 200,
+        message: 'success',
+        requestData: { requestID: '123', link: 'http://localhost' },
+        runtime: 0,
+        data: {},
+      },
+    });
   });
 
   it('should successfully validate a valid auth token', async () => {
-    const authToken = new AuthToken(sdk.createClient(config));
+    const authToken = new AuthToken(axiosInstance);
 
     const validationReq = {
       token: 'valid-auth-token', // Should be a valid auth token for test to pass
@@ -43,7 +58,7 @@ describe('AuthToken class', () => {
   });
 
   it('should throw an error when given an invalid auth token', async () => {
-    const authToken = new AuthToken(sdk.createClient(config));
+    const authToken = new AuthToken(axiosInstance);
 
     const validationReq = {
       token: 'inValid-auth-token',
@@ -58,7 +73,7 @@ describe('AuthToken class', () => {
   });
 
   it('should throw an error when given an empty auth token', async () => {
-    const authToken = new AuthToken(sdk.createClient(config));
+    const authToken = new AuthToken(axiosInstance);
 
     const validationReq = {
       token: '',
@@ -73,7 +88,7 @@ describe('AuthToken class', () => {
   });
 
   it('should throw an error when the server returns an error response without a message', async () => {
-    const authToken = new AuthToken(sdk.createClient(config));
+    const authToken = new AuthToken(axiosInstance);
 
     const validationReq = {
       token: 'error-token-1',
@@ -88,7 +103,7 @@ describe('AuthToken class', () => {
   });
 
   it('should throw an error when the server returns an error response with a non-string message', async () => {
-    const authToken = new AuthToken(sdk.createClient(config));
+    const authToken = new AuthToken(axiosInstance);
 
     const validationReq = {
       token: 'error-token-2',
@@ -103,7 +118,7 @@ describe('AuthToken class', () => {
   });
 
   it('should throw an error when the server returns an error response with an invalid http status code', async () => {
-    const authToken = new AuthToken(sdk.createClient(config));
+    const authToken = new AuthToken(axiosInstance);
 
     const validationReq = {
       token: 'error-token-3',

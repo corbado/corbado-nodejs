@@ -1,6 +1,6 @@
-import { SDK, Configuration as Config } from '../../src';
-import { User } from '../../src/services';
-import { BaseError, httpStatusCodes } from '../../src/errors';
+import { SDK, Configuration as Config } from '../src';
+import { User } from '../src/services';
+import { BaseError, httpStatusCodes } from '../src/errors';
 
 class Utils {
   public static SDK(): SDK {

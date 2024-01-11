@@ -29,12 +29,12 @@ class User implements UserInterface {
   private client: UserApi;
 
   constructor(axios: AxiosInstance) {
-    Assert.notNull(axios);
+    Assert.notNull(axios, 'User Axios instance must not be null');
     this.client = new UserApi(undefined, '', axios);
   }
 
   async create(req: UserCreateReq): Promise<UserCreateRsp> {
-    Assert.notNull(req);
+    Assert.notNull(req, 'User.create() "req" param must not be null');
 
     try {
       const createRsp = await this.client.userCreate(req);
@@ -56,8 +56,8 @@ class User implements UserInterface {
   }
 
   async delete(id: string, req: UserDeleteReq): Promise<GenericRsp> {
-    Assert.notEmptyString(id);
-    Assert.notNull(req);
+    Assert.notEmptyString(id, 'User.delete() "id" param must not be empty');
+    Assert.notNull(req, 'User.delete() "req" param must not be null');
 
     try {
       const deleteRsp = await this.client.userDelete(id, req);
@@ -79,7 +79,7 @@ class User implements UserInterface {
   }
 
   async get(id: string, remoteAddr = '', userAgent = ''): Promise<UserGetRsp> {
-    Assert.notEmptyString(id);
+    Assert.notEmptyString(id, 'User.get() "id" param must not be an empty string');
 
     try {
       const getRsp = await this.client.userGet(id, remoteAddr, userAgent);

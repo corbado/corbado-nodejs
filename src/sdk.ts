@@ -1,9 +1,11 @@
 /* eslint-disable class-methods-use-this */
-import axios, { AxiosInstance, AxiosBasicCredentials } from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import Configuration from './config.js';
 import { AuthToken, EmailOTP, Session, SmsOTP, Validation, EmailLink, User } from './services/index.js';
 
 class SDK {
+  private axiosClient: AxiosInstance;
+
   private authToken: AuthToken;
 
   private emailLink: EmailLink;
@@ -19,36 +21,61 @@ class SDK {
   private validation: Validation;
 
   constructor(config: Configuration) {
-    this.authToken = new AuthToken(this.createClient(config));
+    this.axiosClient = this.createClient(config);
 
-    this.emailLink = new EmailLink(this.createClient(config));
+    this.authToken = new AuthToken(this.axiosClient);
 
-    this.emailOTP = new EmailOTP(this.createClient(config));
+    this.emailLink = new EmailLink(this.axiosClient);
+
+    this.emailOTP = new EmailOTP(this.axiosClient);
 
     this.session = new Session(config.FrontendAPI, config.ShortSessionCookieName, config.JWTIssuer, config.CacheMaxAge);
 
-    this.smsOTP = new SmsOTP(this.createClient(config));
+    this.smsOTP = new SmsOTP(this.axiosClient);
 
-    this.user = new User(this.createClient(config));
+    this.user = new User(this.axiosClient);
 
-    this.validation = new Validation(this.createClient(config));
+    this.validation = new Validation(this.axiosClient);
   }
 
+  // createClient(config: Configuration): AxiosInstance {
+  //   const instance = axios.create();
+
+  //   instance.defaults.auth = new (class implements AxiosBasicCredentials {
+  //     password: string = config.APISecret;
+
+  //     username: string = config.ProjectID;
+  //   })();
+
+  //   instance.defaults.baseURL = config.BackendAPI;
+  //   instance.defaults.headers['X-Corbado-SDK-Version'] = JSON.stringify({
+  //     name: 'Node.js SDK',
+  //     sdkVersion: process.env.npm_package_version,
+  //     languageVersion: process.version,
+  //   });
+  //   console.log({ BACKEND_API: config.BackendAPI });
+
+  //   return instance;
+  // }
+
   createClient(config: Configuration): AxiosInstance {
-    const instance = axios.create();
-
-    instance.defaults.auth = new (class implements AxiosBasicCredentials {
-      password: string = config.APISecret;
-
-      username: string = config.ProjectID;
-    })();
-
-    instance.defaults.baseURL = config.BackendAPI;
-    instance.defaults.headers['X-Corbado-SDK-Version'] = JSON.stringify({
-      name: 'Node.js SDK',
-      sdkVersion: process.env.npm_package_version,
-      languageVersion: process.version,
+    const instance = axios.create({
+      baseURL: config.BackendAPI,
+      auth: {
+        username: config.ProjectID,
+        password: config.APISecret,
+      },
+      headers: {
+        'X-Corbado-SDK-Version': JSON.stringify({
+          name: 'Node.js SDK',
+          sdkVersion: process.env.npm_package_version,
+          languageVersion: process.version,
+        }),
+      },
     });
+
+    // Consider removing this console.log for security purposes
+    console.log({ BACKEND_API: config.BackendAPI });
 
     return instance;
   }

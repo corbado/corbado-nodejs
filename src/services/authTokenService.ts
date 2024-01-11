@@ -11,12 +11,12 @@ class AuthToken implements AuthTokenInterface {
   private client: AuthTokensApi;
 
   constructor(axios: AxiosInstance) {
-    Assert.notNull(axios);
+    Assert.notNull(axios, 'AuthToken Axios instance must not be null');
     this.client = new AuthTokensApi(undefined, '', axios);
   }
 
   async validate(req: AuthTokenValidateReq): Promise<AuthTokenValidateRsp> {
-    Assert.notNull(req);
+    Assert.notNull(req, 'AuthToken.validate() param must not be null');
 
     try {
       const validateRsp = await this.client.authTokenValidate(req);

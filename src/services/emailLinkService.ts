@@ -20,25 +20,27 @@ class EmailLink implements EmailLinkInterface {
   private client: EmailMagicLinksApi;
 
   constructor(axios: AxiosInstance) {
-    Assert.notNull(axios);
+    Assert.notNull(axios, 'EmailLink Axios instance must not be null');
+
     this.client = new EmailMagicLinksApi(undefined, '', axios);
   }
 
   async send(req: EmailLinkSendReq): Promise<EmailLinkSendRsp> {
-    Assert.notNull(req);
+    Assert.notNull(req, 'EmailLink.send() "req" param must not be null');
 
     try {
       const sendRsp = await this.client.emailLinkSend(req);
       const sendResponse = sendRsp.data;
       return sendResponse;
     } catch (error) {
-      throw Helper.convertToServerException(error);
+      // throw Helper.convertToServerException(error);
+      throw new Error(error);
     }
   }
 
   async validate(emailLinkID: string, req: EmailLinksValidateReq): Promise<EmailLinkValidateRsp> {
-    Assert.notEmptyString(emailLinkID);
-    Assert.notNull(req);
+    Assert.notEmptyString(emailLinkID, 'EmailLink.validate() "emailLinkID" must not be an empty string');
+    Assert.notNull(req, 'EmailLink.validate() "req" param must not be null');
 
     try {
       const validationRsp = await this.client.emailLinkValidate(emailLinkID, req);
@@ -60,7 +62,7 @@ class EmailLink implements EmailLinkInterface {
   }
 
   async get(emailLinkID: string): Promise<EmailLinkGetRsp> {
-    Assert.notEmptyString(emailLinkID);
+    Assert.notEmptyString(emailLinkID, 'EmailLink.get() "emailLinkID" param must not be an empty string');
 
     try {
       const getEmailRsp = await this.client.emailLinkGet(emailLinkID);

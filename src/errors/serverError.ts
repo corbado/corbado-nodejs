@@ -1,5 +1,3 @@
-import BaseError from './baseError.js';
-
 export type ErrorDetails = {
   validation?: { field: string; message: string }[];
 };
@@ -17,46 +15,99 @@ export type ServerErrorType = {
   error: ErrorDetails;
 };
 
-class ServerError extends BaseError {
-  private requestData: RequestData;
+// class ServerError extends BaseError {
+//   private requestData: RequestData;
 
-  private runtime: number;
+//   private runtime: number;
 
-  private error: ErrorDetails;
+//   private error: ErrorDetails;
+
+//   constructor(httpStatusCode: number, message: string, requestData: RequestData, runtime: number, error: ErrorDetails) {
+//     const fullMessage = `${message} (HTTP status code: ${httpStatusCode}, validation message: ${ServerError.getValidationMessages(
+//       error,
+//     )})`;
+//     super('Server Error', httpStatusCode, fullMessage, true);
+
+//     this.requestData = requestData;
+//     this.runtime = runtime;
+//     this.error = error;
+//   }
+
+//   public getRequestData(): RequestData {
+//     return this.requestData;
+//   }
+
+//   public getRequestID(): string {
+//     return this.requestData.requestID || '';
+//   }
+
+//   public getRuntime(): number {
+//     return this.runtime;
+//   }
+
+//   public getError(): ErrorDetails {
+//     return this.error;
+//   }
+
+//   private static getValidationMessages(error: ErrorDetails): string[] {
+//     if (!error || !error.validation) {
+//       return [];
+//     }
+
+//     return error.validation.map((item) => `${item.field}: ${item.message}`);
+//   }
+// }
+
+export class ServerError extends Error {
+  httpStatusCode: number;
+
+  requestData: RequestData;
+
+  runtime: number;
+
+  error: ErrorDetails;
 
   constructor(httpStatusCode: number, message: string, requestData: RequestData, runtime: number, error: ErrorDetails) {
-    const fullMessage = `${message} (HTTP status code: ${httpStatusCode}, validation message: ${ServerError.getValidationMessages(
-      error,
-    )})`;
-    super('Server Error', httpStatusCode, fullMessage, true);
+    super(message);
 
+    this.httpStatusCode = httpStatusCode;
     this.requestData = requestData;
     this.runtime = runtime;
     this.error = error;
+
+    this.message += ` (HTTP status code: ${httpStatusCode}, validation messages: ${this.getValidationMessages().join(
+      '; ',
+    )})`;
   }
 
-  public getRequestData(): RequestData {
+  getHttpStatusCode() {
+    return this.httpStatusCode;
+  }
+
+  getRequestData() {
     return this.requestData;
   }
 
-  public getRequestID(): string {
-    return this.requestData.requestID || '';
+  getRequestId() {
+    return this.requestData?.requestID ?? '';
   }
 
-  public getRuntime(): number {
+  getRuntime() {
     return this.runtime;
   }
 
-  public getError(): ErrorDetails {
+  getError() {
     return this.error;
   }
 
-  private static getValidationMessages(error: ErrorDetails): string[] {
-    if (!error || !error.validation) {
+  getValidationMessages(): string[] {
+    if (!this.error || !this.error.validation) {
       return [];
     }
 
-    return error.validation.map((item) => `${item.field}: ${item.message}`);
+    return this.error.validation.map((item) => {
+      return `${item.field}: ${item.message}`;
+    });
   }
 }
 

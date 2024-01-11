@@ -23,7 +23,7 @@ class Helper {
   }
 
   public static jsonDecode(data: string): Record<string, unknown> {
-    Assert.notEmptyString(data);
+    Assert.notEmptyString(data, 'Helper.jsonDecode() data must not be an empty string');
 
     try {
       return JSON.parse(data) as Record<string, unknown>;
@@ -37,7 +37,11 @@ class Helper {
   }
 
   public static throwServerExceptionOld(data: ServerErrorType): void {
-    Assert.keysInObject(['httpStatusCode', 'message', 'requestData', 'runtime'], data);
+    Assert.keysInObject(
+      ['httpStatusCode', 'message', 'requestData', 'runtime'],
+      data,
+      'Helper.throwServerException() "data" param must contain all required keys: httpStatusCode, message, requestData, runtime',
+    );
 
     const errorData = { ...data, error: data.error || {} };
     throw new ServerError(
@@ -50,28 +54,39 @@ class Helper {
   }
 
   public static convertToServerException(errorObj: unknown): ServerError {
-    const error = errorObj as ErrorWithBody;
-    const body = error.getResponseBody ? error.getResponseBody() : '';
-    if (typeof body !== 'string') {
-      throw new BaseError(
-        'ApiResponseError',
-        httpStatusCodes.API_RESPONSE_ERROR.code,
-        httpStatusCodes.API_RESPONSE_ERROR.description,
-        httpStatusCodes.API_RESPONSE_ERROR.isOperational,
-      );
+    let body = '{}';
+    if (typeof errorObj === 'object' && errorObj !== null && 'getResponseBody' in errorObj) {
+      const errorWithBody = errorObj as ErrorWithBody;
+      body = errorWithBody.getResponseBody ? errorWithBody.getResponseBody() : '{}';
     }
 
-    const data = Helper.jsonDecode(body) as {
-      httpStatusCode: number;
-      requestData: RequestData;
-      runtime: number;
-      error: ErrorDetails;
-    };
-    return new ServerError(data.httpStatusCode, 'ServerError', data.requestData, data.runtime, data.error);
+    let data;
+    try {
+      data = Helper.jsonDecode(body) as {
+        httpStatusCode: number;
+        requestData: RequestData;
+        runtime: number;
+        error: ErrorDetails;
+      };
+    } catch (e) {
+      const defaultMessage = e instanceof Error ? e.message : 'Unknown error during JSON decode';
+      data = {
+        httpStatusCode: httpStatusCodes.INTERNAL_SERVER_ERROR.code,
+        message: `JSON Decode Error: ${defaultMessage}`,
+        requestData: { requestID: '', link: '' },
+        runtime: 0,
+        error: { validation: ['JSON decode fail'] },
+      };
+    }
+    return new ServerError(data.httpStatusCode, 'Server Error', data.requestData, data.runtime, data.error);
   }
 
   public static hydrateRequestData(data: Record<string, string>): RequestData {
-    Assert.keysInObject(['requestID', 'link'], data);
+    Assert.keysInObject(
+      ['requestID', 'link'],
+      data,
+      'Helper.hydrateRequestData() "data" param must contain all required keys: requestID, link',
+    );
 
     const requestData = { requestID: data.requestID, link: data.link };
 
@@ -79,7 +94,11 @@ class Helper {
   }
 
   public static hydrateResponse(data: ServerErrorType): GenericRsp {
-    Assert.keysInObject(['httpStatusCode', 'message', 'requestData', 'runtime'], data);
+    Assert.keysInObject(
+      ['httpStatusCode', 'message', 'requestData', 'runtime'],
+      data,
+      'Helper.hydrateResponse() "data" param must contain all required keys: httpStatusCode, message, requestData, runtime',
+    );
 
     const requestData = Helper.hydrateRequestData(data.requestData);
     const { httpStatusCode, message, runtime } = data;
