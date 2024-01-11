@@ -35,7 +35,7 @@ class Session implements SessionInterface {
 
   private lastShortSessionValidationResult = '';
 
-  constructor(jwksURI: string, shortSessionCookieName: string, issuer: string, cacheMaxAge: number) {
+  constructor(issuer: string, shortSessionCookieName: string, jwksURI: string, cacheMaxAge: number) {
     Assert.notEmptyString(shortSessionCookieName);
     Assert.notEmptyString(issuer);
     Assert.notEmptyString(jwksURI);

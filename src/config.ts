@@ -9,8 +9,8 @@ export interface ConfigInterface {
   CacheMaxAge: number;
 }
 
-export const DefaultBackendAPI = 'https://backendapi.blabla.io';
-export const DefaultFrontendAPI = 'https://[projectID].frontendapi.blabla.io';
+export const DefaultBackendAPI = 'https://backendapi.corbado.io';
+export const DefaultFrontendAPI = `https://${process.env.PROJECT_ID}.frontendapi.corbado.io`;
 export const DefaultShortSessionCookieName = 'cbo_short_session';
 export const DefaultCacheMaxAge = 60 * 1000; // 60 * 1000 = 60000 milliseconds, which is equivalent to 1 minute.
 
@@ -27,7 +27,7 @@ class Configuration implements ConfigInterface {
 
   CacheMaxAge: number = DefaultCacheMaxAge;
 
-  JWTIssuer: string = '';
+  JWTIssuer: string;
 
   constructor(projectID: string, apiSecret: string) {
     this.validateProjectID(projectID);
@@ -36,6 +36,7 @@ class Configuration implements ConfigInterface {
     this.ProjectID = projectID;
     this.APISecret = apiSecret;
     this.FrontendAPI = DefaultFrontendAPI.replace('[projectID]', projectID);
+    this.JWTIssuer = `${DefaultFrontendAPI.replace('[projectID]', projectID)}/.well-known/jwks`;
   }
 
   private validateProjectID(projectID: string): void {
