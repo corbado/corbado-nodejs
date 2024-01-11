@@ -6,7 +6,7 @@ const user_js_1 = require("../entities/user.js");
 const index_js_1 = require("../heplers/index.js");
 const MIN_TOKEN_LENGTH = 10;
 class Session {
-    constructor(jwksURI, shortSessionCookieName, issuer, cacheMaxAge) {
+    constructor(issuer, shortSessionCookieName, jwksURI, cacheMaxAge) {
         this.lastShortSessionValidationResult = '';
         index_js_1.Assert.notEmptyString(shortSessionCookieName);
         index_js_1.Assert.notEmptyString(issuer);

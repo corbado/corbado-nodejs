@@ -21,7 +21,7 @@ declare class Session implements SessionInterface {
     private jwksURI;
     private cacheMaxAge;
     private lastShortSessionValidationResult;
-    constructor(jwksURI: string, shortSessionCookieName: string, issuer: string, cacheMaxAge: number);
+    constructor(issuer: string, shortSessionCookieName: string, jwksURI: string, cacheMaxAge: number);
     getShortSessionValue(req: RequestWithCookies): string;
     validateShortSessionValue(value: string): Promise<DecodedValue | null>;
     getLastShortSessionValidationResult(): string;

@@ -1,5 +1,5 @@
-export const DefaultBackendAPI = 'https://backendapi.blabla.io';
-export const DefaultFrontendAPI = 'https://[projectID].frontendapi.blabla.io';
+export const DefaultBackendAPI = 'https://backendapi.corbado.io';
+export const DefaultFrontendAPI = `https://${process.env.PROJECT_ID}.frontendapi.corbado.io`;
 export const DefaultShortSessionCookieName = 'cbo_short_session';
 export const DefaultCacheMaxAge = 60 * 1000; // 60 * 1000 = 60000 milliseconds, which is equivalent to 1 minute.
 class Configuration {
@@ -7,12 +7,12 @@ class Configuration {
         this.BackendAPI = DefaultBackendAPI;
         this.ShortSessionCookieName = DefaultShortSessionCookieName;
         this.CacheMaxAge = DefaultCacheMaxAge;
-        this.JWTIssuer = '';
         this.validateProjectID(projectID);
         this.validateAPISecret(apiSecret);
         this.ProjectID = projectID;
         this.APISecret = apiSecret;
         this.FrontendAPI = DefaultFrontendAPI.replace('[projectID]', projectID);
+        this.JWTIssuer = `${DefaultFrontendAPI.replace('[projectID]', projectID)}/.well-known/jwks`;
     }
     validateProjectID(projectID) {
         if (!projectID || !projectID.startsWith('pro-')) {

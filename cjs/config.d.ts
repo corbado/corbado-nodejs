@@ -7,8 +7,8 @@ export interface ConfigInterface {
     JWTIssuer: string;
     CacheMaxAge: number;
 }
-export declare const DefaultBackendAPI = "https://backendapi.blabla.io";
-export declare const DefaultFrontendAPI = "https://[projectID].frontendapi.blabla.io";
+export declare const DefaultBackendAPI = "https://backendapi.corbado.io";
+export declare const DefaultFrontendAPI: string;
 export declare const DefaultShortSessionCookieName = "cbo_short_session";
 export declare const DefaultCacheMaxAge: number;
 declare class Configuration implements ConfigInterface {

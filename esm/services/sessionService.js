@@ -4,7 +4,7 @@ import User from '../entities/user.js';
 import { Assert } from '../heplers/index.js';
 const MIN_TOKEN_LENGTH = 10;
 class Session {
-    constructor(jwksURI, shortSessionCookieName, issuer, cacheMaxAge) {
+    constructor(issuer, shortSessionCookieName, jwksURI, cacheMaxAge) {
         this.lastShortSessionValidationResult = '';
         Assert.notEmptyString(shortSessionCookieName);
         Assert.notEmptyString(issuer);

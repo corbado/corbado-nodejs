@@ -46,8 +46,8 @@ clean:
 
 .PHONY: test
 test:
-  npx jest
-  
+	@npx jest
+
 .PHONY: cjs/build
 cjs/build: $(SOURCE_FILES)
 	npx tsc -p tsconfig.cjs.json
