@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import {
   BaseError,
   ServerError,
@@ -79,6 +80,30 @@ class Helper {
       };
     }
     return new ServerError(data.httpStatusCode, 'Server Error', data.requestData, data.runtime, data.error);
+  }
+
+  public static convertToServerError(nodeError, origin: string) {
+    if (nodeError instanceof AxiosError) {
+      const { response } = nodeError;
+
+      if (response) {
+        const { status } = response;
+        const message = JSON.stringify(response.data) || 'Internal Axios Error';
+        const requestData = { requestID: origin, link: '' };
+        const runtime = 0;
+        const error = { validation: [] };
+
+        return new ServerError(status, message, requestData, runtime, error);
+      }
+    }
+
+    const httpStatusCode = 500;
+    const message = 'Internal Server Error';
+    const requestData = { requestID: '', link: '' };
+    const runtime = 0;
+    const error = { validation: [{ field: 'whatnot', message: 'error from createServerErrorFromNodeError' }] }; // You can set error based on your needs
+
+    return new ServerError(httpStatusCode, message, requestData, runtime, error);
   }
 
   public static hydrateRequestData(data: Record<string, string>): RequestData {

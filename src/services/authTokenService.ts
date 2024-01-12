@@ -34,7 +34,7 @@ class AuthToken implements AuthTokenInterface {
       return response;
     } catch (error) {
       if (error instanceof Error) {
-        throw Helper.convertToServerException(error);
+        throw Helper.convertToServerError(error, 'AuthToken.validate()');
       }
       throw new BaseError(
         'Unknown auth token error',

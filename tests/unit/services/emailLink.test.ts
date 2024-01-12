@@ -1,5 +1,4 @@
 import axios, { AxiosInstance } from 'axios';
-import MockAdapter from 'axios-mock-adapter';
 import { EmailLink } from '../../../src/services';
 import { EmailLinkSendReq, EmailLinksValidateReq } from '../../../src/generated';
 import Utils from '../../utils';
@@ -8,17 +7,18 @@ describe('EmailLink class', () => {
   let axiosInstance: AxiosInstance;
 
   beforeEach(() => {
-    axiosInstance = axios.create();
-    const mock = new MockAdapter(axiosInstance);
-    mock.onPost('/smsCodeSend').reply(200, {
-      data: {
-        httpStatusCode: 200,
-        message: 'success',
-        requestData: { requestID: '123', link: 'http://localhost' },
-        runtime: 0,
-        data: {},
-      },
-    });
+    axiosInstance = axios.create({ baseURL: process.env.BACKEND_API_URL });
+    // const mock = new MockAdapter(axiosInstance);
+
+    // mock.onPost(process.env.BACKEND_API_URL).reply(200, {
+    //   data: {
+    //     httpStatusCode: 200,
+    //     message: 'success',
+    //     requestData: { requestID: '123', link: 'http://localhost' },
+    //     runtime: 0,
+    //     data: {},
+    //   },
+    // });
   });
 
   it('should create an EmailLink instance with an AxiosInstance', () => {

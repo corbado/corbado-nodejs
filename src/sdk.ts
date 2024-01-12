@@ -74,9 +74,6 @@ class SDK {
       },
     });
 
-    // Consider removing this console.log for security purposes
-    console.log({ BACKEND_API: config.BackendAPI });
-
     return instance;
   }
 

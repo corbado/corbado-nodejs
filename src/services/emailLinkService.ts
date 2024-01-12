@@ -33,8 +33,7 @@ class EmailLink implements EmailLinkInterface {
       const sendResponse = sendRsp.data;
       return sendResponse;
     } catch (error) {
-      // throw Helper.convertToServerException(error);
-      throw new Error(error);
+      throw Helper.convertToServerError(error, 'EmailLink.send()');
     }
   }
 
@@ -57,7 +56,7 @@ class EmailLink implements EmailLinkInterface {
 
       return validationResponse;
     } catch (error) {
-      throw Helper.convertToServerException(error);
+      throw Helper.convertToServerError(error, 'EmailLink.validate()');
     }
   }
 
@@ -69,7 +68,7 @@ class EmailLink implements EmailLinkInterface {
       const getEmailResponse = getEmailRsp.data;
       return getEmailResponse;
     } catch (error) {
-      throw Helper.convertToServerException(error);
+      throw Helper.convertToServerError(error, 'EmailLink.get()');
     }
   }
 }

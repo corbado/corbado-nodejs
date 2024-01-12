@@ -75,7 +75,7 @@ export class ServerError extends Error {
     this.runtime = runtime;
     this.error = error;
 
-    this.message += ` (HTTP status code: ${httpStatusCode}, validation messages: ${this.getValidationMessages().join(
+    this.message += ` (HTTP status code: ${httpStatusCode}, ${this.getRequestId()}, validation messages: ${this.getValidationMessages().join(
       '; ',
     )})`;
   }

@@ -1,7 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
-import MockAdapter from 'axios-mock-adapter';
 import { Configuration, SDK } from '../../../src';
-import { BaseError } from '../../../src/errors';
+import { BaseError, ServerError } from '../../../src/errors';
 import { AuthToken } from '../../../src/services';
 
 describe('AuthToken class', () => {
@@ -22,17 +21,17 @@ describe('AuthToken class', () => {
     config = new Configuration(projectID, apiSecret);
     sdk = new SDK(config);
 
-    axiosInstance = axios.create();
-    const mock = new MockAdapter(axiosInstance);
-    mock.onPost('/smsCodeSend').reply(200, {
-      data: {
-        httpStatusCode: 200,
-        message: 'success',
-        requestData: { requestID: '123', link: 'http://localhost' },
-        runtime: 0,
-        data: {},
-      },
-    });
+    axiosInstance = axios.create({ baseURL: process.env.BACKEND_API_URL });
+    // const mock = new MockAdapter(axiosInstance);
+    // mock.onPost('/smsCodeSend').reply(200, {
+    //   data: {
+    //     httpStatusCode: 200,
+    //     message: 'success',
+    //     requestData: { requestID: '123', link: 'http://localhost' },
+    //     runtime: 0,
+    //     data: {},
+    //   },
+    // });
   });
 
   it('should successfully validate a valid auth token', async () => {
@@ -69,7 +68,7 @@ describe('AuthToken class', () => {
       },
     };
 
-    await expect(authToken.validate(validationReq)).rejects.toThrow(BaseError);
+    await expect(authToken.validate(validationReq)).rejects.toThrow(ServerError);
   });
 
   it('should throw an error when given an empty auth token', async () => {
@@ -84,7 +83,7 @@ describe('AuthToken class', () => {
       },
     };
 
-    await expect(authToken.validate(validationReq)).rejects.toThrow(BaseError);
+    await expect(authToken.validate(validationReq)).rejects.toThrow(ServerError);
   });
 
   it('should throw an error when the server returns an error response without a message', async () => {
@@ -99,7 +98,7 @@ describe('AuthToken class', () => {
       },
     };
 
-    await expect(authToken.validate(validationReq)).rejects.toThrow(BaseError);
+    await expect(authToken.validate(validationReq)).rejects.toThrow(ServerError);
   });
 
   it('should throw an error when the server returns an error response with a non-string message', async () => {
@@ -114,7 +113,7 @@ describe('AuthToken class', () => {
       },
     };
 
-    await expect(authToken.validate(validationReq)).rejects.toThrow(BaseError);
+    await expect(authToken.validate(validationReq)).rejects.toThrow(ServerError);
   });
 
   it('should throw an error when the server returns an error response with an invalid http status code', async () => {
@@ -129,6 +128,6 @@ describe('AuthToken class', () => {
       },
     };
 
-    await expect(authToken.validate(validationReq)).rejects.toThrow(BaseError);
+    await expect(authToken.validate(validationReq)).rejects.toThrow(ServerError);
   });
 });
