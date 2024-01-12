@@ -5,27 +5,44 @@ const axios_1 = require("axios");
 const index_js_1 = require("./services/index.js");
 class SDK {
     constructor(config) {
-        this.authToken = new index_js_1.AuthToken(this.createClient(config));
-        this.emailLink = new index_js_1.EmailLink(this.createClient(config));
-        this.emailOTP = new index_js_1.EmailOTP(this.createClient(config));
+        this.axiosClient = this.createClient(config);
+        this.authToken = new index_js_1.AuthToken(this.axiosClient);
+        this.emailLink = new index_js_1.EmailLink(this.axiosClient);
+        this.emailOTP = new index_js_1.EmailOTP(this.axiosClient);
         this.session = new index_js_1.Session(config.FrontendAPI, config.ShortSessionCookieName, config.JWTIssuer, config.CacheMaxAge);
-        this.smsOTP = new index_js_1.SmsOTP(this.createClient(config));
-        this.user = new index_js_1.User(this.createClient(config));
-        this.validation = new index_js_1.Validation(this.createClient(config));
+        this.smsOTP = new index_js_1.SmsOTP(this.axiosClient);
+        this.user = new index_js_1.User(this.axiosClient);
+        this.validation = new index_js_1.Validation(this.axiosClient);
     }
+    // createClient(config: Configuration): AxiosInstance {
+    //   const instance = axios.create();
+    //   instance.defaults.auth = new (class implements AxiosBasicCredentials {
+    //     password: string = config.APISecret;
+    //     username: string = config.ProjectID;
+    //   })();
+    //   instance.defaults.baseURL = config.BackendAPI;
+    //   instance.defaults.headers['X-Corbado-SDK-Version'] = JSON.stringify({
+    //     name: 'Node.js SDK',
+    //     sdkVersion: process.env.npm_package_version,
+    //     languageVersion: process.version,
+    //   });
+    //   console.log({ BACKEND_API: config.BackendAPI });
+    //   return instance;
+    // }
     createClient(config) {
-        const instance = axios_1.default.create();
-        instance.defaults.auth = new (class {
-            constructor() {
-                this.password = config.APISecret;
-                this.username = config.ProjectID;
-            }
-        })();
-        instance.defaults.baseURL = config.BackendAPI;
-        instance.defaults.headers['X-Corbado-SDK-Version'] = JSON.stringify({
-            name: 'Node.js SDK',
-            sdkVersion: process.env.npm_package_version,
-            languageVersion: process.version,
+        const instance = axios_1.default.create({
+            baseURL: config.BackendAPI,
+            auth: {
+                username: config.ProjectID,
+                password: config.APISecret,
+            },
+            headers: {
+                'X-Corbado-SDK-Version': JSON.stringify({
+                    name: 'Node.js SDK',
+                    sdkVersion: process.env.npm_package_version,
+                    languageVersion: process.version,
+                }),
+            },
         });
         return instance;
     }

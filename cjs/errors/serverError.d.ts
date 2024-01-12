@@ -1,4 +1,3 @@
-import BaseError from './baseError.js';
 export type ErrorDetails = {
     validation?: {
         field: string;
@@ -16,15 +15,18 @@ export type ServerErrorType = {
     runtime: number;
     error: ErrorDetails;
 };
-declare class ServerError extends BaseError {
-    private requestData;
-    private runtime;
-    private error;
+export declare class ServerError extends Error {
+    httpStatusCode: number;
+    requestData: RequestData;
+    runtime: number;
+    error: ErrorDetails;
     constructor(httpStatusCode: number, message: string, requestData: RequestData, runtime: number, error: ErrorDetails);
+    getHttpStatusCode(): number;
     getRequestData(): RequestData;
-    getRequestID(): string;
+    getRequestId(): string;
     getRuntime(): number;
     getError(): ErrorDetails;
-    private static getValidationMessages;
+    getValidationMessages(): string[];
+    private getFlattenedValidationMessages;
 }
 export default ServerError;

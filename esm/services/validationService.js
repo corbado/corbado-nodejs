@@ -3,11 +3,11 @@ import { Assert, Helper, isErrorRsp } from '../heplers/index.js';
 import { ValidationApi, } from '../generated/index.js';
 class Validation {
     constructor(axios) {
-        Assert.notNull(axios);
+        Assert.notNull(axios, 'Validation Axios instance must not be null');
         this.client = new ValidationApi(undefined, '', axios);
     }
     async validateEmail(req) {
-        Assert.notNull(req);
+        Assert.notNull(req, 'Validation.email() "req" param must not be null');
         try {
             const emailValidationRsp = await this.client.validateEmail(req);
             const emailValidationResponse = emailValidationRsp.data;
@@ -17,11 +17,11 @@ class Validation {
             return emailValidationResponse;
         }
         catch (error) {
-            throw Helper.convertToServerException(error);
+            throw Helper.convertToServerError(error, 'Validation.validateEmail()');
         }
     }
     async validatePhoneNumber(req) {
-        Assert.notNull(req);
+        Assert.notNull(req, 'Validation.validatePhoneNumber() "req" param must not be null');
         try {
             const phoneValidationRsp = await this.client.validatePhoneNumber(req);
             const phoneValidationResponse = phoneValidationRsp.data;
@@ -31,7 +31,7 @@ class Validation {
             return phoneValidationResponse;
         }
         catch (error) {
-            throw Helper.convertToServerException(error);
+            throw Helper.convertToServerError(error, 'Validation.validatePhoneNumber()');
         }
     }
 }

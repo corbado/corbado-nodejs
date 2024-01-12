@@ -5,11 +5,11 @@ const index_js_2 = require("../heplers/index.js");
 const index_js_3 = require("../generated/index.js");
 class SmsOTP {
     constructor(axios) {
-        index_js_2.Assert.notNull(axios);
+        index_js_2.Assert.notNull(axios, 'SmsOtp Axios instance must not be null');
         this.client = new index_js_3.SMSOTPApi(undefined, '', axios);
     }
     async send(req) {
-        index_js_2.Assert.notNull(req);
+        index_js_2.Assert.notNull(req, 'SmsOtp.send() "req" param must not be null');
         try {
             const sendRsp = await this.client.smsCodeSend(req);
             const sendResponse = sendRsp.data;
@@ -19,12 +19,12 @@ class SmsOTP {
             return sendResponse;
         }
         catch (error) {
-            throw index_js_2.Helper.convertToServerException(error);
+            throw index_js_2.Helper.convertToServerError(error, 'SmsOtp.send()');
         }
     }
     async validate(id, req) {
-        index_js_2.Assert.notEmptyString(id);
-        index_js_2.Assert.notNull(req);
+        index_js_2.Assert.notEmptyString(id, 'SmsOtp.validate() "id" param must not be empty');
+        index_js_2.Assert.notNull(req, 'SmsOtp.validate() "req" param must not be null');
         try {
             const validationRsp = await this.client.smsCodeValidate(id, req);
             const validationResponse = validationRsp.data;
@@ -34,7 +34,7 @@ class SmsOTP {
             return validationResponse;
         }
         catch (error) {
-            throw index_js_2.Helper.convertToServerException(error);
+            throw index_js_2.Helper.convertToServerError(error, 'SmsOtp.validate()');
         }
     }
 }

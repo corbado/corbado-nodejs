@@ -5,11 +5,11 @@ const index_js_2 = require("../heplers/index.js");
 const index_js_3 = require("../generated/index.js");
 class User {
     constructor(axios) {
-        index_js_2.Assert.notNull(axios);
+        index_js_2.Assert.notNull(axios, 'User Axios instance must not be null');
         this.client = new index_js_3.UserApi(undefined, '', axios);
     }
     async create(req) {
-        index_js_2.Assert.notNull(req);
+        index_js_2.Assert.notNull(req, 'User.create() "req" param must not be null');
         try {
             const createRsp = await this.client.userCreate(req);
             const createResponse = createRsp.data;
@@ -19,12 +19,12 @@ class User {
             return createResponse;
         }
         catch (error) {
-            throw index_js_2.Helper.convertToServerException(error);
+            throw index_js_2.Helper.convertToServerError(error, 'User.create()');
         }
     }
     async delete(id, req) {
-        index_js_2.Assert.notEmptyString(id);
-        index_js_2.Assert.notNull(req);
+        index_js_2.Assert.notEmptyString(id, 'User.delete() "id" param must not be empty');
+        index_js_2.Assert.notNull(req, 'User.delete() "req" param must not be null');
         try {
             const deleteRsp = await this.client.userDelete(id, req);
             const deleteResponse = deleteRsp.data;
@@ -34,11 +34,11 @@ class User {
             return deleteResponse;
         }
         catch (error) {
-            throw index_js_2.Helper.convertToServerException(error);
+            throw index_js_2.Helper.convertToServerError(error, 'User.delete()');
         }
     }
     async get(id, remoteAddr = '', userAgent = '') {
-        index_js_2.Assert.notEmptyString(id);
+        index_js_2.Assert.notEmptyString(id, 'User.get() "id" param must not be an empty string');
         try {
             const getRsp = await this.client.userGet(id, remoteAddr, userAgent);
             const getResponse = getRsp.data;
@@ -48,7 +48,7 @@ class User {
             return getResponse;
         }
         catch (error) {
-            throw index_js_2.Helper.convertToServerException(error);
+            throw index_js_2.Helper.convertToServerError(error, 'User.get()');
         }
     }
     async list(remoteAddr = '', userAgent = '', sort = '', filter = [], page = 1, pageSize = 10) {
@@ -61,7 +61,7 @@ class User {
             return listResponse;
         }
         catch (error) {
-            throw index_js_2.Helper.convertToServerException(error);
+            throw index_js_2.Helper.convertToServerError(error, 'User.list()');
         }
     }
 }

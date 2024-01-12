@@ -8,7 +8,7 @@ declare class Helper {
     static jsonDecode(data: string): Record<string, unknown>;
     static isErrorHttpStatusCode(statusCode: number): boolean;
     static throwServerExceptionOld(data: ServerErrorType): void;
-    static convertToServerException(errorObj: unknown): ServerError;
+    static convertToServerError(nodeError: unknown, origin: string): ServerError;
     static hydrateRequestData(data: Record<string, string>): RequestData;
     static hydrateResponse(data: ServerErrorType): GenericRsp;
 }

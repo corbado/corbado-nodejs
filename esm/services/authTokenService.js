@@ -3,11 +3,11 @@ import { BaseError, httpStatusCodes } from '../errors/index.js';
 import { AuthTokensApi } from '../generated/index.js';
 class AuthToken {
     constructor(axios) {
-        Assert.notNull(axios);
+        Assert.notNull(axios, 'AuthToken Axios instance must not be null');
         this.client = new AuthTokensApi(undefined, '', axios);
     }
     async validate(req) {
-        Assert.notNull(req);
+        Assert.notNull(req, 'AuthToken.validate() param must not be null');
         try {
             const validateRsp = await this.client.authTokenValidate(req);
             const response = validateRsp.data;
@@ -18,7 +18,7 @@ class AuthToken {
         }
         catch (error) {
             if (error instanceof Error) {
-                throw Helper.convertToServerException(error);
+                throw Helper.convertToServerError(error, 'AuthToken.validate()');
             }
             throw new BaseError('Unknown auth token error', httpStatusCodes.AUTH_TOKEN_ERROR.code, httpStatusCodes.AUTH_TOKEN_ERROR.description, httpStatusCodes.AUTH_TOKEN_ERROR.isOperational);
         }

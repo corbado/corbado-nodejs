@@ -2,6 +2,7 @@ import { AxiosInstance } from 'axios';
 import Configuration from './config.js';
 import { AuthToken, EmailOTP, Session, SmsOTP, Validation, EmailLink, User } from './services/index.js';
 declare class SDK {
+    private axiosClient;
     private authToken;
     private emailLink;
     private emailOTP;

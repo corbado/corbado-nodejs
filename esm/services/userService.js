@@ -3,11 +3,11 @@ import { Assert, Helper, isErrorRsp } from '../heplers/index.js';
 import { UserApi, } from '../generated/index.js';
 class User {
     constructor(axios) {
-        Assert.notNull(axios);
+        Assert.notNull(axios, 'User Axios instance must not be null');
         this.client = new UserApi(undefined, '', axios);
     }
     async create(req) {
-        Assert.notNull(req);
+        Assert.notNull(req, 'User.create() "req" param must not be null');
         try {
             const createRsp = await this.client.userCreate(req);
             const createResponse = createRsp.data;
@@ -17,12 +17,12 @@ class User {
             return createResponse;
         }
         catch (error) {
-            throw Helper.convertToServerException(error);
+            throw Helper.convertToServerError(error, 'User.create()');
         }
     }
     async delete(id, req) {
-        Assert.notEmptyString(id);
-        Assert.notNull(req);
+        Assert.notEmptyString(id, 'User.delete() "id" param must not be empty');
+        Assert.notNull(req, 'User.delete() "req" param must not be null');
         try {
             const deleteRsp = await this.client.userDelete(id, req);
             const deleteResponse = deleteRsp.data;
@@ -32,11 +32,11 @@ class User {
             return deleteResponse;
         }
         catch (error) {
-            throw Helper.convertToServerException(error);
+            throw Helper.convertToServerError(error, 'User.delete()');
         }
     }
     async get(id, remoteAddr = '', userAgent = '') {
-        Assert.notEmptyString(id);
+        Assert.notEmptyString(id, 'User.get() "id" param must not be an empty string');
         try {
             const getRsp = await this.client.userGet(id, remoteAddr, userAgent);
             const getResponse = getRsp.data;
@@ -46,7 +46,7 @@ class User {
             return getResponse;
         }
         catch (error) {
-            throw Helper.convertToServerException(error);
+            throw Helper.convertToServerError(error, 'User.get()');
         }
     }
     async list(remoteAddr = '', userAgent = '', sort = '', filter = [], page = 1, pageSize = 10) {
@@ -59,7 +59,7 @@ class User {
             return listResponse;
         }
         catch (error) {
-            throw Helper.convertToServerException(error);
+            throw Helper.convertToServerError(error, 'User.list()');
         }
     }
 }

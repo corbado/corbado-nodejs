@@ -1,17 +1,20 @@
-import BaseError from './baseError.js';
-class ServerError extends BaseError {
+export class ServerError extends Error {
     constructor(httpStatusCode, message, requestData, runtime, error) {
-        const fullMessage = `${message} (HTTP status code: ${httpStatusCode}, validation message: ${ServerError.getValidationMessages(error)})`;
-        super('Server Error', httpStatusCode, fullMessage, true);
+        super(message);
+        this.httpStatusCode = httpStatusCode;
         this.requestData = requestData;
         this.runtime = runtime;
         this.error = error;
+        this.message += ` (HTTP status code: ${httpStatusCode}, ${this.getRequestId()}, validation messages: ${this.getFlattenedValidationMessages()})`;
+    }
+    getHttpStatusCode() {
+        return this.httpStatusCode;
     }
     getRequestData() {
         return this.requestData;
     }
-    getRequestID() {
-        return this.requestData.requestID || '';
+    getRequestId() {
+        return this.requestData?.requestID ?? '';
     }
     getRuntime() {
         return this.runtime;
@@ -19,11 +22,15 @@ class ServerError extends BaseError {
     getError() {
         return this.error;
     }
-    static getValidationMessages(error) {
+    getValidationMessages() {
+        const { error } = this;
         if (!error || !error.validation) {
             return [];
         }
         return error.validation.map((item) => `${item.field}: ${item.message}`);
+    }
+    getFlattenedValidationMessages() {
+        return this.getValidationMessages().join(', ');
     }
 }
 export default ServerError;

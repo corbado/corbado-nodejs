@@ -1,19 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const baseError_js_1 = require("./baseError.js");
-class ServerError extends baseError_js_1.default {
+exports.ServerError = void 0;
+class ServerError extends Error {
     constructor(httpStatusCode, message, requestData, runtime, error) {
-        const fullMessage = `${message} (HTTP status code: ${httpStatusCode}, validation message: ${ServerError.getValidationMessages(error)})`;
-        super('Server Error', httpStatusCode, fullMessage, true);
+        super(message);
+        this.httpStatusCode = httpStatusCode;
         this.requestData = requestData;
         this.runtime = runtime;
         this.error = error;
+        this.message += ` (HTTP status code: ${httpStatusCode}, ${this.getRequestId()}, validation messages: ${this.getFlattenedValidationMessages()})`;
+    }
+    getHttpStatusCode() {
+        return this.httpStatusCode;
     }
     getRequestData() {
         return this.requestData;
     }
-    getRequestID() {
-        return this.requestData.requestID || '';
+    getRequestId() {
+        return this.requestData?.requestID ?? '';
     }
     getRuntime() {
         return this.runtime;
@@ -21,12 +25,17 @@ class ServerError extends baseError_js_1.default {
     getError() {
         return this.error;
     }
-    static getValidationMessages(error) {
+    getValidationMessages() {
+        const { error } = this;
         if (!error || !error.validation) {
             return [];
         }
         return error.validation.map((item) => `${item.field}: ${item.message}`);
     }
+    getFlattenedValidationMessages() {
+        return this.getValidationMessages().join(', ');
+    }
 }
+exports.ServerError = ServerError;
 exports.default = ServerError;
 //# sourceMappingURL=serverError.js.map

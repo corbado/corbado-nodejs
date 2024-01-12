@@ -14,8 +14,8 @@ class Webhook {
     constructor(username, password) {
         this.automaticAuthenticationHandling = true;
         this.authenticated = false;
-        index_js_2.Assert.notEmptyString(username);
-        index_js_2.Assert.notEmptyString(password);
+        index_js_2.Assert.notEmptyString(username, 'Webhook instance "username" param must not be an empty string');
+        index_js_2.Assert.notEmptyString(password, 'Webhook instance "password" param must not be an empty string');
         this.username = username;
         this.password = password;
     }
@@ -77,8 +77,8 @@ class Webhook {
         this.checkAutomaticAuthentication();
         const body = Webhook.getRequestBody(req);
         const data = index_js_2.Helper.jsonDecode(JSON.stringify(body));
-        index_js_2.Assert.keysInObject(exports.StandardFields, data);
-        index_js_2.Assert.keysInObject(['username'], data.data);
+        index_js_2.Assert.keysInObject(exports.StandardFields, data, 'Webhook.getAuthMethodsRequest() body does not contain all required fields: id, projectID, action, data');
+        index_js_2.Assert.keysInObject(['username'], data.data, `Webhook.getAuthMethodsRequest() body.data does not contain all required field: "username"`);
         const dataRequest = new index_js_3.AuthMethodsDataRequest(data.data.username);
         return new index_js_3.AuthMethodsRequest(data.id, data.projectID, AuthMethodsDataResponseStatus.ACTION_AUTH_METHODS, String(dataRequest), '');
     }
@@ -87,7 +87,7 @@ class Webhook {
             index_js_3.AuthMethodsDataResponseStatusEnum.USER_BLOCKED,
             index_js_3.AuthMethodsDataResponseStatusEnum.USER_EXISTS,
             index_js_3.AuthMethodsDataResponseStatusEnum.USER_NOT_EXISTS,
-        ]);
+        ], 'Webhook.sendAuthMethodsResponse() status must be one of the AuthMethodsDataResponseStatusEnum values');
         this.checkAutomaticAuthentication();
         const dataResponse = new index_js_3.AuthMethodsDataResponse(status);
         const response = new index_js_3.AuthMethodsResponse(dataResponse.status, responseID);
@@ -100,8 +100,8 @@ class Webhook {
         this.checkAutomaticAuthentication();
         const { body } = req;
         const data = index_js_2.Helper.jsonDecode(JSON.stringify(body));
-        index_js_2.Assert.keysInObject(exports.StandardFields, data);
-        index_js_2.Assert.keysInObject(['username', 'password'], data.data);
+        index_js_2.Assert.keysInObject(exports.StandardFields, data, 'Webhook.getPasswordVerifyRequest() body does not contain all required fields: id, projectID, action, data');
+        index_js_2.Assert.keysInObject(['username', 'password'], data.data, 'Webhook.getPasswordVerifyRequest() body.data does not contain all required fields: username, password');
         const dataRequest = new index_js_3.PasswordVerifyDataRequest(data.data.username, data.data.password);
         const request = new index_js_3.PasswordVerifyRequest(data.id, data.projectID, AuthMethodsDataResponseStatus.ACTION_PASSWORD_VERIFY, String(dataRequest), '');
         return request;

@@ -5,11 +5,11 @@ const index_js_2 = require("../heplers/index.js");
 const index_js_3 = require("../generated/index.js");
 class Validation {
     constructor(axios) {
-        index_js_2.Assert.notNull(axios);
+        index_js_2.Assert.notNull(axios, 'Validation Axios instance must not be null');
         this.client = new index_js_3.ValidationApi(undefined, '', axios);
     }
     async validateEmail(req) {
-        index_js_2.Assert.notNull(req);
+        index_js_2.Assert.notNull(req, 'Validation.email() "req" param must not be null');
         try {
             const emailValidationRsp = await this.client.validateEmail(req);
             const emailValidationResponse = emailValidationRsp.data;
@@ -19,11 +19,11 @@ class Validation {
             return emailValidationResponse;
         }
         catch (error) {
-            throw index_js_2.Helper.convertToServerException(error);
+            throw index_js_2.Helper.convertToServerError(error, 'Validation.validateEmail()');
         }
     }
     async validatePhoneNumber(req) {
-        index_js_2.Assert.notNull(req);
+        index_js_2.Assert.notNull(req, 'Validation.validatePhoneNumber() "req" param must not be null');
         try {
             const phoneValidationRsp = await this.client.validatePhoneNumber(req);
             const phoneValidationResponse = phoneValidationRsp.data;
@@ -33,7 +33,7 @@ class Validation {
             return phoneValidationResponse;
         }
         catch (error) {
-            throw index_js_2.Helper.convertToServerException(error);
+            throw index_js_2.Helper.convertToServerError(error, 'Validation.validatePhoneNumber()');
         }
     }
 }

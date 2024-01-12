@@ -3,11 +3,11 @@ import { Assert, isErrorRsp, Helper } from '../heplers/index.js';
 import { SMSOTPApi, } from '../generated/index.js';
 class SmsOTP {
     constructor(axios) {
-        Assert.notNull(axios);
+        Assert.notNull(axios, 'SmsOtp Axios instance must not be null');
         this.client = new SMSOTPApi(undefined, '', axios);
     }
     async send(req) {
-        Assert.notNull(req);
+        Assert.notNull(req, 'SmsOtp.send() "req" param must not be null');
         try {
             const sendRsp = await this.client.smsCodeSend(req);
             const sendResponse = sendRsp.data;
@@ -17,12 +17,12 @@ class SmsOTP {
             return sendResponse;
         }
         catch (error) {
-            throw Helper.convertToServerException(error);
+            throw Helper.convertToServerError(error, 'SmsOtp.send()');
         }
     }
     async validate(id, req) {
-        Assert.notEmptyString(id);
-        Assert.notNull(req);
+        Assert.notEmptyString(id, 'SmsOtp.validate() "id" param must not be empty');
+        Assert.notNull(req, 'SmsOtp.validate() "req" param must not be null');
         try {
             const validationRsp = await this.client.smsCodeValidate(id, req);
             const validationResponse = validationRsp.data;
@@ -32,7 +32,7 @@ class SmsOTP {
             return validationResponse;
         }
         catch (error) {
-            throw Helper.convertToServerException(error);
+            throw Helper.convertToServerError(error, 'SmsOtp.validate()');
         }
     }
 }

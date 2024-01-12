@@ -8,9 +8,9 @@ const MIN_TOKEN_LENGTH = 10;
 class Session {
     constructor(issuer, shortSessionCookieName, jwksURI, cacheMaxAge) {
         this.lastShortSessionValidationResult = '';
-        index_js_1.Assert.notEmptyString(shortSessionCookieName);
-        index_js_1.Assert.notEmptyString(issuer);
-        index_js_1.Assert.notEmptyString(jwksURI);
+        index_js_1.Assert.notEmptyString(shortSessionCookieName, 'Session instance "shortSessionCookieName" param must not be an empty string');
+        index_js_1.Assert.notEmptyString(issuer, 'Session instance "issuer" param must not be an empty string');
+        index_js_1.Assert.notEmptyString(jwksURI, 'Session instance "jwksURI" param must not be an empty string');
         // this.client = client;
         this.shortSessionCookieName = shortSessionCookieName;
         this.issuer = issuer;
@@ -21,7 +21,7 @@ class Session {
         return req.cookies?.[this.shortSessionCookieName] ?? this.extractBearerToken(req.headers.authorization);
     }
     async validateShortSessionValue(value) {
-        index_js_1.Assert.notEmptyString(value);
+        index_js_1.Assert.notEmptyString(value, 'Session.validateShotSessionValue() "value" param must not be an empty string');
         try {
             const keySet = (0, jose_1.createRemoteJWKSet)(new URL(this.jwksURI));
             const { payload } = await (0, jose_1.jwtVerify)(value, keySet);

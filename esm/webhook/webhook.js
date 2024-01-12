@@ -11,8 +11,8 @@ class Webhook {
     constructor(username, password) {
         this.automaticAuthenticationHandling = true;
         this.authenticated = false;
-        Assert.notEmptyString(username);
-        Assert.notEmptyString(password);
+        Assert.notEmptyString(username, 'Webhook instance "username" param must not be an empty string');
+        Assert.notEmptyString(password, 'Webhook instance "password" param must not be an empty string');
         this.username = username;
         this.password = password;
     }
@@ -74,8 +74,8 @@ class Webhook {
         this.checkAutomaticAuthentication();
         const body = Webhook.getRequestBody(req);
         const data = Helper.jsonDecode(JSON.stringify(body));
-        Assert.keysInObject(StandardFields, data);
-        Assert.keysInObject(['username'], data.data);
+        Assert.keysInObject(StandardFields, data, 'Webhook.getAuthMethodsRequest() body does not contain all required fields: id, projectID, action, data');
+        Assert.keysInObject(['username'], data.data, `Webhook.getAuthMethodsRequest() body.data does not contain all required field: "username"`);
         const dataRequest = new AuthMethodsDataRequest(data.data.username);
         return new AuthMethodsRequest(data.id, data.projectID, AuthMethodsDataResponseStatus.ACTION_AUTH_METHODS, String(dataRequest), '');
     }
@@ -84,7 +84,7 @@ class Webhook {
             AuthMethodsDataResponseStatusEnum.USER_BLOCKED,
             AuthMethodsDataResponseStatusEnum.USER_EXISTS,
             AuthMethodsDataResponseStatusEnum.USER_NOT_EXISTS,
-        ]);
+        ], 'Webhook.sendAuthMethodsResponse() status must be one of the AuthMethodsDataResponseStatusEnum values');
         this.checkAutomaticAuthentication();
         const dataResponse = new AuthMethodsDataResponse(status);
         const response = new AuthMethodsResponse(dataResponse.status, responseID);
@@ -97,8 +97,8 @@ class Webhook {
         this.checkAutomaticAuthentication();
         const { body } = req;
         const data = Helper.jsonDecode(JSON.stringify(body));
-        Assert.keysInObject(StandardFields, data);
-        Assert.keysInObject(['username', 'password'], data.data);
+        Assert.keysInObject(StandardFields, data, 'Webhook.getPasswordVerifyRequest() body does not contain all required fields: id, projectID, action, data');
+        Assert.keysInObject(['username', 'password'], data.data, 'Webhook.getPasswordVerifyRequest() body.data does not contain all required fields: username, password');
         const dataRequest = new PasswordVerifyDataRequest(data.data.username, data.data.password);
         const request = new PasswordVerifyRequest(data.id, data.projectID, AuthMethodsDataResponseStatus.ACTION_PASSWORD_VERIFY, String(dataRequest), '');
         return request;
