@@ -40,7 +40,7 @@ class Validation implements ValidationInterface {
 
       return emailValidationResponse;
     } catch (error) {
-      throw Helper.convertToServerException(error);
+      throw Helper.convertToServerError(error, 'Validation.validateEmail()');
     }
   }
 
@@ -62,7 +62,7 @@ class Validation implements ValidationInterface {
 
       return phoneValidationResponse;
     } catch (error) {
-      throw Helper.convertToServerException(error);
+      throw Helper.convertToServerError(error, 'Validation.validatePhoneNumber()');
     }
   }
 }

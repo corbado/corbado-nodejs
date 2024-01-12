@@ -51,7 +51,7 @@ class User implements UserInterface {
 
       return createResponse;
     } catch (error) {
-      throw Helper.convertToServerException(error);
+      throw Helper.convertToServerError(error, 'User.create()');
     }
   }
 
@@ -74,7 +74,7 @@ class User implements UserInterface {
 
       return deleteResponse;
     } catch (error) {
-      throw Helper.convertToServerException(error);
+      throw Helper.convertToServerError(error, 'User.delete()');
     }
   }
 
@@ -96,7 +96,7 @@ class User implements UserInterface {
 
       return getResponse;
     } catch (error) {
-      throw Helper.convertToServerException(error);
+      throw Helper.convertToServerError(error, 'User.get()');
     }
   }
 
@@ -116,7 +116,7 @@ class User implements UserInterface {
 
       return listResponse;
     } catch (error) {
-      throw Helper.convertToServerException(error);
+      throw Helper.convertToServerError(error, 'User.list()');
     }
   }
 }

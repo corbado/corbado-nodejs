@@ -1,12 +1,5 @@
 import { AxiosError } from 'axios';
-import {
-  BaseError,
-  ServerError,
-  httpStatusCodes,
-  ErrorDetails,
-  RequestData,
-  ServerErrorType,
-} from '../errors/index.js';
+import { BaseError, ServerError, RequestData, ServerErrorType } from '../errors/index.js';
 import { GenericRsp } from '../generated/index.js';
 import Assert from './assert.js';
 
@@ -54,37 +47,20 @@ class Helper {
     );
   }
 
-  public static convertToServerException(errorObj: unknown): ServerError {
-    let body = '{}';
-    if (typeof errorObj === 'object' && errorObj !== null && 'getResponseBody' in errorObj) {
-      const errorWithBody = errorObj as ErrorWithBody;
-      body = errorWithBody.getResponseBody ? errorWithBody.getResponseBody() : '{}';
-    }
-
-    let data;
-    try {
-      data = Helper.jsonDecode(body) as {
-        httpStatusCode: number;
-        requestData: RequestData;
-        runtime: number;
-        error: ErrorDetails;
-      };
-    } catch (e) {
-      const defaultMessage = e instanceof Error ? e.message : 'Unknown error during JSON decode';
-      data = {
-        httpStatusCode: httpStatusCodes.INTERNAL_SERVER_ERROR.code,
-        message: `JSON Decode Error: ${defaultMessage}`,
-        requestData: { requestID: '', link: '' },
-        runtime: 0,
-        error: { validation: ['JSON decode fail'] },
-      };
-    }
-    return new ServerError(data.httpStatusCode, 'Server Error', data.requestData, data.runtime, data.error);
-  }
-
-  public static convertToServerError(nodeError, origin: string) {
+  public static convertToServerError(nodeError: unknown, origin: string) {
     if (nodeError instanceof AxiosError) {
       const { response } = nodeError;
+      if (response?.data != null && 'error' in response.data) {
+        const serverError = response.data as ServerErrorType;
+        console.log({ RESPONSE: serverError });
+        const status = serverError.httpStatusCode;
+        const message = `${serverError.message} ${origin}`;
+        const { requestData } = serverError;
+        const { runtime } = serverError;
+        const { error } = serverError;
+
+        return new ServerError(status, message, requestData, runtime, error);
+      }
 
       if (response) {
         const { status } = response;
@@ -101,7 +77,7 @@ class Helper {
     const message = 'Internal Server Error';
     const requestData = { requestID: '', link: '' };
     const runtime = 0;
-    const error = { validation: [{ field: 'whatnot', message: 'error from createServerErrorFromNodeError' }] }; // You can set error based on your needs
+    const error = { validation: [{ field: 'whatnot', message: 'error from createServerErrorFromNodeError' }] };
 
     return new ServerError(httpStatusCode, message, requestData, runtime, error);
   }

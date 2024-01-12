@@ -40,7 +40,7 @@ class SmsOTP implements SmsOTPInterface {
 
       return sendResponse;
     } catch (error) {
-      throw Helper.convertToServerException(error);
+      throw Helper.convertToServerError(error, 'SmsOtp.send()');
     }
   }
 
@@ -63,7 +63,7 @@ class SmsOTP implements SmsOTPInterface {
 
       return validationResponse;
     } catch (error) {
-      throw Helper.convertToServerException(error);
+      throw Helper.convertToServerError(error, 'SmsOtp.validate()');
     }
   }
 }

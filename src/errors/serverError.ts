@@ -15,49 +15,6 @@ export type ServerErrorType = {
   error: ErrorDetails;
 };
 
-// class ServerError extends BaseError {
-//   private requestData: RequestData;
-
-//   private runtime: number;
-
-//   private error: ErrorDetails;
-
-//   constructor(httpStatusCode: number, message: string, requestData: RequestData, runtime: number, error: ErrorDetails) {
-//     const fullMessage = `${message} (HTTP status code: ${httpStatusCode}, validation message: ${ServerError.getValidationMessages(
-//       error,
-//     )})`;
-//     super('Server Error', httpStatusCode, fullMessage, true);
-
-//     this.requestData = requestData;
-//     this.runtime = runtime;
-//     this.error = error;
-//   }
-
-//   public getRequestData(): RequestData {
-//     return this.requestData;
-//   }
-
-//   public getRequestID(): string {
-//     return this.requestData.requestID || '';
-//   }
-
-//   public getRuntime(): number {
-//     return this.runtime;
-//   }
-
-//   public getError(): ErrorDetails {
-//     return this.error;
-//   }
-
-//   private static getValidationMessages(error: ErrorDetails): string[] {
-//     if (!error || !error.validation) {
-//       return [];
-//     }
-
-//     return error.validation.map((item) => `${item.field}: ${item.message}`);
-//   }
-// }
-
 export class ServerError extends Error {
   httpStatusCode: number;
 
@@ -75,9 +32,7 @@ export class ServerError extends Error {
     this.runtime = runtime;
     this.error = error;
 
-    this.message += ` (HTTP status code: ${httpStatusCode}, ${this.getRequestId()}, validation messages: ${this.getValidationMessages().join(
-      '; ',
-    )})`;
+    this.message += ` (HTTP status code: ${httpStatusCode}, ${this.getRequestId()}, validation messages: ${this.getFlattenedValidationMessages()})`;
   }
 
   getHttpStatusCode() {
@@ -101,13 +56,16 @@ export class ServerError extends Error {
   }
 
   getValidationMessages(): string[] {
-    if (!this.error || !this.error.validation) {
+    const { error } = this;
+    if (!error || !error.validation) {
       return [];
     }
 
-    return this.error.validation.map((item) => {
-      return `${item.field}: ${item.message}`;
-    });
+    return error.validation.map((item) => `${item.field}: ${item.message}`);
+  }
+
+  private getFlattenedValidationMessages(): string {
+    return this.getValidationMessages().join(', ');
   }
 }
 

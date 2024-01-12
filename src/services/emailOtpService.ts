@@ -40,7 +40,7 @@ class EmailOTP implements EmailOTPInterface {
 
       return rsp;
     } catch (error) {
-      throw Helper.convertToServerException(error);
+      throw Helper.convertToServerError(error, 'EmailOtp.send()');
     }
   }
 
@@ -49,7 +49,7 @@ class EmailOTP implements EmailOTPInterface {
     Assert.notNull(req, 'EmailOtp.validate() "req" param must not be null');
 
     try {
-      const response = await this.client.emailCodeValidate(id, req); // error here is freezing the test
+      const response = await this.client.emailCodeValidate(id, req);
       const rsp = response.data;
 
       if (isErrorRsp(rsp)) {
@@ -63,7 +63,7 @@ class EmailOTP implements EmailOTPInterface {
 
       return rsp;
     } catch (error) {
-      throw Helper.convertToServerException(error);
+      throw Helper.convertToServerError(error, 'EmailOtp.validate()');
     }
   }
 }
