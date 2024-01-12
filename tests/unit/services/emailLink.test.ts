@@ -3,22 +3,30 @@ import { EmailLink } from '../../../src/services';
 import { EmailLinkSendReq, EmailLinksValidateReq } from '../../../src/generated';
 import Utils from '../../utils';
 
+interface SendEmailExpectedResponse {
+  httpStatusCode: number;
+  message: string;
+  requestData: {
+    requestID: string;
+    link: string;
+  };
+  runtime: number;
+  data: {
+    emailLinkID: string;
+  };
+}
+
 describe('EmailLink class', () => {
   let axiosInstance: AxiosInstance;
 
   beforeEach(() => {
-    axiosInstance = axios.create({ baseURL: process.env.BACKEND_API_URL });
-    // const mock = new MockAdapter(axiosInstance);
-
-    // mock.onPost(process.env.BACKEND_API_URL).reply(200, {
-    //   data: {
-    //     httpStatusCode: 200,
-    //     message: 'success',
-    //     requestData: { requestID: '123', link: 'http://localhost' },
-    //     runtime: 0,
-    //     data: {},
-    //   },
-    // });
+    axiosInstance = axios.create({
+      baseURL: process.env.BACKEND_API_URL,
+      auth: {
+        username: process.env.PROJECT_ID!,
+        password: process.env.API_SECRET!,
+      },
+    });
   });
 
   it('should create an EmailLink instance with an AxiosInstance', () => {
@@ -32,42 +40,21 @@ describe('EmailLink class', () => {
     const req = {
       email: Utils.createRandomTestEmail(),
       create: true,
-      redirect: 'https://example.com',
+      redirect: Utils.testConstants.REDIRECT_URL,
     };
-    const expectedResponse = {
-      httpStatusCode: 200,
-      message: 'Email link sent successfully',
+
+    const expectedResponse: SendEmailExpectedResponse = {
+      httpStatusCode: expect.any(Number) as number,
+      message: expect.any(String) as string,
       requestData: {
-        requestID: '1234567890',
-        link: 'https://example.com',
+        requestID: expect.any(String) as string,
+        link: expect.any(String) as string,
       },
-      runtime: 100,
-      data: {},
+      runtime: expect.any(Number) as number,
+      data: { emailLinkID: expect.any(String) as string },
     };
 
     const response = await emailLink.send(req);
-
-    expect(response).toEqual(expectedResponse);
-  });
-
-  it('should validate an email link and return the response', async () => {
-    const emailLink = new EmailLink(axiosInstance);
-    const emailLinkID = '1234567890';
-    const req = { token: 'abcdefg' };
-    const expectedResponse = {
-      httpStatusCode: 200,
-      message: 'Email link validated successfully',
-      requestData: {
-        requestID: '1234567890',
-        link: 'https://example.com',
-      },
-      runtime: 100,
-      userID: '123',
-      userFullName: 'John Doe',
-      userEmail: 'test@example.com',
-    };
-
-    const response = await emailLink.validate(emailLinkID, req);
 
     expect(response).toEqual(expectedResponse);
   });

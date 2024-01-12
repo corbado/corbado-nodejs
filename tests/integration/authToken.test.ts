@@ -1,12 +1,12 @@
 import { Configuration, SDK } from '../../src';
 import { BaseError, ServerError } from '../../src/errors';
+import Utils from '../utils';
 
-describe('AuthToken Validate Tests', () => {
+describe('AuthToken Validation Tests', () => {
   let projectID;
   let apiSecret;
   let config: Configuration;
   let sdk: SDK;
-  // let axiosInstance: AxiosInstance;
 
   beforeEach(() => {
     projectID = process.env.PROJECT_ID;
@@ -19,58 +19,51 @@ describe('AuthToken Validate Tests', () => {
     config = new Configuration(projectID, apiSecret);
     sdk = new SDK(config);
   });
-  test('AuthToken Validate ValidationError Empty Token', async () => {
-    let error: ServerError | null = null;
+
+  test('should handle empty token validation error', async () => {
+    expect.assertions(1);
 
     try {
       const req = {
         token: '',
-        // clientInfo: createClient('124.0.0.1', 'IntegrationTest'),
-        clientInfo: { remoteAddress: '124.0.0.1', userAgent: 'IntegrationTest' },
+        clientInfo: { remoteAddress: Utils.testConstants.REMOTE_ADDRESS, userAgent: Utils.testConstants.USER_AGENT },
       };
 
       await sdk.authTokens().validate(req);
-    } catch (e) {
-      error = e;
+    } catch (error) {
+      expect(error).toBeInstanceOf(ServerError);
     }
-
-    expect(error).not.toBeNull();
   });
 
-  test('AuthToken Validate ValidationError Invalid Token', async () => {
-    let error: ServerError | null = null;
+  test('should handle invalid token validation error', async () => {
+    expect.assertions(2);
 
     try {
       const req = {
         token: 'x',
-        clientInfo: { remoteAddress: '124.0.0.1', userAgent: 'IntegrationTest' },
+        clientInfo: { remoteAddress: Utils.testConstants.REMOTE_ADDRESS, userAgent: Utils.testConstants.USER_AGENT },
       };
 
       await sdk.authTokens().validate(req);
-    } catch (e) {
-      error = e;
+    } catch (error) {
+      expect(error).toBeInstanceOf(ServerError);
+      expect((error as ServerError).getValidationMessages()).toEqual(['token: the length must be exactly 64']);
     }
-    console.log({ error });
-
-    expect(error).not.toBeNull();
-    expect(error?.getRequestData()).toEqual(['token: the length must be exactly 64']);
   });
 
-  // test('AuthToken Validate ValidationError Not Existing Token', async () => {
-  //   let error: ServerError | null = null;
+  test('should handle not existing token validation error', async () => {
+    expect.assertions(2);
 
-  //   try {
-  //     const req = {
-  //       token: generateString(64),
-  //       clientInfo: createClientInfo('124.0.0.1', 'IntegrationTest'),
-  //     };
+    try {
+      const req = {
+        token: Utils.generateString(64),
+        clientInfo: { remoteAddress: Utils.testConstants.REMOTE_ADDRESS, userAgent: Utils.testConstants.USER_AGENT },
+      };
 
-  //     await sdk.authTokens().validate(req);
-  //   } catch (e) {
-  //     error = e;
-  //   }
-
-  //   expect(error).not.toBeNull();
-  //   expect(error?.getHttpStatusCode()).toBe(404);
-  // });
+      await sdk.authTokens().validate(req);
+    } catch (error) {
+      expect(error).toBeInstanceOf(ServerError);
+      expect((error as ServerError).getHttpStatusCode()).toBe(404);
+    }
+  });
 });

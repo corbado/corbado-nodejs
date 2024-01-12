@@ -12,14 +12,14 @@ build: cjs/build esm/build
 
 .PHONY:lint
 lint:
-	npx eslint --quiet 'src/**/*.ts' 'test/**/*.ts'
+	npx eslint --quiet 'src/**/*.ts' 'tests/**/*.ts'
 
 .PHONY:lint-fix
 lint-fix: fix
 
 .PHONY:fix
 fix:
-	npx eslint --quiet 'src/**/*.ts' 'test/**/*.ts' --fix
+	npx eslint --quiet 'src/**/*.ts' 'tests/**/*.ts' --fix
 
 .PHONY:watch
 watch:
