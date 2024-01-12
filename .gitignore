@@ -107,3 +107,4 @@ typings/
 package-lock.json
 
 lib/
+tests/setupJest.js
