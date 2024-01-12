@@ -56,6 +56,10 @@ class Utils {
     return `integration-test-${this.generateString(10)}@corbado.com`;
   }
 
+  public static createRandomTestEmailID(): string {
+    return `eml-${this.generateNumber(11)}`;
+  }
+
   public static createRandomTestPhoneNumber(): string {
     return `+491509${this.generateNumber(7)}`;
   }
@@ -72,6 +76,14 @@ class Utils {
 
     return rsp.data.userID;
   }
+
+  public static testConstants = {
+    REMOTE_ADDRESS: '124.0.0.1',
+    USER_AGENT: 'IntegrationTest',
+    REDIRECT_URL: 'https://example.com',
+    TEST_EMAILLINK_ID: 'eml-123456789',
+    TEST_TOKEN: 'fdfdsfdss1fdfdsfdss1',
+  };
 }
 
 export default Utils;
