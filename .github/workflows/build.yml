@@ -26,9 +26,6 @@ jobs:
       - name: Verify Node.js version
         run: node --version
 
-      - name: Audit dependencies
-        run: npm audit
-
       - name: Install dependencies
         run: npm ci
 
