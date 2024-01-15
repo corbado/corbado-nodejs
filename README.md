@@ -3,8 +3,9 @@
 # Corbado Node.js SDK
 
 [![License](https://poser.pugx.org/corbado/php-sdk/license.svg)](https://packagist.org/packages/corbado/php-sdk)
-[![Latest Stable Version]
-[![Test Status]
+![Latest Stable Version](https://img.shields.io/npm/v/@corbado/node-sdk)
+[![Tests](https://img.shields.io/github/workflow/status/corbado/corbado-nodejs/Jest%20Tests?label=Tests&logo=jest)](https://github.com/corbado/corbado-nodejs/actions)
+[![Coverage](https://img.shields.io/codecov/c/github/corbado/corbado-nodejs?label=Coverage&logo=codecov)](https://codecov.io/gh/corbado/corbado-nodejs)
 [![documentation](https://img.shields.io/badge/documentation-Corbado_Backend_API_Reference-blue.svg)](https://api.corbado.com/docs/api/)
 [![Slack](https://img.shields.io/badge/slack-join%20chat-brightgreen.svg)](https://join.slack.com/t/corbado/shared_invite/zt-1b7867yz8-V~Xr~ngmSGbt7IA~g16ZsQ)
 
@@ -40,18 +41,18 @@ const Corbado = require('@corbado/node-sdk');
 const projectID = process.env.PROJECT_ID;
 const apiSecret = process.env.API_SECRET;
 
-const config = new Corbado.Configuration(projectID, apiSecret);
+const config = new Corbado.Config(projectID, apiSecret);
 const corbado = new Corbado.SDK(config);
 ```
 
 ### ES6:
 
 ```JavaScript
-import {SDK, Configuration} from '@corbado/node-sdk';
+import {SDK, Config} from '@corbado/node-sdk';
 
 const projectID = process.env.PROJECT_ID;
 const apiSecret = process.env.API_SECRET;
-const config = new Configuration(projectID, apiSecret);
+const config = new Config(projectID, apiSecret);
 const corbado = new SDK(config);
 ```
 
@@ -81,14 +82,12 @@ corbado.session.getCurrentUser(req);
 
 ### Error handling
 
-The Corbado PHP SDK throws exceptions for all errors. The following exceptions are thrown:
+The Corbado PHP SDK throws errors for all errors. The following errors are thrown:
 
-- `AssertException` for failed assertions (client side)
-- `ConfigException` for configuration errors (client side)
-- `ServerException` for server errors (server side)
-- `StandardException` for everything else (client side)
+- `BaseErrors` for failed assertions and configuration errors (client side)
+- `ServerErrors` for server errors (server side)
 
-If the Backend API returns a HTTP status code other than 200, the Corbado Node.js SDK throws a `ServerException`. The `ServerException`class provides convenient methods to access all important data:
+If the Backend API returns a HTTP status code other than 200, the Corbado Node.js SDK throws a `ServerError`. The `ServerError`class provides convenient methods to access all important data:
 
 ///<<<<Show sample errors here**\*\***
 

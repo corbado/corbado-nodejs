@@ -46,7 +46,7 @@ clean:
 
 .PHONY: test
 test:
-	@npx jest
+	@npx jest --coverage
 
 .PHONY: cjs/build
 cjs/build: $(SOURCE_FILES)
