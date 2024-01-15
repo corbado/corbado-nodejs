@@ -8,58 +8,35 @@ jobs:
 
     steps:
       - name: Checkout code
-      - uses: actions/checkout@v4
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-      - uses: actions/setup-node@v3
+        uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 14
 
       - name: Cache Node.js modules
-      - uses: actions/cache@v3
+        uses: actions/cache@v2
         with:
           path: ~/.npm
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-npm-
 
-      - name: Verify version
-      - run: node --version
-      - run: npm audit
+      - name: Verify Node.js version
+        run: node --version
 
-      - name: Install dependencies & build
-      - run: npm ci
-      - run: npm run build --if-present
+      - name: Audit dependencies
+        run: npm audit
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build --if-present
 
       - name: Run tests
-      - run: npm test
+        run: npm test
         env:
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
           API_SECRET: ${{ secrets.API_SECRET }}
-# name: Build workflow
-
-# on:
-#   push:
-#     branches: '*'
-#   pull_request:
-#     branches: '*'
-
-# jobs:
-#   build:
-#     name: Build
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - uses: actions/checkout@v4
-#       - uses: actions/setup-node@v3
-#         with:
-#           node-version: 18
-
-#       - run: node --version
-#       - run: npm audit
-#       - run: npm ci
-#       - run: npm run build --if-present
-#       - run: npm test
-#         env:
-#           PROJECT_ID: ${{ secrets.PROJECT_ID }}
-#           API_SECRET: ${{ secrets.API_SECRET }}
