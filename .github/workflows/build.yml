@@ -16,17 +16,22 @@ jobs:
           node-version: 18
 
       - name: Cache Node.js modules
-        uses: actions/cache@v3
+      - uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-npm-
 
+      - name: Verify version
       - run: node --version
       - run: npm audit
+
+      - name: Install dependencies & build
       - run: npm ci
       - run: npm run build --if-present
+
+      - name: Run tests
       - run: npm test
         env:
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
