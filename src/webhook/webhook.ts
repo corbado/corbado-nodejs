@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { BaseError, httpStatusCodes } from '../errors/index.js';
-import { Assert, Helper } from '../heplers/index.js';
+import { Assert, Helper } from '../helpers/index.js';
 import {
   AuthMethodsRequest,
   AuthMethodsDataRequest,
