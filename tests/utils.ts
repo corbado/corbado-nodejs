@@ -1,3 +1,4 @@
+import axios, { AxiosInstance } from 'axios';
 import { SDK, Configuration as Config } from '../src';
 import { User } from '../src/services';
 import { BaseError, httpStatusCodes } from '../src/errors';
@@ -7,6 +8,18 @@ class Utils {
     const config = new Config(this.getEnv('PROJECT_ID'), this.getEnv('API_SECRET'));
 
     return new SDK(config);
+  }
+
+  public static AxiosInstance(): AxiosInstance {
+    const instance = axios.create({
+      baseURL: process.env.BACKEND_API_URL,
+      auth: {
+        username: process.env.PROJECT_ID!,
+        password: process.env.API_SECRET!,
+      },
+    });
+
+    return instance;
   }
 
   private static getEnv(key: string): string {
@@ -65,7 +78,7 @@ class Utils {
   }
 
   public static async createUser(): Promise<string> {
-    const config = new Config(this.getEnv('CORBADO_PROJECT_ID'), this.getEnv('CORBADO_API_SECRET'));
+    const config = new Config(this.getEnv('PROJECT_ID'), this.getEnv('API_SECRET'));
     const Userfactory = new User(this.SDK().createClient(config));
 
     const rsp = await Userfactory.create({
@@ -78,10 +91,14 @@ class Utils {
   }
 
   public static testConstants = {
-    REMOTE_ADDRESS: '124.0.0.1',
-    USER_AGENT: 'IntegrationTest',
-    REDIRECT_URL: 'https://example.com',
+    TEST_REMOTE_ADDRESS: '124.0.0.1',
+    TEST_USER_AGENT: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+    TEST_REDIRECT_URL: 'https://example.com',
+    TEST_EMPTY_STRING: '',
     TEST_EMAILLINK_ID: 'eml-123456789',
+    TEST_EMAILOTP_ID: 'emc-123456789',
+    TEST_SMSOTP_ID: 'sms-123456789',
+    TEST_USER_ID: 'usr-123456789',
     TEST_TOKEN: 'fdfdsfdss1fdfdsfdss1',
   };
 }

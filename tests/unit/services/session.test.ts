@@ -1,10 +1,11 @@
 import { Request } from 'express';
 import { Session } from '../../../src/services';
+import Utils from '../../utils';
 
 describe('Session', () => {
-  const issuer = 'example.com';
+  const issuer = Utils.testConstants.TEST_REDIRECT_URL;
   const shortSessionCookieName = 'session';
-  const jwksURI = 'https://example.com/jwks';
+  const jwksURI = `${Utils.testConstants.TEST_REDIRECT_URL}/jwks`;
   const cacheMaxAge = 3600;
 
   const createSession = () => new Session(issuer, shortSessionCookieName, jwksURI, cacheMaxAge);

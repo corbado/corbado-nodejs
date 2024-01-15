@@ -1,6 +1,7 @@
 import User from '../../../src/entities/user.js';
 import BaseError from '../../../src/errors/baseError.js';
 import httpStatusCodes from '../../../src/errors/httpStatusCodes.js';
+import Utils from '../../utils.js';
 
 describe('User entity', () => {
   let user: User;
@@ -12,10 +13,10 @@ describe('User entity', () => {
 
     it('should create User object with default parameters when only "authenticated" provided', () => {
       expect(user.isAuthenticated()).toBe(true);
-      expect(user.getID()).toBe('');
-      expect(user.getName()).toBe('');
-      expect(user.getEmail()).toBe('');
-      expect(user.getPhoneNumber()).toBe('');
+      expect(user.getID()).toBe(Utils.testConstants.TEST_EMPTY_STRING);
+      expect(user.getName()).toBe(Utils.testConstants.TEST_EMPTY_STRING);
+      expect(user.getEmail()).toBe(Utils.testConstants.TEST_EMPTY_STRING);
+      expect(user.getPhoneNumber()).toBe(Utils.testConstants.TEST_EMPTY_STRING);
     });
 
     it('should return true when User object is authenticated', () => {

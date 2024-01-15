@@ -1,23 +1,12 @@
-import { Configuration, SDK } from '../../src';
-import { BaseError, ServerError } from '../../src/errors';
+import { SDK } from '../../src';
+import { ServerError } from '../../src/errors';
 import Utils from '../utils';
 
 describe('AuthToken Validation Tests', () => {
-  let projectID;
-  let apiSecret;
-  let config: Configuration;
   let sdk: SDK;
 
   beforeEach(() => {
-    projectID = process.env.PROJECT_ID;
-    apiSecret = process.env.API_SECRET;
-
-    if (!projectID || !apiSecret) {
-      throw new BaseError('Env Error', 5001, 'Both projectID and apiSecret must be defined', true);
-    }
-
-    config = new Configuration(projectID, apiSecret);
-    sdk = new SDK(config);
+    sdk = Utils.SDK();
   });
 
   test('should handle empty token validation error', async () => {
@@ -25,8 +14,11 @@ describe('AuthToken Validation Tests', () => {
 
     try {
       const req = {
-        token: '',
-        clientInfo: { remoteAddress: Utils.testConstants.REMOTE_ADDRESS, userAgent: Utils.testConstants.USER_AGENT },
+        token: Utils.testConstants.TEST_EMPTY_STRING,
+        clientInfo: {
+          remoteAddress: Utils.testConstants.TEST_REMOTE_ADDRESS,
+          userAgent: Utils.testConstants.TEST_USER_AGENT,
+        },
       };
 
       await sdk.authTokens().validate(req);
@@ -41,7 +33,10 @@ describe('AuthToken Validation Tests', () => {
     try {
       const req = {
         token: 'x',
-        clientInfo: { remoteAddress: Utils.testConstants.REMOTE_ADDRESS, userAgent: Utils.testConstants.USER_AGENT },
+        clientInfo: {
+          remoteAddress: Utils.testConstants.TEST_REMOTE_ADDRESS,
+          userAgent: Utils.testConstants.TEST_USER_AGENT,
+        },
       };
 
       await sdk.authTokens().validate(req);
@@ -57,7 +52,10 @@ describe('AuthToken Validation Tests', () => {
     try {
       const req = {
         token: Utils.generateString(64),
-        clientInfo: { remoteAddress: Utils.testConstants.REMOTE_ADDRESS, userAgent: Utils.testConstants.USER_AGENT },
+        clientInfo: {
+          remoteAddress: Utils.testConstants.TEST_REMOTE_ADDRESS,
+          userAgent: Utils.testConstants.TEST_USER_AGENT,
+        },
       };
 
       await sdk.authTokens().validate(req);

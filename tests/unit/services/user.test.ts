@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import { AxiosInstance } from 'axios';
 import { BaseError } from '../../../src/errors';
 import { UserCreateReq } from '../../../src/generated';
 import { User } from '../../../src/services';
@@ -8,13 +8,7 @@ describe('code snippet', () => {
   let axiosInstance: AxiosInstance;
 
   beforeEach(() => {
-    axiosInstance = axios.create({
-      baseURL: process.env.BACKEND_API_URL,
-      auth: {
-        username: process.env.PROJECT_ID!,
-        password: process.env.API_SECRET!,
-      },
-    });
+    axiosInstance = Utils.AxiosInstance();
   });
 
   it('should create a user and return UserCreateRsp when User.create() is called with valid request', async () => {

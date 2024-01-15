@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import { AxiosInstance } from 'axios';
 import { EmailLink } from '../../../src/services';
 import { EmailLinkSendReq, EmailLinksValidateReq } from '../../../src/generated';
 import Utils from '../../utils';
@@ -20,13 +20,7 @@ describe('EmailLink class', () => {
   let axiosInstance: AxiosInstance;
 
   beforeEach(() => {
-    axiosInstance = axios.create({
-      baseURL: process.env.BACKEND_API_URL,
-      auth: {
-        username: process.env.PROJECT_ID!,
-        password: process.env.API_SECRET!,
-      },
-    });
+    axiosInstance = Utils.AxiosInstance();
   });
 
   it('should create an EmailLink instance with an AxiosInstance', () => {
@@ -40,7 +34,7 @@ describe('EmailLink class', () => {
     const req = {
       email: Utils.createRandomTestEmail(),
       create: true,
-      redirect: Utils.testConstants.REDIRECT_URL,
+      redirect: Utils.testConstants.TEST_REDIRECT_URL,
     };
 
     const expectedResponse: SendEmailExpectedResponse = {
@@ -74,7 +68,7 @@ describe('EmailLink class', () => {
 
   it('should throw an error when validating an email link with an empty string emailLinkID or null/undefined req', async () => {
     const emailLink = new EmailLink(axiosInstance);
-    const emailLinkID = '';
+    const emailLinkID = Utils.testConstants.TEST_EMPTY_STRING;
     const req = null as unknown as EmailLinksValidateReq;
 
     await expect(emailLink.validate(emailLinkID, req)).rejects.toThrow();

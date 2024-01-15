@@ -1,19 +1,14 @@
-import axios, { AxiosInstance } from 'axios';
+import { AxiosInstance } from 'axios';
 import { BaseError } from '../../../src/errors';
 import { SmsCodeSendReq, SmsCodeValidateReq } from '../../../src/generated';
 import { SmsOTP } from '../../../src/services';
+import Utils from '../../utils';
 
 describe('SmsOtp class', () => {
   let axiosInstance: AxiosInstance;
 
   beforeEach(() => {
-    axiosInstance = axios.create({
-      baseURL: process.env.BACKEND_API_URL,
-      auth: {
-        username: process.env.PROJECT_ID!,
-        password: process.env.API_SECRET!,
-      },
-    });
+    axiosInstance = Utils.AxiosInstance();
   });
 
   it('should create SmsOTP instance with valid Axios instance', () => {

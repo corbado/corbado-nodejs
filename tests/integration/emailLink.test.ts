@@ -1,30 +1,23 @@
-import { Configuration, SDK } from '../../src';
-import { BaseError, ServerError } from '../../src/errors';
+import { SDK } from '../../src';
+import { ServerError } from '../../src/errors';
 import Utils from '../utils';
 
 describe('EmailLink Validation Tests', () => {
-  let projectID;
-  let apiSecret;
-  let config: Configuration;
   let sdk: SDK;
 
   beforeEach(() => {
-    projectID = process.env.PROJECT_ID;
-    apiSecret = process.env.API_SECRET;
-
-    if (!projectID || !apiSecret) {
-      throw new BaseError('Env Error', 5001, 'Both projectID and apiSecret must be defined', true);
-    }
-
-    config = new Configuration(projectID, apiSecret);
-    sdk = new SDK(config);
+    sdk = Utils.SDK();
   });
 
   test('should handle empty email and redirect error', async () => {
     expect.assertions(2);
 
     try {
-      const req = { create: true, email: '', redirect: '' };
+      const req = {
+        create: true,
+        email: Utils.testConstants.TEST_EMPTY_STRING,
+        redirect: Utils.testConstants.TEST_EMPTY_STRING,
+      };
 
       await sdk.emailLinks().send(req);
     } catch (error) {
@@ -39,7 +32,7 @@ describe('EmailLink Validation Tests', () => {
   test('should handle successful email send', async () => {
     expect.assertions(1);
 
-    const req = { create: true, email: Utils.createRandomTestEmail(), redirect: Utils.testConstants.REDIRECT_URL };
+    const req = { create: true, email: Utils.createRandomTestEmail(), redirect: Utils.testConstants.TEST_REDIRECT_URL };
 
     const response = await sdk.emailLinks().send(req);
     expect(response.httpStatusCode).toEqual(200);
@@ -49,7 +42,7 @@ describe('EmailLink Validation Tests', () => {
     expect.assertions(2);
 
     try {
-      const req = { token: '' };
+      const req = { token: Utils.testConstants.TEST_EMPTY_STRING };
 
       await sdk.emailLinks().validate(Utils.testConstants.TEST_EMAILLINK_ID, req);
     } catch (error) {
@@ -77,7 +70,7 @@ describe('EmailLink Validation Tests', () => {
     expect.assertions(2);
 
     try {
-      const req = { token: '' };
+      const req = { token: Utils.testConstants.TEST_EMPTY_STRING };
 
       await sdk.emailLinks().validate(Utils.testConstants.TEST_EMAILLINK_ID, req);
     } catch (error) {

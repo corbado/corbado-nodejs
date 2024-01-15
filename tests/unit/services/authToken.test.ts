@@ -1,12 +1,13 @@
-import axios, { AxiosInstance } from 'axios';
+import { AxiosInstance } from 'axios';
 import { ServerError } from '../../../src/errors';
 import { AuthToken } from '../../../src/services';
+import Utils from '../../utils';
 
 describe('AuthToken class', () => {
   let axiosInstance: AxiosInstance;
 
   beforeEach(() => {
-    axiosInstance = axios.create({ baseURL: process.env.BACKEND_API_URL });
+    axiosInstance = Utils.AxiosInstance();
   });
 
   // TODO: Devise a way make this test work across our SDKS
@@ -17,8 +18,8 @@ describe('AuthToken class', () => {
   //     token: 'valid-auth-token', // Should be a valid auth token for test to pass
   //     requestID: '1',
   //     clientInfo: {
-  //       remoteAddress: 'https://api.example.com',
-  //       userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 ',
+  //       remoteAddress: Utils.testConstants.TEST_REMOTE_ADDRESS,
+  //       userAgent: Utils.testConstants.TEST_USER_AGENT,
   //     },
   //   };
 
@@ -39,8 +40,8 @@ describe('AuthToken class', () => {
       token: 'inValid-auth-token',
       requestID: '1',
       clientInfo: {
-        remoteAddress: 'https://api.example.com',
-        userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 ',
+        remoteAddress: Utils.testConstants.TEST_REMOTE_ADDRESS,
+        userAgent: Utils.testConstants.TEST_USER_AGENT,
       },
     };
 
@@ -51,11 +52,11 @@ describe('AuthToken class', () => {
     const authToken = new AuthToken(axiosInstance);
 
     const validationReq = {
-      token: '',
+      token: Utils.testConstants.TEST_EMPTY_STRING,
       requestID: '1',
       clientInfo: {
-        remoteAddress: 'https://api.example.com',
-        userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 ',
+        remoteAddress: Utils.testConstants.TEST_REMOTE_ADDRESS,
+        userAgent: Utils.testConstants.TEST_USER_AGENT,
       },
     };
 
@@ -69,8 +70,8 @@ describe('AuthToken class', () => {
       token: 'error-token-1',
       requestID: '1',
       clientInfo: {
-        remoteAddress: 'https://api.example.com',
-        userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 ',
+        remoteAddress: Utils.testConstants.TEST_REMOTE_ADDRESS,
+        userAgent: Utils.testConstants.TEST_USER_AGENT,
       },
     };
 
@@ -84,8 +85,8 @@ describe('AuthToken class', () => {
       token: 'error-token-2',
       requestID: '1',
       clientInfo: {
-        remoteAddress: 'https://api.example.com',
-        userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 ',
+        remoteAddress: Utils.testConstants.TEST_REMOTE_ADDRESS,
+        userAgent: Utils.testConstants.TEST_USER_AGENT,
       },
     };
 
@@ -99,8 +100,8 @@ describe('AuthToken class', () => {
       token: 'error-token-3',
       requestID: '1',
       clientInfo: {
-        remoteAddress: 'https://api.example.com',
-        userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 ',
+        remoteAddress: Utils.testConstants.TEST_REMOTE_ADDRESS,
+        userAgent: Utils.testConstants.TEST_USER_AGENT,
       },
     };
 

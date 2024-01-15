@@ -1,19 +1,14 @@
-import axios, { AxiosInstance } from 'axios';
+import { AxiosInstance } from 'axios';
 import { BaseError } from '../../../src/errors';
 import { EmailCodeSendReq, EmailCodeValidateReq } from '../../../src/generated';
 import { EmailOTP } from '../../../src/services';
+import Utils from '../../utils';
 
 describe('EmailOtp class', () => {
   let axiosInstance: AxiosInstance;
 
   beforeEach(() => {
-    axiosInstance = axios.create({
-      baseURL: process.env.BACKEND_API_URL,
-      auth: {
-        username: process.env.PROJECT_ID!,
-        password: process.env.API_SECRET!,
-      },
-    });
+    axiosInstance = Utils.AxiosInstance();
   });
 
   it('should create EmailOTP instance with AxiosInstance', () => {
