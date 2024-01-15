@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable class-methods-use-this */
 const jose_1 = require("jose");
 const user_js_1 = require("../entities/user.js");
-const index_js_1 = require("../heplers/index.js");
+const index_js_1 = require("../helpers/index.js");
 const MIN_TOKEN_LENGTH = 10;
 class Session {
     constructor(issuer, shortSessionCookieName, jwksURI, cacheMaxAge) {

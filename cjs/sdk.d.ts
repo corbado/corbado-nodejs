@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import Configuration from './config.js';
+import Config from './config.js';
 import { AuthToken, EmailOTP, Session, SmsOTP, Validation, EmailLink, User } from './services/index.js';
 declare class SDK {
     private axiosClient;
@@ -10,8 +10,8 @@ declare class SDK {
     private smsOTP;
     private user;
     private validation;
-    constructor(config: Configuration);
-    createClient(config: Configuration): AxiosInstance;
+    constructor(config: Config);
+    createClient(config: Config): AxiosInstance;
     authTokens(): AuthToken;
     emailLinks(): EmailLink;
     emailOtp(): EmailOTP;

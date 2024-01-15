@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_js_1 = require("../errors/index.js");
-const index_js_2 = require("../heplers/index.js");
+const index_js_2 = require("../helpers/index.js");
 const index_js_3 = require("../generated/index.js");
 class EmailOTP {
     constructor(axios) {

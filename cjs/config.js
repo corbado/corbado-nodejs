@@ -5,7 +5,7 @@ exports.DefaultBackendAPI = 'https://backendapi.corbado.io';
 exports.DefaultFrontendAPI = `https://${process.env.PROJECT_ID}.frontendapi.corbado.io`;
 exports.DefaultShortSessionCookieName = 'cbo_short_session';
 exports.DefaultCacheMaxAge = 60 * 1000; // 60 * 1000 = 60000 milliseconds, which is equivalent to 1 minute.
-class Configuration {
+class Config {
     constructor(projectID, apiSecret) {
         this.BackendAPI = exports.DefaultBackendAPI;
         this.ShortSessionCookieName = exports.DefaultShortSessionCookieName;
@@ -28,5 +28,5 @@ class Configuration {
         }
     }
 }
-exports.default = Configuration;
+exports.default = Config;
 //# sourceMappingURL=config.js.map
