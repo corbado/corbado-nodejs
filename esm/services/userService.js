@@ -1,5 +1,5 @@
 import { BaseError, httpStatusCodes } from '../errors/index.js';
-import { Assert, Helper, isErrorRsp } from '../heplers/index.js';
+import { Assert, Helper, isErrorRsp } from '../helpers/index.js';
 import { UserApi, } from '../generated/index.js';
 class User {
     constructor(axios) {

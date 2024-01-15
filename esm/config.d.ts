@@ -11,7 +11,7 @@ export declare const DefaultBackendAPI = "https://backendapi.corbado.io";
 export declare const DefaultFrontendAPI: string;
 export declare const DefaultShortSessionCookieName = "cbo_short_session";
 export declare const DefaultCacheMaxAge: number;
-declare class Configuration implements ConfigInterface {
+declare class Config implements ConfigInterface {
     ProjectID: string;
     APISecret: string;
     FrontendAPI: string;
@@ -23,4 +23,4 @@ declare class Configuration implements ConfigInterface {
     private validateProjectID;
     private validateAPISecret;
 }
-export default Configuration;
+export default Config;

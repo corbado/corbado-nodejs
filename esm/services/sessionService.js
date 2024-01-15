@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 import User from '../entities/user.js';
-import { Assert } from '../heplers/index.js';
+import { Assert } from '../helpers/index.js';
 const MIN_TOKEN_LENGTH = 10;
 class Session {
     constructor(issuer, shortSessionCookieName, jwksURI, cacheMaxAge) {

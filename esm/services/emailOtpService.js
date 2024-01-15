@@ -1,5 +1,5 @@
 import { BaseError, httpStatusCodes } from '../errors/index.js';
-import { Assert, isErrorRsp, Helper } from '../heplers/index.js';
+import { Assert, isErrorRsp, Helper } from '../helpers/index.js';
 import { EmailOTPApi, } from '../generated/index.js';
 class EmailOTP {
     constructor(axios) {

@@ -1,5 +1,5 @@
 import { BaseError, httpStatusCodes } from '../errors/index.js';
-import { Assert, Helper } from '../heplers/index.js';
+import { Assert, Helper } from '../helpers/index.js';
 import { AuthMethodsRequest, AuthMethodsDataRequest, AuthMethodsDataResponse, AuthMethodsDataResponseStatusEnum, AuthMethodsResponse, PasswordVerifyRequest, PasswordVerifyDataRequest, PasswordVerifyDataResponse, PasswordVerifyResponse, } from './entities/index.js';
 export var AuthMethodsDataResponseStatus;
 (function (AuthMethodsDataResponseStatus) {
