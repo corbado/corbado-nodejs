@@ -37,7 +37,7 @@
   "dependencies": {
     "@openapitools/openapi-generator-cli": "^2.7.0",
     "assert": "^2.1.0",
-    "axios": "^1.6.2",
+    "axios": "^1.6.5",
     "axios-better-stacktrace": "^2.1.6",
     "axios-mock-adapter": "^1.22.0",
     "cookie-parser": "^1.4.6",
