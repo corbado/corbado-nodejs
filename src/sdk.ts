@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import axios, { AxiosInstance } from 'axios';
-import Configuration from './config.js';
+import Config from './config.js';
 import { AuthToken, EmailOTP, Session, SmsOTP, Validation, EmailLink, User } from './services/index.js';
 
 class SDK {
@@ -20,7 +20,7 @@ class SDK {
 
   private validation: Validation;
 
-  constructor(config: Configuration) {
+  constructor(config: Config) {
     this.axiosClient = this.createClient(config);
 
     this.authToken = new AuthToken(this.axiosClient);
@@ -58,7 +58,7 @@ class SDK {
   //   return instance;
   // }
 
-  createClient(config: Configuration): AxiosInstance {
+  createClient(config: Config): AxiosInstance {
     const instance = axios.create({
       baseURL: config.BackendAPI,
       auth: {

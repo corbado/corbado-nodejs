@@ -14,7 +14,7 @@ export const DefaultFrontendAPI = `https://${process.env.PROJECT_ID}.frontendapi
 export const DefaultShortSessionCookieName = 'cbo_short_session';
 export const DefaultCacheMaxAge = 60 * 1000; // 60 * 1000 = 60000 milliseconds, which is equivalent to 1 minute.
 
-class Configuration implements ConfigInterface {
+class Config implements ConfigInterface {
   ProjectID: string;
 
   APISecret: string;
@@ -52,4 +52,4 @@ class Configuration implements ConfigInterface {
   }
 }
 
-export default Configuration;
+export default Config;

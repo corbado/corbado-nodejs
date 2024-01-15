@@ -1,4 +1,4 @@
-import Configuration, {
+import Config, {
   DefaultBackendAPI,
   DefaultCacheMaxAge,
   DefaultFrontendAPI,
@@ -6,4 +6,11 @@ import Configuration, {
 } from './config.js';
 import SDK from './sdk.js';
 
-export { SDK, Configuration, DefaultBackendAPI, DefaultFrontendAPI, DefaultShortSessionCookieName, DefaultCacheMaxAge };
+export {
+  SDK,
+  Config as Configuration,
+  DefaultBackendAPI,
+  DefaultFrontendAPI,
+  DefaultShortSessionCookieName,
+  DefaultCacheMaxAge,
+};

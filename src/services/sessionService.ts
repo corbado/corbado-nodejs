@@ -3,7 +3,7 @@ import { JWTPayload, createRemoteJWKSet, jwtVerify } from 'jose';
 
 import { Request } from 'express';
 import User from '../entities/user.js';
-import { Assert } from '../heplers/index.js';
+import { Assert } from '../helpers/index.js';
 
 export interface SessionInterface {
   validateShortSessionValue(shortSession: string): Promise<object | null>;

@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { Assert, Helper, isErrorRsp } from '../heplers/index.js';
+import { Assert, Helper, isErrorRsp } from '../helpers/index.js';
 import { BaseError, httpStatusCodes } from '../errors/index.js';
 import { AuthTokensApi, AuthTokenValidateReq, AuthTokenValidateRsp } from '../generated/index.js';
 

@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { BaseError, httpStatusCodes } from '../errors/index.js';
-import { Assert, isErrorRsp, Helper } from '../heplers/index.js';
+import { Assert, isErrorRsp, Helper } from '../helpers/index.js';
 import {
   EmailCodeSendReq,
   EmailCodeSendRsp,
