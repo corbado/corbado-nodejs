@@ -8,8 +8,8 @@ describe('SDK class', () => {
   let sdk: SDK;
 
   beforeEach(() => {
-    projectID = process.env.PROJECT_ID;
-    apiSecret = process.env.API_SECRET;
+    projectID = process.env.CORBADO_PROJECT_ID;
+    apiSecret = process.env.CORBADO_API_SECRET;
 
     if (!projectID || !apiSecret) {
       throw new BaseError('Env Error', 5001, 'Both projectID and apiSecret must be defined', true);

@@ -5,17 +5,17 @@ import { BaseError, httpStatusCodes } from '../src/errors';
 
 class Utils {
   public static SDK(): SDK {
-    const config = new Config(this.getEnv('PROJECT_ID'), this.getEnv('API_SECRET'));
+    const config = new Config(this.getEnv('CORBADO_PROJECT_ID'), this.getEnv('CORBADO_API_SECRET'));
 
     return new SDK(config);
   }
 
   public static AxiosInstance(): AxiosInstance {
     const instance = axios.create({
-      baseURL: process.env.BACKEND_API_URL,
+      baseURL: process.env.CORBADO_BACKEND_API,
       auth: {
-        username: process.env.PROJECT_ID!,
-        password: process.env.API_SECRET!,
+        username: process.env.CORBADO_PROJECT_ID!,
+        password: process.env.CORBADO_API_SECRET!,
       },
     });
 
@@ -78,7 +78,7 @@ class Utils {
   }
 
   public static async createUser(): Promise<string> {
-    const config = new Config(this.getEnv('PROJECT_ID'), this.getEnv('API_SECRET'));
+    const config = new Config(this.getEnv('CORBADO_PROJECT_ID'), this.getEnv('CORBADO_API_SECRET'));
     const Userfactory = new User(this.SDK().createClient(config));
 
     const rsp = await Userfactory.create({

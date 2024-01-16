@@ -43,9 +43,9 @@ jobs:
       - name: Run tests
         run: npm test
         env:
-          PROJECT_ID: ${{ secrets.CORBADO_PROJECT_ID }}
-          API_SECRET: ${{ secrets.CORBADO_API_SECRET }}
-          BACKEND_API_URL: ${{ secrets.CORBADO_BACKEND_API }}
+          CORBADO_PROJECT_ID: ${{ secrets.CORBADO_PROJECT_ID }}
+          CORBADO_API_SECRET: ${{ secrets.CORBADO_API_SECRET }}
+          CORBADO_BACKEND_API: ${{ secrets.CORBADO_BACKEND_API }}
 
       - name: Upload coverage report to Codecov
         uses: codecov/codecov-action@v3

@@ -38,8 +38,8 @@ To create a Node.js SDK instance you need to provide your `Project ID` and `API 
 ```JavaScript
 const Corbado = require('@corbado/node-sdk');
 
-const projectID = process.env.PROJECT_ID;
-const apiSecret = process.env.API_SECRET;
+const projectID = process.env.CORBADO_PROJECT_ID;
+const apiSecret = process.env.CORBADO_API_SECRET;
 
 const config = new Corbado.Config(projectID, apiSecret);
 const corbado = new Corbado.SDK(config);
@@ -50,8 +50,8 @@ const corbado = new Corbado.SDK(config);
 ```JavaScript
 import {SDK, Config} from '@corbado/node-sdk';
 
-const projectID = process.env.PROJECT_ID;
-const apiSecret = process.env.API_SECRET;
+const projectID = process.env.CORBADO_PROJECT_ID;
+const apiSecret = process.env.CORBADO_API_SECRET;
 const config = new Config(projectID, apiSecret);
 const corbado = new SDK(config);
 ```
