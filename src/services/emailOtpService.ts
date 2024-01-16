@@ -1,13 +1,13 @@
 import { AxiosInstance } from 'axios';
-import { BaseError, httpStatusCodes } from '../errors/index.js';
-import { Assert, isErrorRsp, Helper } from '../helpers/index.js';
+import { BaseError, httpStatusCodes } from '../errors/index';
+import { Assert, isErrorRsp, Helper } from '../helpers/index';
 import {
   EmailCodeSendReq,
   EmailCodeSendRsp,
   EmailCodeValidateReq,
   EmailCodeValidateRsp,
   EmailOTPApi,
-} from '../generated/index.js';
+} from '../generated/index';
 
 export interface EmailOTPInterface {
   send(req: EmailCodeSendReq): Promise<EmailCodeSendRsp>;

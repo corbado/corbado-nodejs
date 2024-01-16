@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
-import { BaseError, ServerError, RequestData, ServerErrorType } from '../errors/index.js';
-import { GenericRsp } from '../generated/index.js';
-import Assert from './assert.js';
+import { BaseError, ServerError, RequestData, ServerErrorType } from '../errors/index';
+import { GenericRsp } from '../generated/index';
+import Assert from './assert';
 
 export type ErrorWithBody = {
   getResponseBody?: () => string;

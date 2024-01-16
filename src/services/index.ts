@@ -1,10 +1,10 @@
-import AuthToken, { AuthTokenInterface } from './authTokenService.js';
-import EmailLink, { EmailLinkInterface } from './emailLinkService.js';
-import EmailOTP, { EmailOTPInterface } from './emailOtpService.js';
-import Session, { SessionInterface } from './sessionService.js';
-import SmsOTP, { SmsOTPInterface } from './smsOtpService.js';
-import User, { UserInterface } from './userService.js';
-import Validation, { ValidationInterface } from './validationService.js';
+import AuthToken, { AuthTokenInterface } from './authTokenService';
+import EmailLink, { EmailLinkInterface } from './emailLinkService';
+import EmailOTP, { EmailOTPInterface } from './emailOtpService';
+import Session, { SessionInterface } from './sessionService';
+import SmsOTP, { SmsOTPInterface } from './smsOtpService';
+import User, { UserInterface } from './userService';
+import Validation, { ValidationInterface } from './validationService';
 
 export {
   AuthToken,

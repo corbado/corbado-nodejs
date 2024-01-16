@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
-import { Assert, Helper, isErrorRsp } from '../helpers/index.js';
-import { BaseError, httpStatusCodes } from '../errors/index.js';
-import { AuthTokensApi, AuthTokenValidateReq, AuthTokenValidateRsp } from '../generated/index.js';
+import { Assert, Helper, isErrorRsp } from '../helpers/index';
+import { BaseError, httpStatusCodes } from '../errors/index';
+import { AuthTokensApi, AuthTokenValidateReq, AuthTokenValidateRsp } from '../generated/index';
 
 export interface AuthTokenInterface {
   validate(req: AuthTokenValidateReq): Promise<AuthTokenValidateRsp>;

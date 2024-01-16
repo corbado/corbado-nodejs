@@ -15,7 +15,7 @@ export type ServerErrorType = {
   error: ErrorDetails;
 };
 
-export class ServerError extends Error {
+class ServerError extends Error {
   httpStatusCode: number;
 
   requestData: RequestData;

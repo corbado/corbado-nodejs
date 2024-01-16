@@ -1,4 +1,4 @@
-import CommonRequest from './commonRequest.js';
+import CommonRequest from './commonRequest';
 
 class PasswordVerifyRequest extends CommonRequest {
   data: string;

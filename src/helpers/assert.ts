@@ -1,5 +1,5 @@
-import { ErrorRsp } from '../generated/index.js';
-import { BaseError, httpStatusCodes } from '../errors/index.js';
+import { ErrorRsp } from '../generated/index';
+import { BaseError, httpStatusCodes } from '../errors/index';
 
 const { NULL_DATA, EMPTY_STRING, INVALID_DATA, INVALID_KEY } = httpStatusCodes;
 

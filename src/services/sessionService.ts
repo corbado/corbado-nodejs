@@ -2,8 +2,8 @@
 import { JWTPayload, createRemoteJWKSet, jwtVerify } from 'jose';
 
 import { Request } from 'express';
-import User from '../entities/user.js';
-import { Assert } from '../helpers/index.js';
+import User from '../entities/user';
+import { Assert } from '../helpers/index';
 
 export interface SessionInterface {
   validateShortSessionValue(shortSession: string): Promise<object | null>;

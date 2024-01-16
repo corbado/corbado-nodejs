@@ -1,5 +1,5 @@
-import { AuthMethodsDataResponseStatusEnum } from './authMethodsDataResponse.js';
-import CommonResponse from './commonResponse.js';
+import { AuthMethodsDataResponseStatusEnum } from './authMethodsDataResponse';
+import CommonResponse from './commonResponse';
 
 class AuthMethodsResponse extends CommonResponse {
   data: AuthMethodsDataResponseStatusEnum;

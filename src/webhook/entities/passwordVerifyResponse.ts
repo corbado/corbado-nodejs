@@ -1,4 +1,4 @@
-import CommonResponse from './commonResponse.js';
+import CommonResponse from './commonResponse';
 
 class PasswordVerifyResponse extends CommonResponse {
   data: string;

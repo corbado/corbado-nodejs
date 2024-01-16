@@ -1,5 +1,5 @@
-import { BaseError } from '../../src/errors/index.js';
-import { Configuration, SDK } from '../../src/index.js';
+import { BaseError } from '../../src/errors/index';
+import { Configuration, SDK } from '../../src/index';
 
 describe('SDK class', () => {
   let projectID;

@@ -1,13 +1,7 @@
 import { AxiosInstance } from 'axios';
-import { BaseError, httpStatusCodes } from '../errors/index.js';
-import { Assert, isErrorRsp, Helper } from '../helpers/index.js';
-import {
-  SmsCodeSendReq,
-  SmsCodeSendRsp,
-  SmsCodeValidateReq,
-  SmsCodeValidateRsp,
-  SMSOTPApi,
-} from '../generated/index.js';
+import { BaseError, httpStatusCodes } from '../errors/index';
+import { Assert, isErrorRsp, Helper } from '../helpers/index';
+import { SmsCodeSendReq, SmsCodeSendRsp, SmsCodeValidateReq, SmsCodeValidateRsp, SMSOTPApi } from '../generated/index';
 
 export interface SmsOTPInterface {
   send(req: SmsCodeSendReq): Promise<SmsCodeSendRsp>;

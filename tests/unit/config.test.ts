@@ -1,10 +1,5 @@
-import { BaseError } from '../../src/errors/index.js';
-import {
-  Configuration,
-  DefaultBackendAPI,
-  DefaultShortSessionCookieName,
-  DefaultCacheMaxAge,
-} from '../../src/index.js';
+import { BaseError } from '../../src/errors/index';
+import { Configuration, DefaultBackendAPI, DefaultShortSessionCookieName, DefaultCacheMaxAge } from '../../src/index';
 
 describe('Configuration class', () => {
   let projectID: string;

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { BaseError, httpStatusCodes } from '../errors/index.js';
-import { Assert, Helper } from '../helpers/index.js';
+import { BaseError, httpStatusCodes } from '../errors/index';
+import { Assert, Helper } from '../helpers/index';
 import {
   AuthMethodsRequest,
   AuthMethodsDataRequest,
@@ -11,7 +11,7 @@ import {
   PasswordVerifyDataRequest,
   PasswordVerifyDataResponse,
   PasswordVerifyResponse,
-} from './entities/index.js';
+} from './entities/index';
 
 interface NestedBody {
   id: string;
