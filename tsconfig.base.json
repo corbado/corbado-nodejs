@@ -34,6 +34,7 @@
     "moduleResolution": "node", // Resolve modules using Node.js style
     "sourceMap": true, // Generates source map files for debugging
     "baseUrl": ".", // Base directory to resolve non-relative module names
+    "forceConsistentCasingInFileNames": true, // Disallow inconsistently-cased references to the same file
     "paths": {
       "src/*": ["src/*"] // Specify paths for modules
     },
