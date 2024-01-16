@@ -81,7 +81,7 @@ describe('User Validation Tests', () => {
         .list(Utils.testConstants.TEST_EMPTY_STRING, Utils.testConstants.TEST_EMPTY_STRING, 'foo:bar');
     } catch (error) {
       expect(error).toBeInstanceOf(ServerError);
-      expect(error.httpStatusCode).toEqual(422);
+      expect((error as ServerError).httpStatusCode).toEqual(422);
       expect((error as ServerError).getValidationMessages()).toEqual(["sort: Invalid order direction 'bar'"]);
     }
   });

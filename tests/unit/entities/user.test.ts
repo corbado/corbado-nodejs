@@ -39,8 +39,8 @@ describe('User entity', () => {
       try {
         user.getID();
       } catch (error) {
-        expect(error.statusCode).toBe(httpStatusCodes.USER_NOT_AUTHENTICATED.code);
-        expect(error.message).toBe(httpStatusCodes.USER_NOT_AUTHENTICATED.description);
+        expect((error as BaseError).statusCode).toBe(httpStatusCodes.USER_NOT_AUTHENTICATED.code);
+        expect((error as BaseError).message).toBe(httpStatusCodes.USER_NOT_AUTHENTICATED.description);
       }
     });
 
@@ -48,7 +48,7 @@ describe('User entity', () => {
       try {
         user.getID();
       } catch (error) {
-        expect(error.isOperational).toBe(false);
+        expect((error as BaseError).isOperational).toBe(false);
       }
     });
   });

@@ -70,7 +70,7 @@ describe('EmailLink Validation Tests', () => {
     } catch (error) {
       expect(error).toBeInstanceOf(ServerError);
 
-      expect(error.httpStatusCode).toEqual(404);
+      expect((error as ServerError).httpStatusCode).toEqual(404);
     }
   });
 

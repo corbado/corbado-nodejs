@@ -1,7 +1,8 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "module": "ESNext",  // Generate ESNext style modules (ES Modules)
-    "outDir": "esm",     // Output directory for ES Modules
+    "module": "ESNext",
+    "outDir": "esm",
+    "esModuleInterop": true
   }
 }
