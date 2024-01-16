@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
-import { BaseError, httpStatusCodes } from '../errors/index';
-import { Assert, Helper, isErrorRsp } from '../helpers/index';
+import { BaseError, httpStatusCodes } from '../errors/index.js';
+import { Assert, Helper, isErrorRsp } from '../helpers/index.js';
 import {
   EmailLinkGetRsp,
   EmailLinkSendReq,
@@ -8,7 +8,7 @@ import {
   EmailLinksValidateReq,
   EmailLinkValidateRsp,
   EmailMagicLinksApi,
-} from '../generated/index';
+} from '../generated/index.js';
 
 export interface EmailLinkInterface {
   send(req: EmailLinkSendReq): Promise<EmailLinkSendRsp>;

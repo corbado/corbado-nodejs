@@ -15,7 +15,7 @@ export type ServerErrorType = {
     runtime: number;
     error: ErrorDetails;
 };
-export declare class ServerError extends Error {
+declare class ServerError extends Error {
     httpStatusCode: number;
     requestData: RequestData;
     runtime: number;

@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ServerError = void 0;
 class ServerError extends Error {
     constructor(httpStatusCode, message, requestData, runtime, error) {
         super(message);
@@ -36,6 +35,5 @@ class ServerError extends Error {
         return this.getValidationMessages().join(', ');
     }
 }
-exports.ServerError = ServerError;
 exports.default = ServerError;
 //# sourceMappingURL=serverError.js.map

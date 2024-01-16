@@ -3,8 +3,8 @@ import Config, {
   DefaultCacheMaxAge,
   DefaultFrontendAPI,
   DefaultShortSessionCookieName,
-} from './config';
-import SDK from './sdk';
+} from './config.js';
+import SDK from './sdk.js';
 
 export {
   SDK,

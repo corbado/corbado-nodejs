@@ -1,4 +1,4 @@
-export class ServerError extends Error {
+class ServerError extends Error {
     constructor(httpStatusCode, message, requestData, runtime, error) {
         super(message);
         this.httpStatusCode = httpStatusCode;

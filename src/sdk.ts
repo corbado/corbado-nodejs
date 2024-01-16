@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import axios, { AxiosInstance } from 'axios';
-import Config from './config';
-import { AuthToken, EmailOTP, Session, SmsOTP, Validation, EmailLink, User } from './services/index';
+import Config from './config.js';
+import { AuthToken, EmailOTP, Session, SmsOTP, Validation, EmailLink, User } from './services/index.js';
 
 class SDK {
   private axiosClient: AxiosInstance;

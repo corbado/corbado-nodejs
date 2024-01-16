@@ -1,7 +1,7 @@
-import User from '../../../src/entities/user';
-import BaseError from '../../../src/errors/baseError';
-import httpStatusCodes from '../../../src/errors/httpStatusCodes';
-import Utils from '../../utils';
+import User from '../../../src/entities/user.js';
+import BaseError from '../../../src/errors/baseError.js';
+import httpStatusCodes from '../../../src/errors/httpStatusCodes.js';
+import Utils from '../../utils.js';
 
 describe('User entity', () => {
   let user: User;

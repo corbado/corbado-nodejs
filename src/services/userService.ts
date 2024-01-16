@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
-import { BaseError, httpStatusCodes } from '../errors/index';
-import { Assert, Helper, isErrorRsp } from '../helpers/index';
+import { BaseError, httpStatusCodes } from '../errors/index.js';
+import { Assert, Helper, isErrorRsp } from '../helpers/index.js';
 import {
   GenericRsp,
   UserApi,
@@ -9,7 +9,7 @@ import {
   UserDeleteReq,
   UserGetRsp,
   UserListRsp,
-} from '../generated/index';
+} from '../generated/index.js';
 
 export interface UserInterface {
   create(req: UserCreateReq): Promise<UserCreateRsp>;
