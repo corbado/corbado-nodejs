@@ -52,7 +52,6 @@ class Helper {
       const { response } = nodeError;
       if (response?.data != null && 'error' in response.data) {
         const serverError = response.data as ServerErrorType;
-        // TODO: remove this when tests are complete
         const status = serverError.httpStatusCode;
         const message = `${serverError.message} ${origin}`;
         const { requestData } = serverError;

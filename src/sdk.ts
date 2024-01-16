@@ -53,7 +53,6 @@ class SDK {
   //     sdkVersion: process.env.npm_package_version,
   //     languageVersion: process.version,
   //   });
-  //   console.log({ BACKEND_API: config.BackendAPI });
 
   //   return instance;
   // }

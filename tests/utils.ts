@@ -1,6 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
 import { SDK, Configuration as Config } from '../src';
-import { User } from '../src/services';
 import { BaseError, httpStatusCodes } from '../src/errors';
 
 class Utils {
@@ -66,7 +65,7 @@ class Utils {
   }
 
   public static createRandomTestEmail(): string {
-    return `integration-test-${this.generateString(10)}@corbado.com`;
+    return `integration-test+${this.generateString(10)}@corbado.com`;
   }
 
   public static createRandomTestEmailID(): string {
@@ -78,10 +77,7 @@ class Utils {
   }
 
   public static async createUser(): Promise<string> {
-    const config = new Config(this.getEnv('CORBADO_PROJECT_ID'), this.getEnv('CORBADO_API_SECRET'));
-    const Userfactory = new User(this.SDK().createClient(config));
-
-    const rsp = await Userfactory.create({
+    const rsp = await this.SDK().getusers().create({
       name: this.createRandomTestName(),
       email: this.createRandomTestEmail(),
       phoneNumber: this.createRandomTestPhoneNumber(),
