@@ -46,3 +46,11 @@ jobs:
           PROJECT_ID: ${{ secrets.CORBADO_PROJECT_ID }}
           API_SECRET: ${{ secrets.CORBADO_API_SECRET }}
           BACKEND_API_URL: ${{ secrets.CORBADO_BACKEND_API }}
+
+      - name: Upload coverage report to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload jest report And Publish
+        uses: nolleh/jest-badge-deploy-action@latest
