@@ -74,15 +74,17 @@ describe('EmailOtp Validation Tests', () => {
   });
 
   test('should handle validation success', async () => {
-    expect.assertions(2);
+    try {
+      const req = { create: true, email: Utils.createRandomTestEmail() };
 
-    const req = { create: true, email: Utils.createRandomTestEmail() };
+      const sendResponse = await sdk.emailOtp().send(req);
+      expect(sendResponse.httpStatusCode).toEqual(200);
 
-    const sendResponse = await sdk.emailOtp().send(req);
-    expect(sendResponse.httpStatusCode).toEqual(200);
-
-    const validateReq = { code: '150919' };
-    const validateSendReq = await sdk.emailOtp().validate(sendResponse.data.emailCodeID, validateReq);
-    expect(validateSendReq.httpStatusCode).toEqual(200);
+      const validateReq = { code: '150919' };
+      const validateSendReq = await sdk.emailOtp().validate(sendResponse.data.emailCodeID, validateReq);
+      expect(validateSendReq.httpStatusCode).toEqual(200);
+    } catch (error) {
+      expect(error).toBe(null);
+    }
   });
 });

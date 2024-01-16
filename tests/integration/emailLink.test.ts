@@ -32,10 +32,18 @@ describe('EmailLink Validation Tests', () => {
   test('should handle successful email send', async () => {
     expect.assertions(1);
 
-    const req = { create: true, email: Utils.createRandomTestEmail(), redirect: Utils.testConstants.TEST_REDIRECT_URL };
+    try {
+      const req = {
+        create: true,
+        email: Utils.createRandomTestEmail(),
+        redirect: Utils.testConstants.TEST_REDIRECT_URL,
+      };
 
-    const response = await sdk.emailLinks().send(req);
-    expect(response.httpStatusCode).toEqual(200);
+      const response = await sdk.emailLinks().send(req);
+      expect(response.httpStatusCode).toEqual(200);
+    } catch (error) {
+      expect(error).toBe(null);
+    }
   });
 
   test('should handle empty token', async () => {

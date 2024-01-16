@@ -104,5 +104,3 @@ typings/
 
 .idea/
 
-lib/
-tests/setupJest.js
