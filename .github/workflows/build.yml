@@ -13,7 +13,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 18
 
       - name: Cache node modules
         id: cache-npm
@@ -43,5 +43,6 @@ jobs:
       - name: Run tests
         run: npm test
         env:
-          PROJECT_ID: ${{ secrets.PROJECT_ID }}
-          API_SECRET: ${{ secrets.API_SECRET }}
+          PROJECT_ID: ${{ secrets.CORBADO_PROJECT_ID }}
+          API_SECRET: ${{ secrets.CORBADO_API_SECRET }}
+          BACKEND_API_URL: ${{ secrets.CORBADO_BACKEND_API }}
