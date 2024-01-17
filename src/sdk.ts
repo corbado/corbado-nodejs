@@ -38,25 +38,6 @@ class SDK {
     this.validation = new Validation(this.axiosClient);
   }
 
-  // createClient(config: Configuration): AxiosInstance {
-  //   const instance = axios.create();
-
-  //   instance.defaults.auth = new (class implements AxiosBasicCredentials {
-  //     password: string = config.APISecret;
-
-  //     username: string = config.ProjectID;
-  //   })();
-
-  //   instance.defaults.baseURL = config.BackendAPI;
-  //   instance.defaults.headers['X-Corbado-SDK-Version'] = JSON.stringify({
-  //     name: 'Node.js SDK',
-  //     sdkVersion: process.env.npm_package_version,
-  //     languageVersion: process.version,
-  //   });
-
-  //   return instance;
-  // }
-
   createClient(config: Config): AxiosInstance {
     const instance = axios.create({
       baseURL: config.BackendAPI,
@@ -96,7 +77,7 @@ class SDK {
     return this.smsOTP;
   }
 
-  getusers(): User {
+  getUsers(): User {
     return this.user;
   }
 

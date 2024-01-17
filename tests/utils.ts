@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { SDK, Configuration as Config } from '../src';
+import { SDK, Config } from '../src';
 import { BaseError, httpStatusCodes } from '../src/errors';
 
 class Utils {
@@ -77,7 +77,7 @@ class Utils {
   }
 
   public static async createUser(): Promise<string> {
-    const rsp = await this.SDK().getusers().create({
+    const rsp = await this.SDK().getUsers().create({
       name: this.createRandomTestName(),
       email: this.createRandomTestEmail(),
       phoneNumber: this.createRandomTestPhoneNumber(),

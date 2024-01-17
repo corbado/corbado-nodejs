@@ -1,10 +1,10 @@
 import { BaseError } from '../../src/errors/index.js';
-import { Configuration, SDK } from '../../src/index.js';
+import { Config, SDK } from '../../src/index.js';
 
 describe('SDK class', () => {
   let projectID;
   let apiSecret;
-  let config: Configuration;
+  let config: Config;
   let sdk: SDK;
 
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe('SDK class', () => {
       throw new BaseError('Env Error', 5001, 'Both projectID and apiSecret must be defined', true);
     }
 
-    config = new Configuration(projectID, apiSecret);
+    config = new Config(projectID, apiSecret);
     sdk = new SDK(config);
   });
 
@@ -54,7 +54,7 @@ describe('SDK class', () => {
   });
 
   it('should create Users object with created AxiosInstance', () => {
-    const users = sdk.getusers();
+    const users = sdk.getUsers();
     expect(users).toBeDefined();
   });
 
