@@ -77,7 +77,7 @@ class Utils {
   }
 
   public static async createUser(): Promise<string> {
-    const rsp = await this.SDK().getUsers().create({
+    const rsp = await this.SDK().users().create({
       name: this.createRandomTestName(),
       email: this.createRandomTestEmail(),
       phoneNumber: this.createRandomTestPhoneNumber(),

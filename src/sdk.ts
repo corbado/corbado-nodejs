@@ -77,7 +77,7 @@ class SDK {
     return this.smsOTP;
   }
 
-  getUsers(): User {
+  users(): User {
     return this.user;
   }
 
