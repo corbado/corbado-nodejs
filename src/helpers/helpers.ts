@@ -72,11 +72,14 @@ class Helper {
       }
     }
 
+    const errorName = `${(nodeError as Error).name}`;
+    const errorMessage = `${(nodeError as Error).message}`;
+
     const httpStatusCode = 500;
-    const message = 'Internal Server Error';
+    const message = `Internal Server Error ${origin}`;
     const requestData = { requestID: '', link: '' };
     const runtime = 0;
-    const error = { validation: [{ field: 'whatnot', message: 'error from createServerErrorFromNodeError' }] };
+    const error = { validation: [{ field: errorName, message: errorMessage }] };
 
     return new ServerError(httpStatusCode, message, requestData, runtime, error);
   }
