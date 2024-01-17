@@ -43,19 +43,17 @@ describe('Configuration class', () => {
   });
 
   it('should throw an error when instantiated with an invalid project ID', () => {
-    expect(() => new Config('invalid', apiSecret)).toThrowError(
-      'ProjectID must not be empty and must start with "pro-".',
-    );
+    expect(() => new Config('invalid', apiSecret)).toThrow('ProjectID must not be empty and must start with "pro-".');
   });
 
   it('should throw an error when instantiated with an invalid API secret', () => {
-    expect(() => new Config(projectID, 'invalid')).toThrowError(
+    expect(() => new Config(projectID, 'invalid')).toThrow(
       'APISecret must not be empty and must start with "corbado1_".',
     );
   });
 
   it('should throw an error when project ID is undefined', () => {
-    expect(() => new Config(undefined as unknown as string, apiSecret)).toThrowError(
+    expect(() => new Config(undefined as unknown as string, apiSecret)).toThrow(
       'ProjectID must not be empty and must start with "pro-".',
     );
   });

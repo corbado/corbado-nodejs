@@ -1,6 +1,6 @@
-import { SDK } from '../../src';
-import { ServerError } from '../../src/errors';
-import Utils from '../utils';
+import { SDK } from '../../../src';
+import { ServerError } from '../../../src/errors';
+import Utils from '../../utils';
 
 describe('User Validation Tests', () => {
   let sdk: SDK;
@@ -15,7 +15,7 @@ describe('User Validation Tests', () => {
     try {
       const req = { name: Utils.testConstants.TEST_EMPTY_STRING, email: Utils.testConstants.TEST_EMPTY_STRING };
 
-      await sdk.getUsers().create(req);
+      await sdk.users().create(req);
     } catch (error) {
       expect(error).toBeInstanceOf(ServerError);
       expect((error as ServerError).httpStatusCode).toEqual(400);
@@ -28,7 +28,7 @@ describe('User Validation Tests', () => {
 
     const req = { name: Utils.createRandomTestName(), email: Utils.createRandomTestEmail() };
 
-    const sendResponse = await sdk.getUsers().create(req);
+    const sendResponse = await sdk.users().create(req);
     expect(sendResponse.httpStatusCode).toEqual(200);
   });
 
@@ -37,7 +37,7 @@ describe('User Validation Tests', () => {
     try {
       const req = {};
 
-      await sdk.getUsers().delete(Utils.testConstants.TEST_USER_ID, req);
+      await sdk.users().delete(Utils.testConstants.TEST_USER_ID, req);
     } catch (error) {
       expect(error).toBeInstanceOf(ServerError);
       expect((error as ServerError).httpStatusCode).toEqual(400);
@@ -49,7 +49,7 @@ describe('User Validation Tests', () => {
     const req = {};
     const userId = await Utils.createUser();
 
-    const response = await sdk.getUsers().delete(userId, req);
+    const response = await sdk.users().delete(userId, req);
     expect(response.httpStatusCode).toEqual(200);
   });
 
@@ -57,7 +57,7 @@ describe('User Validation Tests', () => {
     expect.assertions(2);
 
     try {
-      await sdk.getUsers().get(Utils.testConstants.TEST_USER_ID);
+      await sdk.users().get(Utils.testConstants.TEST_USER_ID);
     } catch (error) {
       expect(error).toBeInstanceOf(ServerError);
       expect((error as ServerError).httpStatusCode).toEqual(404);
@@ -68,7 +68,7 @@ describe('User Validation Tests', () => {
     expect.assertions(1);
 
     const userId = await Utils.createUser();
-    const getResponse = await sdk.getUsers().get(userId);
+    const getResponse = await sdk.users().get(userId);
     expect(getResponse.httpStatusCode).toEqual(200);
   });
 
@@ -76,9 +76,7 @@ describe('User Validation Tests', () => {
     expect.assertions(3);
 
     try {
-      await sdk
-        .getUsers()
-        .list(Utils.testConstants.TEST_EMPTY_STRING, Utils.testConstants.TEST_EMPTY_STRING, 'foo:bar');
+      await sdk.users().list(Utils.testConstants.TEST_EMPTY_STRING, Utils.testConstants.TEST_EMPTY_STRING, 'foo:bar');
     } catch (error) {
       expect(error).toBeInstanceOf(ServerError);
       expect((error as ServerError).httpStatusCode).toEqual(422);
@@ -91,7 +89,7 @@ describe('User Validation Tests', () => {
 
     const userId = await Utils.createUser();
     const sendResponse = await sdk
-      .getUsers()
+      .users()
       .list(Utils.testConstants.TEST_EMPTY_STRING, Utils.testConstants.TEST_EMPTY_STRING, 'created:desc');
 
     const found = sendResponse.data.users.some((user) => user.ID === userId);

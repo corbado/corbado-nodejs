@@ -1,4 +1,5 @@
-import { AxiosInstance } from 'axios';
+import AxiosMockAdapter from 'axios-mock-adapter';
+import axios, { AxiosInstance } from 'axios';
 import { BaseError } from '../../../src/errors';
 import { EmailCodeSendReq, EmailCodeValidateReq } from '../../../src/generated';
 import { EmailOTP } from '../../../src/services';
@@ -6,9 +7,17 @@ import Utils from '../../utils';
 
 describe('EmailOtp class', () => {
   let axiosInstance: AxiosInstance;
+  let mock: AxiosMockAdapter;
 
   beforeEach(() => {
-    axiosInstance = Utils.AxiosInstance();
+    axiosInstance = axios.create();
+    mock = new AxiosMockAdapter(axiosInstance);
+  });
+
+  afterEach(() => {
+    // Necessary to disable the eslint rule for this line because of the way the mock is defined
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    mock.restore();
   });
 
   it('should create EmailOTP instance with AxiosInstance', () => {
@@ -18,25 +27,35 @@ describe('EmailOtp class', () => {
 
   it('should send email code and return EmailCodeSendRsp', async () => {
     const emailOTP = new EmailOTP(axiosInstance);
-    const req: EmailCodeSendReq = {
+    const req = {
       email: Utils.createRandomTestEmail(),
       create: true,
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    mock.onPost().reply(200, {
+      httpStatusCode: 200,
+      message: 'Success',
+      requestData: {
+        requestID: '123',
+        link: 'http://example.com',
+      },
+      runtime: 100,
+      data: { emailCodeID: '123' },
+    });
+
     const rsp = await emailOTP.send(req);
 
-    expect(rsp).toEqual(
-      expect.objectContaining({
-        httpStatusCode: expect.any(Number) as number,
-        message: expect.any(String) as string,
-        requestData: expect.objectContaining({
-          requestID: expect.any(String) as string,
-          link: expect.any(String) as string,
-        }) as object,
-        runtime: expect.any(Number) as number,
-        data: expect.objectContaining({ emailCodeID: expect.any(String) as string }) as object,
-      }),
-    );
+    expect(rsp).toEqual({
+      httpStatusCode: 200,
+      message: 'Success',
+      requestData: {
+        requestID: '123',
+        link: 'http://example.com',
+      },
+      runtime: 100,
+      data: { emailCodeID: '123' },
+    });
   });
 
   it('should throw error when creating EmailOTP instance without AxiosInstance', () => {

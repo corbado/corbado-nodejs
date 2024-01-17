@@ -54,7 +54,7 @@ describe('SDK class', () => {
   });
 
   it('should create Users object with created AxiosInstance', () => {
-    const users = sdk.getUsers();
+    const users = sdk.users();
     expect(users).toBeDefined();
   });
 

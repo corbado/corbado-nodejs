@@ -1,14 +1,22 @@
-import { AxiosInstance } from 'axios';
+import AxiosMockAdapter from 'axios-mock-adapter';
+import axios, { AxiosInstance } from 'axios';
 import { BaseError } from '../../../src/errors';
 import { SmsCodeSendReq, SmsCodeValidateReq } from '../../../src/generated';
 import { SmsOTP } from '../../../src/services';
-import Utils from '../../utils';
 
 describe('SmsOtp class', () => {
   let axiosInstance: AxiosInstance;
+  let mock: AxiosMockAdapter;
 
   beforeEach(() => {
-    axiosInstance = Utils.AxiosInstance();
+    axiosInstance = axios.create();
+    mock = new AxiosMockAdapter(axiosInstance);
+  });
+
+  afterEach(() => {
+    // Necessary to disable the eslint rule for this line because of the way the mock is defined
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    mock.restore();
   });
 
   it('should create SmsOTP instance with valid Axios instance', () => {

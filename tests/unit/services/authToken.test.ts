@@ -1,37 +1,23 @@
-import { AxiosInstance } from 'axios';
+import AxiosMockAdapter from 'axios-mock-adapter';
+import axios, { AxiosInstance } from 'axios';
 import { ServerError } from '../../../src/errors';
 import { AuthToken } from '../../../src/services';
 import Utils from '../../utils';
 
 describe('AuthToken class', () => {
   let axiosInstance: AxiosInstance;
+  let mock: AxiosMockAdapter;
 
   beforeEach(() => {
-    axiosInstance = Utils.AxiosInstance();
+    axiosInstance = axios.create();
+    mock = new AxiosMockAdapter(axiosInstance);
   });
 
-  // TODO: Devise a way make this test work across our SDKS
-  // it('should successfully validate a valid auth token', async () => {
-  //   const authToken = new AuthToken(axiosInstance);
-
-  //   const validationReq = {
-  //     token: 'valid-auth-token', // Should be a valid auth token for test to pass
-  //     requestID: '1',
-  //     clientInfo: {
-  //       remoteAddress: Utils.testConstants.TEST_REMOTE_ADDRESS,
-  //       userAgent: Utils.testConstants.TEST_USER_AGENT,
-  //     },
-  //   };
-
-  //   const response = await authToken.validate(validationReq);
-
-  //   expect(response).toBeDefined();
-  //   expect(response.httpStatusCode).toBe(200);
-  //   expect(response.message).toBe('Success');
-  //   expect(response.requestData).toBeDefined();
-  //   expect(response.runtime).toBeGreaterThan(0);
-  //   expect(response.data).toBeDefined();
-  // });
+  afterEach(() => {
+    // Necessary to disable the eslint rule for this line because of the way the mock is defined
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    mock.restore();
+  });
 
   it('should throw an error when given an invalid auth token', async () => {
     const authToken = new AuthToken(axiosInstance);

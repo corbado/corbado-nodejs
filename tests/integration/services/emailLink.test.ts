@@ -1,6 +1,6 @@
-import { SDK } from '../../src';
-import { ServerError } from '../../src/errors';
-import Utils from '../utils';
+import { SDK } from '../../../src';
+import { ServerError } from '../../../src/errors';
+import Utils from '../../utils';
 
 describe('EmailLink Validation Tests', () => {
   let sdk: SDK;

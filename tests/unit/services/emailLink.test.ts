@@ -1,26 +1,22 @@
-import { AxiosInstance } from 'axios';
+import AxiosMockAdapter from 'axios-mock-adapter';
+import axios, { AxiosInstance } from 'axios';
 import { EmailLink } from '../../../src/services';
 import { EmailLinkSendReq, EmailLinksValidateReq } from '../../../src/generated';
 import Utils from '../../utils';
 
-interface SendEmailExpectedResponse {
-  httpStatusCode: number;
-  message: string;
-  requestData: {
-    requestID: string;
-    link: string;
-  };
-  runtime: number;
-  data: {
-    emailLinkID: string;
-  };
-}
-
 describe('EmailLink class', () => {
   let axiosInstance: AxiosInstance;
+  let mock: AxiosMockAdapter;
 
   beforeEach(() => {
-    axiosInstance = Utils.AxiosInstance();
+    axiosInstance = axios.create();
+    mock = new AxiosMockAdapter(axiosInstance);
+  });
+
+  afterEach(() => {
+    // Necessary to disable the eslint rule for this line because of the way the mock is defined
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    mock.restore();
   });
 
   it('should create an EmailLink instance with an AxiosInstance', () => {
@@ -37,20 +33,30 @@ describe('EmailLink class', () => {
       redirect: Utils.testConstants.TEST_REDIRECT_URL,
     };
 
-    const expectedResponse: SendEmailExpectedResponse = {
-      httpStatusCode: expect.any(Number) as number,
-      message: expect.any(String) as string,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    mock.onPost().reply(200, {
+      httpStatusCode: 200,
+      message: 'Success',
       requestData: {
-        requestID: expect.any(String) as string,
-        link: expect.any(String) as string,
+        requestID: '123',
+        link: 'http://example.com',
       },
-      runtime: expect.any(Number) as number,
-      data: { emailLinkID: expect.any(String) as string },
-    };
+      runtime: 100,
+      data: { emailLinkID: '123' },
+    });
 
     const response = await emailLink.send(req);
 
-    expect(response).toEqual(expectedResponse);
+    expect(response).toEqual({
+      httpStatusCode: 200,
+      message: 'Success',
+      requestData: {
+        requestID: '123',
+        link: 'http://example.com',
+      },
+      runtime: 100,
+      data: { emailLinkID: '123' },
+    });
   });
 
   it('should throw an error when creating an EmailLink instance without an AxiosInstance', () => {
