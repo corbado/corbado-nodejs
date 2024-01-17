@@ -24,7 +24,7 @@ import type { RequestArgs } from './base.js';
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base.js';
 
 /**
- *
+ * 
  * @export
  * @interface AndroidAppConfigDeleteReq
  */
@@ -2893,7 +2893,12 @@ export const ProjectConfigFrontendFrameworkEnum = {
     NotSpecified: 'not_specified',
     React: 'react',
     Vuejs: 'vuejs',
-    Vanillajs: 'vanillajs'
+    Vanillajs: 'vanillajs',
+    Angular: 'angular',
+    Svelte: 'svelte',
+    Nextjs: 'nextjs',
+    Nuxtjs: 'nuxtjs',
+    Flutter: 'flutter'
 } as const;
 
 export type ProjectConfigFrontendFrameworkEnum = typeof ProjectConfigFrontendFrameworkEnum[keyof typeof ProjectConfigFrontendFrameworkEnum];
@@ -2901,7 +2906,8 @@ export const ProjectConfigBackendLanguageEnum = {
     NotSpecified: 'not_specified',
     Javascript: 'javascript',
     Php: 'php',
-    Go: 'go'
+    Go: 'go',
+    Other: 'other'
 } as const;
 
 export type ProjectConfigBackendLanguageEnum = typeof ProjectConfigBackendLanguageEnum[keyof typeof ProjectConfigBackendLanguageEnum];
@@ -3318,14 +3324,20 @@ export type ProjectConfigSaveReqEnvironmentEnum = typeof ProjectConfigSaveReqEnv
 export const ProjectConfigSaveReqFrontendFrameworkEnum = {
     React: 'react',
     Vuejs: 'vuejs',
-    Vanillajs: 'vanillajs'
+    Vanillajs: 'vanillajs',
+    Angular: 'angular',
+    Svelte: 'svelte',
+    Nextjs: 'nextjs',
+    Nuxtjs: 'nuxtjs',
+    Flutter: 'flutter'
 } as const;
 
 export type ProjectConfigSaveReqFrontendFrameworkEnum = typeof ProjectConfigSaveReqFrontendFrameworkEnum[keyof typeof ProjectConfigSaveReqFrontendFrameworkEnum];
 export const ProjectConfigSaveReqBackendLanguageEnum = {
     Javascript: 'javascript',
     Php: 'php',
-    Go: 'go'
+    Go: 'go',
+    Other: 'other'
 } as const;
 
 export type ProjectConfigSaveReqBackendLanguageEnum = typeof ProjectConfigSaveReqBackendLanguageEnum[keyof typeof ProjectConfigSaveReqBackendLanguageEnum];

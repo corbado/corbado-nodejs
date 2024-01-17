@@ -4623,12 +4623,18 @@ components:
             - react
             - vuejs
             - vanillajs
+            - angular
+            - svelte
+            - nextjs
+            - nuxtjs
+            - flutter
         backendLanguage:
           type: string
           enum:
             - javascript
             - php
             - go
+            - other
         webComponentDebug:
           type: boolean
         smtpUseCustom:
@@ -4819,6 +4825,11 @@ components:
             - react
             - vuejs
             - vanillajs
+            - angular
+            - svelte
+            - nextjs
+            - nuxtjs
+            - flutter
         backendLanguage:
           type: string
           enum:
@@ -4826,6 +4837,7 @@ components:
             - javascript
             - php
             - go
+            - other
         backendAPIUrl:
           type: string
         frontendAPIUrl:
