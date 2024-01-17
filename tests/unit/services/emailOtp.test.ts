@@ -19,7 +19,7 @@ describe('EmailOtp class', () => {
   it('should send email code and return EmailCodeSendRsp', async () => {
     const emailOTP = new EmailOTP(axiosInstance);
     const req: EmailCodeSendReq = {
-      email: 'test@example.com',
+      email: Utils.createRandomTestEmail(),
       create: true,
     };
 
