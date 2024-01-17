@@ -42,7 +42,7 @@ openapi_generate:
 
 .PHONY:clean
 clean:
-	rm -rf dist esm cjs cjs-test $(TARGET_DIR)
+	rm -rf esm cjs $(TARGET_DIR)
 
 .PHONY: test
 test:
