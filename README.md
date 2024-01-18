@@ -2,7 +2,7 @@
 
 # Corbado Node.js SDK
 
-[![License](https://poser.pugx.org/corbado/php-sdk/license.svg)](https://packagist.org/packages/corbado/php-sdk)
+[![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 ![Latest Stable Version](https://img.shields.io/npm/v/@corbado/node-sdk)
 [![Coverage Status](https://github.com/corbado/corbado-nodejs/raw/gh-pages/badges/coverage-jest%20coverage.svg?raw=true)](https://nolleh.gitcorbado/corbado-nodejs/badges/coverage-jest%20coverage.svg?raw=true)
 [![codecov](https://codecov.io/gh/corbado/corbado-nodejs/graph/badge.svg?token=FD4TEXN6TR)](https://codecov.io/gh/corbado/corbado-nodejs)
@@ -19,7 +19,7 @@ The [Corbado](https://www.corbado.com) Node SDK provides convenient access to th
 
 ### Requirements
 
-- Nodejs 8 or higher.
+- Node.js 8 or higher.
 
 ## Installation
 
