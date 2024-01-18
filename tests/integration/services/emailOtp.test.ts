@@ -15,7 +15,7 @@ describe('EmailOtp Validation Tests', () => {
     try {
       const req = { create: true, email: Utils.testConstants.TEST_EMPTY_STRING };
 
-      await sdk.emailOtp().send(req);
+      await sdk.emailOtps().send(req);
     } catch (error) {
       expect(error).toBeInstanceOf(ServerError);
       expect((error as ServerError).getValidationMessages()).toEqual(['email: cannot be blank']);
@@ -27,7 +27,7 @@ describe('EmailOtp Validation Tests', () => {
 
     const req = { create: true, email: Utils.createRandomTestEmail() };
 
-    const response = await sdk.emailOtp().send(req);
+    const response = await sdk.emailOtps().send(req);
     expect(response.httpStatusCode).toEqual(200);
   });
 
@@ -37,7 +37,7 @@ describe('EmailOtp Validation Tests', () => {
     try {
       const req = { code: Utils.testConstants.TEST_EMPTY_STRING };
 
-      await sdk.emailOtp().validate(Utils.testConstants.TEST_EMAILOTP_ID, req);
+      await sdk.emailOtps().validate(Utils.testConstants.TEST_EMAILOTP_ID, req);
     } catch (error) {
       expect(error).toBeInstanceOf(ServerError);
 
@@ -51,7 +51,7 @@ describe('EmailOtp Validation Tests', () => {
     try {
       const req = { code: '1' };
 
-      await sdk.emailOtp().validate(Utils.testConstants.TEST_EMAILOTP_ID, req);
+      await sdk.emailOtps().validate(Utils.testConstants.TEST_EMAILOTP_ID, req);
     } catch (error) {
       expect(error).toBeInstanceOf(ServerError);
 
@@ -65,7 +65,7 @@ describe('EmailOtp Validation Tests', () => {
     try {
       const req = { code: '123456' };
 
-      await sdk.emailOtp().validate(Utils.testConstants.TEST_EMAILOTP_ID, req);
+      await sdk.emailOtps().validate(Utils.testConstants.TEST_EMAILOTP_ID, req);
     } catch (error) {
       expect(error).toBeInstanceOf(ServerError);
 
@@ -77,11 +77,11 @@ describe('EmailOtp Validation Tests', () => {
     try {
       const req = { create: true, email: Utils.createRandomTestEmail() };
 
-      const sendResponse = await sdk.emailOtp().send(req);
+      const sendResponse = await sdk.emailOtps().send(req);
       expect(sendResponse.httpStatusCode).toEqual(200);
 
       const validateReq = { code: '150919' };
-      const validateSendReq = await sdk.emailOtp().validate(sendResponse.data.emailCodeID, validateReq);
+      const validateSendReq = await sdk.emailOtps().validate(sendResponse.data.emailCodeID, validateReq);
       expect(validateSendReq.httpStatusCode).toEqual(200);
     } catch (error) {
       expect(error).toBe(null);

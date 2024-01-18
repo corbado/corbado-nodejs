@@ -71,7 +71,7 @@ class SDK {
     return this.emailLink;
   }
 
-  emailOtp(): EmailOTP {
+  emailOtps(): EmailOTP {
     return this.emailOTP;
   }
 
@@ -79,7 +79,7 @@ class SDK {
     return this.session;
   }
 
-  smsOtp(): SmsOTP {
+  smsOtps(): SmsOTP {
     return this.smsOTP;
   }
 

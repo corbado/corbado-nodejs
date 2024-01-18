@@ -15,7 +15,7 @@ describe('SmsOtp Validation Tests', () => {
     try {
       const req = { create: true, phoneNumber: Utils.testConstants.TEST_EMPTY_STRING };
 
-      await sdk.smsOtp().send(req);
+      await sdk.smsOtps().send(req);
     } catch (error) {
       expect(error).toBeInstanceOf(ServerError);
       expect((error as ServerError).getValidationMessages()).toEqual(['phoneNumber: cannot be blank']);
@@ -27,7 +27,7 @@ describe('SmsOtp Validation Tests', () => {
 
     const req = { create: true, phoneNumber: Utils.createRandomTestPhoneNumber() };
 
-    const response = await sdk.smsOtp().send(req);
+    const response = await sdk.smsOtps().send(req);
     expect(response.httpStatusCode).toEqual(200);
   });
 
@@ -37,7 +37,7 @@ describe('SmsOtp Validation Tests', () => {
     try {
       const req = { smsCode: Utils.testConstants.TEST_EMPTY_STRING };
 
-      await sdk.smsOtp().validate(Utils.testConstants.TEST_SMSOTP_ID, req);
+      await sdk.smsOtps().validate(Utils.testConstants.TEST_SMSOTP_ID, req);
     } catch (error) {
       expect(error).toBeInstanceOf(ServerError);
 
@@ -51,7 +51,7 @@ describe('SmsOtp Validation Tests', () => {
     try {
       const req = { smsCode: '1' };
 
-      await sdk.smsOtp().validate(Utils.testConstants.TEST_SMSOTP_ID, req);
+      await sdk.smsOtps().validate(Utils.testConstants.TEST_SMSOTP_ID, req);
     } catch (error) {
       expect(error).toBeInstanceOf(ServerError);
 
@@ -65,7 +65,7 @@ describe('SmsOtp Validation Tests', () => {
     try {
       const req = { smsCode: '123456' };
 
-      await sdk.smsOtp().validate(Utils.testConstants.TEST_SMSOTP_ID, req);
+      await sdk.smsOtps().validate(Utils.testConstants.TEST_SMSOTP_ID, req);
     } catch (error) {
       expect(error).toBeInstanceOf(ServerError);
 
@@ -78,11 +78,11 @@ describe('SmsOtp Validation Tests', () => {
 
     const req = { create: true, phoneNumber: Utils.createRandomTestPhoneNumber() };
 
-    const sendResponse = await sdk.smsOtp().send(req);
+    const sendResponse = await sdk.smsOtps().send(req);
     expect(sendResponse.httpStatusCode).toEqual(200);
 
     const validateReq = { smsCode: '150919' };
-    const validateSendReq = await sdk.smsOtp().validate(sendResponse.data.smsCodeID, validateReq);
+    const validateSendReq = await sdk.smsOtps().validate(sendResponse.data.smsCodeID, validateReq);
     expect(validateSendReq.httpStatusCode).toEqual(200);
   });
 });

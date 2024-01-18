@@ -9,7 +9,7 @@
 [![documentation](https://img.shields.io/badge/documentation-Corbado_Backend_API_Reference-blue.svg)](https://api.corbado.com/docs/api/)
 [![Slack](https://img.shields.io/badge/slack-join%20chat-brightgreen.svg)](https://join.slack.com/t/corbado/shared_invite/zt-1b7867yz8-V~Xr~ngmSGbt7IA~g16ZsQ)
 
-The [Corbado](https://www.corbado.com) PHP SDK provides convenient access to the [Corbado Backend API](https://api.corbado.com/docs/api/) from applications written in the PHP language.
+The [Corbado](https://www.corbado.com) Node SDK provides convenient access to the [Corbado Backend API](https://api.corbado.com/docs/api/) from applications written in Node.js.
 
 :warning: The Corbado Node.js SDK is commonly referred to as a private client, specifically designed for usage within closed backend applications. This particular SDK should exclusively be utilized in such environments, as it is crucial to ensure that the API secret remains strictly confidential and is never shared.
 
@@ -42,7 +42,7 @@ const projectID = process.env.CORBADO_PROJECT_ID;
 const apiSecret = process.env.CORBADO_API_SECRET;
 
 const config = new Corbado.Config(projectID, apiSecret);
-const corbado = new Corbado.SDK(config);
+const sdk = new Corbado.SDK(config);
 ```
 
 ### ES6:
@@ -52,8 +52,9 @@ import {SDK, Config} from '@corbado/node-sdk';
 
 const projectID = process.env.CORBADO_PROJECT_ID;
 const apiSecret = process.env.CORBADO_API_SECRET;
+
 const config = new Config(projectID, apiSecret);
-const corbado = new SDK(config);
+const sdk = new SDK(config);
 ```
 
 ### Examples
@@ -64,18 +65,18 @@ A list of examples can be found in the integration tests [here](tests/integratio
 
 The Corbado Node.js SDK provides the following services:
 
-- `authTokens` for managing authentication tokens needed for own session management ([examples](tests/integration/AuthToken))
-- `emailMagicLinks` for managing email magic links ([examples](tests/integration/EmailMagicLink))
-- `emailOTPs` for managing email OTPs ([examples](tests/integration/EmailOTP))
+- `authTokens` for managing authentication tokens needed for own session management ([examples](tests/integration/services/authToken.test.ts))
+- `emailMagicLinks` for managing email magic links ([examples](tests/integration/services/emailLink.test.ts))
+- `emailOTPs` for managing email OTPs ([examples](tests/integration/services/emailOtp.test.ts))
 - `sessions` for managing sessions
-- `smsOTPs` for managing SMS OTPs ([examples](tests/integration/SmsOTP))
-- `users` for managing users ([examples](tests/integration/User))
-- `validations` for validating email addresses and phone numbers ([examples](tests/integration/Validation))
+- `smsOTPs` for managing SMS OTPs ([examples](tests/integration/services/smsOtp.test.ts))
+- `users` for managing users ([examples](tests/integration/services/user.test.ts))
+- `validations` for validating email addresses and phone numbers ([examples](tests/integration/services/validation.test.ts))
 
 To use a specific service, such as `sessions`, invoke it as shown below:
 
 ```JavaScript
-corbado.session.getCurrentUser(req);
+corbado.sessions.getCurrentUser(req);
 ```
 
 ## :books: Advanced
@@ -89,7 +90,32 @@ The Corbado PHP SDK throws errors for all errors. The following errors are throw
 
 If the Backend API returns a HTTP status code other than 200, the Corbado Node.js SDK throws a `ServerError`. The `ServerError`class provides convenient methods to access all important data:
 
-///<<<<Show sample errors here**\*\***
+```javascript
+try {
+    // Try to get non-existing user with ID 'usr-123456789'
+    const user = sdk.users().get('usr-123456789');
+} catch (error: ServerError) {
+    // Show HTTP status code (404 in this case)
+    console.log(error.getHttpStatusCode());
+
+    // Show request ID (can be used in developer panel to look up the full request
+    // and response, see https://app.corbado.com/app/logs/requests)
+    console.log(error.getRequestID());
+
+    // Show full request data
+    console.log(error.getRequestData());
+
+    // Show runtime of request in seconds (server side)
+    console.log(error.getRuntime());
+
+    // Show validation error messages (server side validation in case of HTTP
+    // status code 400 (Bad Request))
+    console.log(error.getValidationMessages());
+
+    // Show full error data
+    console.log(error.getError());
+}
+```
 
 ## :speech_balloon: Support & Feedback
 

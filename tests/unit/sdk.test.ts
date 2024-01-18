@@ -39,7 +39,7 @@ describe('SDK class', () => {
   });
 
   it('should create EmailOtp object with created AxiosInstance', () => {
-    const emailOtp = sdk.emailOtp();
+    const emailOtp = sdk.emailOtps();
     expect(emailOtp).toBeDefined();
   });
 
@@ -49,7 +49,7 @@ describe('SDK class', () => {
   });
 
   it('should create SmsOtp object with created AxiosInstance', () => {
-    const smsOtp = sdk.smsOtp();
+    const smsOtp = sdk.smsOtps();
     expect(smsOtp).toBeDefined();
   });
 
