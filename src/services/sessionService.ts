@@ -1,75 +1,102 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable class-methods-use-this */
-import { JWTPayload, createRemoteJWKSet, jwtVerify } from 'jose';
-
-import { Request } from 'express';
+import { AxiosInstance } from 'axios';
+import { MemoryCache } from 'memory-cache-node';
+import { JWTPayload, jwtVerify, createRemoteJWKSet } from 'jose';
 import User from '../entities/user.js';
 import { Assert } from '../helpers/index.js';
 
 export interface SessionInterface {
-  validateShortSessionValue(shortSession: string): Promise<object | null>;
+  getShortSessionValue(req: RequestWithCookies): string;
+  validateShortSessionValue(req: RequestWithCookies): Promise<User>;
+  getCurrentUser(req: RequestWithCookies): Promise<User>;
+  getLastShortSessionValidationResult(): string;
 }
 
-interface DecodedValue extends JWTPayload {
-  name?: string;
-  email?: string;
-  phone_number?: string;
-  sub?: string;
-}
-
-interface RequestWithCookies extends Request {
+export interface RequestWithCookies extends Request {
   cookies: {
+    [key: string]: string;
+  };
+  headers: Headers & {
+    authorization: string;
     [key: string]: string;
   };
 }
 
+interface MyJWTPayload extends JWTPayload {
+  name?: string;
+  email?: string;
+  phoneNumber?: string;
+}
+
 const MIN_TOKEN_LENGTH = 10;
 
+const itemsExpirationCheckIntervalInSecs = 10 * 60;
+const maxItemCount = 1000000;
+
 class Session implements SessionInterface {
+  private client: AxiosInstance;
+
   private shortSessionCookieName: string;
 
   private issuer: string;
 
   private jwksURI: string;
 
+  private jwksCache: MemoryCache<string, string>;
+
   private cacheMaxAge: number;
 
-  private lastShortSessionValidationResult = '';
+  private lastShortSessionValidationResult: string = '';
 
-  constructor(issuer: string, shortSessionCookieName: string, jwksURI: string, cacheMaxAge: number) {
-    Assert.notEmptyString(
-      shortSessionCookieName,
-      'Session instance "shortSessionCookieName" param must not be an empty string',
-    );
-    Assert.notEmptyString(issuer, 'Session instance "issuer" param must not be an empty string');
-    Assert.notEmptyString(jwksURI, 'Session instance "jwksURI" param must not be an empty string');
+  constructor(
+    client: AxiosInstance,
+    shortSessionCookieName: string,
+    issuer: string,
+    jwksURI: string,
+    jwksCache = new MemoryCache<string, string>(itemsExpirationCheckIntervalInSecs, maxItemCount),
+    cacheMaxAge = 10 * 60, // 10 minutes
+  ) {
+    if (!shortSessionCookieName || !issuer || !jwksURI) {
+      throw new Error('Required parameter is empty');
+    }
 
-    // this.client = client;
+    this.client = client;
     this.shortSessionCookieName = shortSessionCookieName;
     this.issuer = issuer;
     this.jwksURI = jwksURI;
+    this.jwksCache = jwksCache;
     this.cacheMaxAge = cacheMaxAge;
   }
 
   public getShortSessionValue(req: RequestWithCookies): string {
-    return req.cookies?.[this.shortSessionCookieName] ?? this.extractBearerToken(req.headers.authorization);
+    return req.cookies?.[this.shortSessionCookieName] ?? this.extractBearerToken(req.headers);
   }
 
-  public async validateShortSessionValue(value: string): Promise<DecodedValue | null> {
-    Assert.notEmptyString(value, 'Session.validateShotSessionValue() "value" param must not be an empty string');
+  public async validateShortSessionValue(req: RequestWithCookies): Promise<User> {
+    Assert.notNull(typeof req === 'object' && req !== null, 'RequestObject not given');
+
+    const jwks = createRemoteJWKSet(new URL(this.jwksURI), { cacheMaxAge: this.cacheMaxAge });
+    const token = this.getShortSessionValue(req);
+
+    if (!token) {
+      return new User(false);
+    }
 
     try {
-      const keySet = createRemoteJWKSet(new URL(this.jwksURI));
-      const { payload } = await jwtVerify(value, keySet);
+      const { payload } = await jwtVerify(token, jwks, { issuer: this.issuer });
+
+      const { sub, name, email, phoneNumber } = payload as MyJWTPayload;
 
       if (payload.iss && payload.iss !== this.issuer) {
         this.setIssuerMismatchError(payload.iss);
-        return null;
+        return new User(false);
       }
 
-      return payload;
+      return new User(true, sub, name, email, phoneNumber);
     } catch (error) {
       this.setValidationError(error);
-      return null;
+      return new User(false);
     }
   }
 
@@ -77,24 +104,23 @@ class Session implements SessionInterface {
     return this.lastShortSessionValidationResult;
   }
 
-  public async getCurrentUser(req: Request): Promise<User> {
+  public async getCurrentUser(req: RequestWithCookies): Promise<User> {
     const value = this.getShortSessionValue(req);
 
-    if (value.length < MIN_TOKEN_LENGTH) {
+    if (!value || value.length < MIN_TOKEN_LENGTH) {
       return new User(false);
     }
 
-    const decoded = await this.validateShortSessionValue(value);
-    if (decoded) {
-      return this.createUserFromDecodedValue(decoded);
-    }
-
-    return new User(false);
+    const user = await this.validateShortSessionValue(req);
+    return user ?? new User(false);
   }
 
-  private extractBearerToken(header?: string): string {
-    if (header?.startsWith('Bearer ')) {
-      return header.split(' ')[1];
+  private extractBearerToken(header?: { authorization: string }): string {
+    if (!header?.authorization) {
+      return '';
+    }
+    if (header?.authorization.startsWith('Bearer ')) {
+      return header.authorization.split(' ')[1];
     }
     return '';
   }
@@ -109,10 +135,6 @@ class Session implements SessionInterface {
     } else {
       this.lastShortSessionValidationResult = `JWT validation failed: ${error}`;
     }
-  }
-
-  private createUserFromDecodedValue(decoded: DecodedValue): User {
-    return new User(true, decoded.sub, decoded.name ?? '', decoded.email ?? '', decoded.phone_number ?? '');
   }
 }
 

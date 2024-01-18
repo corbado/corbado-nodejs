@@ -1,5 +1,11 @@
+import {
+  DefaultBackendAPI,
+  DefaultCacheMaxAge,
+  DefaultJwksCache,
+  DefaultShortSessionCookieName,
+} from '../../src/config.js';
 import { BaseError } from '../../src/errors/index.js';
-import { Config, DefaultBackendAPI, DefaultShortSessionCookieName, DefaultCacheMaxAge } from '../../src/index.js';
+import { Config } from '../../src/index.js';
 
 describe('Configuration class', () => {
   let projectID: string;
@@ -12,7 +18,6 @@ describe('Configuration class', () => {
       throw new BaseError('Env Error', 5001, 'Both projectID and apiSecret must be defined', true);
     }
   });
-
   const createAndAssertConfig = (config: Config) => {
     expect(config).toBeInstanceOf(Config);
     expect(config.ProjectID).toBe(projectID);
@@ -22,6 +27,7 @@ describe('Configuration class', () => {
     expect(config.ShortSessionCookieName).toBe(DefaultShortSessionCookieName);
     expect(config.CacheMaxAge).toBe(DefaultCacheMaxAge);
     expect(config.JWTIssuer).toBe(`https://${projectID}.frontendapi.corbado.io/.well-known/jwks`);
+    expect(config.JWKSCache).toBe(DefaultJwksCache);
   };
 
   it('should instantiate Configuration with valid project ID and API secret', () => {

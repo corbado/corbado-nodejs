@@ -1,3 +1,5 @@
+import { MemoryCache } from 'memory-cache-node';
+import axios, { AxiosInstance } from 'axios';
 import Assert from './helpers/assert';
 
 /* eslint-disable class-methods-use-this */
@@ -8,12 +10,18 @@ export interface ConfigInterface {
   BackendAPI: string;
   ShortSessionCookieName: string;
   JWTIssuer: string;
+  JWKSCache: MemoryCache<string, string>;
   CacheMaxAge: number;
 }
 
+const itemsExpirationCheckIntervalInSecs = 10 * 60;
+const maxItemCount = 1000000;
+
+export const DefaultClient = axios.create();
 export const DefaultBackendAPI = 'https://backendapi.corbado.io';
 export const DefaultFrontendAPI = 'https://[projectID].frontendapi.corbado.io';
 export const DefaultShortSessionCookieName = 'cbo_short_session';
+export const DefaultJwksCache = new MemoryCache<string, string>(itemsExpirationCheckIntervalInSecs, maxItemCount);
 export const DefaultCacheMaxAge = 60 * 1000; // 60 * 1000 = 60000 milliseconds, which is equivalent to 1 minute.
 
 class Config implements ConfigInterface {
@@ -27,9 +35,13 @@ class Config implements ConfigInterface {
 
   ShortSessionCookieName: string = DefaultShortSessionCookieName;
 
+  Client: AxiosInstance;
+
   CacheMaxAge: number = DefaultCacheMaxAge;
 
   JWTIssuer: string;
+
+  JWKSCache: MemoryCache<string, string>;
 
   constructor(projectID: string, apiSecret: string) {
     this.validateProjectID(projectID);
@@ -37,8 +49,10 @@ class Config implements ConfigInterface {
 
     this.ProjectID = projectID;
     this.APISecret = apiSecret;
+    this.Client = DefaultClient;
     this.FrontendAPI = DefaultFrontendAPI.replace('[projectID]', projectID);
     this.JWTIssuer = `${DefaultFrontendAPI.replace('[projectID]', projectID)}/.well-known/jwks`;
+    this.JWKSCache = DefaultJwksCache;
   }
 
   public setFrontendAPI(frontendApi: string): void {
@@ -49,6 +63,21 @@ class Config implements ConfigInterface {
   public setBackendAPI(backendAPI: string): void {
     Assert.validURL(backendAPI, 'backendAPI');
     this.BackendAPI = backendAPI;
+  }
+
+  public setShortSessionCookieName(shortSessionCookieName: string): void {
+    Assert.notEmptyString(shortSessionCookieName, 'shortSessionCookieName');
+
+    this.ShortSessionCookieName = shortSessionCookieName;
+  }
+
+  public setHttpClient(client: AxiosInstance): void {
+    this.Client = client;
+  }
+
+  public setJwksCache(jwksCache: MemoryCache<string, string>): void {
+    Assert.notNull(jwksCache, 'JWKS cache');
+    this.JWKSCache = jwksCache;
   }
 
   private validateProjectID(projectID: string): void {

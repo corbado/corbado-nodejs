@@ -29,7 +29,13 @@ class SDK {
 
     this.emailOTP = new EmailOTP(this.axiosClient);
 
-    this.session = new Session(config.FrontendAPI, config.ShortSessionCookieName, config.JWTIssuer, config.CacheMaxAge);
+    this.session = new Session(
+      this.axiosClient,
+      config.ShortSessionCookieName,
+      config.FrontendAPI,
+      config.JWTIssuer,
+      config.JWKSCache,
+    );
 
     this.smsOTP = new SmsOTP(this.axiosClient);
 
@@ -46,7 +52,7 @@ class SDK {
         password: config.APISecret,
       },
       headers: {
-        'X-Corbado-SDK-Version': JSON.stringify({
+        'X-Corbado-SDK': JSON.stringify({
           name: 'Node.js SDK',
           sdkVersion: process.env.npm_package_version,
           languageVersion: process.version,

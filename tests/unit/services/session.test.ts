@@ -1,14 +1,29 @@
-import { Request } from 'express';
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { MemoryCache } from 'memory-cache-node';
 import { Session } from '../../../src/services';
+import { RequestWithCookies } from '../../../src/services/sessionService';
 import Utils from '../../utils';
 
 describe('Session', () => {
-  const issuer = Utils.testConstants.TEST_REDIRECT_URL;
-  const shortSessionCookieName = 'session';
-  const jwksURI = `${Utils.testConstants.TEST_REDIRECT_URL}/jwks`;
-  const cacheMaxAge = 3600;
+  let issuer: string;
+  let shortSessionCookieName: string;
+  let jwksURI: string;
+  let jwksCache: MemoryCache<string, string>;
+  let createSession: () => Session;
 
-  const createSession = () => new Session(issuer, shortSessionCookieName, jwksURI, cacheMaxAge);
+  beforeEach(() => {
+    issuer = Utils.testConstants.TEST_REDIRECT_URL;
+    shortSessionCookieName = 'session';
+    jwksURI = `${Utils.testConstants.TEST_REDIRECT_URL}/jwks`;
+    jwksCache = new MemoryCache<string, string>(1, 100);
+    createSession = () =>
+      new Session(Utils.MockAxiosInstance().axiosInstance, shortSessionCookieName, issuer, jwksURI, jwksCache);
+  });
+
+  afterAll(() => {
+    jwksCache.destroy();
+  });
 
   it('should create a Session instance with valid parameters', () => {
     const session = createSession();
@@ -23,7 +38,7 @@ describe('Session', () => {
     const req = {
       cookies: { [shortSessionCookieName]: 'short-session-value' },
       headers: { authorization: 'Bearer token' },
-    } as jest.Mocked<Request>;
+    } as unknown as RequestWithCookies;
 
     const shortSessionValue = session.getShortSessionValue(req);
 
