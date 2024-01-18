@@ -43,8 +43,6 @@ class Session implements SessionInterface {
 
   private jwksURI: string;
 
-  private jwksCache: MemoryCache<string, string>;
-
   private cacheMaxAge: number;
 
   private lastShortSessionValidationResult: string = '';
@@ -54,7 +52,6 @@ class Session implements SessionInterface {
     shortSessionCookieName: string,
     issuer: string,
     jwksURI: string,
-    jwksCache = new MemoryCache<string, string>(itemsExpirationCheckIntervalInSecs, maxItemCount),
     cacheMaxAge = 10 * 60, // 10 minutes
   ) {
     if (!shortSessionCookieName || !issuer || !jwksURI) {
@@ -65,7 +62,6 @@ class Session implements SessionInterface {
     this.shortSessionCookieName = shortSessionCookieName;
     this.issuer = issuer;
     this.jwksURI = jwksURI;
-    this.jwksCache = jwksCache;
     this.cacheMaxAge = cacheMaxAge;
   }
 

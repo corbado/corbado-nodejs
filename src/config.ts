@@ -9,8 +9,6 @@ export interface ConfigInterface {
   FrontendAPI: string;
   BackendAPI: string;
   ShortSessionCookieName: string;
-  JWTIssuer: string;
-  JWKSCache: MemoryCache<string, string>;
   CacheMaxAge: number;
 }
 
@@ -39,10 +37,6 @@ class Config implements ConfigInterface {
 
   CacheMaxAge: number = DefaultCacheMaxAge;
 
-  JWTIssuer: string;
-
-  JWKSCache: MemoryCache<string, string>;
-
   constructor(projectID: string, apiSecret: string) {
     this.validateProjectID(projectID);
     this.validateAPISecret(apiSecret);
@@ -51,8 +45,6 @@ class Config implements ConfigInterface {
     this.APISecret = apiSecret;
     this.Client = DefaultClient;
     this.FrontendAPI = DefaultFrontendAPI.replace('[projectID]', projectID);
-    this.JWTIssuer = `${DefaultFrontendAPI.replace('[projectID]', projectID)}/.well-known/jwks`;
-    this.JWKSCache = DefaultJwksCache;
   }
 
   public setFrontendAPI(frontendApi: string): void {
@@ -73,11 +65,6 @@ class Config implements ConfigInterface {
 
   public setHttpClient(client: AxiosInstance): void {
     this.Client = client;
-  }
-
-  public setJwksCache(jwksCache: MemoryCache<string, string>): void {
-    Assert.notNull(jwksCache, 'JWKS cache');
-    this.JWKSCache = jwksCache;
   }
 
   private validateProjectID(projectID: string): void {

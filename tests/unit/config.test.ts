@@ -26,8 +26,6 @@ describe('Configuration class', () => {
     expect(config.BackendAPI).toBe(DefaultBackendAPI);
     expect(config.ShortSessionCookieName).toBe(DefaultShortSessionCookieName);
     expect(config.CacheMaxAge).toBe(DefaultCacheMaxAge);
-    expect(config.JWTIssuer).toBe(`https://${projectID}.frontendapi.corbado.io/.well-known/jwks`);
-    expect(config.JWKSCache).toBe(DefaultJwksCache);
   };
 
   it('should instantiate Configuration with valid project ID and API secret', () => {
@@ -40,7 +38,6 @@ describe('Configuration class', () => {
     expect(config.BackendAPI).toBe(DefaultBackendAPI);
     expect(config.ShortSessionCookieName).toBe(DefaultShortSessionCookieName);
     expect(config.CacheMaxAge).toBe(DefaultCacheMaxAge);
-    expect(config.JWTIssuer).toBe(`https://${projectID}.frontendapi.corbado.io/.well-known/jwks`);
   });
 
   it('should generate DefaultFrontendAPI using process.env.CORBADO_PROJECT_ID and provided project ID', () => {

@@ -33,8 +33,7 @@ class SDK {
       this.axiosClient,
       config.ShortSessionCookieName,
       config.FrontendAPI,
-      config.JWTIssuer,
-      config.JWKSCache,
+      config.FrontendAPI + '/.well-known/jwks',
     );
 
     this.smsOTP = new SmsOTP(this.axiosClient);

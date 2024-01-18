@@ -16,13 +16,8 @@ describe('Session', () => {
     issuer = Utils.testConstants.TEST_REDIRECT_URL;
     shortSessionCookieName = 'session';
     jwksURI = `${Utils.testConstants.TEST_REDIRECT_URL}/jwks`;
-    jwksCache = new MemoryCache<string, string>(1, 100);
     createSession = () =>
-      new Session(Utils.MockAxiosInstance().axiosInstance, shortSessionCookieName, issuer, jwksURI, jwksCache);
-  });
-
-  afterAll(() => {
-    jwksCache.destroy();
+      new Session(Utils.MockAxiosInstance().axiosInstance, shortSessionCookieName, issuer, jwksURI);
   });
 
   it('should create a Session instance with valid parameters', () => {
