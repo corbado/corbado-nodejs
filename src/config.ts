@@ -1,3 +1,5 @@
+import Assert from './helpers/assert';
+
 /* eslint-disable class-methods-use-this */
 export interface ConfigInterface {
   ProjectID: string;
@@ -9,7 +11,7 @@ export interface ConfigInterface {
   CacheMaxAge: number;
 }
 
-export const DefaultBackendAPI = process.env.CORBADO_BACKEND_API || '';
+export const DefaultBackendAPI = 'https://backendapi.corbado.io';
 export const DefaultFrontendAPI = 'https://[projectID].frontendapi.corbado.io';
 export const DefaultShortSessionCookieName = 'cbo_short_session';
 export const DefaultCacheMaxAge = 60 * 1000; // 60 * 1000 = 60000 milliseconds, which is equivalent to 1 minute.
@@ -37,6 +39,16 @@ class Config implements ConfigInterface {
     this.APISecret = apiSecret;
     this.FrontendAPI = DefaultFrontendAPI.replace('[projectID]', projectID);
     this.JWTIssuer = `${DefaultFrontendAPI.replace('[projectID]', projectID)}/.well-known/jwks`;
+  }
+
+  public setFrontendAPI(frontendApi: string): void {
+    Assert.validURL(frontendApi, 'frontendApi');
+    this.FrontendAPI = frontendApi;
+  }
+
+  public setBackendAPI(backendAPI: string): void {
+    Assert.validURL(backendAPI, 'backendAPI');
+    this.BackendAPI = backendAPI;
   }
 
   private validateProjectID(projectID: string): void {
