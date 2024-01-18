@@ -1,22 +1,30 @@
 import AxiosMockAdapter from 'axios-mock-adapter';
-import axios, { AxiosInstance } from 'axios';
+import { AxiosInstance } from 'axios';
 import { EmailLink } from '../../../src/services';
 import { EmailLinkSendReq, EmailLinksValidateReq } from '../../../src/generated';
 import Utils from '../../utils';
+
+const emailLinkSendResponse = {
+  httpStatusCode: 200,
+  message: 'Success',
+  requestData: {
+    requestID: Utils.testConstants.TEST_EMAILLINK_ID,
+    link: Utils.testConstants.TEST_REDIRECT_URL,
+  },
+  runtime: Utils.testConstants.TEST_RUNTIME,
+  data: { emailLinkID: Utils.testConstants.TEST_EMAILLINK_ID },
+};
 
 describe('EmailLink class', () => {
   let axiosInstance: AxiosInstance;
   let mock: AxiosMockAdapter;
 
   beforeEach(() => {
-    axiosInstance = axios.create();
-    mock = new AxiosMockAdapter(axiosInstance);
+    ({ axiosInstance, mock } = Utils.MockAxiosInstance());
   });
 
   afterEach(() => {
-    // Necessary to disable the eslint rule for this line because of the way the mock is defined
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-    mock.restore();
+    Utils.restoreMock(mock);
   });
 
   it('should create an EmailLink instance with an AxiosInstance', () => {
@@ -34,29 +42,11 @@ describe('EmailLink class', () => {
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-    mock.onPost().reply(200, {
-      httpStatusCode: 200,
-      message: 'Success',
-      requestData: {
-        requestID: '123',
-        link: 'http://example.com',
-      },
-      runtime: 100,
-      data: { emailLinkID: '123' },
-    });
+    mock.onPost().reply(200, emailLinkSendResponse);
 
     const response = await emailLink.send(req);
 
-    expect(response).toEqual({
-      httpStatusCode: 200,
-      message: 'Success',
-      requestData: {
-        requestID: '123',
-        link: 'http://example.com',
-      },
-      runtime: 100,
-      data: { emailLinkID: '123' },
-    });
+    expect(response).toEqual(emailLinkSendResponse);
   });
 
   it('should throw an error when creating an EmailLink instance without an AxiosInstance', () => {

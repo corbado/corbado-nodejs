@@ -1,23 +1,35 @@
 import AxiosMockAdapter from 'axios-mock-adapter';
-import axios, { AxiosInstance } from 'axios';
+import { AxiosInstance } from 'axios';
 import { BaseError } from '../../../src/errors';
 import { UserCreateReq } from '../../../src/generated';
 import { User } from '../../../src/services';
 import Utils from '../../utils';
+
+const userCreateResponse = {
+  httpStatusCode: 200,
+  message: 'Success',
+  requestData: {
+    requestID: Utils.testConstants.TEST_USER_ID,
+    link: Utils.testConstants.TEST_REDIRECT_URL,
+  },
+  runtime: Utils.testConstants.TEST_RUNTIME,
+  data: {
+    userID: Utils.testConstants.TEST_USER_ID,
+    emailID: Utils.createRandomTestEmailID(),
+    phoneNumberID: Utils.createRandomTestPhoneNumber(),
+  },
+};
 
 describe('code snippet', () => {
   let axiosInstance: AxiosInstance;
   let mock: AxiosMockAdapter;
 
   beforeEach(() => {
-    axiosInstance = axios.create();
-    mock = new AxiosMockAdapter(axiosInstance);
+    ({ axiosInstance, mock } = Utils.MockAxiosInstance());
   });
 
   afterEach(() => {
-    // Necessary to disable the eslint rule for this line because of the way the mock is defined
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-    mock.restore();
+    Utils.restoreMock(mock);
   });
 
   it('should create a user and return UserCreateRsp when User.create() is called with valid request', async () => {
@@ -26,37 +38,11 @@ describe('code snippet', () => {
     const req = { name: Utils.createRandomTestName() };
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-    mock.onPost().reply(200, {
-      httpStatusCode: 200,
-      message: 'Success',
-      requestData: {
-        requestID: '123',
-        link: 'http://example.com',
-      },
-      runtime: 100,
-      data: {
-        userID: '123',
-        emailID: 'test@example.com',
-        phoneNumberID: '1234567890',
-      },
-    });
+    mock.onPost().reply(200, userCreateResponse);
 
     const result = await UserApi.create(req);
 
-    expect(result).toEqual({
-      httpStatusCode: 200,
-      message: 'Success',
-      requestData: {
-        requestID: '123',
-        link: 'http://example.com',
-      },
-      runtime: 100,
-      data: {
-        userID: '123',
-        emailID: 'test@example.com',
-        phoneNumberID: '1234567890',
-      },
-    });
+    expect(result).toEqual(userCreateResponse);
   });
 
   it('should throw BaseError when User.create() is called and UserApi.userCreate() returns an ErrorRsp', async () => {

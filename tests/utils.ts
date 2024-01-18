@@ -1,3 +1,4 @@
+import AxiosMockAdapter from 'axios-mock-adapter';
 import axios, { AxiosInstance } from 'axios';
 import { SDK, Config } from '../src';
 import { BaseError, httpStatusCodes } from '../src/errors';
@@ -20,6 +21,17 @@ class Utils {
 
     return instance;
   }
+
+  public static MockAxiosInstance = () => {
+    const axiosInstance = axios.create();
+    const mock = new AxiosMockAdapter(axiosInstance);
+    return { axiosInstance, mock };
+  };
+
+  public static restoreMock = (mock: AxiosMockAdapter) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    mock.restore();
+  };
 
   private static getEnv(key: string): string {
     const value = process.env[key];
@@ -87,6 +99,7 @@ class Utils {
   }
 
   public static testConstants = {
+    TEST_RUNTIME: '1234',
     TEST_REMOTE_ADDRESS: '124.0.0.1',
     TEST_USER_AGENT: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
     TEST_REDIRECT_URL: 'https://example.com',
@@ -95,6 +108,7 @@ class Utils {
     TEST_EMAILOTP_ID: 'emc-123456789',
     TEST_SMSOTP_ID: 'sms-123456789',
     TEST_USER_ID: 'usr-123456789',
+    TEST_PHONENUMBER_ID: '123456789',
     TEST_TOKEN: 'fdfdsfdss1fdfdsfdss1',
   };
 }
