@@ -83,10 +83,10 @@ corbado.sessions().getCurrentUser(req);
 
 ### Error handling
 
-The Corbado PHP SDK throws errors for all errors. The following errors are thrown:
+The Corbado Node.js SDK throws exceptions for all errors. The following errors are thrown:
 
-- `BaseErrors` for failed assertions and configuration errors (client side)
-- `ServerErrors` for server errors (server side)
+- `BaseError` for failed assertions and configuration errors (client side)
+- `ServerError` for server errors (server side)
 
 If the Backend API returns a HTTP status code other than 200, the Corbado Node.js SDK throws a `ServerError`. The `ServerError`class provides convenient methods to access all important data:
 
@@ -121,7 +121,7 @@ try {
 
 ### Report an issue
 
-If you encounter any bugs or have suggestions, please [open an issue](https://github.com/corbado/corbado-php/issues/new).
+If you encounter any bugs or have suggestions, please [open an issue](https://github.com/corbado/corbado-nodejs/issues/new).
 
 ### Slack channel
 
