@@ -32,7 +32,8 @@
     "lint": "make lint",
     "fix": "make fix",
     "tsc": "tsc",
-    "start": "make start"
+    "start": "make start",
+    "build": "make build"
   },
   "dependencies": {
     "@openapitools/openapi-generator-cli": "^2.7.0",
