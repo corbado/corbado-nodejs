@@ -27,6 +27,7 @@ const customErrorCodes: Record<string, HttpStatusCode> = {
   ISSUER_MISMATCH_ERROR: { description: 'Mismatch in issuer configuration', code: 1010, isOperational: false },
   MISSING_ACTION_HEADER: { description: 'Missing action header (X-CORBADO-ACTION)', code: 1011, isOperational: false },
   INVALID_ACTION_HEADER: { description: 'Missing action header (X-CORBADO-ACTION)', code: 1012, isOperational: false },
+  INVALID_URL: { description: 'Provided url is invalid', code: 1013, isOperational: false },
 };
 
 const httpStatusCodes = { ...standardStatusCodes, ...customErrorCodes };
