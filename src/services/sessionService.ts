@@ -6,8 +6,8 @@ import User from '../entities/user.js';
 import { Assert } from '../helpers/index.js';
 
 export interface SessionInterface {
-  validateShortSessionValue(token: string): Promise<User>;
-  getCurrentUser(token: string): Promise<User>;
+  validateShortSessionValue(shortSession: string): Promise<User>;
+  getCurrentUser(shortSession: string): Promise<User>;
   getLastShortSessionValidationResult(): string;
 }
 
@@ -17,16 +17,12 @@ interface MyJWTPayload extends JWTPayload {
   phoneNumber?: string;
 }
 
-const MIN_TOKEN_LENGTH = 10;
+const MIN_SHORT_SESSION_LENGTH = 10;
 
 class Session implements SessionInterface {
   private client: AxiosInstance;
 
-  private shortSessionCookieName: string;
-
   private issuer: string;
-
-  private jwksURI: string;
 
   private cacheMaxAge: number;
 
@@ -46,24 +42,20 @@ class Session implements SessionInterface {
     }
 
     this.client = client;
-    this.shortSessionCookieName = shortSessionCookieName;
     this.issuer = issuer;
-    this.jwksURI = jwksURI;
     this.cacheMaxAge = cacheMaxAge;
-    this.jwkSet = createRemoteJWKSet(new URL(this.jwksURI), { cacheMaxAge: this.cacheMaxAge });
+    this.jwkSet = createRemoteJWKSet(new URL(jwksURI), { cacheMaxAge: this.cacheMaxAge });
   }
 
-  public async validateShortSessionValue(token: string): Promise<User> {
-    Assert.notEmptyString(token, 'RequestObject not given');
+  public async validateShortSessionValue(shortSession: string): Promise<User> {
+    Assert.notEmptyString(shortSession, 'shortSession not given');
 
-    const jwks = this.jwkSet;
-
-    if (!token) {
+    if (!shortSession) {
       return new User(false);
     }
 
     try {
-      const { payload } = await jwtVerify(token, jwks, { issuer: this.issuer });
+      const { payload } = await jwtVerify(shortSession, this.jwkSet, { issuer: this.issuer });
 
       const { sub, name, email, phoneNumber } = payload as MyJWTPayload;
 
@@ -83,23 +75,13 @@ class Session implements SessionInterface {
     return this.lastShortSessionValidationResult;
   }
 
-  public async getCurrentUser(token: string): Promise<User> {
-    if (!token || token.length < MIN_TOKEN_LENGTH) {
+  public async getCurrentUser(shortSession: string): Promise<User> {
+    if (!shortSession || shortSession.length < MIN_SHORT_SESSION_LENGTH) {
       return new User(false);
     }
 
-    const user = await this.validateShortSessionValue(token);
+    const user = await this.validateShortSessionValue(shortSession);
     return user ?? new User(false);
-  }
-
-  private extractBearerToken(header?: { authorization: string }): string {
-    if (!header?.authorization) {
-      return '';
-    }
-    if (header?.authorization.startsWith('Bearer ')) {
-      return header.authorization.split(' ')[1];
-    }
-    return '';
   }
 
   private setIssuerMismatchError(issuer: string): void {

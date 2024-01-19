@@ -15,7 +15,7 @@ export const DefaultClient = axios.create();
 export const DefaultBackendAPI = 'https://backendapi.corbado.io';
 export const DefaultFrontendAPI = 'https://[projectID].frontendapi.corbado.io';
 export const DefaultShortSessionCookieName = 'cbo_short_session';
-export const DefaultCacheMaxAge = 60 * 1000; // 60 * 1000 = 60000 milliseconds, which is equivalent to 1 minute.
+export const DefaultCacheMaxAge = 10 * 60 * 1000; // 10 * 60 * 1000 = 60000 milliseconds, which is equivalent to 10 minutes.
 
 class Config implements ConfigInterface {
   ProjectID: string;
