@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    // JS Language plugins (~required)
+    "dbaeumer.vscode-eslint",
+    "mgmcdermott.vscode-language-babel",
+    "esbenp.prettier-vscode",
+
+    // Highly recommended
+    "jgclark.vscode-todo-highlight",
+    "EditorConfig.editorconfig"
+  ]
+}

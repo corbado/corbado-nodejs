@@ -1,0 +1,12 @@
+{
+  // Show the path in the top window bar.
+  "window.title": "${rootName}${separator}${activeEditorMedium}",
+
+  // Formatting
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": ["source.fixAll.format", "source.fixAll.eslint", "source.removeUnusedImports"],
+
+  // Extension settings
+  "npm.packageManager": "npm"
+}

@@ -1,0 +1,49 @@
+// {
+//   "$schema": "https://json.schemastore.org/tsconfig",
+//   "display": "Corbado NodeJS",
+//   "compilerOptions": {
+//     "lib": ["DOM", "ES2020"],
+//     "module": "esnext",
+//     "target": "es2020",
+
+//     "strict": true,
+//     "noFallthroughCasesInSwitch": true,
+//     "experimentalDecorators": true,
+//     "moduleResolution": "node",
+//     "sourceMap": true,
+//     "outDir": "esm",
+//     "baseUrl": ".",
+//     "paths": {
+//       "src/*": ["src/*"]
+//     },
+
+//     "declaration": true
+//   },
+//   "include": ["src/**/*"]
+// }
+
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Corbado NodeJS - Base",
+  "compilerOptions": {
+    "lib": ["DOM", "ES2020"], // Standard library files to be included in the compilation.
+    "target": "es2020", // Specify ECMAScript target version
+    "strict": true, // Enable all strict type-checking options
+    "noFallthroughCasesInSwitch": true, // Prevent fall-through case in switch statements
+    "experimentalDecorators": true, // Enable experimental support for decorators
+    "moduleResolution": "node", // Resolve modules using Node.js style
+    "sourceMap": true, // Generates source map files for debugging
+    "baseUrl": ".", // Base directory to resolve non-relative module names
+    "forceConsistentCasingInFileNames": true, // Disallow inconsistently-cased references to the same file
+    "paths": {
+      "src/*": ["src/*"] // Specify paths for modules
+    },
+    "declaration": true // Generates corresponding '.d.ts' file for each output '.js' file
+  },
+  "ts-node": {
+    "moduleTypes": {
+      "jest.config.ts": "cjs"
+    }
+  },
+  "include": ["src/**/*"] // Specify files to be included in the compilation
+}

@@ -1,209 +1,138 @@
+<img width="1070" alt="GitHub Repo Cover" src="https://github.com/corbado/corbado-php/assets/18458907/aa4f9df6-980b-4b24-bb2f-d71c0f480971">
+
 # Corbado Node.js SDK
 
-This SDK facilitates effortless integration of Corbado's Backend API within your Node.js applications.
+[![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
+![Latest Stable Version](https://img.shields.io/npm/v/@corbado/node-sdk)
+[![Coverage Status](https://github.com/corbado/corbado-nodejs/raw/gh-pages/badges/coverage-jest%20coverage.svg?raw=true)](https://nolleh.gitcorbado/corbado-nodejs/badges/coverage-jest%20coverage.svg?raw=true)
+[![codecov](https://codecov.io/gh/corbado/corbado-nodejs/graph/badge.svg?token=FD4TEXN6TR)](https://codecov.io/gh/corbado/corbado-nodejs)
+[![documentation](https://img.shields.io/badge/documentation-Corbado_Backend_API_Reference-blue.svg)](https://api.corbado.com/docs/api/)
+[![Slack](https://img.shields.io/badge/slack-join%20chat-brightgreen.svg)](https://join.slack.com/t/corbado/shared_invite/zt-1b7867yz8-V~Xr~ngmSGbt7IA~g16ZsQ)
 
-## Documentation
+The [Corbado](https://www.corbado.com) Node SDK provides convenient access to the [Corbado Backend API](https://api.corbado.com/docs/api/) from applications written in Node.js.
 
-For a detailed understanding of how to use the Corbado Backend API, refer to
-the [Corbado Backend API Reference](https://api.corbado.com/docs/api/)
-and [Corbado API-only integration guide](https://docs.corbado.com/integrations/api-only).
+:warning: The Corbado Node.js SDK is commonly referred to as a private client, specifically designed for usage within closed backend applications. This particular SDK should exclusively be utilized in such environments, as it is crucial to ensure that the API secret remains strictly confidential and is never shared.
 
-## Requirements
+:rocket: [Getting started](#rocket-getting-started) | :hammer_and_wrench: [Services](#hammer_and_wrench-services) | :books: [Advanced](#books-advanced) | :speech_balloon: [Support & Feedback](#speech_balloon-support--feedback)
 
-Ensure your environment runs Node 8 or higher.
+## :rocket: Getting started
+
+### Requirements
+
+- Node.js 8 or higher.
 
 ## Installation
 
 Use the following command to install the Corbado Node.js SDK:
 
-```sh
-npm install @corbado/node-sdk --save
+```bash
+npm install @corbado/node-sdk
 ```
 
 ## Usage
 
-To initialize the SDK, supply it with your Corbado account's ```project ID``` and ```API secret```. You can obtain these
-parameters
-from the [Corbado developer panel](https://app.corbado.com).
-
-## Initialization
+To create a Node.js SDK instance you need to provide your `Project ID` and `API secret` which can be found at the [Developer Panel](https://app.corbado.com).
 
 ### ES5:
 
 ```JavaScript
 const Corbado = require('@corbado/node-sdk');
 
-const projectID = process.env.PROJECT_ID;
-const apiSecret = process.env.API_SECRET;
+const projectID = process.env.CORBADO_PROJECT_ID;
+const apiSecret = process.env.CORBADO_API_SECRET;
 
-const config = new Corbado.Configuration(projectID, apiSecret);
-const corbado = new Corbado.SDK(config);
+const config = new Corbado.Config(projectID, apiSecret);
+const sdk = new Corbado.SDK(config);
 ```
 
 ### ES6:
 
-```JavaScript 
-import {SDK, Configuration} from '@corbado/node-sdk';
+```JavaScript
+import {SDK, Config} from '@corbado/node-sdk';
 
-const projectID = process.env.PROJECT_ID;
-const apiSecret = process.env.API_SECRET;
-const config = new Configuration(projectID, apiSecret);
-const corbado = new SDK(config);
+const projectID = process.env.CORBADO_PROJECT_ID;
+const apiSecret = process.env.CORBADO_API_SECRET;
+
+const config = new Config(projectID, apiSecret);
+const sdk = new SDK(config);
 ```
+
+### Examples
+
+A list of examples can be found in the integration tests [here](tests/integration).
 
 ### Services
 
-The Corbado SDK provides a range of services including:
+The Corbado Node.js SDK provides the following services:
 
-- `AuthTokens`
-- `EmailLinks`
-- `Passkeys`
-- `Session`
-- `User`
-- `Webhooks`
+- `authTokens` for managing authentication tokens needed for own session management ([examples](tests/integration/services/authToken.test.ts))
+- `emailMagicLinks` for managing email magic links ([examples](tests/integration/services/emailLink.test.ts))
+- `emailOTPs` for managing email OTPs ([examples](tests/integration/services/emailOtp.test.ts))
+- `sessions` for managing sessions
+- `smsOTPs` for managing SMS OTPs ([examples](tests/integration/services/smsOtp.test.ts))
+- `users` for managing users ([examples](tests/integration/services/user.test.ts))
+- `validations` for validating email addresses and phone numbers ([examples](tests/integration/services/validation.test.ts))
 
-
-To use a specific service, such as Session, invoke it as shown below:
-
-```
-corbado.session.getCurrentUser(req);
-```
-
-Some selected services are explained in more detail below:
-
-#### Corbado session management
-
-Corbado offers an efficient and secure session management system (refer to
-the [documentation](https://docs.corbado.com/overview/welcome) for more details).
-
-To validate a user after authentication, call `getCurrentUser(req)` which returns a user object with
-all information about the current user. This object contains the current authentication state as well as user's id,
-name, email and phone number.
+To use a specific service, such as `sessions`, invoke it as shown below:
 
 ```JavaScript
-const user = await corbado.session.getCurrentUser(req);
-if (user.authenticated) {
-    // Do anything with authenticated user
-} else {
-    // Perform login ceremony
+corbado.sessions().getCurrentUser(req);
+```
+
+## :books: Advanced
+
+### Error handling
+
+The Corbado Node.js SDK throws exceptions for all errors. The following errors are thrown:
+
+- `BaseError` for failed assertions and configuration errors (client side)
+- `ServerError` for server errors (server side)
+
+If the Backend API returns a HTTP status code other than 200, the Corbado Node.js SDK throws a `ServerError`. The `ServerError`class provides convenient methods to access all important data:
+
+```javascript
+try {
+    // Try to get non-existing user with ID 'usr-123456789'
+    const user = sdk.users().get('usr-123456789');
+} catch (error: ServerError) {
+    // Show HTTP status code (404 in this case)
+    console.log(error.getHttpStatusCode());
+
+    // Show request ID (can be used in developer panel to look up the full request
+    // and response, see https://app.corbado.com/app/logs/requests)
+    console.log(error.getRequestID());
+
+    // Show full request data
+    console.log(error.getRequestData());
+
+    // Show runtime of request in seconds (server side)
+    console.log(error.getRuntime());
+
+    // Show validation error messages (server side validation in case of HTTP
+    // status code 400 (Bad Request))
+    console.log(error.getValidationMessages());
+
+    // Show full error data
+    console.log(error.getError());
 }
 ```
 
-#### Corbado webhooks
+## :speech_balloon: Support & Feedback
 
-When using webhooks, it's best practice to provide the webhooks username and password in the config during instantiation:
+### Report an issue
 
-##### ES5:
+If you encounter any bugs or have suggestions, please [open an issue](https://github.com/corbado/corbado-nodejs/issues/new).
 
-```JavaScript
-const Corbado = require('@corbado/node-sdk');
+### Slack channel
 
-const projectID = process.env.PROJECT_ID;
-const apiSecret = process.env.API_SECRET;
+Join our Slack channel to discuss questions or ideas with the Corbado team and other developers.
 
-const config = new Corbado.Configuration(projectID, apiSecret);
-config.webhookUsername = process.env.WEBHOOK_USERNAME;
-config.webhookPassword = process.env.WEBHOOK_PASSWORD;
-const corbado = new Corbado.SDK(config);
-```
+[![Slack](https://img.shields.io/badge/slack-join%20chat-brightgreen.svg)](https://join.slack.com/t/corbado/shared_invite/zt-1b7867yz8-V~Xr~ngmSGbt7IA~g16ZsQ)
 
-##### ES6:
+### Email
 
-```JavaScript 
-import {SDK, Configuration} from '@corbado/node-sdk';
+You can also reach out to us via email at vincent.delitz@corbado.com.
 
-const projectID = process.env.PROJECT_ID;
-const apiSecret = process.env.API_SECRET;
-const config = new Configuration(projectID, apiSecret);
-config.webhookUsername = process.env.WEBHOOK_USERNAME;
-config.webhookPassword = process.env.WEBHOOK_PASSWORD;
-const corbado = new SDK(config);
-```
+### Vulnerability reporting
 
-You can protect routes with the webhooks middleware, e.g.:
-
-```JavaScript
-app.post('/api/corbado/webhook', corbado.webhooks.middleware, json(), handleWebhook);
-```
-
-A sample endpoint, handling the webhooks could look like:
-```JavaScript
-export const handleWebhook = async (req, res) => {
-    try {
-        // Get the webhook action and act accordingly. Every Corbado
-        // webhook has an action.
-
-        let request: any;
-        let response: any;
-        console.log("BEFORE ACTION");
-        switch (corbado.webhooks.getAction(req)) {
-
-            // Handle the "authMethods" action which basically checks
-            // if a user exists on your side/in your database.
-            case corbado.webhooks.WEBHOOK_ACTION.AUTH_METHODS: {
-                console.log("WEBHOOK AUTH METHODS");
-                request = corbado.webhooks.getAuthMethodsRequest(req);
-
-                // Now check if the given user/username exists in your
-                // database and send status. Implement getUserStatus()
-                // function below.#
-                console.log("BEFORE USER STATUS");
-
-                const status = await getUserStatus(request.data.username);
-                let correctUserStatus = status.userStatus;
-                if(status.createdByCorbado) {
-                    correctUserStatus = "not_exists"
-                }
-                response = corbado.webhooks.getAuthMethodsResponse(correctUserStatus);
-                res.json(response);
-                break;
-            }
-
-            // Handle the "passwordVerify" action which basically checks
-            // if the given username and password are valid.
-            case corbado.webhooks.WEBHOOK_ACTION.PASSWORD_VERIFY: {
-                console.log("WEBHOOK PASSWORD VERIFY");
-                request = corbado.webhooks.getPasswordVerifyRequest(req);
-
-                // Now check if the given username and password is
-                // valid. Implement verifyPassword() function below.
-                const isValid = await verifyPassword(request.data.username, request.data.password)
-                response = corbado.webhooks.getPasswordVerifyResponse(isValid);
-                res.json(response);
-                break;
-            }
-            default: {
-                res.status(400).send('Bad Request');
-                return;
-            }
-        }
-    } catch (error: any) {
-
-        // We expose the full error message here. Usually you would
-        // not do this (security!) but in this case Corbado is the
-        // only consumer of your webhook. The error message gets
-        // logged at Corbado and helps you and us debugging your
-        // webhook.
-        console.log(error);
-
-        // If something went wrong just return HTTP status
-        // code 500. For successful requests Corbado always
-        // expects HTTP status code 200. Everything else
-        // will be treated as error.
-
-        res.status(500).send(error.message);
-        return;
-    }
-}
-```
-
-### Utility functions
-
-The SDK also features utility functions to streamline the development process:
-
-```JavaScript
-corbado.utils.getClientInfo(req);
-```
-
-This function helps to obtain relevant client information (```UserAgent```, ```RemoteAddress```) object from
-an ```HttpRequest```.
+Please report suspected security vulnerabilities in private to security@corbado.com. Please do NOT create publicly viewable issues for suspected security vulnerabilities.
