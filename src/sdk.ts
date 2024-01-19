@@ -34,6 +34,7 @@ class SDK {
       config.ShortSessionCookieName,
       config.FrontendAPI,
       `${config.FrontendAPI}/.well-known/jwks`,
+      config.CacheMaxAge
     );
 
     this.smsOTP = new SmsOTP(this.axiosClient);

@@ -35,7 +35,7 @@ class Session implements SessionInterface {
     shortSessionCookieName: string,
     issuer: string,
     jwksURI: string,
-    cacheMaxAge = 10 * 60, // 10 minutes
+    cacheMaxAge: number
   ) {
     if (!shortSessionCookieName || !issuer || !jwksURI) {
       throw new Error('Required parameter is empty');
@@ -44,7 +44,7 @@ class Session implements SessionInterface {
     this.client = client;
     this.issuer = issuer;
     this.cacheMaxAge = cacheMaxAge;
-    this.jwkSet = createRemoteJWKSet(new URL(jwksURI), { cacheMaxAge: this.cacheMaxAge });
+    this.jwkSet = createRemoteJWKSet(new URL(jwksURI), { cacheMaxAge: this.cacheMaxAge, cooldownDuration: this.cacheMaxAge});
   }
 
   public async validateShortSessionValue(shortSession: string): Promise<User> {
