@@ -21,6 +21,8 @@ class SDK {
   private validation: Validation;
 
   constructor(config: Config) {
+    this.validateEnvironment();
+
     this.axiosClient = this.createClient(config);
 
     this.authToken = new AuthToken(this.axiosClient);
@@ -89,6 +91,13 @@ class SDK {
 
   validations(): Validation {
     return this.validation;
+  }
+
+  private validateEnvironment(): void {
+    const isBrowser = typeof window !== 'undefined' && typeof window.document !== 'undefined';
+    if (isBrowser) {
+      throw new Error('This SDK is not supported in browser environment');
+    }
   }
 }
 
