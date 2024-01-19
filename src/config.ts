@@ -1,4 +1,3 @@
-import { MemoryCache } from 'memory-cache-node';
 import axios, { AxiosInstance } from 'axios';
 import Assert from './helpers/assert';
 
@@ -12,14 +11,10 @@ export interface ConfigInterface {
   CacheMaxAge: number;
 }
 
-const itemsExpirationCheckIntervalInSecs = 10 * 60;
-const maxItemCount = 1000000;
-
 export const DefaultClient = axios.create();
 export const DefaultBackendAPI = 'https://backendapi.corbado.io';
 export const DefaultFrontendAPI = 'https://[projectID].frontendapi.corbado.io';
 export const DefaultShortSessionCookieName = 'cbo_short_session';
-export const DefaultJwksCache = new MemoryCache<string, string>(itemsExpirationCheckIntervalInSecs, maxItemCount);
 export const DefaultCacheMaxAge = 60 * 1000; // 60 * 1000 = 60000 milliseconds, which is equivalent to 1 minute.
 
 class Config implements ConfigInterface {

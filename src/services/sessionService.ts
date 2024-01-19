@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable class-methods-use-this */
 import { AxiosInstance } from 'axios';
-import { MemoryCache } from 'memory-cache-node';
 import { JWTPayload, jwtVerify, createRemoteJWKSet } from 'jose';
 import User from '../entities/user.js';
 import { Assert } from '../helpers/index.js';
@@ -20,9 +19,6 @@ interface MyJWTPayload extends JWTPayload {
 
 const MIN_TOKEN_LENGTH = 10;
 
-const itemsExpirationCheckIntervalInSecs = 10 * 60;
-const maxItemCount = 1000000;
-
 class Session implements SessionInterface {
   private client: AxiosInstance;
 
@@ -35,6 +31,8 @@ class Session implements SessionInterface {
   private cacheMaxAge: number;
 
   private lastShortSessionValidationResult: string = '';
+
+  private jwkSet;
 
   constructor(
     client: AxiosInstance,
@@ -52,12 +50,13 @@ class Session implements SessionInterface {
     this.issuer = issuer;
     this.jwksURI = jwksURI;
     this.cacheMaxAge = cacheMaxAge;
+    this.jwkSet = createRemoteJWKSet(new URL(this.jwksURI), { cacheMaxAge: this.cacheMaxAge });
   }
 
   public async validateShortSessionValue(token: string): Promise<User> {
     Assert.notEmptyString(token, 'RequestObject not given');
 
-    const jwks = createRemoteJWKSet(new URL(this.jwksURI), { cacheMaxAge: this.cacheMaxAge });
+    const jwks = this.jwkSet;
 
     if (!token) {
       return new User(false);

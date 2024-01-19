@@ -1,9 +1,4 @@
-import {
-  DefaultBackendAPI,
-  DefaultCacheMaxAge,
-  DefaultJwksCache,
-  DefaultShortSessionCookieName,
-} from '../../src/config.js';
+import { DefaultBackendAPI, DefaultCacheMaxAge, DefaultShortSessionCookieName } from '../../src/config.js';
 import { BaseError } from '../../src/errors/index.js';
 import { Config } from '../../src/index.js';
 
