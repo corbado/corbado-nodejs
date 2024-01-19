@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import Assert from './helpers/assert';
+import Assert from './helpers/assert.js';
 
 /* eslint-disable class-methods-use-this */
 export interface ConfigInterface {
