@@ -13,7 +13,7 @@ describe('Session', () => {
     issuer = Utils.testConstants.TEST_REDIRECT_URL;
     shortSessionCookieName = 'session';
     jwksURI = `${Utils.testConstants.TEST_REDIRECT_URL}/jwks`;
-    createSession = () => new Session(Utils.MockAxiosInstance().axiosInstance, shortSessionCookieName, issuer, jwksURI);
+    createSession = () => new Session(Utils.MockAxiosInstance().axiosInstance, shortSessionCookieName, issuer, jwksURI, 60 * 1000);
   });
 
   it('should create a Session instance with valid parameters', () => {
