@@ -7,20 +7,9 @@ import User from '../entities/user.js';
 import { Assert } from '../helpers/index.js';
 
 export interface SessionInterface {
-  getShortSessionValue(req: RequestWithCookies): string;
-  validateShortSessionValue(req: RequestWithCookies): Promise<User>;
-  getCurrentUser(req: RequestWithCookies): Promise<User>;
+  validateShortSessionValue(token: string): Promise<User>;
+  getCurrentUser(token: string): Promise<User>;
   getLastShortSessionValidationResult(): string;
-}
-
-export interface RequestWithCookies extends Request {
-  cookies: {
-    [key: string]: string;
-  };
-  headers: Headers & {
-    authorization: string;
-    [key: string]: string;
-  };
 }
 
 interface MyJWTPayload extends JWTPayload {
@@ -65,15 +54,10 @@ class Session implements SessionInterface {
     this.cacheMaxAge = cacheMaxAge;
   }
 
-  public getShortSessionValue(req: RequestWithCookies): string {
-    return req.cookies?.[this.shortSessionCookieName] ?? this.extractBearerToken(req.headers);
-  }
-
-  public async validateShortSessionValue(req: RequestWithCookies): Promise<User> {
-    Assert.notNull(typeof req === 'object' && req !== null, 'RequestObject not given');
+  public async validateShortSessionValue(token: string): Promise<User> {
+    Assert.notEmptyString(token, 'RequestObject not given');
 
     const jwks = createRemoteJWKSet(new URL(this.jwksURI), { cacheMaxAge: this.cacheMaxAge });
-    const token = this.getShortSessionValue(req);
 
     if (!token) {
       return new User(false);
@@ -100,14 +84,12 @@ class Session implements SessionInterface {
     return this.lastShortSessionValidationResult;
   }
 
-  public async getCurrentUser(req: RequestWithCookies): Promise<User> {
-    const value = this.getShortSessionValue(req);
-
-    if (!value || value.length < MIN_TOKEN_LENGTH) {
+  public async getCurrentUser(token: string): Promise<User> {
+    if (!token || token.length < MIN_TOKEN_LENGTH) {
       return new User(false);
     }
 
-    const user = await this.validateShortSessionValue(req);
+    const user = await this.validateShortSessionValue(token);
     return user ?? new User(false);
   }
 
