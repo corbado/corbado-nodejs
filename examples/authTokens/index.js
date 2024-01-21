@@ -1,10 +1,10 @@
 const express = require('express');
-const corbado = require('@corbado/node-sdk');
+const Corbado = require('@corbado/node-sdk');
 
 const app = express();
 
-const config = new corbado.Config(process.env.CORBADO_PROJECT_ID, process.env.CORBADO_API_SECRET);
-const sdk = new corbado.SDK(config);
+const config = new Corbado.Config(process.env.CORBADO_PROJECT_ID, process.env.CORBADO_API_SECRET);
+const sdk = new Corbado.SDK(config);
 
 app.get('/', async (req, res) => {
   try {
