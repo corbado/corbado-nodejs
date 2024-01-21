@@ -6,7 +6,7 @@ const app = express();
 const config = new Corbado.Config(process.env.CORBADO_PROJECT_ID, process.env.CORBADO_API_SECRET);
 const sdk = new Corbado.SDK(config);
 
-app.get('/', async (req, res) => {
+app.get('/validateAuthToken', async (req, res) => {
   try {
     const corbadoAuthToken = req.query.corbadoAuthToken;
     const request = {
