@@ -14,3 +14,5 @@
 
 export * from './backendApi/api.js';
 export * from './backendApi/configuration.js';
+export * as frontendAPI from './frontendApi/api.js';
+export * as frontendConfiguration from './frontendApi/configuration.js';
