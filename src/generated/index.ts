@@ -12,5 +12,5 @@
  * Do not edit the class manually.
  */
 
-export * from './api.js';
-export * from './configuration.js';
+export * from './backendApi/api.js';
+export * from './backendApi/configuration.js';
