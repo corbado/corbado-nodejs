@@ -13,7 +13,7 @@ The [Corbado](https://www.corbado.com) Node SDK provides convenient access to th
 
 :warning: The Corbado Node.js SDK is commonly referred to as a private client, specifically designed for usage within closed backend applications. This particular SDK should exclusively be utilized in such environments, as it is crucial to ensure that the API secret remains strictly confidential and is never shared.
 
-:rocket: [Getting started](#rocket-getting-started) | :hammer_and_wrench: [Services](#hammer_and_wrench-services) | :books: [Advanced](#books-advanced) | :speech_balloon: [Support & Feedback](#speech_balloon-support--feedback)
+:rocket: [Getting started](#rocket-getting-started) | :hammer_and_wrench: [Installation](#installation) | :books: [Advanced](#books-advanced) | :speech_balloon: [Support & Feedback](#speech_balloon-support--feedback)
 
 ## :rocket: Getting started
 
