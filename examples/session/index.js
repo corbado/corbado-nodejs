@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import { Config, SDK } from '@corbado/node-sdk';
 import cookieParser from 'cookie-parser';
 
@@ -6,7 +6,9 @@ const app = express();
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
-const config = new Config(process.env.CORBADO_PROJECT_ID as string, process.env.CORBADO_API_SECRET as string);
+const config = new Config('pro-1', 'corbado1_k8Ql8aUY5drWEUazwooZ6nfYyAyEm8', 'https://auth.corbado-dev.com');
+config.setFrontendAPI('https://pro-1.frontendapi.corbado-dev.io')
+config.setBackendAPI('https://api.corbado-dev.com')
 const sdk = new SDK(config);
 
 app.get('/', async (req, res) => {
@@ -20,16 +22,17 @@ app.get('/setCookie', async (_req, res) => {
   // have to update the cookie name here asa well.
   res.cookie(
     'cbo_short_session',
-    'eyJhbGciOiJSUzI1NiIsImtpZCI6InBraS04OTc5Mjk2NzI3NDc1MTEzNjI1IiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwczovL2F1dGguY29yYmFkby5jb20iLCJzdWIiOiJ1c3ItMTM1OTEwNjU3MDExNzcxMDAzNzgiLCJleHAiOjE3MDU2NTg3MDIsIm5iZiI6MTcwNTY1ODM5MiwiaWF0IjoxNzA1NjU4NDAyLCJqdGkiOiJZY3JMWlFrVkw3ZE5YdktZMnY0YjUyamlDZlVkWUIiLCJuYW1lIjoiU2FtIE9kdW0iLCJvcmlnIjoic2FtLm9kdW1AY29yYmFkby5jb20iLCJlbWFpbCI6InNhbS5vZHVtQGNvcmJhZG8uY29tIiwidmVyc2lvbiI6MX0.0V6dfc9RQg7jCrTibJkoATCFwdbhWBWE44fOAFthb7Ch8E4XVXb6TFSa6cGyIzn_KQxeotUaRIueJKINY-BB2aA-DnrPP7NAue2N76NdBsjoJLH3CyCbNNZ506UlLpTbgvM5KWdDQhHL2uN36qiH_tfHMVrvVALwecmMjMWPsKT7HwZmTL3WzDud6IZcWXVOi0LgyrbDV0pg5Q2g1XWcnQ_NZq0Pg9AYTrl89CLQFPvQbGVO8hPiasZfXcfghOiceD_U8Mg4DJ2nqX2DIUhCTgwfXWItfhwJLXFGE-3cuyHGpiBuRLmfsO9nps3kITNg9JCTSP3gztvSh02za4TTOg',
+    'eyJhbGciOiJSUzI1NiIsImtpZCI6InBraS03ODEyOTMzNDM0MDMyMjA1MTU5IiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwczovL2F1dGguY29yYmFkby1kZXYuY29tIiwic3ViIjoidXNyLTEwIiwiZXhwIjoxNzE3Njk3NjQ4LCJuYmYiOjE3MTc2OTczMzgsImlhdCI6MTcxNzY5NzM0OCwianRpIjoiTlZ1WjVFcHlvZDNETVFWUHZZbUNsa3RpYmZUaXRhIiwibmFtZSI6Ik1hcnRpbiBLZWxsbmVyIiwib3JpZyI6Im1hcnRpbmtlbGxuZXI0NzBAZ21haWwuY29tIiwiZW1haWwiOiJtYXJ0aW5rZWxsbmVyNDcwQGdtYWlsLmNvbSIsInZlcnNpb24iOjJ9.lErrj5MgrnTSUTw66k2VtpIp_sdOavp-QWXtXmxALosNgZNAWXiGD3Bo_-QZY1i-tDL9bEgoMj9edAqQRQUVUohxY9GTwNqnG00UB8L8Oe0u2EfzdYvq6h7EJviS2GL1ihc7XkcGivSf2Lm3YC0EL8vt0NdyKjJKigaFcdY9gX3Q4_xM9pHE12R0LPsTJBmqd4bh9Udw9HGBVuXStRuvkdjEG68jRltANM-N2yaw0wgG-6_rm7X1Bn3D7d6WuxR2QxCV2rBmkdzlTOr65PHtCWCRfvmbY2XxTIUC9F89bWslb1ruEgC2nDHObqVBIA7uHaVd7VrraW--LeGFzGADkQ',
     { maxAge: 900000, httpOnly: true },
   );
   res.send('Cookie set!');
 });
 
-app.get('/logged-in', async (req: Request, res: Response) => {
+app.get('/logged-in', async (req, res) => {
   try {
     const shortSession = await req.cookies.cbo_short_session;
     const user = await sdk.sessions().getCurrentUser(shortSession);
+    console.log(sdk.sessions().getLastShortSessionValidationResult());
 
     if (user.authenticated) {
       // User is authenticated

@@ -34,7 +34,7 @@ class SDK {
     this.session = new Session(
       this.axiosClient,
       config.ShortSessionCookieName,
-      config.FrontendAPI,
+      config.FrontendAPIWithCName,
       `${config.FrontendAPI}/.well-known/jwks`,
       config.CacheMaxAge
     );

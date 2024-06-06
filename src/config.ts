@@ -24,6 +24,8 @@ class Config implements ConfigInterface {
 
   FrontendAPI: string;
 
+  FrontendAPIWithCName: string;
+
   BackendAPI: string = DefaultBackendAPI;
 
   ShortSessionCookieName: string = DefaultShortSessionCookieName;
@@ -32,7 +34,7 @@ class Config implements ConfigInterface {
 
   CacheMaxAge: number = DefaultCacheMaxAge;
 
-  constructor(projectID: string, apiSecret: string) {
+  constructor(projectID: string, apiSecret: string, cname?: string) {
     this.validateProjectID(projectID);
     this.validateAPISecret(apiSecret);
 
@@ -40,6 +42,7 @@ class Config implements ConfigInterface {
     this.APISecret = apiSecret;
     this.Client = DefaultClient;
     this.FrontendAPI = DefaultFrontendAPI.replace('[projectID]', projectID);
+    this.FrontendAPIWithCName = cname ?? this.FrontendAPI;
   }
 
   public setFrontendAPI(frontendApi: string): void {
