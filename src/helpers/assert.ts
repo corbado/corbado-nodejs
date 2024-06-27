@@ -57,14 +57,6 @@ class Assert {
     }
 
     validate(
-      parsedUrl.protocol !== 'https:',
-      `${errorName} URL scheme assertion failed`,
-      INVALID_URL.code,
-      'scheme needs to be https',
-      INVALID_URL.isOperational,
-    );
-
-    validate(
       Boolean(parsedUrl.username),
       `${errorName} URL username assertion failed`,
       INVALID_URL.code,
