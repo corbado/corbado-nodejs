@@ -35,7 +35,8 @@ class Session implements SessionInterface {
     shortSessionCookieName: string,
     issuer: string,
     jwksURI: string,
-    cacheMaxAge: number
+    cacheMaxAge: number,
+    projectID: string,
   ) {
     if (!shortSessionCookieName || !issuer || !jwksURI) {
       throw new Error('Required parameter is empty');
@@ -44,7 +45,13 @@ class Session implements SessionInterface {
     this.client = client;
     this.issuer = issuer;
     this.cacheMaxAge = cacheMaxAge;
-    this.jwkSet = createRemoteJWKSet(new URL(jwksURI), { cacheMaxAge: this.cacheMaxAge, cooldownDuration: this.cacheMaxAge});
+    this.jwkSet = createRemoteJWKSet(new URL(jwksURI), {
+      cacheMaxAge: this.cacheMaxAge,
+      cooldownDuration: this.cacheMaxAge,
+      headers: {
+        'X-Corbado-ProjectID': projectID,
+      }
+    });
   }
 
   public async validateShortSessionValue(shortSession: string): Promise<User> {

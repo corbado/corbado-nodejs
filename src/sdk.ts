@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
-import axios, { AxiosInstance } from 'axios';
+import axios, {AxiosInstance} from 'axios';
 import Config from './config.js';
-import { AuthToken, EmailOTP, Session, SmsOTP, Validation, EmailLink, User } from './services/index.js';
+import {AuthToken, EmailLink, EmailOTP, Session, SmsOTP, User, Validation} from './services/index.js';
 
 class SDK {
   private axiosClient: AxiosInstance;
@@ -36,7 +36,8 @@ class SDK {
       config.ShortSessionCookieName,
       config.FrontendAPIWithCName,
       `${config.FrontendAPI}/.well-known/jwks`,
-      config.CacheMaxAge
+      config.CacheMaxAge,
+      config.ProjectID,
     );
 
     this.smsOTP = new SmsOTP(this.axiosClient);
