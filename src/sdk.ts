@@ -59,6 +59,7 @@ class SDK {
           sdkVersion: process.env.npm_package_version,
           languageVersion: process.version,
         }),
+        'X-Corbado-ProjectID': config.ProjectID,
       },
     });
 
