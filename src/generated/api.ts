@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * Corbado Backend API
- *  # Introduction This documentation gives an overview of all Corbado Backend API calls to implement passwordless authentication with Passkeys.  The Corbado Backend API is organized around REST principles. It uses resource-oriented URLs with verbs (HTTP methods) and HTTP status codes. Requests need to be valid JSON payloads. We always return JSON.  The Corbado Backend API specification is written in **OpenAPI Version 3.0.3**. You can download it via the download button at the top and use it to generate clients in languages we do not provide officially for example.  # Authentication To authenticate your API requests HTTP Basic Auth is used.  You need to set the projectID as username and the API secret as password. The authorization header looks as follows:  `Basic <<projectID>:<API secret>>`  The **authorization header** needs to be **Base64 encoded** to be working. If the authorization header is missing or incorrect, the API will respond with status code 401.  # Error types As mentioned above we make use of HTTP status codes. **4xx** errors indicate so called client errors, meaning the error occurred on client side and you need to fix it. **5xx** errors indicate server errors, which means the error occurred on server side and outside your control.  Besides HTTP status codes Corbado uses what we call error types which gives more details in error cases and help you to debug your request.  ## internal_error The error type **internal_error** is used when some internal error occurred at Corbado. You can retry your request but usually there is nothing you can do about it. All internal errors get logged and will triggert an alert to our operations team which takes care of the situation as soon as possible.  ## not_found The error type **not_found** is used when you try to get a resource which cannot be found. Most common case is that you provided a wrong ID.  ## method_not_allowed The error type **method_not_allowed** is used when you use a HTTP method (GET for example) on a resource/endpoint which it not supports.   ## validation_error The error type **validation_error** is used when there is validation error on the data you provided in the request payload or path. There will be detailed information in the JSON response about the validation error like what exactly went wrong on what field.   ## project_id_mismatch The error type **project_id_mismatch** is used when there is a project ID you provided mismatch.  ## login_error The error type **login_error** is used when the authentication failed. Most common case is that you provided a wrong pair of project ID and API secret. As mentioned above with use HTTP Basic Auth for authentication.  ## invalid_json The error type **invalid_json** is used when you send invalid JSON as request body. There will be detailed information in the JSON response about what went wrong.  ## rate_limited The error type **rate_limited** is used when ran into rate limiting of the Corbado Backend API. Right now you can do a maximum of **2000 requests** within **10 seconds** from a **single IP**. Throttle your requests and try again. If you think you need more contact support@corbado.com.  ## invalid_origin The error type **invalid_origin** is used when the API has been called from a origin which is not authorized (CORS). Add the origin to your project at https://app.corbado.com/app/settings/credentials/authorized-origins.  ## already_exists The error type **already_exists** is used when you try create a resource which already exists. Most common case is that there is some unique constraint on one of the fields.  # Security and privacy Corbado services are designed, developed, monitored, and updated with security at our core to protect you and your customers’ data and privacy.  ## Security  ### Infrastructure security Corbado leverages highly available and secure cloud infrastructure to ensure that our services are always available and securely delivered. Corbado\'s services are operated in uvensys GmbH\'s data centers in Germany and comply with ISO standard 27001. All data centers have redundant power and internet connections to avoid failure. The main location of the servers used is in Linden and offers 24/7 support. We do not use any AWS, GCP or Azure services.  Each server is monitored 24/7 and in the event of problems, automated information is sent via SMS and e-mail. The monitoring is done by the external service provider Serverguard24 GmbH.   All Corbado hardware and networking is routinely updated and audited to ensure systems are secure and that least privileged access is followed. Additionally we implement robust logging and audit protocols that allow us high visibility into system use.  ### Responsible disclosure program Here at Corbado, we take the security of our user’s data and of our services seriously. As such, we encourage responsible security research on Corbado services and products. If you believe you’ve discovered a potential vulnerability, please let us know by emailing us at [security@corbado.com](mailto:security@corbado.com). We will acknowledge your email within 2 business days. As public disclosures of a security vulnerability could put the entire Corbado community at risk, we ask that you keep such potential vulnerabilities confidential until we are able to address them. We aim to resolve critical issues within 30 days of disclosure. Please make a good faith effort to avoid violating privacy, destroying data, or interrupting or degrading the Corbado service. Please only interact with accounts you own or for which you have explicit permission from the account holder. While researching, please refrain from:  - Distributed Denial of Service (DDoS) - Spamming - Social engineering or phishing of Corbado employees or contractors - Any attacks against Corbado\'s physical property or data centers  Thank you for helping to keep Corbado and our users safe!  ### Rate limiting At Corbado, we apply rate limit policies on our APIs in order to protect your application and user management infrastructure, so your users will have a frictionless non-interrupted experience.  Corbado responds with HTTP status code 429 (too many requests) when the rate limits exceed. Your code logic should be able to handle such cases by checking the status code on the response and recovering from such cases. If a retry is needed, it is best to allow for a back-off to avoid going into an infinite retry loop.  The current rate limit for all our API endpoints is **max. 100 requests per 10 seconds**.  ## Privacy Corbado is committed to protecting the personal data of our customers and their customers. Corbado has in place appropriate data security measures that meet industry standards. We regularly review and make enhancements to our processes, products, documentation, and contracts to help support ours and our customers’ compliance for the processing of personal data.  We try to minimize the usage and processing of personally identifiable information. Therefore, all our services are constructed to avoid unnecessary data consumption.  To make our services work, we only require the following data: - any kind of identifier (e.g. UUID, phone number, email address) - IP address (only temporarily for rate limiting aspects) - User agent (for device management)
+ *  # Introduction This documentation gives an overview of all Corbado Backend API calls to implement passwordless authentication with Passkeys.  The Corbado Backend API is organized around REST principles. It uses resource-oriented URLs with verbs (HTTP methods) and HTTP status codes. Requests need to be valid JSON payloads. We always return JSON.  The Corbado Backend API specification is written in **OpenAPI Version 3.0.3**. You can download it via the download button at the top and use it to generate clients in languages we do not provide officially for example.  # Authentication To authenticate your API requests HTTP Basic Auth is used.  You need to set the projectID as username and the API secret as password. The authorization header looks as follows:  `Basic <<projectID>:<API secret>>`  The **authorization header** needs to be **Base64 encoded** to be working. If the authorization header is missing or incorrect, the API will respond with status code 401.  # Error types As mentioned above we make use of HTTP status codes. **4xx** errors indicate so called client errors, meaning the error occurred on client side and you need to fix it. **5xx** errors indicate server errors, which means the error occurred on server side and outside your control.  Besides HTTP status codes Corbado uses what we call error types which gives more details in error cases and help you to debug your request.  ## internal_error The error type **internal_error** is used when some internal error occurred at Corbado. You can retry your request but usually there is nothing you can do about it. All internal errors get logged and will triggert an alert to our operations team which takes care of the situation as soon as possible.  ## not_found The error type **not_found** is used when you try to get a resource which cannot be found. Most common case is that you provided a wrong ID.  ## method_not_allowed The error type **method_not_allowed** is used when you use a HTTP method (GET for example) on a resource/endpoint which it not supports.   ## validation_error The error type **validation_error** is used when there is validation error on the data you provided in the request payload or path. There will be detailed information in the JSON response about the validation error like what exactly went wrong on what field.   ## project_id_mismatch The error type **project_id_mismatch** is used when there is a project ID you provided mismatch.  ## login_error The error type **login_error** is used when the authentication failed. Most common case is that you provided a wrong pair of project ID and API secret. As mentioned above with use HTTP Basic Auth for authentication.  ## invalid_json The error type **invalid_json** is used when you send invalid JSON as request body. There will be detailed information in the JSON response about what went wrong.  ## rate_limited The error type **rate_limited** is used when ran into rate limiting of the Corbado Backend API. Right now you can do a maximum of **2000 requests** within **10 seconds** from a **single IP**. Throttle your requests and try again. If you think you need more contact support@corbado.com.  ## invalid_origin The error type **invalid_origin** is used when the API has been called from a origin which is not authorized (CORS). Add the origin to your project at https://app.corbado.com/app/settings/credentials/authorized-origins.  ## already_exists The error type **already_exists** is used when you try create a resource which already exists. Most common case is that there is some unique constraint on one of the fields.  # Security and privacy Corbado services are designed, developed, monitored, and updated with security at our core to protect you and your customers’ data and privacy.  ## Security  ### Infrastructure security Corbado leverages highly available and secure cloud infrastructure to ensure that our services are always available and securely delivered. Corbado\'s services are operated in uvensys GmbH\'s data centers in Germany and comply with ISO standard 27001. All data centers have redundant power and internet connections to avoid failure. The main location of the servers used is in Linden and offers 24/7 support. We do not use any AWS, GCP or Azure services.  Each server is monitored 24/7 and in the event of problems, automated information is sent via SMS and e-mail. The monitoring is done by the external service provider Serverguard24 GmbH.   All Corbado hardware and networking is routinely updated and audited to ensure systems are secure and that least privileged access is followed. Additionally we implement robust logging and audit protocols that allow us high visibility into system use.  ### Responsible disclosure program Here at Corbado, we take the security of our user’s data and of our services seriously. As such, we encourage responsible security research on Corbado services and products. If you believe you’ve discovered a potential vulnerability, please let us know by emailing us at [security@corbado.com](mailto:security@corbado.com). We will acknowledge your email within 2 business days. As public disclosures of a security vulnerability could put the entire Corbado community at risk, we ask that you keep such potential vulnerabilities confidential until we are able to address them. We aim to resolve critical issues within 30 days of disclosure. Please make a good faith effort to avoid violating privacy, destroying data, or interrupting or degrading the Corbado service. Please only interact with accounts you own or for which you have explicit permission from the account holder. While researching, please refrain from:  - Distributed Denial of Service (DDoS) - Spamming - Social engineering or phishing of Corbado employees or contractors - Any attacks against Corbado\'s physical property or data centers  Thank you for helping to keep Corbado and our users safe!  ### Rate limiting At Corbado, we apply rate limit policies on our APIs in order to protect your application and user management infrastructure, so your users will have a frictionless non-interrupted experience.  Corbado responds with HTTP status code 429 (too many requests) when the rate limits exceed. Your code logic should be able to handle such cases by checking the status code on the response and recovering from such cases. If a retry is needed, it is best to allow for a back-off to avoid going into an infinite retry loop.  The current rate limit for all our API endpoints is **max. 100 requests per 10 seconds**.  ## Privacy Corbado is committed to protecting the personal data of our customers and their customers. Corbado has in place appropriate data security measures that meet industry standards. We regularly review and make enhancements to our processes, products, documentation, and contracts to help support ours and our customers’ compliance for the processing of personal data.  We try to minimize the usage and processing of personally identifiable information. Therefore, all our services are constructed to avoid unnecessary data consumption.  To make our services work, we only require the following data: - any kind of identifier (e.g. UUID, phone number, email address) - IP address (only temporarily for rate limiting aspects) - User agent (for device management) 
  *
  * The version of the OpenAPI document: 1.0.0
  * Contact: support@corbado.com
@@ -13,15 +13,15 @@
  */
 
 
-import type { Configuration } from './configuration.js';
-import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
+import type { Configuration } from './configuration';
+import type { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common.js';
-import type { RequestArgs } from './base.js';
+import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
+import type { RequestArgs } from './base';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base.js';
+import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
  * 
@@ -36,14 +36,14 @@ export interface AndroidAppConfigDeleteReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof AndroidAppConfigDeleteReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface AndroidAppConfigItem
  */
@@ -61,19 +61,19 @@ export interface AndroidAppConfigItem {
      */
     'projectID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AndroidAppConfigItem
      */
     'packageName': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AndroidAppConfigItem
      */
     'fingerprint': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AndroidAppConfigItem
      */
@@ -92,7 +92,7 @@ export interface AndroidAppConfigItem {
     'updated': string;
 }
 /**
- *
+ * 
  * @export
  * @interface AndroidAppConfigListRsp
  */
@@ -104,13 +104,13 @@ export interface AndroidAppConfigListRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AndroidAppConfigListRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof AndroidAppConfigListRsp
      */
@@ -122,32 +122,32 @@ export interface AndroidAppConfigListRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {Array<AndroidAppConfigItem>}
      * @memberof AndroidAppConfigListRsp
      */
     'rows': Array<AndroidAppConfigItem>;
     /**
-     *
+     * 
      * @type {Paging}
      * @memberof AndroidAppConfigListRsp
      */
     'paging': Paging;
 }
 /**
- *
+ * 
  * @export
  * @interface AndroidAppConfigSaveReq
  */
 export interface AndroidAppConfigSaveReq {
     /**
-     *
+     * 
      * @type {string}
      * @memberof AndroidAppConfigSaveReq
      */
     'packageName': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AndroidAppConfigSaveReq
      */
@@ -159,14 +159,14 @@ export interface AndroidAppConfigSaveReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof AndroidAppConfigSaveReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface AndroidAppConfigSaveRsp
  */
@@ -178,13 +178,13 @@ export interface AndroidAppConfigSaveRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AndroidAppConfigSaveRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof AndroidAppConfigSaveRsp
      */
@@ -208,19 +208,19 @@ export interface AndroidAppConfigSaveRsp {
      */
     'projectID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AndroidAppConfigSaveRsp
      */
     'packageName': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AndroidAppConfigSaveRsp
      */
     'fingerprint': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AndroidAppConfigSaveRsp
      */
@@ -239,19 +239,19 @@ export interface AndroidAppConfigSaveRsp {
     'updated': string;
 }
 /**
- *
+ * 
  * @export
  * @interface AndroidAppConfigUpdateReq
  */
 export interface AndroidAppConfigUpdateReq {
     /**
-     *
+     * 
      * @type {string}
      * @memberof AndroidAppConfigUpdateReq
      */
     'packageName': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AndroidAppConfigUpdateReq
      */
@@ -263,14 +263,14 @@ export interface AndroidAppConfigUpdateReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof AndroidAppConfigUpdateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface AndroidAppConfigUpdateRsp
  */
@@ -282,13 +282,13 @@ export interface AndroidAppConfigUpdateRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AndroidAppConfigUpdateRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof AndroidAppConfigUpdateRsp
      */
@@ -312,19 +312,19 @@ export interface AndroidAppConfigUpdateRsp {
      */
     'projectID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AndroidAppConfigUpdateRsp
      */
     'packageName': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AndroidAppConfigUpdateRsp
      */
     'fingerprint': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AndroidAppConfigUpdateRsp
      */
@@ -358,19 +358,19 @@ export type AppType = typeof AppType[keyof typeof AppType];
 
 
 /**
- *
+ * 
  * @export
  * @interface AssociationTokenCreateReq
  */
 export interface AssociationTokenCreateReq {
     /**
-     *
+     * 
      * @type {string}
      * @memberof AssociationTokenCreateReq
      */
     'loginIdentifier': string;
     /**
-     *
+     * 
      * @type {LoginIdentifierType}
      * @memberof AssociationTokenCreateReq
      */
@@ -382,7 +382,7 @@ export interface AssociationTokenCreateReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof AssociationTokenCreateReq
      */
@@ -391,7 +391,7 @@ export interface AssociationTokenCreateReq {
 
 
 /**
- *
+ * 
  * @export
  * @interface AssociationTokenCreateRsp
  */
@@ -403,13 +403,13 @@ export interface AssociationTokenCreateRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AssociationTokenCreateRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof AssociationTokenCreateRsp
      */
@@ -421,26 +421,26 @@ export interface AssociationTokenCreateRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {AssociationTokenCreateRspAllOfData}
      * @memberof AssociationTokenCreateRsp
      */
     'data': AssociationTokenCreateRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface AssociationTokenCreateRspAllOfData
  */
 export interface AssociationTokenCreateRspAllOfData {
     /**
-     *
+     * 
      * @type {string}
      * @memberof AssociationTokenCreateRspAllOfData
      */
     'token'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AssociationTokenCreateRspAllOfData
      */
@@ -463,7 +463,7 @@ export type AuthMethod = typeof AuthMethod[keyof typeof AuthMethod];
 
 
 /**
- *
+ * 
  * @export
  * @interface AuthMethodsListReq
  */
@@ -481,14 +481,14 @@ export interface AuthMethodsListReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof AuthMethodsListReq
      */
     'clientInfo': ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface AuthMethodsListRsp
  */
@@ -500,13 +500,13 @@ export interface AuthMethodsListRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AuthMethodsListRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof AuthMethodsListRsp
      */
@@ -518,45 +518,45 @@ export interface AuthMethodsListRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {AuthMethodsListRspAllOfData}
      * @memberof AuthMethodsListRsp
      */
     'data': AuthMethodsListRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface AuthMethodsListRspAllOfData
  */
 export interface AuthMethodsListRspAllOfData {
     /**
-     *
+     * 
      * @type {Array<AuthMethod>}
      * @memberof AuthMethodsListRspAllOfData
      */
     'selectMethods': Array<AuthMethod>;
     /**
-     *
+     * 
      * @type {Array<AuthMethod>}
      * @memberof AuthMethodsListRspAllOfData
      */
     'possibleMethods': Array<AuthMethod>;
     /**
-     *
+     * 
      * @type {Paging}
      * @memberof AuthMethodsListRspAllOfData
      */
     'paging': Paging;
 }
 /**
- *
+ * 
  * @export
  * @interface AuthTokenValidateReq
  */
 export interface AuthTokenValidateReq {
     /**
-     *
+     * 
      * @type {string}
      * @memberof AuthTokenValidateReq
      */
@@ -568,14 +568,14 @@ export interface AuthTokenValidateReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof AuthTokenValidateReq
      */
     'clientInfo': ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface AuthTokenValidateRsp
  */
@@ -587,13 +587,13 @@ export interface AuthTokenValidateRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof AuthTokenValidateRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof AuthTokenValidateRsp
      */
@@ -605,14 +605,14 @@ export interface AuthTokenValidateRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {SessionTokenVerifyRspAllOfData}
      * @memberof AuthTokenValidateRsp
      */
     'data': SessionTokenVerifyRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface ClientInfo
  */
@@ -631,7 +631,7 @@ export interface ClientInfo {
     'userAgent': string;
 }
 /**
- *
+ * 
  * @export
  * @interface CustomLoginIdentifier
  */
@@ -643,13 +643,13 @@ export interface CustomLoginIdentifier {
      */
     'ID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CustomLoginIdentifier
      */
     'identifier': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof CustomLoginIdentifier
      */
@@ -668,7 +668,7 @@ export interface CustomLoginIdentifier {
     'updated': string;
 }
 /**
- *
+ * 
  * @export
  * @interface Email
  */
@@ -680,7 +680,7 @@ export interface Email {
      */
     'ID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof Email
      */
@@ -704,7 +704,7 @@ export interface Email {
      */
     'deleted'?: string;
     /**
-     *
+     * 
      * @type {Status}
      * @memberof Email
      */
@@ -713,7 +713,7 @@ export interface Email {
 
 
 /**
- *
+ * 
  * @export
  * @interface EmailCode
  */
@@ -731,13 +731,13 @@ export interface EmailCode {
      */
     'userID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailCode
      */
     'email': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailCode
      */
@@ -776,7 +776,7 @@ export const EmailCodeStatusEnum = {
 export type EmailCodeStatusEnum = typeof EmailCodeStatusEnum[keyof typeof EmailCodeStatusEnum];
 
 /**
- *
+ * 
  * @export
  * @interface EmailCodeGetRsp
  */
@@ -788,13 +788,13 @@ export interface EmailCodeGetRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailCodeGetRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof EmailCodeGetRsp
      */
@@ -806,27 +806,27 @@ export interface EmailCodeGetRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {EmailCodeGetRspAllOfData}
      * @memberof EmailCodeGetRsp
      */
     'data': EmailCodeGetRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface EmailCodeGetRspAllOfData
  */
 export interface EmailCodeGetRspAllOfData {
     /**
-     *
+     * 
      * @type {EmailCode}
      * @memberof EmailCodeGetRspAllOfData
      */
     'emailCode': EmailCode;
 }
 /**
- *
+ * 
  * @export
  * @interface EmailCodeSendReq
  */
@@ -874,14 +874,14 @@ export interface EmailCodeSendReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof EmailCodeSendReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface EmailCodeSendRsp
  */
@@ -893,13 +893,13 @@ export interface EmailCodeSendRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailCodeSendRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof EmailCodeSendRsp
      */
@@ -911,27 +911,27 @@ export interface EmailCodeSendRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {EmailCodeSendRspAllOfData}
      * @memberof EmailCodeSendRsp
      */
     'data': EmailCodeSendRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface EmailCodeSendRspAllOfData
  */
 export interface EmailCodeSendRspAllOfData {
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailCodeSendRspAllOfData
      */
     'emailCodeID': string;
 }
 /**
- *
+ * 
  * @export
  * @interface EmailCodeValidateReq
  */
@@ -943,7 +943,7 @@ export interface EmailCodeValidateReq {
      */
     'code': string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof EmailCodeValidateReq
      */
@@ -955,14 +955,14 @@ export interface EmailCodeValidateReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof EmailCodeValidateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface EmailCodeValidateRsp
  */
@@ -974,13 +974,13 @@ export interface EmailCodeValidateRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailCodeValidateRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof EmailCodeValidateRsp
      */
@@ -1004,26 +1004,26 @@ export interface EmailCodeValidateRsp {
      */
     'userID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailCodeValidateRsp
      */
     'userFullName': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailCodeValidateRsp
      */
     'userEmail': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailCodeValidateRsp
      */
     'loginToken'?: string;
 }
 /**
- *
+ * 
  * @export
  * @interface EmailLink
  */
@@ -1041,19 +1041,19 @@ export interface EmailLink {
      */
     'userID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailLink
      */
     'email': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailLink
      */
     'userFullName'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailLink
      */
@@ -1092,7 +1092,7 @@ export const EmailLinkStatusEnum = {
 export type EmailLinkStatusEnum = typeof EmailLinkStatusEnum[keyof typeof EmailLinkStatusEnum];
 
 /**
- *
+ * 
  * @export
  * @interface EmailLinkGetRsp
  */
@@ -1104,13 +1104,13 @@ export interface EmailLinkGetRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailLinkGetRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof EmailLinkGetRsp
      */
@@ -1122,27 +1122,27 @@ export interface EmailLinkGetRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {EmailLinkGetRspAllOfData}
      * @memberof EmailLinkGetRsp
      */
     'data': EmailLinkGetRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface EmailLinkGetRspAllOfData
  */
 export interface EmailLinkGetRspAllOfData {
     /**
-     *
+     * 
      * @type {EmailLink}
      * @memberof EmailLinkGetRspAllOfData
      */
     'emailLink': EmailLink;
 }
 /**
- *
+ * 
  * @export
  * @interface EmailLinkSendReq
  */
@@ -1202,7 +1202,7 @@ export interface EmailLinkSendReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof EmailLinkSendReq
      */
@@ -1218,7 +1218,7 @@ export const EmailLinkSendReqPurposeEnum = {
 export type EmailLinkSendReqPurposeEnum = typeof EmailLinkSendReqPurposeEnum[keyof typeof EmailLinkSendReqPurposeEnum];
 
 /**
- *
+ * 
  * @export
  * @interface EmailLinkSendRsp
  */
@@ -1230,13 +1230,13 @@ export interface EmailLinkSendRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailLinkSendRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof EmailLinkSendRsp
      */
@@ -1248,27 +1248,27 @@ export interface EmailLinkSendRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {EmailLinkSendRspAllOfData}
      * @memberof EmailLinkSendRsp
      */
     'data': EmailLinkSendRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface EmailLinkSendRspAllOfData
  */
 export interface EmailLinkSendRspAllOfData {
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailLinkSendRspAllOfData
      */
     'emailLinkID': string;
 }
 /**
- *
+ * 
  * @export
  * @interface EmailLinkValidateRsp
  */
@@ -1280,13 +1280,13 @@ export interface EmailLinkValidateRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailLinkValidateRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof EmailLinkValidateRsp
      */
@@ -1310,26 +1310,26 @@ export interface EmailLinkValidateRsp {
      */
     'userID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailLinkValidateRsp
      */
     'userFullName': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailLinkValidateRsp
      */
     'userEmail': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailLinkValidateRsp
      */
     'loginToken'?: string;
 }
 /**
- *
+ * 
  * @export
  * @interface EmailLinksDeleteReq
  */
@@ -1341,14 +1341,14 @@ export interface EmailLinksDeleteReq {
      */
     'requestID': string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof EmailLinksDeleteReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface EmailLinksValidateReq
  */
@@ -1360,7 +1360,7 @@ export interface EmailLinksValidateReq {
      */
     'token': string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof EmailLinksValidateReq
      */
@@ -1372,104 +1372,104 @@ export interface EmailLinksValidateReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof EmailLinksValidateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface EmailTemplateCreateReq
  */
 export interface EmailTemplateCreateReq {
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'lang': EmailTemplateCreateReqLangEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'type': EmailTemplateCreateReqTypeEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'name': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'subject': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'action'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'plainTextBody': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'htmlTextTitle': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'htmlTextBody': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'htmlTextButton': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'htmlColorFont': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'htmlColorBackgroundOuter': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'htmlColorBackgroundInner': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'htmlColorButton': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailTemplateCreateReq
      */
     'htmlColorButtonFont': string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof EmailTemplateCreateReq
      */
@@ -1481,7 +1481,7 @@ export interface EmailTemplateCreateReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof EmailTemplateCreateReq
      */
@@ -1506,7 +1506,7 @@ export const EmailTemplateCreateReqTypeEnum = {
 export type EmailTemplateCreateReqTypeEnum = typeof EmailTemplateCreateReqTypeEnum[keyof typeof EmailTemplateCreateReqTypeEnum];
 
 /**
- *
+ * 
  * @export
  * @interface EmailTemplateCreateRsp
  */
@@ -1518,13 +1518,13 @@ export interface EmailTemplateCreateRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailTemplateCreateRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof EmailTemplateCreateRsp
      */
@@ -1536,27 +1536,27 @@ export interface EmailTemplateCreateRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {EmailTemplateCreateRspAllOfData}
      * @memberof EmailTemplateCreateRsp
      */
     'data': EmailTemplateCreateRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface EmailTemplateCreateRspAllOfData
  */
 export interface EmailTemplateCreateRspAllOfData {
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailTemplateCreateRspAllOfData
      */
     'emailTemplateID': string;
 }
 /**
- *
+ * 
  * @export
  * @interface EmailTemplateDeleteReq
  */
@@ -1568,38 +1568,38 @@ export interface EmailTemplateDeleteReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof EmailTemplateDeleteReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface EmailValidationResult
  */
 export interface EmailValidationResult {
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof EmailValidationResult
      */
     'isValid': boolean;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailValidationResult
      */
     'validationCode': EmailValidationResultValidationCodeEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof EmailValidationResult
      */
     'suggestion'?: string;
     /**
-     *
+     * 
      * @type {ValidationEmail}
      * @memberof EmailValidationResult
      */
@@ -1617,7 +1617,7 @@ export const EmailValidationResultValidationCodeEnum = {
 export type EmailValidationResultValidationCodeEnum = typeof EmailValidationResultValidationCodeEnum[keyof typeof EmailValidationResultValidationCodeEnum];
 
 /**
- *
+ * 
  * @export
  * @interface EmptyReq
  */
@@ -1629,14 +1629,14 @@ export interface EmptyReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof EmptyReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface ErrorRsp
  */
@@ -1648,13 +1648,13 @@ export interface ErrorRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ErrorRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof ErrorRsp
      */
@@ -1666,20 +1666,20 @@ export interface ErrorRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {object}
      * @memberof ErrorRsp
      */
     'data'?: object;
     /**
-     *
+     * 
      * @type {ErrorRspAllOfError}
      * @memberof ErrorRsp
      */
     'error': ErrorRspAllOfError;
 }
 /**
- *
+ * 
  * @export
  * @interface ErrorRspAllOfError
  */
@@ -1710,26 +1710,26 @@ export interface ErrorRspAllOfError {
     'links': Array<string>;
 }
 /**
- *
+ * 
  * @export
  * @interface ErrorRspAllOfErrorValidation
  */
 export interface ErrorRspAllOfErrorValidation {
     /**
-     *
+     * 
      * @type {string}
      * @memberof ErrorRspAllOfErrorValidation
      */
     'field': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ErrorRspAllOfErrorValidation
      */
     'message': string;
 }
 /**
- *
+ * 
  * @export
  * @interface ExampleGetRsp
  */
@@ -1741,13 +1741,13 @@ export interface ExampleGetRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ExampleGetRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof ExampleGetRsp
      */
@@ -1792,13 +1792,13 @@ export interface FullUser {
      */
     'ID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof FullUser
      */
     'name': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof FullUser
      */
@@ -1816,28 +1816,40 @@ export interface FullUser {
      */
     'updated': string;
     /**
-     *
+     * 
      * @type {Status}
      * @memberof FullUser
      */
     'status': Status;
     /**
-     *
+     * 
      * @type {Array<UserEmail>}
      * @memberof FullUser
      */
     'emails': Array<UserEmail>;
     /**
-     *
+     * 
      * @type {Array<UserPhoneNumber>}
      * @memberof FullUser
      */
     'phoneNumbers': Array<UserPhoneNumber>;
+    /**
+     * 
+     * @type {Array<UserUsername>}
+     * @memberof FullUser
+     */
+    'usernames': Array<UserUsername>;
+    /**
+     * 
+     * @type {Array<UserSocialAccount>}
+     * @memberof FullUser
+     */
+    'socialAccounts': Array<UserSocialAccount>;
 }
 
 
 /**
- *
+ * 
  * @export
  * @interface GenericRsp
  */
@@ -1849,13 +1861,13 @@ export interface GenericRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof GenericRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof GenericRsp
      */
@@ -1868,7 +1880,7 @@ export interface GenericRsp {
     'runtime': number;
 }
 /**
- *
+ * 
  * @export
  * @interface IOSAppConfigDeleteReq
  */
@@ -1880,14 +1892,14 @@ export interface IOSAppConfigDeleteReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof IOSAppConfigDeleteReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface IOSAppConfigItem
  */
@@ -1905,13 +1917,13 @@ export interface IOSAppConfigItem {
      */
     'projectID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof IOSAppConfigItem
      */
     'appIDPrefix': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof IOSAppConfigItem
      */
@@ -1930,7 +1942,7 @@ export interface IOSAppConfigItem {
     'updated': string;
 }
 /**
- *
+ * 
  * @export
  * @interface IOSAppConfigListRsp
  */
@@ -1942,13 +1954,13 @@ export interface IOSAppConfigListRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof IOSAppConfigListRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof IOSAppConfigListRsp
      */
@@ -1960,32 +1972,32 @@ export interface IOSAppConfigListRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {Array<IOSAppConfigItem>}
      * @memberof IOSAppConfigListRsp
      */
     'rows': Array<IOSAppConfigItem>;
     /**
-     *
+     * 
      * @type {Paging}
      * @memberof IOSAppConfigListRsp
      */
     'paging': Paging;
 }
 /**
- *
+ * 
  * @export
  * @interface IOSAppConfigSaveReq
  */
 export interface IOSAppConfigSaveReq {
     /**
-     *
+     * 
      * @type {string}
      * @memberof IOSAppConfigSaveReq
      */
     'appIDPrefix': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof IOSAppConfigSaveReq
      */
@@ -1997,14 +2009,14 @@ export interface IOSAppConfigSaveReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof IOSAppConfigSaveReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface IOSAppConfigSaveRsp
  */
@@ -2016,13 +2028,13 @@ export interface IOSAppConfigSaveRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof IOSAppConfigSaveRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof IOSAppConfigSaveRsp
      */
@@ -2046,13 +2058,13 @@ export interface IOSAppConfigSaveRsp {
      */
     'projectID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof IOSAppConfigSaveRsp
      */
     'appIDPrefix': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof IOSAppConfigSaveRsp
      */
@@ -2071,19 +2083,19 @@ export interface IOSAppConfigSaveRsp {
     'updated': string;
 }
 /**
- *
+ * 
  * @export
  * @interface IOSAppConfigUpdateReq
  */
 export interface IOSAppConfigUpdateReq {
     /**
-     *
+     * 
      * @type {string}
      * @memberof IOSAppConfigUpdateReq
      */
     'appIDPrefix': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof IOSAppConfigUpdateReq
      */
@@ -2095,14 +2107,14 @@ export interface IOSAppConfigUpdateReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof IOSAppConfigUpdateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface IOSAppConfigUpdateRsp
  */
@@ -2114,13 +2126,13 @@ export interface IOSAppConfigUpdateRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof IOSAppConfigUpdateRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof IOSAppConfigUpdateRsp
      */
@@ -2144,13 +2156,13 @@ export interface IOSAppConfigUpdateRsp {
      */
     'projectID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof IOSAppConfigUpdateRsp
      */
     'appIDPrefix': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof IOSAppConfigUpdateRsp
      */
@@ -2184,13 +2196,13 @@ export type LoginIdentifierType = typeof LoginIdentifierType[keyof typeof LoginI
 
 
 /**
- *
+ * 
  * @export
  * @interface LongSession
  */
 export interface LongSession {
     /**
-     *
+     * 
      * @type {string}
      * @memberof LongSession
      */
@@ -2202,47 +2214,17 @@ export interface LongSession {
      */
     'userID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof LongSession
      */
     'userIdentifier': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof LongSession
      */
     'userFullName': string;
-    /**
-     * ID of the device
-     * @type {string}
-     * @memberof LongSession
-     */
-    'deviceID': string;
-    /**
-     *
-     * @type {string}
-     * @memberof LongSession
-     */
-    'browserName': string;
-    /**
-     *
-     * @type {string}
-     * @memberof LongSession
-     */
-    'browserVersion': string;
-    /**
-     *
-     * @type {string}
-     * @memberof LongSession
-     */
-    'osName': string;
-    /**
-     *
-     * @type {string}
-     * @memberof LongSession
-     */
-    'osVersion': string;
     /**
      * Timestamp of when long session expires in yyyy-MM-dd\'T\'HH:mm:ss format
      * @type {string}
@@ -2286,7 +2268,7 @@ export const LongSessionStatusEnum = {
 export type LongSessionStatusEnum = typeof LongSessionStatusEnum[keyof typeof LongSessionStatusEnum];
 
 /**
- *
+ * 
  * @export
  * @interface LongSessionGetRsp
  */
@@ -2298,13 +2280,13 @@ export interface LongSessionGetRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof LongSessionGetRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof LongSessionGetRsp
      */
@@ -2316,27 +2298,27 @@ export interface LongSessionGetRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {LongSessionGetRspAllOfData}
      * @memberof LongSessionGetRsp
      */
     'data': LongSessionGetRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface LongSessionGetRspAllOfData
  */
 export interface LongSessionGetRspAllOfData {
     /**
-     *
+     * 
      * @type {LongSession}
      * @memberof LongSessionGetRspAllOfData
      */
     'longSession': LongSession;
 }
 /**
- *
+ * 
  * @export
  * @interface LongSessionListRsp
  */
@@ -2348,13 +2330,13 @@ export interface LongSessionListRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof LongSessionListRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof LongSessionListRsp
      */
@@ -2366,33 +2348,33 @@ export interface LongSessionListRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {LongSessionListRspAllOfData}
      * @memberof LongSessionListRsp
      */
     'data': LongSessionListRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface LongSessionListRspAllOfData
  */
 export interface LongSessionListRspAllOfData {
     /**
-     *
+     * 
      * @type {Array<LongSession>}
      * @memberof LongSessionListRspAllOfData
      */
     'longSessions': Array<LongSession>;
     /**
-     *
+     * 
      * @type {Paging}
      * @memberof LongSessionListRspAllOfData
      */
     'paging': Paging;
 }
 /**
- *
+ * 
  * @export
  * @interface LongSessionRevokeReq
  */
@@ -2404,14 +2386,14 @@ export interface LongSessionRevokeReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof LongSessionRevokeReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface Paging
  */
@@ -2436,7 +2418,7 @@ export interface Paging {
     'totalItems': number;
 }
 /**
- *
+ * 
  * @export
  * @interface PhoneNumber
  */
@@ -2448,7 +2430,7 @@ export interface PhoneNumber {
      */
     'ID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof PhoneNumber
      */
@@ -2466,7 +2448,7 @@ export interface PhoneNumber {
      */
     'updated': string;
     /**
-     *
+     * 
      * @type {Status}
      * @memberof PhoneNumber
      */
@@ -2475,25 +2457,25 @@ export interface PhoneNumber {
 
 
 /**
- *
+ * 
  * @export
  * @interface PhoneNumberValidationResult
  */
 export interface PhoneNumberValidationResult {
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof PhoneNumberValidationResult
      */
     'isValid': boolean;
     /**
-     *
+     * 
      * @type {string}
      * @memberof PhoneNumberValidationResult
      */
     'validationCode': PhoneNumberValidationResultValidationCodeEnum;
     /**
-     *
+     * 
      * @type {ValidationPhoneNumber}
      * @memberof PhoneNumberValidationResult
      */
@@ -2510,7 +2492,7 @@ export const PhoneNumberValidationResultValidationCodeEnum = {
 export type PhoneNumberValidationResultValidationCodeEnum = typeof PhoneNumberValidationResultValidationCodeEnum[keyof typeof PhoneNumberValidationResultValidationCodeEnum];
 
 /**
- *
+ * 
  * @export
  * @interface ProjectConfig
  */
@@ -2522,335 +2504,329 @@ export interface ProjectConfig {
      */
     'projectID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'externalName': string;
     /**
-     *
+     * 
      * @type {AppType}
      * @memberof ProjectConfig
      */
     'appType': AppType;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'productKey': string;
     /**
-     *
+     * 
+     * @type {string}
+     * @memberof ProjectConfig
+     */
+    'projectSubscriptionID': string;
+    /**
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'emailFrom': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'smsFrom': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'externalApplicationProtocolVersion': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'webhookURL': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'webhookUsername': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'webhookPassword': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'webhookTestInvalidUsername': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'webhookTestValidUsername': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'webhookTestValidPassword': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'externalApplicationUsername': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'externalApplicationPassword': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'legacyAuthMethodsUrl': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'passwordVerifyUrl': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'authSuccessRedirectUrl': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'passwordResetUrl': string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'allowUserRegistration': boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'allowIPStickiness': boolean;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'passkeyAppendInterval': ProjectConfigPasskeyAppendIntervalEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'cliSecret': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'fallbackLanguage': string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'autoDetectLanguage': boolean;
     /**
-     *
-     * @type {boolean}
-     * @memberof ProjectConfig
-     */
-    'integrationModeHosted': boolean;
-    /**
-     *
-     * @type {boolean}
-     * @memberof ProjectConfig
-     */
-    'integrationModeAPI': boolean;
-    /**
-     *
-     * @type {boolean}
-     * @memberof ProjectConfig
-     */
-    'integrationModeWebComponent': boolean;
-    /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'hasExistingUsers': boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'hasVerifiedSession': boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'hasGeneratedSession': boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'hasStartedUsingPasskeys': boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'hasStartedUsingSessions': boolean;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'environment': ProjectConfigEnvironmentEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'frontendFramework': ProjectConfigFrontendFrameworkEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'backendLanguage': ProjectConfigBackendLanguageEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'backendAPIUrl': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'frontendAPIUrl': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'applicationUrl': string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'useCli': boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'doubleOptIn': boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'userFullNameRequired': boolean;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'webauthnRPID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
-    'domain': string;
+    'cname': string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'webComponentDebug': boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfig
      */
     'smtpUseCustom': boolean;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'smtpHost': string;
     /**
-     *
+     * 
      * @type {number}
      * @memberof ProjectConfig
      */
     'smtpPort': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'smtpUsername': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'smtpPassword': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'supportEmail': string;
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof ProjectConfig
      */
     'webhookActions': Array<string>;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'signupFlow': ProjectConfigSignupFlowEnum;
     /**
-     *
+     * 
      * @type {object}
      * @memberof ProjectConfig
      */
     'signupFlowOptions': object;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
     'loginFlow': ProjectConfigLoginFlowEnum;
     /**
-     *
+     * 
      * @type {object}
      * @memberof ProjectConfig
      */
     'loginFlowOptions': object;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ProjectConfig
+     */
+    'allowStaticChallenges': boolean;
     /**
      * Timestamp of when the entity was created in yyyy-MM-dd\'T\'HH:mm:ss format
      * @type {string}
@@ -2864,7 +2840,7 @@ export interface ProjectConfig {
      */
     'updated': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfig
      */
@@ -2930,7 +2906,7 @@ export const ProjectConfigStatusEnum = {
 export type ProjectConfigStatusEnum = typeof ProjectConfigStatusEnum[keyof typeof ProjectConfigStatusEnum];
 
 /**
- *
+ * 
  * @export
  * @interface ProjectConfigGetRsp
  */
@@ -2942,13 +2918,13 @@ export interface ProjectConfigGetRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigGetRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof ProjectConfigGetRsp
      */
@@ -2960,44 +2936,50 @@ export interface ProjectConfigGetRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {ProjectConfig}
      * @memberof ProjectConfigGetRsp
      */
     'data': ProjectConfig;
 }
 /**
- *
+ * 
  * @export
  * @interface ProjectConfigSaveReq
  */
 export interface ProjectConfigSaveReq {
     /**
-     *
+     * 
+     * @type {boolean}
+     * @memberof ProjectConfigSaveReq
+     */
+    'wizard'?: boolean;
+    /**
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'externalName'?: string;
     /**
-     *
+     * 
      * @type {AppType}
      * @memberof ProjectConfigSaveReq
      */
     'appType'?: AppType;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'productKey'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'emailFrom'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
@@ -3009,277 +2991,253 @@ export interface ProjectConfigSaveReq {
      */
     'externalApplicationProtocolVersion'?: ProjectConfigSaveReqExternalApplicationProtocolVersionEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'webhookURL'?: string;
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof ProjectConfigSaveReq
      */
     'webhookActions'?: Array<string>;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'webhookUsername'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'webhookPassword'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'webhookTestInvalidUsername'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'webhookTestValidUsername'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'webhookTestValidPassword'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'externalApplicationUsername'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'externalApplicationPassword'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'legacyAuthMethodsUrl'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'passwordVerifyUrl'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'authSuccessRedirectUrl'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'passwordResetUrl'?: string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'allowUserRegistration'?: boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'allowIPStickiness'?: boolean;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'passkeyAppendInterval'?: ProjectConfigSaveReqPasskeyAppendIntervalEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'fallbackLanguage'?: string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'autoDetectLanguage'?: boolean;
     /**
-     *
-     * @type {boolean}
-     * @memberof ProjectConfigSaveReq
-     */
-    'integrationModeHosted'?: boolean;
-    /**
-     *
-     * @type {boolean}
-     * @memberof ProjectConfigSaveReq
-     */
-    'integrationModeAPI'?: boolean;
-    /**
-     *
-     * @type {boolean}
-     * @memberof ProjectConfigSaveReq
-     */
-    'integrationModeWebComponent'?: boolean;
-    /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'hasExistingUsers'?: boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'hasVerifiedSession'?: boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'hasGeneratedSession'?: boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'hasStartedUsingPasskeys'?: boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'hasStartedUsingSessions'?: boolean;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'applicationUrl'?: string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'useCli'?: boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'doubleOptIn'?: boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'userFullNameRequired'?: boolean;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'webauthnRPID'?: string;
     /**
-     *
-     * @type {string}
-     * @memberof ProjectConfigSaveReq
-     */
-    'domain'?: string;
-    /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'environment'?: ProjectConfigSaveReqEnvironmentEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'frontendFramework'?: ProjectConfigSaveReqFrontendFrameworkEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'backendLanguage'?: ProjectConfigSaveReqBackendLanguageEnum;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'webComponentDebug'?: boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ProjectConfigSaveReq
      */
     'smtpUseCustom'?: boolean;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'smtpHost'?: string;
     /**
-     *
+     * 
      * @type {number}
      * @memberof ProjectConfigSaveReq
      */
     'smtpPort'?: number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'smtpUsername'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'smtpPassword'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'supportEmail'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'signupFlow'?: ProjectConfigSaveReqSignupFlowEnum;
     /**
-     *
+     * 
      * @type {object}
      * @memberof ProjectConfigSaveReq
      */
     'signupFlowOptions'?: object;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigSaveReq
      */
     'loginFlow'?: ProjectConfigSaveReqLoginFlowEnum;
     /**
-     *
+     * 
      * @type {object}
      * @memberof ProjectConfigSaveReq
      */
@@ -3291,11 +3249,17 @@ export interface ProjectConfigSaveReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof ProjectConfigSaveReq
      */
     'clientInfo'?: ClientInfo;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ProjectConfigSaveReq
+     */
+    'allowStaticChallenges'?: boolean;
 }
 
 export const ProjectConfigSaveReqExternalApplicationProtocolVersionEnum = {
@@ -3354,13 +3318,13 @@ export const ProjectConfigSaveReqLoginFlowEnum = {
 export type ProjectConfigSaveReqLoginFlowEnum = typeof ProjectConfigSaveReqLoginFlowEnum[keyof typeof ProjectConfigSaveReqLoginFlowEnum];
 
 /**
- *
+ * 
  * @export
  * @interface ProjectConfigWebhookTestReq
  */
 export interface ProjectConfigWebhookTestReq {
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigWebhookTestReq
      */
@@ -3372,7 +3336,7 @@ export interface ProjectConfigWebhookTestReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof ProjectConfigWebhookTestReq
      */
@@ -3387,7 +3351,7 @@ export const ProjectConfigWebhookTestReqActionEnum = {
 export type ProjectConfigWebhookTestReqActionEnum = typeof ProjectConfigWebhookTestReqActionEnum[keyof typeof ProjectConfigWebhookTestReqActionEnum];
 
 /**
- *
+ * 
  * @export
  * @interface ProjectConfigWebhookTestRsp
  */
@@ -3399,13 +3363,13 @@ export interface ProjectConfigWebhookTestRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigWebhookTestRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof ProjectConfigWebhookTestRsp
      */
@@ -3417,39 +3381,39 @@ export interface ProjectConfigWebhookTestRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {ProjectConfigWebhookTestRspAllOfData}
      * @memberof ProjectConfigWebhookTestRsp
      */
     'data': ProjectConfigWebhookTestRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface ProjectConfigWebhookTestRspAllOfData
  */
 export interface ProjectConfigWebhookTestRspAllOfData {
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigWebhookTestRspAllOfData
      */
     'code': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectConfigWebhookTestRspAllOfData
      */
     'details': string;
     /**
-     *
+     * 
      * @type {number}
      * @memberof ProjectConfigWebhookTestRspAllOfData
      */
     'runtime': number;
 }
 /**
- *
+ * 
  * @export
  * @interface ProjectSecretCreateReq
  */
@@ -3461,14 +3425,14 @@ export interface ProjectSecretCreateReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof ProjectSecretCreateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface ProjectSecretCreateRsp
  */
@@ -3480,13 +3444,13 @@ export interface ProjectSecretCreateRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectSecretCreateRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof ProjectSecretCreateRsp
      */
@@ -3523,7 +3487,7 @@ export interface ProjectSecretCreateRsp {
     'created': string;
 }
 /**
- *
+ * 
  * @export
  * @interface ProjectSecretDeleteReq
  */
@@ -3535,14 +3499,14 @@ export interface ProjectSecretDeleteReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof ProjectSecretDeleteReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface ProjectSecretItem
  */
@@ -3573,7 +3537,7 @@ export interface ProjectSecretItem {
     'created': string;
 }
 /**
- *
+ * 
  * @export
  * @interface ProjectSecretListRsp
  */
@@ -3585,13 +3549,13 @@ export interface ProjectSecretListRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ProjectSecretListRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof ProjectSecretListRsp
      */
@@ -3603,13 +3567,13 @@ export interface ProjectSecretListRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {Array<ProjectSecretItem>}
      * @memberof ProjectSecretListRsp
      */
     'rows': Array<ProjectSecretItem>;
     /**
-     *
+     * 
      * @type {Paging}
      * @memberof ProjectSecretListRsp
      */
@@ -3744,7 +3708,7 @@ export interface RequestLog {
     'details': Array<string>;
 }
 /**
- *
+ * 
  * @export
  * @interface RequestLogGetRsp
  */
@@ -3756,13 +3720,13 @@ export interface RequestLogGetRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof RequestLogGetRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof RequestLogGetRsp
      */
@@ -3774,14 +3738,14 @@ export interface RequestLogGetRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {RequestLog}
      * @memberof RequestLogGetRsp
      */
     'data': RequestLog;
 }
 /**
- *
+ * 
  * @export
  * @interface RequestLogsListRsp
  */
@@ -3793,13 +3757,13 @@ export interface RequestLogsListRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof RequestLogsListRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof RequestLogsListRsp
      */
@@ -3811,33 +3775,33 @@ export interface RequestLogsListRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {RequestLogsListRspAllOfData}
      * @memberof RequestLogsListRsp
      */
     'data': RequestLogsListRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface RequestLogsListRspAllOfData
  */
 export interface RequestLogsListRspAllOfData {
     /**
-     *
+     * 
      * @type {Array<RequestLog>}
      * @memberof RequestLogsListRspAllOfData
      */
     'logs': Array<RequestLog>;
     /**
-     *
+     * 
      * @type {Paging}
      * @memberof RequestLogsListRspAllOfData
      */
     'paging': Paging;
 }
 /**
- *
+ * 
  * @export
  * @interface SessionConfig
  */
@@ -3849,67 +3813,67 @@ export interface SessionConfig {
      */
     'projectID': string;
     /**
-     *
+     * 
      * @type {AppType}
      * @memberof SessionConfig
      */
     'appType': AppType;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof SessionConfig
      */
     'active'?: boolean;
     /**
-     *
+     * 
      * @type {number}
      * @memberof SessionConfig
      */
     'shortLifetimeMinutes': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof SessionConfig
      */
     'shortCookieDomain': string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof SessionConfig
      */
     'shortCookieSecure': boolean;
     /**
-     *
+     * 
      * @type {string}
      * @memberof SessionConfig
      */
     'shortCookieSameSite': SessionConfigShortCookieSameSiteEnum;
     /**
-     *
+     * 
      * @type {number}
      * @memberof SessionConfig
      */
     'longLifetimeValue': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof SessionConfig
      */
     'longLifetimeUnit': SessionConfigLongLifetimeUnitEnum;
     /**
-     *
+     * 
      * @type {number}
      * @memberof SessionConfig
      */
     'longInactivityValue': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof SessionConfig
      */
     'longInactivityUnit': SessionConfigLongInactivityUnitEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof SessionConfig
      */
@@ -3951,7 +3915,7 @@ export const SessionConfigLongInactivityUnitEnum = {
 export type SessionConfigLongInactivityUnitEnum = typeof SessionConfigLongInactivityUnitEnum[keyof typeof SessionConfigLongInactivityUnitEnum];
 
 /**
- *
+ * 
  * @export
  * @interface SessionConfigGetRsp
  */
@@ -3963,13 +3927,13 @@ export interface SessionConfigGetRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof SessionConfigGetRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof SessionConfigGetRsp
      */
@@ -3981,78 +3945,84 @@ export interface SessionConfigGetRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {SessionConfig}
      * @memberof SessionConfigGetRsp
      */
     'data': SessionConfig;
 }
 /**
- *
+ * 
  * @export
  * @interface SessionConfigUpdateReq
  */
 export interface SessionConfigUpdateReq {
     /**
-     *
+     * 
      * @type {AppType}
      * @memberof SessionConfigUpdateReq
      */
     'appType': AppType;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof SessionConfigUpdateReq
      */
     'active'?: boolean;
     /**
-     *
+     * 
      * @type {number}
      * @memberof SessionConfigUpdateReq
      */
     'shortLifetimeMinutes'?: number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof SessionConfigUpdateReq
      */
     'shortCookieDomain'?: string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof SessionConfigUpdateReq
      */
     'shortCookieSecure'?: boolean;
     /**
-     *
+     * 
      * @type {string}
      * @memberof SessionConfigUpdateReq
      */
     'shortCookieSameSite'?: SessionConfigUpdateReqShortCookieSameSiteEnum;
     /**
-     *
+     * 
      * @type {number}
      * @memberof SessionConfigUpdateReq
      */
     'longLifetimeValue'?: number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof SessionConfigUpdateReq
      */
     'longLifetimeUnit'?: SessionConfigUpdateReqLongLifetimeUnitEnum;
     /**
-     *
+     * 
      * @type {number}
      * @memberof SessionConfigUpdateReq
      */
     'longInactivityValue'?: number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof SessionConfigUpdateReq
      */
     'longInactivityUnit'?: SessionConfigUpdateReqLongInactivityUnitEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof SessionConfigUpdateReq
+     */
+    'jwtAudience'?: string;
     /**
      * Unique ID of request, you can provide your own while making the request, if not the ID will be randomly generated on server side
      * @type {string}
@@ -4060,7 +4030,7 @@ export interface SessionConfigUpdateReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof SessionConfigUpdateReq
      */
@@ -4088,7 +4058,7 @@ export const SessionConfigUpdateReqLongInactivityUnitEnum = {
 export type SessionConfigUpdateReqLongInactivityUnitEnum = typeof SessionConfigUpdateReqLongInactivityUnitEnum[keyof typeof SessionConfigUpdateReqLongInactivityUnitEnum];
 
 /**
- *
+ * 
  * @export
  * @interface SessionTokenCreateReq
  */
@@ -4112,14 +4082,14 @@ export interface SessionTokenCreateReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof SessionTokenCreateReq
      */
     'clientInfo': ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface SessionTokenCreateRsp
  */
@@ -4131,13 +4101,13 @@ export interface SessionTokenCreateRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof SessionTokenCreateRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof SessionTokenCreateRsp
      */
@@ -4149,33 +4119,33 @@ export interface SessionTokenCreateRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {SessionTokenCreateRspAllOfData}
      * @memberof SessionTokenCreateRsp
      */
     'data': SessionTokenCreateRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface SessionTokenCreateRspAllOfData
  */
 export interface SessionTokenCreateRspAllOfData {
     /**
-     *
+     * 
      * @type {string}
      * @memberof SessionTokenCreateRspAllOfData
      */
     'token': string;
 }
 /**
- *
+ * 
  * @export
  * @interface SessionTokenVerifyReq
  */
 export interface SessionTokenVerifyReq {
     /**
-     *
+     * 
      * @type {string}
      * @memberof SessionTokenVerifyReq
      */
@@ -4187,14 +4157,14 @@ export interface SessionTokenVerifyReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof SessionTokenVerifyReq
      */
     'clientInfo': ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface SessionTokenVerifyRsp
  */
@@ -4206,13 +4176,13 @@ export interface SessionTokenVerifyRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof SessionTokenVerifyRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof SessionTokenVerifyRsp
      */
@@ -4224,14 +4194,14 @@ export interface SessionTokenVerifyRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {SessionTokenVerifyRspAllOfData}
      * @memberof SessionTokenVerifyRsp
      */
     'data': SessionTokenVerifyRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface SessionTokenVerifyRspAllOfData
  */
@@ -4243,20 +4213,20 @@ export interface SessionTokenVerifyRspAllOfData {
      */
     'userID': string;
     /**
-     *
+     * 
      * @type {FullUser}
      * @memberof SessionTokenVerifyRspAllOfData
      */
     'user': FullUser;
     /**
-     *
+     * 
      * @type {string}
      * @memberof SessionTokenVerifyRspAllOfData
      */
     'userData': string;
 }
 /**
- *
+ * 
  * @export
  * @interface SmsCodeSendReq
  */
@@ -4292,14 +4262,14 @@ export interface SmsCodeSendReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof SmsCodeSendReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface SmsCodeSendRsp
  */
@@ -4311,13 +4281,13 @@ export interface SmsCodeSendRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof SmsCodeSendRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof SmsCodeSendRsp
      */
@@ -4329,27 +4299,27 @@ export interface SmsCodeSendRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {SmsCodeSendRspAllOfData}
      * @memberof SmsCodeSendRsp
      */
     'data': SmsCodeSendRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface SmsCodeSendRspAllOfData
  */
 export interface SmsCodeSendRspAllOfData {
     /**
-     *
+     * 
      * @type {string}
      * @memberof SmsCodeSendRspAllOfData
      */
     'smsCodeID': string;
 }
 /**
- *
+ * 
  * @export
  * @interface SmsCodeValidateReq
  */
@@ -4361,7 +4331,7 @@ export interface SmsCodeValidateReq {
      */
     'smsCode': string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof SmsCodeValidateReq
      */
@@ -4373,14 +4343,14 @@ export interface SmsCodeValidateReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof SmsCodeValidateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface SmsCodeValidateRsp
  */
@@ -4392,13 +4362,13 @@ export interface SmsCodeValidateRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof SmsCodeValidateRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof SmsCodeValidateRsp
      */
@@ -4410,38 +4380,38 @@ export interface SmsCodeValidateRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof SmsCodeValidateRsp
      */
     'loginToken'?: string;
 }
 /**
- *
+ * 
  * @export
  * @interface SmsTemplateCreateReq
  */
 export interface SmsTemplateCreateReq {
     /**
-     *
+     * 
      * @type {string}
      * @memberof SmsTemplateCreateReq
      */
     'type': SmsTemplateCreateReqTypeEnum;
     /**
-     *
+     * 
      * @type {string}
      * @memberof SmsTemplateCreateReq
      */
     'name': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof SmsTemplateCreateReq
      */
     'textPlain': string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof SmsTemplateCreateReq
      */
@@ -4453,7 +4423,7 @@ export interface SmsTemplateCreateReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof SmsTemplateCreateReq
      */
@@ -4468,7 +4438,7 @@ export const SmsTemplateCreateReqTypeEnum = {
 export type SmsTemplateCreateReqTypeEnum = typeof SmsTemplateCreateReqTypeEnum[keyof typeof SmsTemplateCreateReqTypeEnum];
 
 /**
- *
+ * 
  * @export
  * @interface SmsTemplateCreateRsp
  */
@@ -4480,13 +4450,13 @@ export interface SmsTemplateCreateRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof SmsTemplateCreateRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof SmsTemplateCreateRsp
      */
@@ -4498,27 +4468,27 @@ export interface SmsTemplateCreateRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {SmsTemplateCreateRspAllOfData}
      * @memberof SmsTemplateCreateRsp
      */
     'data': SmsTemplateCreateRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface SmsTemplateCreateRspAllOfData
  */
 export interface SmsTemplateCreateRspAllOfData {
     /**
-     *
+     * 
      * @type {string}
      * @memberof SmsTemplateCreateRspAllOfData
      */
     'smsTemplateID': string;
 }
 /**
- *
+ * 
  * @export
  * @interface SmsTemplateDeleteReq
  */
@@ -4530,12 +4500,27 @@ export interface SmsTemplateDeleteReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof SmsTemplateDeleteReq
      */
     'clientInfo'?: ClientInfo;
 }
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const SocialProviderType = {
+    Google: 'google',
+    Microsoft: 'microsoft',
+    Github: 'github'
+} as const;
+
+export type SocialProviderType = typeof SocialProviderType[keyof typeof SocialProviderType];
+
+
 /**
  * Generic status that can describe Corbado entities
  * @export
@@ -4552,26 +4537,26 @@ export type Status = typeof Status[keyof typeof Status];
 
 
 /**
- *
+ * 
  * @export
  * @interface TrackingBackupState
  */
 export interface TrackingBackupState {
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingBackupState
      */
     'backedUp': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingBackupState
      */
     'notBackedUp': number;
 }
 /**
- *
+ * 
  * @export
  * @interface TrackingBackupStateGetRsp
  */
@@ -4583,13 +4568,13 @@ export interface TrackingBackupStateGetRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingBackupStateGetRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof TrackingBackupStateGetRsp
      */
@@ -4601,63 +4586,63 @@ export interface TrackingBackupStateGetRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {TrackingBackupState}
      * @memberof TrackingBackupStateGetRsp
      */
     'data': TrackingBackupState;
 }
 /**
- *
+ * 
  * @export
  * @interface TrackingBrowserDetailedStats
  */
 export interface TrackingBrowserDetailedStats {
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingBrowserDetailedStats
      */
     'timePoint': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingBrowserDetailedStats
      */
     'browserName': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingBrowserDetailedStats
      */
     'browserVersion': string;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingBrowserDetailedStats
      */
     'cnt': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingBrowserDetailedStats
      */
     'webauthn': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingBrowserDetailedStats
      */
     'platform': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingBrowserDetailedStats
      */
     'conditional_ui': number;
 }
 /**
- *
+ * 
  * @export
  * @interface TrackingBrowserDetailedStatsListRsp
  */
@@ -4669,13 +4654,13 @@ export interface TrackingBrowserDetailedStatsListRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingBrowserDetailedStatsListRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof TrackingBrowserDetailedStatsListRsp
      */
@@ -4687,76 +4672,76 @@ export interface TrackingBrowserDetailedStatsListRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {TrackingBrowserDetailedStatsListRspAllOfData}
      * @memberof TrackingBrowserDetailedStatsListRsp
      */
     'data': TrackingBrowserDetailedStatsListRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface TrackingBrowserDetailedStatsListRspAllOfData
  */
 export interface TrackingBrowserDetailedStatsListRspAllOfData {
     /**
-     *
+     * 
      * @type {Array<TrackingBrowserDetailedStats>}
      * @memberof TrackingBrowserDetailedStatsListRspAllOfData
      */
     'stats': Array<TrackingBrowserDetailedStats>;
     /**
-     *
+     * 
      * @type {Paging}
      * @memberof TrackingBrowserDetailedStatsListRspAllOfData
      */
     'paging': Paging;
 }
 /**
- *
+ * 
  * @export
  * @interface TrackingBrowserStats
  */
 export interface TrackingBrowserStats {
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingBrowserStats
      */
     'timePoint': string;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingBrowserStats
      */
     'chrome': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingBrowserStats
      */
     'safari': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingBrowserStats
      */
     'edge': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingBrowserStats
      */
     'firefox': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingBrowserStats
      */
     'other': number;
 }
 /**
- *
+ * 
  * @export
  * @interface TrackingBrowserStatsListRsp
  */
@@ -4768,13 +4753,13 @@ export interface TrackingBrowserStatsListRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingBrowserStatsListRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof TrackingBrowserStatsListRsp
      */
@@ -4786,70 +4771,70 @@ export interface TrackingBrowserStatsListRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {TrackingBrowserStatsListRspAllOfData}
      * @memberof TrackingBrowserStatsListRsp
      */
     'data': TrackingBrowserStatsListRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface TrackingBrowserStatsListRspAllOfData
  */
 export interface TrackingBrowserStatsListRspAllOfData {
     /**
-     *
+     * 
      * @type {Array<TrackingBrowserStats>}
      * @memberof TrackingBrowserStatsListRspAllOfData
      */
     'stats': Array<TrackingBrowserStats>;
     /**
-     *
+     * 
      * @type {Paging}
      * @memberof TrackingBrowserStatsListRspAllOfData
      */
     'paging': Paging;
 }
 /**
- *
+ * 
  * @export
  * @interface TrackingDetailedStats
  */
 export interface TrackingDetailedStats {
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingDetailedStats
      */
     'timePoint': string;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingDetailedStats
      */
     'visits': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingDetailedStats
      */
     'webauthn': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingDetailedStats
      */
     'platform': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingDetailedStats
      */
     'conditionalUi': number;
 }
 /**
- *
+ * 
  * @export
  * @interface TrackingDetailedStatsListRsp
  */
@@ -4861,13 +4846,13 @@ export interface TrackingDetailedStatsListRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingDetailedStatsListRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof TrackingDetailedStatsListRsp
      */
@@ -4879,58 +4864,58 @@ export interface TrackingDetailedStatsListRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {TrackingDetailedStatsListRspAllOfData}
      * @memberof TrackingDetailedStatsListRsp
      */
     'data': TrackingDetailedStatsListRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface TrackingDetailedStatsListRspAllOfData
  */
 export interface TrackingDetailedStatsListRspAllOfData {
     /**
-     *
+     * 
      * @type {Array<TrackingDetailedStats>}
      * @memberof TrackingDetailedStatsListRspAllOfData
      */
     'stats': Array<TrackingDetailedStats>;
     /**
-     *
+     * 
      * @type {Paging}
      * @memberof TrackingDetailedStatsListRspAllOfData
      */
     'paging': Paging;
 }
 /**
- *
+ * 
  * @export
  * @interface TrackingEnums
  */
 export interface TrackingEnums {
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof TrackingEnums
      */
     'browserNames': Array<string>;
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof TrackingEnums
      */
     'osNames': Array<string>;
     /**
-     *
+     * 
      * @type {Array<string>}
      * @memberof TrackingEnums
      */
     'osPlatforms': Array<string>;
 }
 /**
- *
+ * 
  * @export
  * @interface TrackingEnumsGetRsp
  */
@@ -4942,13 +4927,13 @@ export interface TrackingEnumsGetRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingEnumsGetRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof TrackingEnumsGetRsp
      */
@@ -4960,62 +4945,62 @@ export interface TrackingEnumsGetRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {TrackingEnums}
      * @memberof TrackingEnumsGetRsp
      */
     'data': TrackingEnums;
 }
 /**
- *
+ * 
  * @export
  * @interface TrackingOSDetailedStats
  */
 export interface TrackingOSDetailedStats {
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingOSDetailedStats
      */
     'timePoint': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingOSDetailedStats
      */
     'osName': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingOSDetailedStats
      */
     'osVersion': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingOSDetailedStats
      */
     'osPlatform': TrackingOSDetailedStatsOsPlatformEnum;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingOSDetailedStats
      */
     'cnt': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingOSDetailedStats
      */
     'webauthn': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingOSDetailedStats
      */
     'platform': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingOSDetailedStats
      */
@@ -5031,7 +5016,7 @@ export const TrackingOSDetailedStatsOsPlatformEnum = {
 export type TrackingOSDetailedStatsOsPlatformEnum = typeof TrackingOSDetailedStatsOsPlatformEnum[keyof typeof TrackingOSDetailedStatsOsPlatformEnum];
 
 /**
- *
+ * 
  * @export
  * @interface TrackingOSDetailedStatsListRsp
  */
@@ -5043,13 +5028,13 @@ export interface TrackingOSDetailedStatsListRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingOSDetailedStatsListRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof TrackingOSDetailedStatsListRsp
      */
@@ -5061,76 +5046,76 @@ export interface TrackingOSDetailedStatsListRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {TrackingOSDetailedStatsListRspAllOfData}
      * @memberof TrackingOSDetailedStatsListRsp
      */
     'data': TrackingOSDetailedStatsListRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface TrackingOSDetailedStatsListRspAllOfData
  */
 export interface TrackingOSDetailedStatsListRspAllOfData {
     /**
-     *
+     * 
      * @type {Array<TrackingOSDetailedStats>}
      * @memberof TrackingOSDetailedStatsListRspAllOfData
      */
     'stats': Array<TrackingOSDetailedStats>;
     /**
-     *
+     * 
      * @type {Paging}
      * @memberof TrackingOSDetailedStatsListRspAllOfData
      */
     'paging': Paging;
 }
 /**
- *
+ * 
  * @export
  * @interface TrackingOSStats
  */
 export interface TrackingOSStats {
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingOSStats
      */
     'timePoint': string;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingOSStats
      */
     'macos': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingOSStats
      */
     'windows': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingOSStats
      */
     'ios': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingOSStats
      */
     'android': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingOSStats
      */
     'other': number;
 }
 /**
- *
+ * 
  * @export
  * @interface TrackingOSStatsListRsp
  */
@@ -5142,13 +5127,13 @@ export interface TrackingOSStatsListRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingOSStatsListRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof TrackingOSStatsListRsp
      */
@@ -5160,76 +5145,294 @@ export interface TrackingOSStatsListRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {TrackingOSStatsListRspAllOfData}
      * @memberof TrackingOSStatsListRsp
      */
     'data': TrackingOSStatsListRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface TrackingOSStatsListRspAllOfData
  */
 export interface TrackingOSStatsListRspAllOfData {
     /**
-     *
+     * 
      * @type {Array<TrackingOSStats>}
      * @memberof TrackingOSStatsListRspAllOfData
      */
     'stats': Array<TrackingOSStats>;
     /**
-     *
+     * 
      * @type {Paging}
      * @memberof TrackingOSStatsListRspAllOfData
      */
     'paging': Paging;
 }
 /**
- *
+ * 
+ * @export
+ * @interface TrackingPasskeysAdoptionRsp
+ */
+export interface TrackingPasskeysAdoptionRsp {
+    /**
+     * HTTP status code of operation
+     * @type {number}
+     * @memberof TrackingPasskeysAdoptionRsp
+     */
+    'httpStatusCode': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrackingPasskeysAdoptionRsp
+     */
+    'message': string;
+    /**
+     * 
+     * @type {RequestData}
+     * @memberof TrackingPasskeysAdoptionRsp
+     */
+    'requestData': RequestData;
+    /**
+     * Runtime in seconds for this request
+     * @type {number}
+     * @memberof TrackingPasskeysAdoptionRsp
+     */
+    'runtime': number;
+    /**
+     * 
+     * @type {TrackingPasskeysAdoptionRspAllOfData}
+     * @memberof TrackingPasskeysAdoptionRsp
+     */
+    'data': TrackingPasskeysAdoptionRspAllOfData;
+}
+/**
+ * 
+ * @export
+ * @interface TrackingPasskeysAdoptionRspAllOfData
+ */
+export interface TrackingPasskeysAdoptionRspAllOfData {
+    /**
+     * 
+     * @type {number}
+     * @memberof TrackingPasskeysAdoptionRspAllOfData
+     */
+    'totalUsers': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof TrackingPasskeysAdoptionRspAllOfData
+     */
+    'usersWithPasskeys': number;
+}
+/**
+ * 
+ * @export
+ * @interface TrackingPasskeysAuthenticator
+ */
+export interface TrackingPasskeysAuthenticator {
+    /**
+     * 
+     * @type {number}
+     * @memberof TrackingPasskeysAuthenticator
+     */
+    'totalPasskeys': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrackingPasskeysAuthenticator
+     */
+    'authenticatorName': string;
+}
+/**
+ * 
+ * @export
+ * @interface TrackingPasskeysAuthenticatorRsp
+ */
+export interface TrackingPasskeysAuthenticatorRsp {
+    /**
+     * HTTP status code of operation
+     * @type {number}
+     * @memberof TrackingPasskeysAuthenticatorRsp
+     */
+    'httpStatusCode': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrackingPasskeysAuthenticatorRsp
+     */
+    'message': string;
+    /**
+     * 
+     * @type {RequestData}
+     * @memberof TrackingPasskeysAuthenticatorRsp
+     */
+    'requestData': RequestData;
+    /**
+     * Runtime in seconds for this request
+     * @type {number}
+     * @memberof TrackingPasskeysAuthenticatorRsp
+     */
+    'runtime': number;
+    /**
+     * 
+     * @type {TrackingPasskeysAuthenticatorRspAllOfData}
+     * @memberof TrackingPasskeysAuthenticatorRsp
+     */
+    'data': TrackingPasskeysAuthenticatorRspAllOfData;
+}
+/**
+ * 
+ * @export
+ * @interface TrackingPasskeysAuthenticatorRspAllOfData
+ */
+export interface TrackingPasskeysAuthenticatorRspAllOfData {
+    /**
+     * 
+     * @type {Array<TrackingPasskeysAuthenticator>}
+     * @memberof TrackingPasskeysAuthenticatorRspAllOfData
+     */
+    'stats': Array<TrackingPasskeysAuthenticator>;
+    /**
+     * 
+     * @type {Paging}
+     * @memberof TrackingPasskeysAuthenticatorRspAllOfData
+     */
+    'paging': Paging;
+}
+/**
+ * 
+ * @export
+ * @interface TrackingPasskeysType
+ */
+export interface TrackingPasskeysType {
+    /**
+     * 
+     * @type {number}
+     * @memberof TrackingPasskeysType
+     */
+    'totalPasskeys': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof TrackingPasskeysType
+     */
+    'passkeys'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof TrackingPasskeysType
+     */
+    'syncedPasskeys': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof TrackingPasskeysType
+     */
+    'hybridPasskeys': number;
+}
+/**
+ * 
+ * @export
+ * @interface TrackingPasskeysTypeRsp
+ */
+export interface TrackingPasskeysTypeRsp {
+    /**
+     * HTTP status code of operation
+     * @type {number}
+     * @memberof TrackingPasskeysTypeRsp
+     */
+    'httpStatusCode': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrackingPasskeysTypeRsp
+     */
+    'message': string;
+    /**
+     * 
+     * @type {RequestData}
+     * @memberof TrackingPasskeysTypeRsp
+     */
+    'requestData': RequestData;
+    /**
+     * Runtime in seconds for this request
+     * @type {number}
+     * @memberof TrackingPasskeysTypeRsp
+     */
+    'runtime': number;
+    /**
+     * 
+     * @type {TrackingPasskeysTypeRspAllOfData}
+     * @memberof TrackingPasskeysTypeRsp
+     */
+    'data': TrackingPasskeysTypeRspAllOfData;
+}
+/**
+ * 
+ * @export
+ * @interface TrackingPasskeysTypeRspAllOfData
+ */
+export interface TrackingPasskeysTypeRspAllOfData {
+    /**
+     * 
+     * @type {Array<TrackingPasskeysType>}
+     * @memberof TrackingPasskeysTypeRspAllOfData
+     */
+    'stats': Array<TrackingPasskeysType>;
+    /**
+     * 
+     * @type {Paging}
+     * @memberof TrackingPasskeysTypeRspAllOfData
+     */
+    'paging': Paging;
+}
+/**
+ * 
  * @export
  * @interface TrackingRawListRow
  */
 export interface TrackingRawListRow {
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingRawListRow
      */
     'timePoint': string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof TrackingRawListRow
      */
     'hasWebauthn': boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof TrackingRawListRow
      */
     'hasPlatformAuth': boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof TrackingRawListRow
      */
     'hasConditionalUi': boolean;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingRawListRow
      */
     'osId': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingRawListRow
      */
     'browserId': string;
 }
 /**
- *
+ * 
  * @export
  * @interface TrackingRawListRsp
  */
@@ -5241,13 +5444,13 @@ export interface TrackingRawListRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingRawListRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof TrackingRawListRsp
      */
@@ -5259,57 +5462,57 @@ export interface TrackingRawListRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {Array<TrackingRawListRow>}
      * @memberof TrackingRawListRsp
      */
     'rows': Array<TrackingRawListRow>;
     /**
-     *
+     * 
      * @type {Paging}
      * @memberof TrackingRawListRsp
      */
     'paging': Paging;
 }
 /**
- *
+ * 
  * @export
  * @interface TrackingStats
  */
 export interface TrackingStats {
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingStats
      */
     'timePoint': string;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingStats
      */
     'aggregateVisits': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingStats
      */
     'aggregateWebauthn': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingStats
      */
     'aggregatePlatform': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof TrackingStats
      */
     'aggregateConditionalUi': number;
 }
 /**
- *
+ * 
  * @export
  * @interface TrackingStatsListRsp
  */
@@ -5321,13 +5524,13 @@ export interface TrackingStatsListRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof TrackingStatsListRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof TrackingStatsListRsp
      */
@@ -5339,26 +5542,26 @@ export interface TrackingStatsListRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {TrackingStatsListRspAllOfData}
      * @memberof TrackingStatsListRsp
      */
     'data': TrackingStatsListRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface TrackingStatsListRspAllOfData
  */
 export interface TrackingStatsListRspAllOfData {
     /**
-     *
+     * 
      * @type {Array<TrackingStats>}
      * @memberof TrackingStatsListRspAllOfData
      */
     'stats': Array<TrackingStats>;
     /**
-     *
+     * 
      * @type {Paging}
      * @memberof TrackingStatsListRspAllOfData
      */
@@ -5377,13 +5580,13 @@ export interface User {
      */
     'ID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof User
      */
     'name': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof User
      */
@@ -5401,14 +5604,14 @@ export interface User {
      */
     'updated': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof User
      */
     'status': string;
 }
 /**
- *
+ * 
  * @export
  * @interface UserAuthLog
  */
@@ -5420,25 +5623,25 @@ export interface UserAuthLog {
      */
     'userID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserAuthLog
      */
     'userName': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserAuthLog
      */
     'method': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserAuthLog
      */
     'eventType': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserAuthLog
      */
@@ -5451,7 +5654,7 @@ export interface UserAuthLog {
     'created': string;
 }
 /**
- *
+ * 
  * @export
  * @interface UserAuthLogListRsp
  */
@@ -5463,13 +5666,13 @@ export interface UserAuthLogListRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserAuthLogListRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof UserAuthLogListRsp
      */
@@ -5481,57 +5684,57 @@ export interface UserAuthLogListRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {UserAuthLogListRspAllOfData}
      * @memberof UserAuthLogListRsp
      */
     'data': UserAuthLogListRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface UserAuthLogListRspAllOfData
  */
 export interface UserAuthLogListRspAllOfData {
     /**
-     *
+     * 
      * @type {Array<UserAuthLog>}
      * @memberof UserAuthLogListRspAllOfData
      */
     'rows': Array<UserAuthLog>;
     /**
-     *
+     * 
      * @type {Paging}
      * @memberof UserAuthLogListRspAllOfData
      */
     'paging': Paging;
 }
 /**
- *
+ * 
  * @export
  * @interface UserCreateReq
  */
 export interface UserCreateReq {
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserCreateReq
      */
     'name': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserCreateReq
      */
     'fullName'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserCreateReq
      */
     'email'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserCreateReq
      */
@@ -5543,14 +5746,14 @@ export interface UserCreateReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof UserCreateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface UserCreateRsp
  */
@@ -5562,13 +5765,13 @@ export interface UserCreateRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserCreateRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof UserCreateRsp
      */
@@ -5580,51 +5783,51 @@ export interface UserCreateRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {UserCreateRspAllOfData}
      * @memberof UserCreateRsp
      */
     'data': UserCreateRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface UserCreateRspAllOfData
  */
 export interface UserCreateRspAllOfData {
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserCreateRspAllOfData
      */
     'userID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserCreateRspAllOfData
      */
     'emailID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserCreateRspAllOfData
      */
     'phoneNumberID': string;
 }
 /**
- *
+ * 
  * @export
  * @interface UserCustomLoginIdentifierCreateReq
  */
 export interface UserCustomLoginIdentifierCreateReq {
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserCustomLoginIdentifierCreateReq
      */
     'customLoginIdentifier': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserCustomLoginIdentifierCreateReq
      */
@@ -5636,14 +5839,14 @@ export interface UserCustomLoginIdentifierCreateReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof UserCustomLoginIdentifierCreateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface UserCustomLoginIdentifierCreateRsp
  */
@@ -5655,13 +5858,13 @@ export interface UserCustomLoginIdentifierCreateRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserCustomLoginIdentifierCreateRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof UserCustomLoginIdentifierCreateRsp
      */
@@ -5673,27 +5876,27 @@ export interface UserCustomLoginIdentifierCreateRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {UserCustomLoginIdentifierCreateRspAllOfData}
      * @memberof UserCustomLoginIdentifierCreateRsp
      */
     'data': UserCustomLoginIdentifierCreateRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface UserCustomLoginIdentifierCreateRspAllOfData
  */
 export interface UserCustomLoginIdentifierCreateRspAllOfData {
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserCustomLoginIdentifierCreateRspAllOfData
      */
     'customLoginIdentifierID': string;
 }
 /**
- *
+ * 
  * @export
  * @interface UserCustomLoginIdentifierDeleteReq
  */
@@ -5705,14 +5908,14 @@ export interface UserCustomLoginIdentifierDeleteReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof UserCustomLoginIdentifierDeleteReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface UserCustomLoginIdentifierGetRsp
  */
@@ -5724,13 +5927,13 @@ export interface UserCustomLoginIdentifierGetRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserCustomLoginIdentifierGetRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof UserCustomLoginIdentifierGetRsp
      */
@@ -5742,27 +5945,27 @@ export interface UserCustomLoginIdentifierGetRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {UserCustomLoginIdentifierGetRspAllOfData}
      * @memberof UserCustomLoginIdentifierGetRsp
      */
     'data': UserCustomLoginIdentifierGetRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface UserCustomLoginIdentifierGetRspAllOfData
  */
 export interface UserCustomLoginIdentifierGetRspAllOfData {
     /**
-     *
+     * 
      * @type {CustomLoginIdentifier}
      * @memberof UserCustomLoginIdentifierGetRspAllOfData
      */
     'customLoginIdentifier': CustomLoginIdentifier;
 }
 /**
- *
+ * 
  * @export
  * @interface UserDeleteReq
  */
@@ -5774,75 +5977,75 @@ export interface UserDeleteReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof UserDeleteReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface UserDevice
  */
 export interface UserDevice {
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserDevice
      */
     'name': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserDevice
      */
     'fingerprint': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserDevice
      */
     'status': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserDevice
      */
     'device': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserDevice
      */
     'created': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserDevice
      */
     'browserName': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserDevice
      */
     'browserVersion': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserDevice
      */
     'osName': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserDevice
      */
     'osVersion': string;
 }
 /**
- *
+ * 
  * @export
  * @interface UserDeviceListRsp
  */
@@ -5854,13 +6057,13 @@ export interface UserDeviceListRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserDeviceListRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof UserDeviceListRsp
      */
@@ -5872,13 +6075,13 @@ export interface UserDeviceListRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {Array<UserDevice>}
      * @memberof UserDeviceListRsp
      */
     'devices': Array<UserDevice>;
     /**
-     *
+     * 
      * @type {Paging}
      * @memberof UserDeviceListRsp
      */
@@ -5897,7 +6100,7 @@ export interface UserEmail {
      */
     'ID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserEmail
      */
@@ -5915,7 +6118,7 @@ export interface UserEmail {
      */
     'updated': string;
     /**
-     *
+     * 
      * @type {Status}
      * @memberof UserEmail
      */
@@ -5924,13 +6127,13 @@ export interface UserEmail {
 
 
 /**
- *
+ * 
  * @export
  * @interface UserEmailCreateReq
  */
 export interface UserEmailCreateReq {
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserEmailCreateReq
      */
@@ -5942,14 +6145,14 @@ export interface UserEmailCreateReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof UserEmailCreateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface UserEmailCreateRsp
  */
@@ -5961,13 +6164,13 @@ export interface UserEmailCreateRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserEmailCreateRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof UserEmailCreateRsp
      */
@@ -5979,27 +6182,27 @@ export interface UserEmailCreateRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {UserEmailCreateRspAllOfData}
      * @memberof UserEmailCreateRsp
      */
     'data': UserEmailCreateRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface UserEmailCreateRspAllOfData
  */
 export interface UserEmailCreateRspAllOfData {
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserEmailCreateRspAllOfData
      */
     'emailID': string;
 }
 /**
- *
+ * 
  * @export
  * @interface UserEmailDeleteReq
  */
@@ -6011,14 +6214,14 @@ export interface UserEmailDeleteReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof UserEmailDeleteReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface UserEmailGetRsp
  */
@@ -6030,13 +6233,13 @@ export interface UserEmailGetRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserEmailGetRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof UserEmailGetRsp
      */
@@ -6048,27 +6251,97 @@ export interface UserEmailGetRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {UserEmailGetRspAllOfData}
      * @memberof UserEmailGetRsp
      */
     'data': UserEmailGetRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface UserEmailGetRspAllOfData
  */
 export interface UserEmailGetRspAllOfData {
     /**
-     *
+     * 
      * @type {Email}
      * @memberof UserEmailGetRspAllOfData
      */
     'email': Email;
 }
 /**
- *
+ * 
+ * @export
+ * @interface UserExistsReq
+ */
+export interface UserExistsReq {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserExistsReq
+     */
+    'loginIdentifier': string;
+    /**
+     * 
+     * @type {LoginIdentifierType}
+     * @memberof UserExistsReq
+     */
+    'loginIdentifierType': LoginIdentifierType;
+    /**
+     * Unique ID of request, you can provide your own while making the request, if not the ID will be randomly generated on server side
+     * @type {string}
+     * @memberof UserExistsReq
+     */
+    'requestID'?: string;
+    /**
+     * 
+     * @type {ClientInfo}
+     * @memberof UserExistsReq
+     */
+    'clientInfo'?: ClientInfo;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface UserExistsRsp
+ */
+export interface UserExistsRsp {
+    /**
+     * HTTP status code of operation
+     * @type {number}
+     * @memberof UserExistsRsp
+     */
+    'httpStatusCode': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserExistsRsp
+     */
+    'message': string;
+    /**
+     * 
+     * @type {RequestData}
+     * @memberof UserExistsRsp
+     */
+    'requestData': RequestData;
+    /**
+     * Runtime in seconds for this request
+     * @type {number}
+     * @memberof UserExistsRsp
+     */
+    'runtime': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UserExistsRsp
+     */
+    'exists': boolean;
+}
+/**
+ * 
  * @export
  * @interface UserGetRsp
  */
@@ -6080,13 +6353,13 @@ export interface UserGetRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserGetRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof UserGetRsp
      */
@@ -6098,14 +6371,14 @@ export interface UserGetRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {FullUser}
      * @memberof UserGetRsp
      */
     'data': FullUser;
 }
 /**
- *
+ * 
  * @export
  * @interface UserListRsp
  */
@@ -6117,13 +6390,13 @@ export interface UserListRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserListRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof UserListRsp
      */
@@ -6135,26 +6408,26 @@ export interface UserListRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {UserListRspAllOfData}
      * @memberof UserListRsp
      */
     'data': UserListRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface UserListRspAllOfData
  */
 export interface UserListRspAllOfData {
     /**
-     *
+     * 
      * @type {Array<FullUser>}
      * @memberof UserListRspAllOfData
      */
     'users': Array<FullUser>;
     /**
-     *
+     * 
      * @type {Paging}
      * @memberof UserListRspAllOfData
      */
@@ -6173,7 +6446,7 @@ export interface UserPhoneNumber {
      */
     'ID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserPhoneNumber
      */
@@ -6191,7 +6464,7 @@ export interface UserPhoneNumber {
      */
     'updated': string;
     /**
-     *
+     * 
      * @type {Status}
      * @memberof UserPhoneNumber
      */
@@ -6200,13 +6473,13 @@ export interface UserPhoneNumber {
 
 
 /**
- *
+ * 
  * @export
  * @interface UserPhoneNumberCreateReq
  */
 export interface UserPhoneNumberCreateReq {
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserPhoneNumberCreateReq
      */
@@ -6218,14 +6491,14 @@ export interface UserPhoneNumberCreateReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof UserPhoneNumberCreateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface UserPhoneNumberCreateRsp
  */
@@ -6237,13 +6510,13 @@ export interface UserPhoneNumberCreateRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserPhoneNumberCreateRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof UserPhoneNumberCreateRsp
      */
@@ -6255,27 +6528,27 @@ export interface UserPhoneNumberCreateRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {UserPhoneNumberCreateRspAllOfData}
      * @memberof UserPhoneNumberCreateRsp
      */
     'data': UserPhoneNumberCreateRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface UserPhoneNumberCreateRspAllOfData
  */
 export interface UserPhoneNumberCreateRspAllOfData {
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserPhoneNumberCreateRspAllOfData
      */
     'phoneNumberID': string;
 }
 /**
- *
+ * 
  * @export
  * @interface UserPhoneNumberDeleteReq
  */
@@ -6287,14 +6560,14 @@ export interface UserPhoneNumberDeleteReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof UserPhoneNumberDeleteReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface UserPhoneNumberGetRsp
  */
@@ -6306,13 +6579,13 @@ export interface UserPhoneNumberGetRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserPhoneNumberGetRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof UserPhoneNumberGetRsp
      */
@@ -6324,88 +6597,121 @@ export interface UserPhoneNumberGetRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {UserPhoneNumberGetRspAllOfData}
      * @memberof UserPhoneNumberGetRsp
      */
     'data': UserPhoneNumberGetRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface UserPhoneNumberGetRspAllOfData
  */
 export interface UserPhoneNumberGetRspAllOfData {
     /**
-     *
+     * 
      * @type {PhoneNumber}
      * @memberof UserPhoneNumberGetRspAllOfData
      */
     'phoneNumber': PhoneNumber;
 }
 /**
- *
+ * User\'s social account
+ * @export
+ * @interface UserSocialAccount
+ */
+export interface UserSocialAccount {
+    /**
+     * 
+     * @type {SocialProviderType}
+     * @memberof UserSocialAccount
+     */
+    'providerType': SocialProviderType;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserSocialAccount
+     */
+    'identifierValue': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserSocialAccount
+     */
+    'avatarUrl': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserSocialAccount
+     */
+    'fullName': string;
+}
+
+
+/**
+ * 
  * @export
  * @interface UserStats
  */
 export interface UserStats {
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserStats
      */
     'timePoint': string;
     /**
-     *
+     * 
      * @type {number}
      * @memberof UserStats
      */
     'totalUsers': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof UserStats
      */
     'signUps': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof UserStats
      */
     'activeUsers': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof UserStats
      */
     'countPasskeyLogin': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof UserStats
      */
     'countEmailLogin': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof UserStats
      */
     'countPasswordLogin': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof UserStats
      */
     'successfulLogins': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof UserStats
      */
     'failedLogins': number;
 }
 /**
- *
+ * 
  * @export
  * @interface UserStatsListRsp
  */
@@ -6417,13 +6723,13 @@ export interface UserStatsListRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserStatsListRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof UserStatsListRsp
      */
@@ -6435,51 +6741,51 @@ export interface UserStatsListRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {UserStatsListRspAllOfData}
      * @memberof UserStatsListRsp
      */
     'data': UserStatsListRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface UserStatsListRspAllOfData
  */
 export interface UserStatsListRspAllOfData {
     /**
-     *
+     * 
      * @type {Array<UserStats>}
      * @memberof UserStatsListRspAllOfData
      */
     'stats': Array<UserStats>;
     /**
-     *
+     * 
      * @type {Paging}
      * @memberof UserStatsListRspAllOfData
      */
     'paging': Paging;
 }
 /**
- *
+ * 
  * @export
  * @interface UserUpdateReq
  */
 export interface UserUpdateReq {
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserUpdateReq
      */
     'name'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserUpdateReq
      */
     'fullName'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserUpdateReq
      */
@@ -6491,7 +6797,7 @@ export interface UserUpdateReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof UserUpdateReq
      */
@@ -6506,7 +6812,7 @@ export const UserUpdateReqStatusEnum = {
 export type UserUpdateReqStatusEnum = typeof UserUpdateReqStatusEnum[keyof typeof UserUpdateReqStatusEnum];
 
 /**
- *
+ * 
  * @export
  * @interface UserUpdateRsp
  */
@@ -6518,13 +6824,13 @@ export interface UserUpdateRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof UserUpdateRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof UserUpdateRsp
      */
@@ -6536,14 +6842,53 @@ export interface UserUpdateRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {User}
      * @memberof UserUpdateRsp
      */
     'data': User;
 }
 /**
- *
+ * User\'s username
+ * @export
+ * @interface UserUsername
+ */
+export interface UserUsername {
+    /**
+     * generic ID
+     * @type {string}
+     * @memberof UserUsername
+     */
+    'ID': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserUsername
+     */
+    'username': string;
+    /**
+     * Timestamp of when the entity was created in yyyy-MM-dd\'T\'HH:mm:ss format
+     * @type {string}
+     * @memberof UserUsername
+     */
+    'created': string;
+    /**
+     * Timestamp of when the entity was last updated in yyyy-MM-dd\'T\'HH:mm:ss format
+     * @type {string}
+     * @memberof UserUsername
+     */
+    'updated': string;
+    /**
+     * 
+     * @type {Status}
+     * @memberof UserUsername
+     */
+    'status': Status;
+}
+
+
+/**
+ * 
  * @export
  * @interface ValidateEmailReq
  */
@@ -6573,14 +6918,14 @@ export interface ValidateEmailReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof ValidateEmailReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface ValidateEmailRsp
  */
@@ -6592,13 +6937,13 @@ export interface ValidateEmailRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ValidateEmailRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof ValidateEmailRsp
      */
@@ -6610,14 +6955,14 @@ export interface ValidateEmailRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {EmailValidationResult}
      * @memberof ValidateEmailRsp
      */
     'data': EmailValidationResult;
 }
 /**
- *
+ * 
  * @export
  * @interface ValidatePhoneNumberReq
  */
@@ -6641,14 +6986,14 @@ export interface ValidatePhoneNumberReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof ValidatePhoneNumberReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface ValidatePhoneNumberRsp
  */
@@ -6660,13 +7005,13 @@ export interface ValidatePhoneNumberRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ValidatePhoneNumberRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof ValidatePhoneNumberRsp
      */
@@ -6678,100 +7023,100 @@ export interface ValidatePhoneNumberRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {PhoneNumberValidationResult}
      * @memberof ValidatePhoneNumberRsp
      */
     'data': PhoneNumberValidationResult;
 }
 /**
- *
+ * 
  * @export
  * @interface ValidationEmail
  */
 export interface ValidationEmail {
     /**
-     *
+     * 
      * @type {string}
      * @memberof ValidationEmail
      */
     'username': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ValidationEmail
      */
     'domain': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ValidationEmail
      */
     'reachable': string;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ValidationEmail
      */
     'disposable': boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ValidationEmail
      */
     'free': boolean;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof ValidationEmail
      */
     'hasMxRecords': boolean;
 }
 /**
- *
+ * 
  * @export
  * @interface ValidationPhoneNumber
  */
 export interface ValidationPhoneNumber {
     /**
-     *
+     * 
      * @type {number}
      * @memberof ValidationPhoneNumber
      */
     'nationalNumber': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof ValidationPhoneNumber
      */
     'countryCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ValidationPhoneNumber
      */
     'regionCode': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ValidationPhoneNumber
      */
     'nationalFormatted': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof ValidationPhoneNumber
      */
     'internationalFormatted': string;
 }
 /**
- *
+ * 
  * @export
  * @interface WebAuthnAssociateStartReq
  */
 export interface WebAuthnAssociateStartReq {
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnAssociateStartReq
      */
@@ -6783,14 +7128,14 @@ export interface WebAuthnAssociateStartReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof WebAuthnAssociateStartReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface WebAuthnAssociateStartRsp
  */
@@ -6802,13 +7147,13 @@ export interface WebAuthnAssociateStartRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnAssociateStartRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof WebAuthnAssociateStartRsp
      */
@@ -6841,7 +7186,7 @@ export const WebAuthnAssociateStartRspStatusEnum = {
 export type WebAuthnAssociateStartRspStatusEnum = typeof WebAuthnAssociateStartRspStatusEnum[keyof typeof WebAuthnAssociateStartRspStatusEnum];
 
 /**
- *
+ * 
  * @export
  * @interface WebAuthnAuthenticateFinishRsp
  */
@@ -6853,13 +7198,13 @@ export interface WebAuthnAuthenticateFinishRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnAuthenticateFinishRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof WebAuthnAuthenticateFinishRsp
      */
@@ -6910,13 +7255,13 @@ export const WebAuthnAuthenticateFinishRspStatusEnum = {
 export type WebAuthnAuthenticateFinishRspStatusEnum = typeof WebAuthnAuthenticateFinishRspStatusEnum[keyof typeof WebAuthnAuthenticateFinishRspStatusEnum];
 
 /**
- *
+ * 
  * @export
  * @interface WebAuthnAuthenticateStartReq
  */
 export interface WebAuthnAuthenticateStartReq {
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnAuthenticateStartReq
      */
@@ -6928,14 +7273,14 @@ export interface WebAuthnAuthenticateStartReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof WebAuthnAuthenticateStartReq
      */
     'clientInfo': ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface WebAuthnAuthenticateStartRsp
  */
@@ -6947,13 +7292,13 @@ export interface WebAuthnAuthenticateStartRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnAuthenticateStartRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof WebAuthnAuthenticateStartRsp
      */
@@ -6987,7 +7332,7 @@ export const WebAuthnAuthenticateStartRspStatusEnum = {
 export type WebAuthnAuthenticateStartRspStatusEnum = typeof WebAuthnAuthenticateStartRspStatusEnum[keyof typeof WebAuthnAuthenticateStartRspStatusEnum];
 
 /**
- *
+ * 
  * @export
  * @interface WebAuthnAuthenticateSuccess
  */
@@ -6999,13 +7344,13 @@ export interface WebAuthnAuthenticateSuccess {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnAuthenticateSuccess
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof WebAuthnAuthenticateSuccess
      */
@@ -7042,13 +7387,13 @@ export interface WebAuthnAuthenticateSuccess {
     'userFullName'?: string;
 }
 /**
- *
+ * 
  * @export
  * @interface WebAuthnAuthenticatorUpdateReq
  */
 export interface WebAuthnAuthenticatorUpdateReq {
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnAuthenticatorUpdateReq
      */
@@ -7060,26 +7405,26 @@ export interface WebAuthnAuthenticatorUpdateReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof WebAuthnAuthenticatorUpdateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface WebAuthnCredentialExistsReq
  */
 export interface WebAuthnCredentialExistsReq {
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnCredentialExistsReq
      */
     'loginIdentifier': string;
     /**
-     *
+     * 
      * @type {LoginIdentifierType}
      * @memberof WebAuthnCredentialExistsReq
      */
@@ -7091,7 +7436,7 @@ export interface WebAuthnCredentialExistsReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof WebAuthnCredentialExistsReq
      */
@@ -7100,7 +7445,7 @@ export interface WebAuthnCredentialExistsReq {
 
 
 /**
- *
+ * 
  * @export
  * @interface WebAuthnCredentialExistsRsp
  */
@@ -7112,13 +7457,13 @@ export interface WebAuthnCredentialExistsRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnCredentialExistsRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof WebAuthnCredentialExistsRsp
      */
@@ -7130,14 +7475,14 @@ export interface WebAuthnCredentialExistsRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {boolean}
      * @memberof WebAuthnCredentialExistsRsp
      */
     'exists': boolean;
 }
 /**
- *
+ * 
  * @export
  * @interface WebAuthnCredentialItemRsp
  */
@@ -7149,13 +7494,13 @@ export interface WebAuthnCredentialItemRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnCredentialItemRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof WebAuthnCredentialItemRsp
      */
@@ -7173,19 +7518,19 @@ export interface WebAuthnCredentialItemRsp {
      */
     'id': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnCredentialItemRsp
      */
     'credentialHash': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnCredentialItemRsp
      */
     'aaguid': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnCredentialItemRsp
      */
@@ -7233,7 +7578,7 @@ export interface WebAuthnCredentialItemRsp {
      */
     'authenticatorID': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnCredentialItemRsp
      */
@@ -7245,7 +7590,7 @@ export interface WebAuthnCredentialItemRsp {
      */
     'lastUsed': string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnCredentialItemRsp
      */
@@ -7270,7 +7615,7 @@ export const WebAuthnCredentialItemRspStatusEnum = {
 export type WebAuthnCredentialItemRspStatusEnum = typeof WebAuthnCredentialItemRspStatusEnum[keyof typeof WebAuthnCredentialItemRspStatusEnum];
 
 /**
- *
+ * 
  * @export
  * @interface WebAuthnCredentialListRsp
  */
@@ -7282,13 +7627,13 @@ export interface WebAuthnCredentialListRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnCredentialListRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof WebAuthnCredentialListRsp
      */
@@ -7300,26 +7645,26 @@ export interface WebAuthnCredentialListRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {Array<WebAuthnCredentialItemRsp>}
      * @memberof WebAuthnCredentialListRsp
      */
     'rows': Array<WebAuthnCredentialItemRsp>;
     /**
-     *
+     * 
      * @type {Paging}
      * @memberof WebAuthnCredentialListRsp
      */
     'paging': Paging;
 }
 /**
- *
+ * 
  * @export
  * @interface WebAuthnCredentialReq
  */
 export interface WebAuthnCredentialReq {
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnCredentialReq
      */
@@ -7331,7 +7676,7 @@ export interface WebAuthnCredentialReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof WebAuthnCredentialReq
      */
@@ -7347,7 +7692,7 @@ export const WebAuthnCredentialReqStatusEnum = {
 export type WebAuthnCredentialReqStatusEnum = typeof WebAuthnCredentialReqStatusEnum[keyof typeof WebAuthnCredentialReqStatusEnum];
 
 /**
- *
+ * 
  * @export
  * @interface WebAuthnCredentialRsp
  */
@@ -7359,13 +7704,13 @@ export interface WebAuthnCredentialRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnCredentialRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof WebAuthnCredentialRsp
      */
@@ -7393,7 +7738,7 @@ export const WebAuthnCredentialRspStatusEnum = {
 export type WebAuthnCredentialRspStatusEnum = typeof WebAuthnCredentialRspStatusEnum[keyof typeof WebAuthnCredentialRspStatusEnum];
 
 /**
- *
+ * 
  * @export
  * @interface WebAuthnFinishReq
  */
@@ -7411,14 +7756,14 @@ export interface WebAuthnFinishReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof WebAuthnFinishReq
      */
     'clientInfo': ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface WebAuthnMediationStartReq
  */
@@ -7436,14 +7781,14 @@ export interface WebAuthnMediationStartReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof WebAuthnMediationStartReq
      */
     'clientInfo': ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface WebAuthnMediationStartRsp
  */
@@ -7455,13 +7800,13 @@ export interface WebAuthnMediationStartRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnMediationStartRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof WebAuthnMediationStartRsp
      */
@@ -7480,7 +7825,7 @@ export interface WebAuthnMediationStartRsp {
     'challenge': string;
 }
 /**
- *
+ * 
  * @export
  * @interface WebAuthnRegisterFinishRsp
  */
@@ -7492,13 +7837,13 @@ export interface WebAuthnRegisterFinishRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnRegisterFinishRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof WebAuthnRegisterFinishRsp
      */
@@ -7549,13 +7894,13 @@ export const WebAuthnRegisterFinishRspStatusEnum = {
 export type WebAuthnRegisterFinishRspStatusEnum = typeof WebAuthnRegisterFinishRspStatusEnum[keyof typeof WebAuthnRegisterFinishRspStatusEnum];
 
 /**
- *
+ * 
  * @export
  * @interface WebAuthnRegisterStartReq
  */
 export interface WebAuthnRegisterStartReq {
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnRegisterStartReq
      */
@@ -7573,7 +7918,7 @@ export interface WebAuthnRegisterStartReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof WebAuthnRegisterStartReq
      */
@@ -7594,7 +7939,7 @@ export const WebAuthnRegisterStartReqCredentialStatusEnum = {
 export type WebAuthnRegisterStartReqCredentialStatusEnum = typeof WebAuthnRegisterStartReqCredentialStatusEnum[keyof typeof WebAuthnRegisterStartReqCredentialStatusEnum];
 
 /**
- *
+ * 
  * @export
  * @interface WebAuthnRegisterStartRsp
  */
@@ -7606,13 +7951,13 @@ export interface WebAuthnRegisterStartRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebAuthnRegisterStartRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof WebAuthnRegisterStartRsp
      */
@@ -7645,7 +7990,7 @@ export const WebAuthnRegisterStartRspStatusEnum = {
 export type WebAuthnRegisterStartRspStatusEnum = typeof WebAuthnRegisterStartRspStatusEnum[keyof typeof WebAuthnRegisterStartRspStatusEnum];
 
 /**
- *
+ * 
  * @export
  * @interface WebauthnSettingCreate
  */
@@ -7664,7 +8009,7 @@ export interface WebauthnSettingCreate {
     'origin': string;
 }
 /**
- *
+ * 
  * @export
  * @interface WebauthnSettingCreateReq
  */
@@ -7688,14 +8033,14 @@ export interface WebauthnSettingCreateReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof WebauthnSettingCreateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface WebauthnSettingCreateRsp
  */
@@ -7707,13 +8052,13 @@ export interface WebauthnSettingCreateRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebauthnSettingCreateRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof WebauthnSettingCreateRsp
      */
@@ -7756,7 +8101,7 @@ export interface WebauthnSettingCreateRsp {
     'updated': string;
 }
 /**
- *
+ * 
  * @export
  * @interface WebauthnSettingDeleteReq
  */
@@ -7768,14 +8113,14 @@ export interface WebauthnSettingDeleteReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof WebauthnSettingDeleteReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface WebauthnSettingGetRsp
  */
@@ -7787,13 +8132,13 @@ export interface WebauthnSettingGetRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebauthnSettingGetRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof WebauthnSettingGetRsp
      */
@@ -7836,7 +8181,7 @@ export interface WebauthnSettingGetRsp {
     'updated': string;
 }
 /**
- *
+ * 
  * @export
  * @interface WebauthnSettingItem
  */
@@ -7873,7 +8218,7 @@ export interface WebauthnSettingItem {
     'updated': string;
 }
 /**
- *
+ * 
  * @export
  * @interface WebauthnSettingListRsp
  */
@@ -7885,13 +8230,13 @@ export interface WebauthnSettingListRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebauthnSettingListRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof WebauthnSettingListRsp
      */
@@ -7903,20 +8248,20 @@ export interface WebauthnSettingListRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {Array<WebauthnSettingItem>}
      * @memberof WebauthnSettingListRsp
      */
     'rows': Array<WebauthnSettingItem>;
     /**
-     *
+     * 
      * @type {Paging}
      * @memberof WebauthnSettingListRsp
      */
     'paging': Paging;
 }
 /**
- *
+ * 
  * @export
  * @interface WebauthnSettingUpdateReq
  */
@@ -7940,14 +8285,14 @@ export interface WebauthnSettingUpdateReq {
      */
     'requestID'?: string;
     /**
-     *
+     * 
      * @type {ClientInfo}
      * @memberof WebauthnSettingUpdateReq
      */
     'clientInfo'?: ClientInfo;
 }
 /**
- *
+ * 
  * @export
  * @interface WebauthnSettingUpdateRsp
  */
@@ -7959,13 +8304,13 @@ export interface WebauthnSettingUpdateRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebauthnSettingUpdateRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof WebauthnSettingUpdateRsp
      */
@@ -8032,7 +8377,7 @@ export interface WebhookLog {
      */
     'action': string;
     /**
-     * Unique ID of response, you can provide your own while responding to the webhook, if not the ID will be randomly generated on server side. This has the same meaning as overriding requestID for API requests.
+     * Unique ID of response, you can provide your own while responding to the webhook, if not the ID will be randomly generated on server side. This has the same meaning as overriding requestID for API requests. 
      * @type {string}
      * @memberof WebhookLog
      */
@@ -8087,7 +8432,7 @@ export interface WebhookLog {
     'created': string;
 }
 /**
- *
+ * 
  * @export
  * @interface WebhookLogsListRsp
  */
@@ -8099,13 +8444,13 @@ export interface WebhookLogsListRsp {
      */
     'httpStatusCode': number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof WebhookLogsListRsp
      */
     'message': string;
     /**
-     *
+     * 
      * @type {RequestData}
      * @memberof WebhookLogsListRsp
      */
@@ -8117,26 +8462,26 @@ export interface WebhookLogsListRsp {
      */
     'runtime': number;
     /**
-     *
+     * 
      * @type {WebhookLogsListRspAllOfData}
      * @memberof WebhookLogsListRsp
      */
     'data': WebhookLogsListRspAllOfData;
 }
 /**
- *
+ * 
  * @export
  * @interface WebhookLogsListRspAllOfData
  */
 export interface WebhookLogsListRspAllOfData {
     /**
-     *
+     * 
      * @type {Array<WebhookLog>}
      * @memberof WebhookLogsListRspAllOfData
      */
     'logs': Array<WebhookLog>;
     /**
-     *
+     * 
      * @type {Paging}
      * @memberof WebhookLogsListRspAllOfData
      */
@@ -8151,11 +8496,11 @@ export const APISecretsApiAxiosParamCreator = function (configuration?: Configur
     return {
         /**
          * Creates an API secret
-         * @param {ProjectSecretCreateReq} [projectSecretCreateReq]
+         * @param {ProjectSecretCreateReq} [projectSecretCreateReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        projectSecretCreate: async (projectSecretCreateReq?: ProjectSecretCreateReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        projectSecretCreate: async (projectSecretCreateReq?: ProjectSecretCreateReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/projectSecrets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8180,7 +8525,7 @@ export const APISecretsApiAxiosParamCreator = function (configuration?: Configur
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -8196,11 +8541,11 @@ export const APISecretsApiAxiosParamCreator = function (configuration?: Configur
         /**
          * Deletes API secret
          * @param {string} secretID Secret ID from create
-         * @param {ProjectSecretDeleteReq} [projectSecretDeleteReq]
+         * @param {ProjectSecretDeleteReq} [projectSecretDeleteReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        projectSecretDelete: async (secretID: string, projectSecretDeleteReq?: ProjectSecretDeleteReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        projectSecretDelete: async (secretID: string, projectSecretDeleteReq?: ProjectSecretDeleteReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'secretID' is not null or undefined
             assertParamExists('projectSecretDelete', 'secretID', secretID)
             const localVarPath = `/v1/projectSecrets/{secretID}`
@@ -8228,7 +8573,7 @@ export const APISecretsApiAxiosParamCreator = function (configuration?: Configur
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -8246,7 +8591,7 @@ export const APISecretsApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        projectSecretList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        projectSecretList: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/projectSecrets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8271,7 +8616,7 @@ export const APISecretsApiAxiosParamCreator = function (configuration?: Configur
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8293,11 +8638,11 @@ export const APISecretsApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Creates an API secret
-         * @param {ProjectSecretCreateReq} [projectSecretCreateReq]
+         * @param {ProjectSecretCreateReq} [projectSecretCreateReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async projectSecretCreate(projectSecretCreateReq?: ProjectSecretCreateReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectSecretCreateRsp>> {
+        async projectSecretCreate(projectSecretCreateReq?: ProjectSecretCreateReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectSecretCreateRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.projectSecretCreate(projectSecretCreateReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['APISecretsApi.projectSecretCreate']?.[index]?.url;
@@ -8306,11 +8651,11 @@ export const APISecretsApiFp = function(configuration?: Configuration) {
         /**
          * Deletes API secret
          * @param {string} secretID Secret ID from create
-         * @param {ProjectSecretDeleteReq} [projectSecretDeleteReq]
+         * @param {ProjectSecretDeleteReq} [projectSecretDeleteReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async projectSecretDelete(secretID: string, projectSecretDeleteReq?: ProjectSecretDeleteReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
+        async projectSecretDelete(secretID: string, projectSecretDeleteReq?: ProjectSecretDeleteReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.projectSecretDelete(secretID, projectSecretDeleteReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['APISecretsApi.projectSecretDelete']?.[index]?.url;
@@ -8321,7 +8666,7 @@ export const APISecretsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async projectSecretList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectSecretListRsp>> {
+        async projectSecretList(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectSecretListRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.projectSecretList(options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['APISecretsApi.projectSecretList']?.[index]?.url;
@@ -8339,7 +8684,7 @@ export const APISecretsApiFactory = function (configuration?: Configuration, bas
     return {
         /**
          * Creates an API secret
-         * @param {ProjectSecretCreateReq} [projectSecretCreateReq]
+         * @param {ProjectSecretCreateReq} [projectSecretCreateReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -8349,7 +8694,7 @@ export const APISecretsApiFactory = function (configuration?: Configuration, bas
         /**
          * Deletes API secret
          * @param {string} secretID Secret ID from create
-         * @param {ProjectSecretDeleteReq} [projectSecretDeleteReq]
+         * @param {ProjectSecretDeleteReq} [projectSecretDeleteReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -8376,24 +8721,24 @@ export const APISecretsApiFactory = function (configuration?: Configuration, bas
 export class APISecretsApi extends BaseAPI {
     /**
      * Creates an API secret
-     * @param {ProjectSecretCreateReq} [projectSecretCreateReq]
+     * @param {ProjectSecretCreateReq} [projectSecretCreateReq] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof APISecretsApi
      */
-    public projectSecretCreate(projectSecretCreateReq?: ProjectSecretCreateReq, options?: RawAxiosRequestConfig) {
+    public projectSecretCreate(projectSecretCreateReq?: ProjectSecretCreateReq, options?: AxiosRequestConfig) {
         return APISecretsApiFp(this.configuration).projectSecretCreate(projectSecretCreateReq, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Deletes API secret
      * @param {string} secretID Secret ID from create
-     * @param {ProjectSecretDeleteReq} [projectSecretDeleteReq]
+     * @param {ProjectSecretDeleteReq} [projectSecretDeleteReq] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof APISecretsApi
      */
-    public projectSecretDelete(secretID: string, projectSecretDeleteReq?: ProjectSecretDeleteReq, options?: RawAxiosRequestConfig) {
+    public projectSecretDelete(secretID: string, projectSecretDeleteReq?: ProjectSecretDeleteReq, options?: AxiosRequestConfig) {
         return APISecretsApiFp(this.configuration).projectSecretDelete(secretID, projectSecretDeleteReq, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8403,7 +8748,7 @@ export class APISecretsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof APISecretsApi
      */
-    public projectSecretList(options?: RawAxiosRequestConfig) {
+    public projectSecretList(options?: AxiosRequestConfig) {
         return APISecretsApiFp(this.configuration).projectSecretList(options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -8411,10 +8756,10 @@ export class APISecretsApi extends BaseAPI {
 
 
 /**
- * AnalyzerApi - axios parameter creator
+ * AnalyticsApi - axios parameter creator
  * @export
  */
-export const AnalyzerApiAxiosParamCreator = function (configuration?: Configuration) {
+export const AnalyticsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * Provides project\'s passkeys raw tracking data per visitor
@@ -8427,7 +8772,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        trackingAllRequest: async (remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        trackingAllRequest: async (remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/tracking`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8476,7 +8821,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8490,10 +8835,14 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
          * Provides tracking credential backup state data
          * @param {string} [remoteAddress] Client\&#39;s remote address
          * @param {string} [userAgent] Client\&#39;s user agent
+         * @param {string} [sort] Field sorting
+         * @param {Array<string>} [filter] Field filtering
+         * @param {number} [page] Page number
+         * @param {number} [pageSize] Number of items per page
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        trackingBackupStateGet: async (remoteAddress?: string, userAgent?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        trackingBackupStateGet: async (remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/tracking/backupState`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8525,8 +8874,24 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
                 localVarQueryParameter['userAgent'] = userAgent;
             }
 
+            if (sort !== undefined) {
+                localVarQueryParameter['sort'] = sort;
+            }
+
+            if (filter) {
+                localVarQueryParameter['filter[]'] = filter;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (pageSize !== undefined) {
+                localVarQueryParameter['pageSize'] = pageSize;
+            }
 
 
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8548,7 +8913,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        trackingBrowserDetailedStatsList: async (granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        trackingBrowserDetailedStatsList: async (granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'granularity' is not null or undefined
             assertParamExists('trackingBrowserDetailedStatsList', 'granularity', granularity)
             const localVarPath = `/v1/tracking/browser/stats/detailed`;
@@ -8603,7 +8968,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8625,7 +8990,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        trackingBrowserStatsList: async (granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        trackingBrowserStatsList: async (granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'granularity' is not null or undefined
             assertParamExists('trackingBrowserStatsList', 'granularity', granularity)
             const localVarPath = `/v1/tracking/browser/stats`;
@@ -8680,7 +9045,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8702,7 +9067,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        trackingDetailedStatsList: async (granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        trackingDetailedStatsList: async (granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'granularity' is not null or undefined
             assertParamExists('trackingDetailedStatsList', 'granularity', granularity)
             const localVarPath = `/v1/tracking/stats/detailed`;
@@ -8757,7 +9122,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8774,7 +9139,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        trackingEnumsGet: async (remoteAddress?: string, userAgent?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        trackingEnumsGet: async (remoteAddress?: string, userAgent?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/tracking/enums`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8807,7 +9172,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8829,7 +9194,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        trackingOSDetailedStatsList: async (granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        trackingOSDetailedStatsList: async (granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'granularity' is not null or undefined
             assertParamExists('trackingOSDetailedStatsList', 'granularity', granularity)
             const localVarPath = `/v1/tracking/os/stats/detailed`;
@@ -8884,7 +9249,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8906,7 +9271,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        trackingOSStatsList: async (granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        trackingOSStatsList: async (granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'granularity' is not null or undefined
             assertParamExists('trackingOSStatsList', 'granularity', granularity)
             const localVarPath = `/v1/tracking/os/stats`;
@@ -8961,7 +9326,176 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Provides Passkeys (Biometrics) adoption statistics
+         * @param {string} [remoteAddress] Client\&#39;s remote address
+         * @param {string} [userAgent] Client\&#39;s user agent
+         * @param {Array<string>} [filter] Field filtering
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        trackingPasskeysAdoption: async (remoteAddress?: string, userAgent?: string, filter?: Array<string>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/tracking/passkeys/adoption`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication basicAuth required
+            // http basic authentication required
+            setBasicAuthToObject(localVarRequestOptions, configuration)
+
+            // authentication projectID required
+            await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (remoteAddress !== undefined) {
+                localVarQueryParameter['remoteAddress'] = remoteAddress;
+            }
+
+            if (userAgent !== undefined) {
+                localVarQueryParameter['userAgent'] = userAgent;
+            }
+
+            if (filter) {
+                localVarQueryParameter['filter[]'] = filter;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Provides Passkeys (Biometrics) authenticator statistics
+         * @param {string} from Timestamp of time range start epoch in yyyy-MM-dd\&#39;T\&#39;HH:mm:ss format
+         * @param {string} [remoteAddress] Client\&#39;s remote address
+         * @param {string} [userAgent] Client\&#39;s user agent
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        trackingPasskeysAuthenticator: async (from: string, remoteAddress?: string, userAgent?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'from' is not null or undefined
+            assertParamExists('trackingPasskeysAuthenticator', 'from', from)
+            const localVarPath = `/v1/tracking/passkeys/authenticator`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication basicAuth required
+            // http basic authentication required
+            setBasicAuthToObject(localVarRequestOptions, configuration)
+
+            // authentication projectID required
+            await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (from !== undefined) {
+                localVarQueryParameter['from'] = from;
+            }
+
+            if (remoteAddress !== undefined) {
+                localVarQueryParameter['remoteAddress'] = remoteAddress;
+            }
+
+            if (userAgent !== undefined) {
+                localVarQueryParameter['userAgent'] = userAgent;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Provides Passkeys (Biometrics) type statistics
+         * @param {string} from Timestamp of time range start epoch in yyyy-MM-dd\&#39;T\&#39;HH:mm:ss format
+         * @param {string} [remoteAddress] Client\&#39;s remote address
+         * @param {string} [userAgent] Client\&#39;s user agent
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        trackingPasskeysType: async (from: string, remoteAddress?: string, userAgent?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'from' is not null or undefined
+            assertParamExists('trackingPasskeysType', 'from', from)
+            const localVarPath = `/v1/tracking/passkeys/type`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication basicAuth required
+            // http basic authentication required
+            setBasicAuthToObject(localVarRequestOptions, configuration)
+
+            // authentication projectID required
+            await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (from !== undefined) {
+                localVarQueryParameter['from'] = from;
+            }
+
+            if (remoteAddress !== undefined) {
+                localVarQueryParameter['remoteAddress'] = remoteAddress;
+            }
+
+            if (userAgent !== undefined) {
+                localVarQueryParameter['userAgent'] = userAgent;
+            }
+
+
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -8983,7 +9517,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        trackingStatsList: async (granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        trackingStatsList: async (granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'granularity' is not null or undefined
             assertParamExists('trackingStatsList', 'granularity', granularity)
             const localVarPath = `/v1/tracking/stats`;
@@ -9038,7 +9572,7 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9052,11 +9586,11 @@ export const AnalyzerApiAxiosParamCreator = function (configuration?: Configurat
 };
 
 /**
- * AnalyzerApi - functional programming interface
+ * AnalyticsApi - functional programming interface
  * @export
  */
-export const AnalyzerApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = AnalyzerApiAxiosParamCreator(configuration)
+export const AnalyticsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = AnalyticsApiAxiosParamCreator(configuration)
     return {
         /**
          * Provides project\'s passkeys raw tracking data per visitor
@@ -9069,23 +9603,27 @@ export const AnalyzerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async trackingAllRequest(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackingRawListRsp>> {
+        async trackingAllRequest(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackingRawListRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.trackingAllRequest(remoteAddress, userAgent, sort, filter, page, pageSize, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AnalyzerApi.trackingAllRequest']?.[index]?.url;
+            const operationBasePath = operationServerMap['AnalyticsApi.trackingAllRequest']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * Provides tracking credential backup state data
          * @param {string} [remoteAddress] Client\&#39;s remote address
          * @param {string} [userAgent] Client\&#39;s user agent
+         * @param {string} [sort] Field sorting
+         * @param {Array<string>} [filter] Field filtering
+         * @param {number} [page] Page number
+         * @param {number} [pageSize] Number of items per page
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async trackingBackupStateGet(remoteAddress?: string, userAgent?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackingBackupStateGetRsp>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.trackingBackupStateGet(remoteAddress, userAgent, options);
+        async trackingBackupStateGet(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackingBackupStateGetRsp>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.trackingBackupStateGet(remoteAddress, userAgent, sort, filter, page, pageSize, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AnalyzerApi.trackingBackupStateGet']?.[index]?.url;
+            const operationBasePath = operationServerMap['AnalyticsApi.trackingBackupStateGet']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -9100,10 +9638,10 @@ export const AnalyzerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async trackingBrowserDetailedStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackingBrowserDetailedStatsListRsp>> {
+        async trackingBrowserDetailedStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackingBrowserDetailedStatsListRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.trackingBrowserDetailedStatsList(granularity, remoteAddress, userAgent, sort, filter, page, pageSize, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AnalyzerApi.trackingBrowserDetailedStatsList']?.[index]?.url;
+            const operationBasePath = operationServerMap['AnalyticsApi.trackingBrowserDetailedStatsList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -9118,10 +9656,10 @@ export const AnalyzerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async trackingBrowserStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackingBrowserStatsListRsp>> {
+        async trackingBrowserStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackingBrowserStatsListRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.trackingBrowserStatsList(granularity, remoteAddress, userAgent, sort, filter, page, pageSize, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AnalyzerApi.trackingBrowserStatsList']?.[index]?.url;
+            const operationBasePath = operationServerMap['AnalyticsApi.trackingBrowserStatsList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -9136,10 +9674,10 @@ export const AnalyzerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async trackingDetailedStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackingDetailedStatsListRsp>> {
+        async trackingDetailedStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackingDetailedStatsListRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.trackingDetailedStatsList(granularity, remoteAddress, userAgent, sort, filter, page, pageSize, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AnalyzerApi.trackingDetailedStatsList']?.[index]?.url;
+            const operationBasePath = operationServerMap['AnalyticsApi.trackingDetailedStatsList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -9149,10 +9687,10 @@ export const AnalyzerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async trackingEnumsGet(remoteAddress?: string, userAgent?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackingEnumsGetRsp>> {
+        async trackingEnumsGet(remoteAddress?: string, userAgent?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackingEnumsGetRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.trackingEnumsGet(remoteAddress, userAgent, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AnalyzerApi.trackingEnumsGet']?.[index]?.url;
+            const operationBasePath = operationServerMap['AnalyticsApi.trackingEnumsGet']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -9167,10 +9705,10 @@ export const AnalyzerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async trackingOSDetailedStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackingOSDetailedStatsListRsp>> {
+        async trackingOSDetailedStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackingOSDetailedStatsListRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.trackingOSDetailedStatsList(granularity, remoteAddress, userAgent, sort, filter, page, pageSize, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AnalyzerApi.trackingOSDetailedStatsList']?.[index]?.url;
+            const operationBasePath = operationServerMap['AnalyticsApi.trackingOSDetailedStatsList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -9185,10 +9723,52 @@ export const AnalyzerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async trackingOSStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackingOSStatsListRsp>> {
+        async trackingOSStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackingOSStatsListRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.trackingOSStatsList(granularity, remoteAddress, userAgent, sort, filter, page, pageSize, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AnalyzerApi.trackingOSStatsList']?.[index]?.url;
+            const operationBasePath = operationServerMap['AnalyticsApi.trackingOSStatsList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Provides Passkeys (Biometrics) adoption statistics
+         * @param {string} [remoteAddress] Client\&#39;s remote address
+         * @param {string} [userAgent] Client\&#39;s user agent
+         * @param {Array<string>} [filter] Field filtering
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async trackingPasskeysAdoption(remoteAddress?: string, userAgent?: string, filter?: Array<string>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackingPasskeysAdoptionRsp>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.trackingPasskeysAdoption(remoteAddress, userAgent, filter, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AnalyticsApi.trackingPasskeysAdoption']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Provides Passkeys (Biometrics) authenticator statistics
+         * @param {string} from Timestamp of time range start epoch in yyyy-MM-dd\&#39;T\&#39;HH:mm:ss format
+         * @param {string} [remoteAddress] Client\&#39;s remote address
+         * @param {string} [userAgent] Client\&#39;s user agent
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async trackingPasskeysAuthenticator(from: string, remoteAddress?: string, userAgent?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackingPasskeysAuthenticatorRsp>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.trackingPasskeysAuthenticator(from, remoteAddress, userAgent, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AnalyticsApi.trackingPasskeysAuthenticator']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Provides Passkeys (Biometrics) type statistics
+         * @param {string} from Timestamp of time range start epoch in yyyy-MM-dd\&#39;T\&#39;HH:mm:ss format
+         * @param {string} [remoteAddress] Client\&#39;s remote address
+         * @param {string} [userAgent] Client\&#39;s user agent
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async trackingPasskeysType(from: string, remoteAddress?: string, userAgent?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackingPasskeysTypeRsp>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.trackingPasskeysType(from, remoteAddress, userAgent, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AnalyticsApi.trackingPasskeysType']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -9203,21 +9783,21 @@ export const AnalyzerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async trackingStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackingStatsListRsp>> {
+        async trackingStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackingStatsListRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.trackingStatsList(granularity, remoteAddress, userAgent, sort, filter, page, pageSize, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AnalyzerApi.trackingStatsList']?.[index]?.url;
+            const operationBasePath = operationServerMap['AnalyticsApi.trackingStatsList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
 
 /**
- * AnalyzerApi - factory interface
+ * AnalyticsApi - factory interface
  * @export
  */
-export const AnalyzerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = AnalyzerApiFp(configuration)
+export const AnalyticsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = AnalyticsApiFp(configuration)
     return {
         /**
          * Provides project\'s passkeys raw tracking data per visitor
@@ -9237,11 +9817,15 @@ export const AnalyzerApiFactory = function (configuration?: Configuration, baseP
          * Provides tracking credential backup state data
          * @param {string} [remoteAddress] Client\&#39;s remote address
          * @param {string} [userAgent] Client\&#39;s user agent
+         * @param {string} [sort] Field sorting
+         * @param {Array<string>} [filter] Field filtering
+         * @param {number} [page] Page number
+         * @param {number} [pageSize] Number of items per page
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        trackingBackupStateGet(remoteAddress?: string, userAgent?: string, options?: any): AxiosPromise<TrackingBackupStateGetRsp> {
-            return localVarFp.trackingBackupStateGet(remoteAddress, userAgent, options).then((request) => request(axios, basePath));
+        trackingBackupStateGet(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: any): AxiosPromise<TrackingBackupStateGetRsp> {
+            return localVarFp.trackingBackupStateGet(remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(axios, basePath));
         },
         /**
          * Provides detailed browser tracking data
@@ -9329,6 +9913,39 @@ export const AnalyzerApiFactory = function (configuration?: Configuration, baseP
             return localVarFp.trackingOSStatsList(granularity, remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(axios, basePath));
         },
         /**
+         * Provides Passkeys (Biometrics) adoption statistics
+         * @param {string} [remoteAddress] Client\&#39;s remote address
+         * @param {string} [userAgent] Client\&#39;s user agent
+         * @param {Array<string>} [filter] Field filtering
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        trackingPasskeysAdoption(remoteAddress?: string, userAgent?: string, filter?: Array<string>, options?: any): AxiosPromise<TrackingPasskeysAdoptionRsp> {
+            return localVarFp.trackingPasskeysAdoption(remoteAddress, userAgent, filter, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Provides Passkeys (Biometrics) authenticator statistics
+         * @param {string} from Timestamp of time range start epoch in yyyy-MM-dd\&#39;T\&#39;HH:mm:ss format
+         * @param {string} [remoteAddress] Client\&#39;s remote address
+         * @param {string} [userAgent] Client\&#39;s user agent
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        trackingPasskeysAuthenticator(from: string, remoteAddress?: string, userAgent?: string, options?: any): AxiosPromise<TrackingPasskeysAuthenticatorRsp> {
+            return localVarFp.trackingPasskeysAuthenticator(from, remoteAddress, userAgent, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Provides Passkeys (Biometrics) type statistics
+         * @param {string} from Timestamp of time range start epoch in yyyy-MM-dd\&#39;T\&#39;HH:mm:ss format
+         * @param {string} [remoteAddress] Client\&#39;s remote address
+         * @param {string} [userAgent] Client\&#39;s user agent
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        trackingPasskeysType(from: string, remoteAddress?: string, userAgent?: string, options?: any): AxiosPromise<TrackingPasskeysTypeRsp> {
+            return localVarFp.trackingPasskeysType(from, remoteAddress, userAgent, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Provides aggregated statstics for project\'s passkeys tracking data
          * @param {string} granularity Data granularity
          * @param {string} [remoteAddress] Client\&#39;s remote address
@@ -9347,12 +9964,12 @@ export const AnalyzerApiFactory = function (configuration?: Configuration, baseP
 };
 
 /**
- * AnalyzerApi - object-oriented interface
+ * AnalyticsApi - object-oriented interface
  * @export
- * @class AnalyzerApi
+ * @class AnalyticsApi
  * @extends {BaseAPI}
  */
-export class AnalyzerApi extends BaseAPI {
+export class AnalyticsApi extends BaseAPI {
     /**
      * Provides project\'s passkeys raw tracking data per visitor
      * @param {string} [remoteAddress] Client\&#39;s remote address
@@ -9363,22 +9980,26 @@ export class AnalyzerApi extends BaseAPI {
      * @param {number} [pageSize] Number of items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof AnalyzerApi
+     * @memberof AnalyticsApi
      */
-    public trackingAllRequest(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
-        return AnalyzerApiFp(this.configuration).trackingAllRequest(remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
+    public trackingAllRequest(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig) {
+        return AnalyticsApiFp(this.configuration).trackingAllRequest(remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Provides tracking credential backup state data
      * @param {string} [remoteAddress] Client\&#39;s remote address
      * @param {string} [userAgent] Client\&#39;s user agent
+     * @param {string} [sort] Field sorting
+     * @param {Array<string>} [filter] Field filtering
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Number of items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof AnalyzerApi
+     * @memberof AnalyticsApi
      */
-    public trackingBackupStateGet(remoteAddress?: string, userAgent?: string, options?: RawAxiosRequestConfig) {
-        return AnalyzerApiFp(this.configuration).trackingBackupStateGet(remoteAddress, userAgent, options).then((request) => request(this.axios, this.basePath));
+    public trackingBackupStateGet(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig) {
+        return AnalyticsApiFp(this.configuration).trackingBackupStateGet(remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -9392,10 +10013,10 @@ export class AnalyzerApi extends BaseAPI {
      * @param {number} [pageSize] Number of items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof AnalyzerApi
+     * @memberof AnalyticsApi
      */
-    public trackingBrowserDetailedStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
-        return AnalyzerApiFp(this.configuration).trackingBrowserDetailedStatsList(granularity, remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
+    public trackingBrowserDetailedStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig) {
+        return AnalyticsApiFp(this.configuration).trackingBrowserDetailedStatsList(granularity, remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -9409,10 +10030,10 @@ export class AnalyzerApi extends BaseAPI {
      * @param {number} [pageSize] Number of items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof AnalyzerApi
+     * @memberof AnalyticsApi
      */
-    public trackingBrowserStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
-        return AnalyzerApiFp(this.configuration).trackingBrowserStatsList(granularity, remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
+    public trackingBrowserStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig) {
+        return AnalyticsApiFp(this.configuration).trackingBrowserStatsList(granularity, remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -9426,10 +10047,10 @@ export class AnalyzerApi extends BaseAPI {
      * @param {number} [pageSize] Number of items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof AnalyzerApi
+     * @memberof AnalyticsApi
      */
-    public trackingDetailedStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
-        return AnalyzerApiFp(this.configuration).trackingDetailedStatsList(granularity, remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
+    public trackingDetailedStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig) {
+        return AnalyticsApiFp(this.configuration).trackingDetailedStatsList(granularity, remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -9438,10 +10059,10 @@ export class AnalyzerApi extends BaseAPI {
      * @param {string} [userAgent] Client\&#39;s user agent
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof AnalyzerApi
+     * @memberof AnalyticsApi
      */
-    public trackingEnumsGet(remoteAddress?: string, userAgent?: string, options?: RawAxiosRequestConfig) {
-        return AnalyzerApiFp(this.configuration).trackingEnumsGet(remoteAddress, userAgent, options).then((request) => request(this.axios, this.basePath));
+    public trackingEnumsGet(remoteAddress?: string, userAgent?: string, options?: AxiosRequestConfig) {
+        return AnalyticsApiFp(this.configuration).trackingEnumsGet(remoteAddress, userAgent, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -9455,10 +10076,10 @@ export class AnalyzerApi extends BaseAPI {
      * @param {number} [pageSize] Number of items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof AnalyzerApi
+     * @memberof AnalyticsApi
      */
-    public trackingOSDetailedStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
-        return AnalyzerApiFp(this.configuration).trackingOSDetailedStatsList(granularity, remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
+    public trackingOSDetailedStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig) {
+        return AnalyticsApiFp(this.configuration).trackingOSDetailedStatsList(granularity, remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -9472,10 +10093,49 @@ export class AnalyzerApi extends BaseAPI {
      * @param {number} [pageSize] Number of items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof AnalyzerApi
+     * @memberof AnalyticsApi
      */
-    public trackingOSStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
-        return AnalyzerApiFp(this.configuration).trackingOSStatsList(granularity, remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
+    public trackingOSStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig) {
+        return AnalyticsApiFp(this.configuration).trackingOSStatsList(granularity, remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Provides Passkeys (Biometrics) adoption statistics
+     * @param {string} [remoteAddress] Client\&#39;s remote address
+     * @param {string} [userAgent] Client\&#39;s user agent
+     * @param {Array<string>} [filter] Field filtering
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AnalyticsApi
+     */
+    public trackingPasskeysAdoption(remoteAddress?: string, userAgent?: string, filter?: Array<string>, options?: AxiosRequestConfig) {
+        return AnalyticsApiFp(this.configuration).trackingPasskeysAdoption(remoteAddress, userAgent, filter, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Provides Passkeys (Biometrics) authenticator statistics
+     * @param {string} from Timestamp of time range start epoch in yyyy-MM-dd\&#39;T\&#39;HH:mm:ss format
+     * @param {string} [remoteAddress] Client\&#39;s remote address
+     * @param {string} [userAgent] Client\&#39;s user agent
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AnalyticsApi
+     */
+    public trackingPasskeysAuthenticator(from: string, remoteAddress?: string, userAgent?: string, options?: AxiosRequestConfig) {
+        return AnalyticsApiFp(this.configuration).trackingPasskeysAuthenticator(from, remoteAddress, userAgent, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Provides Passkeys (Biometrics) type statistics
+     * @param {string} from Timestamp of time range start epoch in yyyy-MM-dd\&#39;T\&#39;HH:mm:ss format
+     * @param {string} [remoteAddress] Client\&#39;s remote address
+     * @param {string} [userAgent] Client\&#39;s user agent
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AnalyticsApi
+     */
+    public trackingPasskeysType(from: string, remoteAddress?: string, userAgent?: string, options?: AxiosRequestConfig) {
+        return AnalyticsApiFp(this.configuration).trackingPasskeysType(from, remoteAddress, userAgent, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -9489,10 +10149,10 @@ export class AnalyzerApi extends BaseAPI {
      * @param {number} [pageSize] Number of items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof AnalyzerApi
+     * @memberof AnalyticsApi
      */
-    public trackingStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
-        return AnalyzerApiFp(this.configuration).trackingStatsList(granularity, remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
+    public trackingStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig) {
+        return AnalyticsApiFp(this.configuration).trackingStatsList(granularity, remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -9506,11 +10166,11 @@ export const AndroidAppConfigApiAxiosParamCreator = function (configuration?: Co
     return {
         /**
          * Creates a new Android App Configuration
-         * @param {AndroidAppConfigSaveReq} androidAppConfigSaveReq
+         * @param {AndroidAppConfigSaveReq} androidAppConfigSaveReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        androidAppConfigCreate: async (androidAppConfigSaveReq: AndroidAppConfigSaveReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        androidAppConfigCreate: async (androidAppConfigSaveReq: AndroidAppConfigSaveReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'androidAppConfigSaveReq' is not null or undefined
             assertParamExists('androidAppConfigCreate', 'androidAppConfigSaveReq', androidAppConfigSaveReq)
             const localVarPath = `/v1/androidappconfig`;
@@ -9537,7 +10197,7 @@ export const AndroidAppConfigApiAxiosParamCreator = function (configuration?: Co
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -9553,11 +10213,11 @@ export const AndroidAppConfigApiAxiosParamCreator = function (configuration?: Co
         /**
          * Deletes an Android App Config
          * @param {string} androidAppConfigID Android App Config ID from create
-         * @param {AndroidAppConfigDeleteReq} [androidAppConfigDeleteReq]
+         * @param {AndroidAppConfigDeleteReq} [androidAppConfigDeleteReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        androidAppConfigDelete: async (androidAppConfigID: string, androidAppConfigDeleteReq?: AndroidAppConfigDeleteReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        androidAppConfigDelete: async (androidAppConfigID: string, androidAppConfigDeleteReq?: AndroidAppConfigDeleteReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'androidAppConfigID' is not null or undefined
             assertParamExists('androidAppConfigDelete', 'androidAppConfigID', androidAppConfigID)
             const localVarPath = `/v1/androidappconfig/{androidAppConfigID}`
@@ -9585,7 +10245,7 @@ export const AndroidAppConfigApiAxiosParamCreator = function (configuration?: Co
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -9603,7 +10263,7 @@ export const AndroidAppConfigApiAxiosParamCreator = function (configuration?: Co
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        androidAppConfigGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        androidAppConfigGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/androidappconfig`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -9628,7 +10288,7 @@ export const AndroidAppConfigApiAxiosParamCreator = function (configuration?: Co
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9641,11 +10301,11 @@ export const AndroidAppConfigApiAxiosParamCreator = function (configuration?: Co
         /**
          * Updates an Android app config by id
          * @param {string} androidAppConfigID ID from Android config create
-         * @param {AndroidAppConfigUpdateReq} [androidAppConfigUpdateReq]
+         * @param {AndroidAppConfigUpdateReq} [androidAppConfigUpdateReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        androidAppConfigPut: async (androidAppConfigID: string, androidAppConfigUpdateReq?: AndroidAppConfigUpdateReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        androidAppConfigPut: async (androidAppConfigID: string, androidAppConfigUpdateReq?: AndroidAppConfigUpdateReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'androidAppConfigID' is not null or undefined
             assertParamExists('androidAppConfigPut', 'androidAppConfigID', androidAppConfigID)
             const localVarPath = `/v1/androidappconfig/{androidAppConfigID}`
@@ -9673,7 +10333,7 @@ export const AndroidAppConfigApiAxiosParamCreator = function (configuration?: Co
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -9698,11 +10358,11 @@ export const AndroidAppConfigApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Creates a new Android App Configuration
-         * @param {AndroidAppConfigSaveReq} androidAppConfigSaveReq
+         * @param {AndroidAppConfigSaveReq} androidAppConfigSaveReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async androidAppConfigCreate(androidAppConfigSaveReq: AndroidAppConfigSaveReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AndroidAppConfigSaveRsp>> {
+        async androidAppConfigCreate(androidAppConfigSaveReq: AndroidAppConfigSaveReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AndroidAppConfigSaveRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.androidAppConfigCreate(androidAppConfigSaveReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['AndroidAppConfigApi.androidAppConfigCreate']?.[index]?.url;
@@ -9711,11 +10371,11 @@ export const AndroidAppConfigApiFp = function(configuration?: Configuration) {
         /**
          * Deletes an Android App Config
          * @param {string} androidAppConfigID Android App Config ID from create
-         * @param {AndroidAppConfigDeleteReq} [androidAppConfigDeleteReq]
+         * @param {AndroidAppConfigDeleteReq} [androidAppConfigDeleteReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async androidAppConfigDelete(androidAppConfigID: string, androidAppConfigDeleteReq?: AndroidAppConfigDeleteReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
+        async androidAppConfigDelete(androidAppConfigID: string, androidAppConfigDeleteReq?: AndroidAppConfigDeleteReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.androidAppConfigDelete(androidAppConfigID, androidAppConfigDeleteReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['AndroidAppConfigApi.androidAppConfigDelete']?.[index]?.url;
@@ -9726,7 +10386,7 @@ export const AndroidAppConfigApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async androidAppConfigGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AndroidAppConfigListRsp>> {
+        async androidAppConfigGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AndroidAppConfigListRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.androidAppConfigGet(options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['AndroidAppConfigApi.androidAppConfigGet']?.[index]?.url;
@@ -9735,11 +10395,11 @@ export const AndroidAppConfigApiFp = function(configuration?: Configuration) {
         /**
          * Updates an Android app config by id
          * @param {string} androidAppConfigID ID from Android config create
-         * @param {AndroidAppConfigUpdateReq} [androidAppConfigUpdateReq]
+         * @param {AndroidAppConfigUpdateReq} [androidAppConfigUpdateReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async androidAppConfigPut(androidAppConfigID: string, androidAppConfigUpdateReq?: AndroidAppConfigUpdateReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AndroidAppConfigUpdateRsp>> {
+        async androidAppConfigPut(androidAppConfigID: string, androidAppConfigUpdateReq?: AndroidAppConfigUpdateReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AndroidAppConfigUpdateRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.androidAppConfigPut(androidAppConfigID, androidAppConfigUpdateReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['AndroidAppConfigApi.androidAppConfigPut']?.[index]?.url;
@@ -9757,7 +10417,7 @@ export const AndroidAppConfigApiFactory = function (configuration?: Configuratio
     return {
         /**
          * Creates a new Android App Configuration
-         * @param {AndroidAppConfigSaveReq} androidAppConfigSaveReq
+         * @param {AndroidAppConfigSaveReq} androidAppConfigSaveReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9767,7 +10427,7 @@ export const AndroidAppConfigApiFactory = function (configuration?: Configuratio
         /**
          * Deletes an Android App Config
          * @param {string} androidAppConfigID Android App Config ID from create
-         * @param {AndroidAppConfigDeleteReq} [androidAppConfigDeleteReq]
+         * @param {AndroidAppConfigDeleteReq} [androidAppConfigDeleteReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9785,7 +10445,7 @@ export const AndroidAppConfigApiFactory = function (configuration?: Configuratio
         /**
          * Updates an Android app config by id
          * @param {string} androidAppConfigID ID from Android config create
-         * @param {AndroidAppConfigUpdateReq} [androidAppConfigUpdateReq]
+         * @param {AndroidAppConfigUpdateReq} [androidAppConfigUpdateReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9804,24 +10464,24 @@ export const AndroidAppConfigApiFactory = function (configuration?: Configuratio
 export class AndroidAppConfigApi extends BaseAPI {
     /**
      * Creates a new Android App Configuration
-     * @param {AndroidAppConfigSaveReq} androidAppConfigSaveReq
+     * @param {AndroidAppConfigSaveReq} androidAppConfigSaveReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AndroidAppConfigApi
      */
-    public androidAppConfigCreate(androidAppConfigSaveReq: AndroidAppConfigSaveReq, options?: RawAxiosRequestConfig) {
+    public androidAppConfigCreate(androidAppConfigSaveReq: AndroidAppConfigSaveReq, options?: AxiosRequestConfig) {
         return AndroidAppConfigApiFp(this.configuration).androidAppConfigCreate(androidAppConfigSaveReq, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Deletes an Android App Config
      * @param {string} androidAppConfigID Android App Config ID from create
-     * @param {AndroidAppConfigDeleteReq} [androidAppConfigDeleteReq]
+     * @param {AndroidAppConfigDeleteReq} [androidAppConfigDeleteReq] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AndroidAppConfigApi
      */
-    public androidAppConfigDelete(androidAppConfigID: string, androidAppConfigDeleteReq?: AndroidAppConfigDeleteReq, options?: RawAxiosRequestConfig) {
+    public androidAppConfigDelete(androidAppConfigID: string, androidAppConfigDeleteReq?: AndroidAppConfigDeleteReq, options?: AxiosRequestConfig) {
         return AndroidAppConfigApiFp(this.configuration).androidAppConfigDelete(androidAppConfigID, androidAppConfigDeleteReq, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -9831,19 +10491,19 @@ export class AndroidAppConfigApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AndroidAppConfigApi
      */
-    public androidAppConfigGet(options?: RawAxiosRequestConfig) {
+    public androidAppConfigGet(options?: AxiosRequestConfig) {
         return AndroidAppConfigApiFp(this.configuration).androidAppConfigGet(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Updates an Android app config by id
      * @param {string} androidAppConfigID ID from Android config create
-     * @param {AndroidAppConfigUpdateReq} [androidAppConfigUpdateReq]
+     * @param {AndroidAppConfigUpdateReq} [androidAppConfigUpdateReq] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AndroidAppConfigApi
      */
-    public androidAppConfigPut(androidAppConfigID: string, androidAppConfigUpdateReq?: AndroidAppConfigUpdateReq, options?: RawAxiosRequestConfig) {
+    public androidAppConfigPut(androidAppConfigID: string, androidAppConfigUpdateReq?: AndroidAppConfigUpdateReq, options?: AxiosRequestConfig) {
         return AndroidAppConfigApiFp(this.configuration).androidAppConfigPut(androidAppConfigID, androidAppConfigUpdateReq, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -9858,11 +10518,11 @@ export const AssociationTokensApiAxiosParamCreator = function (configuration?: C
     return {
         /**
          * Creates a new association token
-         * @param {AssociationTokenCreateReq} associationTokenCreateReq
+         * @param {AssociationTokenCreateReq} associationTokenCreateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        associationTokenCreate: async (associationTokenCreateReq: AssociationTokenCreateReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        associationTokenCreate: async (associationTokenCreateReq: AssociationTokenCreateReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'associationTokenCreateReq' is not null or undefined
             assertParamExists('associationTokenCreate', 'associationTokenCreateReq', associationTokenCreateReq)
             const localVarPath = `/v1/associationTokens`;
@@ -9889,7 +10549,7 @@ export const AssociationTokensApiAxiosParamCreator = function (configuration?: C
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -9914,11 +10574,11 @@ export const AssociationTokensApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Creates a new association token
-         * @param {AssociationTokenCreateReq} associationTokenCreateReq
+         * @param {AssociationTokenCreateReq} associationTokenCreateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async associationTokenCreate(associationTokenCreateReq: AssociationTokenCreateReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssociationTokenCreateRsp>> {
+        async associationTokenCreate(associationTokenCreateReq: AssociationTokenCreateReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssociationTokenCreateRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.associationTokenCreate(associationTokenCreateReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['AssociationTokensApi.associationTokenCreate']?.[index]?.url;
@@ -9936,7 +10596,7 @@ export const AssociationTokensApiFactory = function (configuration?: Configurati
     return {
         /**
          * Creates a new association token
-         * @param {AssociationTokenCreateReq} associationTokenCreateReq
+         * @param {AssociationTokenCreateReq} associationTokenCreateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9955,12 +10615,12 @@ export const AssociationTokensApiFactory = function (configuration?: Configurati
 export class AssociationTokensApi extends BaseAPI {
     /**
      * Creates a new association token
-     * @param {AssociationTokenCreateReq} associationTokenCreateReq
+     * @param {AssociationTokenCreateReq} associationTokenCreateReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssociationTokensApi
      */
-    public associationTokenCreate(associationTokenCreateReq: AssociationTokenCreateReq, options?: RawAxiosRequestConfig) {
+    public associationTokenCreate(associationTokenCreateReq: AssociationTokenCreateReq, options?: AxiosRequestConfig) {
         return AssociationTokensApiFp(this.configuration).associationTokenCreate(associationTokenCreateReq, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -9975,11 +10635,11 @@ export const AuthMethodsApiAxiosParamCreator = function (configuration?: Configu
     return {
         /**
          * Retrieves possible authentication methods for provided username
-         * @param {AuthMethodsListReq} authMethodsListReq
+         * @param {AuthMethodsListReq} authMethodsListReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authMethodsList: async (authMethodsListReq: AuthMethodsListReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        authMethodsList: async (authMethodsListReq: AuthMethodsListReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'authMethodsListReq' is not null or undefined
             assertParamExists('authMethodsList', 'authMethodsListReq', authMethodsListReq)
             const localVarPath = `/v1/authMethods`;
@@ -10002,7 +10662,7 @@ export const AuthMethodsApiAxiosParamCreator = function (configuration?: Configu
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -10027,11 +10687,11 @@ export const AuthMethodsApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Retrieves possible authentication methods for provided username
-         * @param {AuthMethodsListReq} authMethodsListReq
+         * @param {AuthMethodsListReq} authMethodsListReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async authMethodsList(authMethodsListReq: AuthMethodsListReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthMethodsListRsp>> {
+        async authMethodsList(authMethodsListReq: AuthMethodsListReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthMethodsListRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.authMethodsList(authMethodsListReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['AuthMethodsApi.authMethodsList']?.[index]?.url;
@@ -10049,7 +10709,7 @@ export const AuthMethodsApiFactory = function (configuration?: Configuration, ba
     return {
         /**
          * Retrieves possible authentication methods for provided username
-         * @param {AuthMethodsListReq} authMethodsListReq
+         * @param {AuthMethodsListReq} authMethodsListReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10068,12 +10728,12 @@ export const AuthMethodsApiFactory = function (configuration?: Configuration, ba
 export class AuthMethodsApi extends BaseAPI {
     /**
      * Retrieves possible authentication methods for provided username
-     * @param {AuthMethodsListReq} authMethodsListReq
+     * @param {AuthMethodsListReq} authMethodsListReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AuthMethodsApi
      */
-    public authMethodsList(authMethodsListReq: AuthMethodsListReq, options?: RawAxiosRequestConfig) {
+    public authMethodsList(authMethodsListReq: AuthMethodsListReq, options?: AxiosRequestConfig) {
         return AuthMethodsApiFp(this.configuration).authMethodsList(authMethodsListReq, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -10088,11 +10748,11 @@ export const AuthTokensApiAxiosParamCreator = function (configuration?: Configur
     return {
         /**
          * Validates auth token and returns attached user data
-         * @param {AuthTokenValidateReq} authTokenValidateReq
+         * @param {AuthTokenValidateReq} authTokenValidateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authTokenValidate: async (authTokenValidateReq: AuthTokenValidateReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        authTokenValidate: async (authTokenValidateReq: AuthTokenValidateReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'authTokenValidateReq' is not null or undefined
             assertParamExists('authTokenValidate', 'authTokenValidateReq', authTokenValidateReq)
             const localVarPath = `/v1/authTokens/validate`;
@@ -10111,13 +10771,89 @@ export const AuthTokensApiAxiosParamCreator = function (configuration?: Configur
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(authTokenValidateReq, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Creates a new session token for provided user data
+         * @param {SessionTokenCreateReq} sessionTokenCreateReq 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sessionTokenCreate: async (sessionTokenCreateReq: SessionTokenCreateReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'sessionTokenCreateReq' is not null or undefined
+            assertParamExists('sessionTokenCreate', 'sessionTokenCreateReq', sessionTokenCreateReq)
+            const localVarPath = `/v1/sessions`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication projectID required
+            await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(sessionTokenCreateReq, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Verifies session token and returns attached user data
+         * @param {SessionTokenVerifyReq} sessionTokenVerifyReq 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sessionTokenVerify: async (sessionTokenVerifyReq: SessionTokenVerifyReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'sessionTokenVerifyReq' is not null or undefined
+            assertParamExists('sessionTokenVerify', 'sessionTokenVerifyReq', sessionTokenVerifyReq)
+            const localVarPath = `/v1/sessions/verify`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication projectID required
+            await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(sessionTokenVerifyReq, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -10136,14 +10872,38 @@ export const AuthTokensApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Validates auth token and returns attached user data
-         * @param {AuthTokenValidateReq} authTokenValidateReq
+         * @param {AuthTokenValidateReq} authTokenValidateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async authTokenValidate(authTokenValidateReq: AuthTokenValidateReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthTokenValidateRsp>> {
+        async authTokenValidate(authTokenValidateReq: AuthTokenValidateReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthTokenValidateRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.authTokenValidate(authTokenValidateReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['AuthTokensApi.authTokenValidate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Creates a new session token for provided user data
+         * @param {SessionTokenCreateReq} sessionTokenCreateReq 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async sessionTokenCreate(sessionTokenCreateReq: SessionTokenCreateReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SessionTokenCreateRsp>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sessionTokenCreate(sessionTokenCreateReq, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AuthTokensApi.sessionTokenCreate']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Verifies session token and returns attached user data
+         * @param {SessionTokenVerifyReq} sessionTokenVerifyReq 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async sessionTokenVerify(sessionTokenVerifyReq: SessionTokenVerifyReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SessionTokenVerifyRsp>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sessionTokenVerify(sessionTokenVerifyReq, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AuthTokensApi.sessionTokenVerify']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
@@ -10158,12 +10918,30 @@ export const AuthTokensApiFactory = function (configuration?: Configuration, bas
     return {
         /**
          * Validates auth token and returns attached user data
-         * @param {AuthTokenValidateReq} authTokenValidateReq
+         * @param {AuthTokenValidateReq} authTokenValidateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         authTokenValidate(authTokenValidateReq: AuthTokenValidateReq, options?: any): AxiosPromise<AuthTokenValidateRsp> {
             return localVarFp.authTokenValidate(authTokenValidateReq, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Creates a new session token for provided user data
+         * @param {SessionTokenCreateReq} sessionTokenCreateReq 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sessionTokenCreate(sessionTokenCreateReq: SessionTokenCreateReq, options?: any): AxiosPromise<SessionTokenCreateRsp> {
+            return localVarFp.sessionTokenCreate(sessionTokenCreateReq, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Verifies session token and returns attached user data
+         * @param {SessionTokenVerifyReq} sessionTokenVerifyReq 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sessionTokenVerify(sessionTokenVerifyReq: SessionTokenVerifyReq, options?: any): AxiosPromise<SessionTokenVerifyRsp> {
+            return localVarFp.sessionTokenVerify(sessionTokenVerifyReq, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -10177,13 +10955,35 @@ export const AuthTokensApiFactory = function (configuration?: Configuration, bas
 export class AuthTokensApi extends BaseAPI {
     /**
      * Validates auth token and returns attached user data
-     * @param {AuthTokenValidateReq} authTokenValidateReq
+     * @param {AuthTokenValidateReq} authTokenValidateReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AuthTokensApi
      */
-    public authTokenValidate(authTokenValidateReq: AuthTokenValidateReq, options?: RawAxiosRequestConfig) {
+    public authTokenValidate(authTokenValidateReq: AuthTokenValidateReq, options?: AxiosRequestConfig) {
         return AuthTokensApiFp(this.configuration).authTokenValidate(authTokenValidateReq, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Creates a new session token for provided user data
+     * @param {SessionTokenCreateReq} sessionTokenCreateReq 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthTokensApi
+     */
+    public sessionTokenCreate(sessionTokenCreateReq: SessionTokenCreateReq, options?: AxiosRequestConfig) {
+        return AuthTokensApiFp(this.configuration).sessionTokenCreate(sessionTokenCreateReq, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Verifies session token and returns attached user data
+     * @param {SessionTokenVerifyReq} sessionTokenVerifyReq 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthTokensApi
+     */
+    public sessionTokenVerify(sessionTokenVerifyReq: SessionTokenVerifyReq, options?: AxiosRequestConfig) {
+        return AuthTokensApiFp(this.configuration).sessionTokenVerify(sessionTokenVerifyReq, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -10198,11 +10998,11 @@ export const EmailMagicLinksApiAxiosParamCreator = function (configuration?: Con
         /**
          * Deletes an email magic link
          * @param {string} emailLinkID ID of email magic link
-         * @param {EmailLinksDeleteReq} [emailLinksDeleteReq]
+         * @param {EmailLinksDeleteReq} [emailLinksDeleteReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        emailLinkDelete: async (emailLinkID: string, emailLinksDeleteReq?: EmailLinksDeleteReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        emailLinkDelete: async (emailLinkID: string, emailLinksDeleteReq?: EmailLinksDeleteReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'emailLinkID' is not null or undefined
             assertParamExists('emailLinkDelete', 'emailLinkID', emailLinkID)
             const localVarPath = `/v1/emailLinks/{emailLinkID}`
@@ -10226,7 +11026,7 @@ export const EmailMagicLinksApiAxiosParamCreator = function (configuration?: Con
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -10245,7 +11045,7 @@ export const EmailMagicLinksApiAxiosParamCreator = function (configuration?: Con
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        emailLinkGet: async (emailLinkID: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        emailLinkGet: async (emailLinkID: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'emailLinkID' is not null or undefined
             assertParamExists('emailLinkGet', 'emailLinkID', emailLinkID)
             const localVarPath = `/v1/emailLinks/{emailLinkID}`
@@ -10269,7 +11069,7 @@ export const EmailMagicLinksApiAxiosParamCreator = function (configuration?: Con
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10281,11 +11081,11 @@ export const EmailMagicLinksApiAxiosParamCreator = function (configuration?: Con
         },
         /**
          * Creates email magic link and sends it to given email address
-         * @param {EmailLinkSendReq} emailLinkSendReq
+         * @param {EmailLinkSendReq} emailLinkSendReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        emailLinkSend: async (emailLinkSendReq: EmailLinkSendReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        emailLinkSend: async (emailLinkSendReq: EmailLinkSendReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'emailLinkSendReq' is not null or undefined
             assertParamExists('emailLinkSend', 'emailLinkSendReq', emailLinkSendReq)
             const localVarPath = `/v1/emailLinks`;
@@ -10308,7 +11108,7 @@ export const EmailMagicLinksApiAxiosParamCreator = function (configuration?: Con
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -10324,11 +11124,11 @@ export const EmailMagicLinksApiAxiosParamCreator = function (configuration?: Con
         /**
          * Validates email magic link token
          * @param {string} emailLinkID ID of email magic link
-         * @param {EmailLinksValidateReq} emailLinksValidateReq
+         * @param {EmailLinksValidateReq} emailLinksValidateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        emailLinkValidate: async (emailLinkID: string, emailLinksValidateReq: EmailLinksValidateReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        emailLinkValidate: async (emailLinkID: string, emailLinksValidateReq: EmailLinksValidateReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'emailLinkID' is not null or undefined
             assertParamExists('emailLinkValidate', 'emailLinkID', emailLinkID)
             // verify required parameter 'emailLinksValidateReq' is not null or undefined
@@ -10354,7 +11154,7 @@ export const EmailMagicLinksApiAxiosParamCreator = function (configuration?: Con
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -10380,11 +11180,11 @@ export const EmailMagicLinksApiFp = function(configuration?: Configuration) {
         /**
          * Deletes an email magic link
          * @param {string} emailLinkID ID of email magic link
-         * @param {EmailLinksDeleteReq} [emailLinksDeleteReq]
+         * @param {EmailLinksDeleteReq} [emailLinksDeleteReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async emailLinkDelete(emailLinkID: string, emailLinksDeleteReq?: EmailLinksDeleteReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EmailLinkValidateRsp>> {
+        async emailLinkDelete(emailLinkID: string, emailLinksDeleteReq?: EmailLinksDeleteReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EmailLinkValidateRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.emailLinkDelete(emailLinkID, emailLinksDeleteReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['EmailMagicLinksApi.emailLinkDelete']?.[index]?.url;
@@ -10396,7 +11196,7 @@ export const EmailMagicLinksApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async emailLinkGet(emailLinkID: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EmailLinkGetRsp>> {
+        async emailLinkGet(emailLinkID: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EmailLinkGetRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.emailLinkGet(emailLinkID, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['EmailMagicLinksApi.emailLinkGet']?.[index]?.url;
@@ -10404,11 +11204,11 @@ export const EmailMagicLinksApiFp = function(configuration?: Configuration) {
         },
         /**
          * Creates email magic link and sends it to given email address
-         * @param {EmailLinkSendReq} emailLinkSendReq
+         * @param {EmailLinkSendReq} emailLinkSendReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async emailLinkSend(emailLinkSendReq: EmailLinkSendReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EmailLinkSendRsp>> {
+        async emailLinkSend(emailLinkSendReq: EmailLinkSendReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EmailLinkSendRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.emailLinkSend(emailLinkSendReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['EmailMagicLinksApi.emailLinkSend']?.[index]?.url;
@@ -10417,11 +11217,11 @@ export const EmailMagicLinksApiFp = function(configuration?: Configuration) {
         /**
          * Validates email magic link token
          * @param {string} emailLinkID ID of email magic link
-         * @param {EmailLinksValidateReq} emailLinksValidateReq
+         * @param {EmailLinksValidateReq} emailLinksValidateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async emailLinkValidate(emailLinkID: string, emailLinksValidateReq: EmailLinksValidateReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EmailLinkValidateRsp>> {
+        async emailLinkValidate(emailLinkID: string, emailLinksValidateReq: EmailLinksValidateReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EmailLinkValidateRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.emailLinkValidate(emailLinkID, emailLinksValidateReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['EmailMagicLinksApi.emailLinkValidate']?.[index]?.url;
@@ -10440,7 +11240,7 @@ export const EmailMagicLinksApiFactory = function (configuration?: Configuration
         /**
          * Deletes an email magic link
          * @param {string} emailLinkID ID of email magic link
-         * @param {EmailLinksDeleteReq} [emailLinksDeleteReq]
+         * @param {EmailLinksDeleteReq} [emailLinksDeleteReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10458,7 +11258,7 @@ export const EmailMagicLinksApiFactory = function (configuration?: Configuration
         },
         /**
          * Creates email magic link and sends it to given email address
-         * @param {EmailLinkSendReq} emailLinkSendReq
+         * @param {EmailLinkSendReq} emailLinkSendReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10468,7 +11268,7 @@ export const EmailMagicLinksApiFactory = function (configuration?: Configuration
         /**
          * Validates email magic link token
          * @param {string} emailLinkID ID of email magic link
-         * @param {EmailLinksValidateReq} emailLinksValidateReq
+         * @param {EmailLinksValidateReq} emailLinksValidateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10488,12 +11288,12 @@ export class EmailMagicLinksApi extends BaseAPI {
     /**
      * Deletes an email magic link
      * @param {string} emailLinkID ID of email magic link
-     * @param {EmailLinksDeleteReq} [emailLinksDeleteReq]
+     * @param {EmailLinksDeleteReq} [emailLinksDeleteReq] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmailMagicLinksApi
      */
-    public emailLinkDelete(emailLinkID: string, emailLinksDeleteReq?: EmailLinksDeleteReq, options?: RawAxiosRequestConfig) {
+    public emailLinkDelete(emailLinkID: string, emailLinksDeleteReq?: EmailLinksDeleteReq, options?: AxiosRequestConfig) {
         return EmailMagicLinksApiFp(this.configuration).emailLinkDelete(emailLinkID, emailLinksDeleteReq, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -10504,30 +11304,30 @@ export class EmailMagicLinksApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof EmailMagicLinksApi
      */
-    public emailLinkGet(emailLinkID: string, options?: RawAxiosRequestConfig) {
+    public emailLinkGet(emailLinkID: string, options?: AxiosRequestConfig) {
         return EmailMagicLinksApiFp(this.configuration).emailLinkGet(emailLinkID, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Creates email magic link and sends it to given email address
-     * @param {EmailLinkSendReq} emailLinkSendReq
+     * @param {EmailLinkSendReq} emailLinkSendReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmailMagicLinksApi
      */
-    public emailLinkSend(emailLinkSendReq: EmailLinkSendReq, options?: RawAxiosRequestConfig) {
+    public emailLinkSend(emailLinkSendReq: EmailLinkSendReq, options?: AxiosRequestConfig) {
         return EmailMagicLinksApiFp(this.configuration).emailLinkSend(emailLinkSendReq, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Validates email magic link token
      * @param {string} emailLinkID ID of email magic link
-     * @param {EmailLinksValidateReq} emailLinksValidateReq
+     * @param {EmailLinksValidateReq} emailLinksValidateReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmailMagicLinksApi
      */
-    public emailLinkValidate(emailLinkID: string, emailLinksValidateReq: EmailLinksValidateReq, options?: RawAxiosRequestConfig) {
+    public emailLinkValidate(emailLinkID: string, emailLinksValidateReq: EmailLinksValidateReq, options?: AxiosRequestConfig) {
         return EmailMagicLinksApiFp(this.configuration).emailLinkValidate(emailLinkID, emailLinksValidateReq, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -10546,7 +11346,7 @@ export const EmailOTPApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        emailCodeGet: async (emailCodeID: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        emailCodeGet: async (emailCodeID: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'emailCodeID' is not null or undefined
             assertParamExists('emailCodeGet', 'emailCodeID', emailCodeID)
             const localVarPath = `/v1/emailCodes/{emailCodeID}`
@@ -10570,7 +11370,7 @@ export const EmailOTPApiAxiosParamCreator = function (configuration?: Configurat
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -10582,11 +11382,11 @@ export const EmailOTPApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          * Creates email code and sends it to given email address
-         * @param {EmailCodeSendReq} emailCodeSendReq
+         * @param {EmailCodeSendReq} emailCodeSendReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        emailCodeSend: async (emailCodeSendReq: EmailCodeSendReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        emailCodeSend: async (emailCodeSendReq: EmailCodeSendReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'emailCodeSendReq' is not null or undefined
             assertParamExists('emailCodeSend', 'emailCodeSendReq', emailCodeSendReq)
             const localVarPath = `/v1/emailCodes`;
@@ -10609,7 +11409,7 @@ export const EmailOTPApiAxiosParamCreator = function (configuration?: Configurat
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -10625,11 +11425,11 @@ export const EmailOTPApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * Validates email code
          * @param {string} emailCodeID ID of email OTP
-         * @param {EmailCodeValidateReq} emailCodeValidateReq
+         * @param {EmailCodeValidateReq} emailCodeValidateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        emailCodeValidate: async (emailCodeID: string, emailCodeValidateReq: EmailCodeValidateReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        emailCodeValidate: async (emailCodeID: string, emailCodeValidateReq: EmailCodeValidateReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'emailCodeID' is not null or undefined
             assertParamExists('emailCodeValidate', 'emailCodeID', emailCodeID)
             // verify required parameter 'emailCodeValidateReq' is not null or undefined
@@ -10655,7 +11455,7 @@ export const EmailOTPApiAxiosParamCreator = function (configuration?: Configurat
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -10684,7 +11484,7 @@ export const EmailOTPApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async emailCodeGet(emailCodeID: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EmailCodeGetRsp>> {
+        async emailCodeGet(emailCodeID: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EmailCodeGetRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.emailCodeGet(emailCodeID, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['EmailOTPApi.emailCodeGet']?.[index]?.url;
@@ -10692,11 +11492,11 @@ export const EmailOTPApiFp = function(configuration?: Configuration) {
         },
         /**
          * Creates email code and sends it to given email address
-         * @param {EmailCodeSendReq} emailCodeSendReq
+         * @param {EmailCodeSendReq} emailCodeSendReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async emailCodeSend(emailCodeSendReq: EmailCodeSendReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EmailCodeSendRsp>> {
+        async emailCodeSend(emailCodeSendReq: EmailCodeSendReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EmailCodeSendRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.emailCodeSend(emailCodeSendReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['EmailOTPApi.emailCodeSend']?.[index]?.url;
@@ -10705,11 +11505,11 @@ export const EmailOTPApiFp = function(configuration?: Configuration) {
         /**
          * Validates email code
          * @param {string} emailCodeID ID of email OTP
-         * @param {EmailCodeValidateReq} emailCodeValidateReq
+         * @param {EmailCodeValidateReq} emailCodeValidateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async emailCodeValidate(emailCodeID: string, emailCodeValidateReq: EmailCodeValidateReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EmailCodeValidateRsp>> {
+        async emailCodeValidate(emailCodeID: string, emailCodeValidateReq: EmailCodeValidateReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EmailCodeValidateRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.emailCodeValidate(emailCodeID, emailCodeValidateReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['EmailOTPApi.emailCodeValidate']?.[index]?.url;
@@ -10736,7 +11536,7 @@ export const EmailOTPApiFactory = function (configuration?: Configuration, baseP
         },
         /**
          * Creates email code and sends it to given email address
-         * @param {EmailCodeSendReq} emailCodeSendReq
+         * @param {EmailCodeSendReq} emailCodeSendReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10746,7 +11546,7 @@ export const EmailOTPApiFactory = function (configuration?: Configuration, baseP
         /**
          * Validates email code
          * @param {string} emailCodeID ID of email OTP
-         * @param {EmailCodeValidateReq} emailCodeValidateReq
+         * @param {EmailCodeValidateReq} emailCodeValidateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10770,30 +11570,30 @@ export class EmailOTPApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof EmailOTPApi
      */
-    public emailCodeGet(emailCodeID: string, options?: RawAxiosRequestConfig) {
+    public emailCodeGet(emailCodeID: string, options?: AxiosRequestConfig) {
         return EmailOTPApiFp(this.configuration).emailCodeGet(emailCodeID, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Creates email code and sends it to given email address
-     * @param {EmailCodeSendReq} emailCodeSendReq
+     * @param {EmailCodeSendReq} emailCodeSendReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmailOTPApi
      */
-    public emailCodeSend(emailCodeSendReq: EmailCodeSendReq, options?: RawAxiosRequestConfig) {
+    public emailCodeSend(emailCodeSendReq: EmailCodeSendReq, options?: AxiosRequestConfig) {
         return EmailOTPApiFp(this.configuration).emailCodeSend(emailCodeSendReq, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Validates email code
      * @param {string} emailCodeID ID of email OTP
-     * @param {EmailCodeValidateReq} emailCodeValidateReq
+     * @param {EmailCodeValidateReq} emailCodeValidateReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmailOTPApi
      */
-    public emailCodeValidate(emailCodeID: string, emailCodeValidateReq: EmailCodeValidateReq, options?: RawAxiosRequestConfig) {
+    public emailCodeValidate(emailCodeID: string, emailCodeValidateReq: EmailCodeValidateReq, options?: AxiosRequestConfig) {
         return EmailOTPApiFp(this.configuration).emailCodeValidate(emailCodeID, emailCodeValidateReq, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -10808,11 +11608,11 @@ export const EmailTemplatesApiAxiosParamCreator = function (configuration?: Conf
     return {
         /**
          * Creates a new email template
-         * @param {EmailTemplateCreateReq} emailTemplateCreateReq
+         * @param {EmailTemplateCreateReq} emailTemplateCreateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        emailTemplateCreate: async (emailTemplateCreateReq: EmailTemplateCreateReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        emailTemplateCreate: async (emailTemplateCreateReq: EmailTemplateCreateReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'emailTemplateCreateReq' is not null or undefined
             assertParamExists('emailTemplateCreate', 'emailTemplateCreateReq', emailTemplateCreateReq)
             const localVarPath = `/v1/emailTemplates`;
@@ -10831,7 +11631,7 @@ export const EmailTemplatesApiAxiosParamCreator = function (configuration?: Conf
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -10847,11 +11647,11 @@ export const EmailTemplatesApiAxiosParamCreator = function (configuration?: Conf
         /**
          * Deletes an email template
          * @param {string} emailTemplateID ID of email template
-         * @param {EmailTemplateDeleteReq} emailTemplateDeleteReq
+         * @param {EmailTemplateDeleteReq} emailTemplateDeleteReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        emailTemplateDelete: async (emailTemplateID: string, emailTemplateDeleteReq: EmailTemplateDeleteReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        emailTemplateDelete: async (emailTemplateID: string, emailTemplateDeleteReq: EmailTemplateDeleteReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'emailTemplateID' is not null or undefined
             assertParamExists('emailTemplateDelete', 'emailTemplateID', emailTemplateID)
             // verify required parameter 'emailTemplateDeleteReq' is not null or undefined
@@ -10873,7 +11673,7 @@ export const EmailTemplatesApiAxiosParamCreator = function (configuration?: Conf
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -10898,11 +11698,11 @@ export const EmailTemplatesApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Creates a new email template
-         * @param {EmailTemplateCreateReq} emailTemplateCreateReq
+         * @param {EmailTemplateCreateReq} emailTemplateCreateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async emailTemplateCreate(emailTemplateCreateReq: EmailTemplateCreateReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EmailTemplateCreateRsp>> {
+        async emailTemplateCreate(emailTemplateCreateReq: EmailTemplateCreateReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EmailTemplateCreateRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.emailTemplateCreate(emailTemplateCreateReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['EmailTemplatesApi.emailTemplateCreate']?.[index]?.url;
@@ -10911,11 +11711,11 @@ export const EmailTemplatesApiFp = function(configuration?: Configuration) {
         /**
          * Deletes an email template
          * @param {string} emailTemplateID ID of email template
-         * @param {EmailTemplateDeleteReq} emailTemplateDeleteReq
+         * @param {EmailTemplateDeleteReq} emailTemplateDeleteReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async emailTemplateDelete(emailTemplateID: string, emailTemplateDeleteReq: EmailTemplateDeleteReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
+        async emailTemplateDelete(emailTemplateID: string, emailTemplateDeleteReq: EmailTemplateDeleteReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.emailTemplateDelete(emailTemplateID, emailTemplateDeleteReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['EmailTemplatesApi.emailTemplateDelete']?.[index]?.url;
@@ -10933,7 +11733,7 @@ export const EmailTemplatesApiFactory = function (configuration?: Configuration,
     return {
         /**
          * Creates a new email template
-         * @param {EmailTemplateCreateReq} emailTemplateCreateReq
+         * @param {EmailTemplateCreateReq} emailTemplateCreateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10943,7 +11743,7 @@ export const EmailTemplatesApiFactory = function (configuration?: Configuration,
         /**
          * Deletes an email template
          * @param {string} emailTemplateID ID of email template
-         * @param {EmailTemplateDeleteReq} emailTemplateDeleteReq
+         * @param {EmailTemplateDeleteReq} emailTemplateDeleteReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10962,24 +11762,24 @@ export const EmailTemplatesApiFactory = function (configuration?: Configuration,
 export class EmailTemplatesApi extends BaseAPI {
     /**
      * Creates a new email template
-     * @param {EmailTemplateCreateReq} emailTemplateCreateReq
+     * @param {EmailTemplateCreateReq} emailTemplateCreateReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmailTemplatesApi
      */
-    public emailTemplateCreate(emailTemplateCreateReq: EmailTemplateCreateReq, options?: RawAxiosRequestConfig) {
+    public emailTemplateCreate(emailTemplateCreateReq: EmailTemplateCreateReq, options?: AxiosRequestConfig) {
         return EmailTemplatesApiFp(this.configuration).emailTemplateCreate(emailTemplateCreateReq, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Deletes an email template
      * @param {string} emailTemplateID ID of email template
-     * @param {EmailTemplateDeleteReq} emailTemplateDeleteReq
+     * @param {EmailTemplateDeleteReq} emailTemplateDeleteReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmailTemplatesApi
      */
-    public emailTemplateDelete(emailTemplateID: string, emailTemplateDeleteReq: EmailTemplateDeleteReq, options?: RawAxiosRequestConfig) {
+    public emailTemplateDelete(emailTemplateID: string, emailTemplateDeleteReq: EmailTemplateDeleteReq, options?: AxiosRequestConfig) {
         return EmailTemplatesApiFp(this.configuration).emailTemplateDelete(emailTemplateID, emailTemplateDeleteReq, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -10998,7 +11798,7 @@ export const ExamplesApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exampleGet: async (fileName: ExampleGetFileNameEnum, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        exampleGet: async (fileName: ExampleGetFileNameEnum, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'fileName' is not null or undefined
             assertParamExists('exampleGet', 'fileName', fileName)
             const localVarPath = `/v1/examples/{fileName}`
@@ -11026,7 +11826,7 @@ export const ExamplesApiAxiosParamCreator = function (configuration?: Configurat
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -11052,7 +11852,7 @@ export const ExamplesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async exampleGet(fileName: ExampleGetFileNameEnum, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExampleGetRsp>> {
+        async exampleGet(fileName: ExampleGetFileNameEnum, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExampleGetRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.exampleGet(fileName, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['ExamplesApi.exampleGet']?.[index]?.url;
@@ -11094,7 +11894,7 @@ export class ExamplesApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ExamplesApi
      */
-    public exampleGet(fileName: ExampleGetFileNameEnum, options?: RawAxiosRequestConfig) {
+    public exampleGet(fileName: ExampleGetFileNameEnum, options?: AxiosRequestConfig) {
         return ExamplesApiFp(this.configuration).exampleGet(fileName, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -11117,11 +11917,11 @@ export const IOSAppConfigApiAxiosParamCreator = function (configuration?: Config
     return {
         /**
          * Creates a new iOS App Config
-         * @param {IOSAppConfigSaveReq} iOSAppConfigSaveReq
+         * @param {IOSAppConfigSaveReq} iOSAppConfigSaveReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        iOSAppConfigCreate: async (iOSAppConfigSaveReq: IOSAppConfigSaveReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        iOSAppConfigCreate: async (iOSAppConfigSaveReq: IOSAppConfigSaveReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'iOSAppConfigSaveReq' is not null or undefined
             assertParamExists('iOSAppConfigCreate', 'iOSAppConfigSaveReq', iOSAppConfigSaveReq)
             const localVarPath = `/v1/iosappconfig`;
@@ -11148,7 +11948,7 @@ export const IOSAppConfigApiAxiosParamCreator = function (configuration?: Config
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -11164,11 +11964,11 @@ export const IOSAppConfigApiAxiosParamCreator = function (configuration?: Config
         /**
          * Deletes an iOS App Config
          * @param {string} iosAppConfigID iOS App Config ID from create
-         * @param {IOSAppConfigDeleteReq} [iOSAppConfigDeleteReq]
+         * @param {IOSAppConfigDeleteReq} [iOSAppConfigDeleteReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        iOSAppConfigDelete: async (iosAppConfigID: string, iOSAppConfigDeleteReq?: IOSAppConfigDeleteReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        iOSAppConfigDelete: async (iosAppConfigID: string, iOSAppConfigDeleteReq?: IOSAppConfigDeleteReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'iosAppConfigID' is not null or undefined
             assertParamExists('iOSAppConfigDelete', 'iosAppConfigID', iosAppConfigID)
             const localVarPath = `/v1/iosappconfig/{iosAppConfigID}`
@@ -11196,7 +11996,7 @@ export const IOSAppConfigApiAxiosParamCreator = function (configuration?: Config
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -11214,7 +12014,7 @@ export const IOSAppConfigApiAxiosParamCreator = function (configuration?: Config
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        iOSAppConfigGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        iOSAppConfigGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/iosappconfig`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -11239,7 +12039,7 @@ export const IOSAppConfigApiAxiosParamCreator = function (configuration?: Config
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -11252,11 +12052,11 @@ export const IOSAppConfigApiAxiosParamCreator = function (configuration?: Config
         /**
          * Updates an iOS app config by id
          * @param {string} iosAppConfigID ID from iOS config create
-         * @param {IOSAppConfigUpdateReq} [iOSAppConfigUpdateReq]
+         * @param {IOSAppConfigUpdateReq} [iOSAppConfigUpdateReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        iOSAppConfigPut: async (iosAppConfigID: string, iOSAppConfigUpdateReq?: IOSAppConfigUpdateReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        iOSAppConfigPut: async (iosAppConfigID: string, iOSAppConfigUpdateReq?: IOSAppConfigUpdateReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'iosAppConfigID' is not null or undefined
             assertParamExists('iOSAppConfigPut', 'iosAppConfigID', iosAppConfigID)
             const localVarPath = `/v1/iosappconfig/{iosAppConfigID}`
@@ -11284,7 +12084,7 @@ export const IOSAppConfigApiAxiosParamCreator = function (configuration?: Config
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -11309,11 +12109,11 @@ export const IOSAppConfigApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Creates a new iOS App Config
-         * @param {IOSAppConfigSaveReq} iOSAppConfigSaveReq
+         * @param {IOSAppConfigSaveReq} iOSAppConfigSaveReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async iOSAppConfigCreate(iOSAppConfigSaveReq: IOSAppConfigSaveReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<IOSAppConfigSaveRsp>> {
+        async iOSAppConfigCreate(iOSAppConfigSaveReq: IOSAppConfigSaveReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<IOSAppConfigSaveRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.iOSAppConfigCreate(iOSAppConfigSaveReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['IOSAppConfigApi.iOSAppConfigCreate']?.[index]?.url;
@@ -11322,11 +12122,11 @@ export const IOSAppConfigApiFp = function(configuration?: Configuration) {
         /**
          * Deletes an iOS App Config
          * @param {string} iosAppConfigID iOS App Config ID from create
-         * @param {IOSAppConfigDeleteReq} [iOSAppConfigDeleteReq]
+         * @param {IOSAppConfigDeleteReq} [iOSAppConfigDeleteReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async iOSAppConfigDelete(iosAppConfigID: string, iOSAppConfigDeleteReq?: IOSAppConfigDeleteReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
+        async iOSAppConfigDelete(iosAppConfigID: string, iOSAppConfigDeleteReq?: IOSAppConfigDeleteReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.iOSAppConfigDelete(iosAppConfigID, iOSAppConfigDeleteReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['IOSAppConfigApi.iOSAppConfigDelete']?.[index]?.url;
@@ -11337,7 +12137,7 @@ export const IOSAppConfigApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async iOSAppConfigGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<IOSAppConfigListRsp>> {
+        async iOSAppConfigGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<IOSAppConfigListRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.iOSAppConfigGet(options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['IOSAppConfigApi.iOSAppConfigGet']?.[index]?.url;
@@ -11346,11 +12146,11 @@ export const IOSAppConfigApiFp = function(configuration?: Configuration) {
         /**
          * Updates an iOS app config by id
          * @param {string} iosAppConfigID ID from iOS config create
-         * @param {IOSAppConfigUpdateReq} [iOSAppConfigUpdateReq]
+         * @param {IOSAppConfigUpdateReq} [iOSAppConfigUpdateReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async iOSAppConfigPut(iosAppConfigID: string, iOSAppConfigUpdateReq?: IOSAppConfigUpdateReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<IOSAppConfigUpdateRsp>> {
+        async iOSAppConfigPut(iosAppConfigID: string, iOSAppConfigUpdateReq?: IOSAppConfigUpdateReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<IOSAppConfigUpdateRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.iOSAppConfigPut(iosAppConfigID, iOSAppConfigUpdateReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['IOSAppConfigApi.iOSAppConfigPut']?.[index]?.url;
@@ -11368,7 +12168,7 @@ export const IOSAppConfigApiFactory = function (configuration?: Configuration, b
     return {
         /**
          * Creates a new iOS App Config
-         * @param {IOSAppConfigSaveReq} iOSAppConfigSaveReq
+         * @param {IOSAppConfigSaveReq} iOSAppConfigSaveReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11378,7 +12178,7 @@ export const IOSAppConfigApiFactory = function (configuration?: Configuration, b
         /**
          * Deletes an iOS App Config
          * @param {string} iosAppConfigID iOS App Config ID from create
-         * @param {IOSAppConfigDeleteReq} [iOSAppConfigDeleteReq]
+         * @param {IOSAppConfigDeleteReq} [iOSAppConfigDeleteReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11396,7 +12196,7 @@ export const IOSAppConfigApiFactory = function (configuration?: Configuration, b
         /**
          * Updates an iOS app config by id
          * @param {string} iosAppConfigID ID from iOS config create
-         * @param {IOSAppConfigUpdateReq} [iOSAppConfigUpdateReq]
+         * @param {IOSAppConfigUpdateReq} [iOSAppConfigUpdateReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11415,24 +12215,24 @@ export const IOSAppConfigApiFactory = function (configuration?: Configuration, b
 export class IOSAppConfigApi extends BaseAPI {
     /**
      * Creates a new iOS App Config
-     * @param {IOSAppConfigSaveReq} iOSAppConfigSaveReq
+     * @param {IOSAppConfigSaveReq} iOSAppConfigSaveReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof IOSAppConfigApi
      */
-    public iOSAppConfigCreate(iOSAppConfigSaveReq: IOSAppConfigSaveReq, options?: RawAxiosRequestConfig) {
+    public iOSAppConfigCreate(iOSAppConfigSaveReq: IOSAppConfigSaveReq, options?: AxiosRequestConfig) {
         return IOSAppConfigApiFp(this.configuration).iOSAppConfigCreate(iOSAppConfigSaveReq, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Deletes an iOS App Config
      * @param {string} iosAppConfigID iOS App Config ID from create
-     * @param {IOSAppConfigDeleteReq} [iOSAppConfigDeleteReq]
+     * @param {IOSAppConfigDeleteReq} [iOSAppConfigDeleteReq] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof IOSAppConfigApi
      */
-    public iOSAppConfigDelete(iosAppConfigID: string, iOSAppConfigDeleteReq?: IOSAppConfigDeleteReq, options?: RawAxiosRequestConfig) {
+    public iOSAppConfigDelete(iosAppConfigID: string, iOSAppConfigDeleteReq?: IOSAppConfigDeleteReq, options?: AxiosRequestConfig) {
         return IOSAppConfigApiFp(this.configuration).iOSAppConfigDelete(iosAppConfigID, iOSAppConfigDeleteReq, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -11442,19 +12242,19 @@ export class IOSAppConfigApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof IOSAppConfigApi
      */
-    public iOSAppConfigGet(options?: RawAxiosRequestConfig) {
+    public iOSAppConfigGet(options?: AxiosRequestConfig) {
         return IOSAppConfigApiFp(this.configuration).iOSAppConfigGet(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Updates an iOS app config by id
      * @param {string} iosAppConfigID ID from iOS config create
-     * @param {IOSAppConfigUpdateReq} [iOSAppConfigUpdateReq]
+     * @param {IOSAppConfigUpdateReq} [iOSAppConfigUpdateReq] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof IOSAppConfigApi
      */
-    public iOSAppConfigPut(iosAppConfigID: string, iOSAppConfigUpdateReq?: IOSAppConfigUpdateReq, options?: RawAxiosRequestConfig) {
+    public iOSAppConfigPut(iosAppConfigID: string, iOSAppConfigUpdateReq?: IOSAppConfigUpdateReq, options?: AxiosRequestConfig) {
         return IOSAppConfigApiFp(this.configuration).iOSAppConfigPut(iosAppConfigID, iOSAppConfigUpdateReq, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -11473,7 +12273,7 @@ export const LongSessionsApiAxiosParamCreator = function (configuration?: Config
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        longSessionGet: async (sessionID: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        longSessionGet: async (sessionID: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'sessionID' is not null or undefined
             assertParamExists('longSessionGet', 'sessionID', sessionID)
             const localVarPath = `/v1/longSessions/{sessionID}`
@@ -11497,7 +12297,7 @@ export const LongSessionsApiAxiosParamCreator = function (configuration?: Config
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -11518,7 +12318,7 @@ export const LongSessionsApiAxiosParamCreator = function (configuration?: Config
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        longSessionList: async (remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        longSessionList: async (remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/longSessions`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -11567,7 +12367,7 @@ export const LongSessionsApiAxiosParamCreator = function (configuration?: Config
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -11580,11 +12380,11 @@ export const LongSessionsApiAxiosParamCreator = function (configuration?: Config
         /**
          * Revokes an active long session by sessionID
          * @param {string} sessionID ID of session
-         * @param {LongSessionRevokeReq} [longSessionRevokeReq]
+         * @param {LongSessionRevokeReq} [longSessionRevokeReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        longSessionRevoke: async (sessionID: string, longSessionRevokeReq?: LongSessionRevokeReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        longSessionRevoke: async (sessionID: string, longSessionRevokeReq?: LongSessionRevokeReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'sessionID' is not null or undefined
             assertParamExists('longSessionRevoke', 'sessionID', sessionID)
             const localVarPath = `/v1/longSessions/{sessionID}/revoke`
@@ -11608,7 +12408,7 @@ export const LongSessionsApiAxiosParamCreator = function (configuration?: Config
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -11637,7 +12437,7 @@ export const LongSessionsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async longSessionGet(sessionID: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LongSessionGetRsp>> {
+        async longSessionGet(sessionID: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LongSessionGetRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.longSessionGet(sessionID, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['LongSessionsApi.longSessionGet']?.[index]?.url;
@@ -11654,7 +12454,7 @@ export const LongSessionsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async longSessionList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LongSessionListRsp>> {
+        async longSessionList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LongSessionListRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.longSessionList(remoteAddress, userAgent, sort, filter, page, pageSize, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['LongSessionsApi.longSessionList']?.[index]?.url;
@@ -11663,11 +12463,11 @@ export const LongSessionsApiFp = function(configuration?: Configuration) {
         /**
          * Revokes an active long session by sessionID
          * @param {string} sessionID ID of session
-         * @param {LongSessionRevokeReq} [longSessionRevokeReq]
+         * @param {LongSessionRevokeReq} [longSessionRevokeReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async longSessionRevoke(sessionID: string, longSessionRevokeReq?: LongSessionRevokeReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
+        async longSessionRevoke(sessionID: string, longSessionRevokeReq?: LongSessionRevokeReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.longSessionRevoke(sessionID, longSessionRevokeReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['LongSessionsApi.longSessionRevoke']?.[index]?.url;
@@ -11709,7 +12509,7 @@ export const LongSessionsApiFactory = function (configuration?: Configuration, b
         /**
          * Revokes an active long session by sessionID
          * @param {string} sessionID ID of session
-         * @param {LongSessionRevokeReq} [longSessionRevokeReq]
+         * @param {LongSessionRevokeReq} [longSessionRevokeReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11733,7 +12533,7 @@ export class LongSessionsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof LongSessionsApi
      */
-    public longSessionGet(sessionID: string, options?: RawAxiosRequestConfig) {
+    public longSessionGet(sessionID: string, options?: AxiosRequestConfig) {
         return LongSessionsApiFp(this.configuration).longSessionGet(sessionID, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -11749,19 +12549,19 @@ export class LongSessionsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof LongSessionsApi
      */
-    public longSessionList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
+    public longSessionList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig) {
         return LongSessionsApiFp(this.configuration).longSessionList(remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Revokes an active long session by sessionID
      * @param {string} sessionID ID of session
-     * @param {LongSessionRevokeReq} [longSessionRevokeReq]
+     * @param {LongSessionRevokeReq} [longSessionRevokeReq] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof LongSessionsApi
      */
-    public longSessionRevoke(sessionID: string, longSessionRevokeReq?: LongSessionRevokeReq, options?: RawAxiosRequestConfig) {
+    public longSessionRevoke(sessionID: string, longSessionRevokeReq?: LongSessionRevokeReq, options?: AxiosRequestConfig) {
         return LongSessionsApiFp(this.configuration).longSessionRevoke(sessionID, longSessionRevokeReq, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -11776,11 +12576,11 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
     return {
         /**
          * Starts association token flow for Passkeys (Biometrics)
-         * @param {WebAuthnAssociateStartReq} webAuthnAssociateStartReq
+         * @param {WebAuthnAssociateStartReq} webAuthnAssociateStartReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        webAuthnAssociateStart: async (webAuthnAssociateStartReq: WebAuthnAssociateStartReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        webAuthnAssociateStart: async (webAuthnAssociateStartReq: WebAuthnAssociateStartReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'webAuthnAssociateStartReq' is not null or undefined
             assertParamExists('webAuthnAssociateStart', 'webAuthnAssociateStartReq', webAuthnAssociateStartReq)
             const localVarPath = `/v1/webauthn/associate/start`;
@@ -11803,7 +12603,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -11818,11 +12618,11 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * Completes authentication of a user for Passkeys (Biometrics)
-         * @param {WebAuthnFinishReq} webAuthnFinishReq
+         * @param {WebAuthnFinishReq} webAuthnFinishReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        webAuthnAuthenticateFinish: async (webAuthnFinishReq: WebAuthnFinishReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        webAuthnAuthenticateFinish: async (webAuthnFinishReq: WebAuthnFinishReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'webAuthnFinishReq' is not null or undefined
             assertParamExists('webAuthnAuthenticateFinish', 'webAuthnFinishReq', webAuthnFinishReq)
             const localVarPath = `/v1/webauthn/authenticate/finish`;
@@ -11845,7 +12645,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -11860,11 +12660,11 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * Starts authentication of a user for Passkeys (Biometrics)
-         * @param {WebAuthnAuthenticateStartReq} webAuthnAuthenticateStartReq
+         * @param {WebAuthnAuthenticateStartReq} webAuthnAuthenticateStartReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        webAuthnAuthenticateStart: async (webAuthnAuthenticateStartReq: WebAuthnAuthenticateStartReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        webAuthnAuthenticateStart: async (webAuthnAuthenticateStartReq: WebAuthnAuthenticateStartReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'webAuthnAuthenticateStartReq' is not null or undefined
             assertParamExists('webAuthnAuthenticateStart', 'webAuthnAuthenticateStartReq', webAuthnAuthenticateStartReq)
             const localVarPath = `/v1/webauthn/authenticate/start`;
@@ -11887,7 +12687,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -11903,11 +12703,11 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         /**
          * Update authenticator
          * @param {string} authenticatorID ID of authenticator
-         * @param {WebAuthnAuthenticatorUpdateReq} webAuthnAuthenticatorUpdateReq
+         * @param {WebAuthnAuthenticatorUpdateReq} webAuthnAuthenticatorUpdateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        webAuthnAuthenticatorUpdate: async (authenticatorID: string, webAuthnAuthenticatorUpdateReq: WebAuthnAuthenticatorUpdateReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        webAuthnAuthenticatorUpdate: async (authenticatorID: string, webAuthnAuthenticatorUpdateReq: WebAuthnAuthenticatorUpdateReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'authenticatorID' is not null or undefined
             assertParamExists('webAuthnAuthenticatorUpdate', 'authenticatorID', authenticatorID)
             // verify required parameter 'webAuthnAuthenticatorUpdateReq' is not null or undefined
@@ -11933,7 +12733,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -11950,11 +12750,11 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
          * Delete credential
          * @param {string} userID ID of user
          * @param {string} credentialID ID of credential
-         * @param {EmptyReq} emptyReq
+         * @param {EmptyReq} emptyReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        webAuthnCredentialDelete: async (userID: string, credentialID: string, emptyReq: EmptyReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        webAuthnCredentialDelete: async (userID: string, credentialID: string, emptyReq: EmptyReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'userID' is not null or undefined
             assertParamExists('webAuthnCredentialDelete', 'userID', userID)
             // verify required parameter 'credentialID' is not null or undefined
@@ -11983,7 +12783,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -11998,11 +12798,11 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * Checks if active webauthn credential exists for provided user and device
-         * @param {WebAuthnCredentialExistsReq} webAuthnCredentialExistsReq
+         * @param {WebAuthnCredentialExistsReq} webAuthnCredentialExistsReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        webAuthnCredentialExists: async (webAuthnCredentialExistsReq: WebAuthnCredentialExistsReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        webAuthnCredentialExists: async (webAuthnCredentialExistsReq: WebAuthnCredentialExistsReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'webAuthnCredentialExistsReq' is not null or undefined
             assertParamExists('webAuthnCredentialExists', 'webAuthnCredentialExistsReq', webAuthnCredentialExistsReq)
             const localVarPath = `/v1/webauthn/credential/exists`;
@@ -12025,7 +12825,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -12049,7 +12849,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        webAuthnCredentialList: async (remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        webAuthnCredentialList: async (remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/webauthn/credential`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -12098,7 +12898,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -12111,11 +12911,11 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         /**
          * Update credential
          * @param {string} credentialID ID of credential
-         * @param {WebAuthnCredentialReq} webAuthnCredentialReq
+         * @param {WebAuthnCredentialReq} webAuthnCredentialReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        webAuthnCredentialUpdate: async (credentialID: string, webAuthnCredentialReq: WebAuthnCredentialReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        webAuthnCredentialUpdate: async (credentialID: string, webAuthnCredentialReq: WebAuthnCredentialReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'credentialID' is not null or undefined
             assertParamExists('webAuthnCredentialUpdate', 'credentialID', credentialID)
             // verify required parameter 'webAuthnCredentialReq' is not null or undefined
@@ -12141,7 +12941,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -12156,11 +12956,11 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * Starts mediation for Passkeys (Biometrics)
-         * @param {WebAuthnMediationStartReq} webAuthnMediationStartReq
+         * @param {WebAuthnMediationStartReq} webAuthnMediationStartReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        webAuthnMediationStart: async (webAuthnMediationStartReq: WebAuthnMediationStartReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        webAuthnMediationStart: async (webAuthnMediationStartReq: WebAuthnMediationStartReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'webAuthnMediationStartReq' is not null or undefined
             assertParamExists('webAuthnMediationStart', 'webAuthnMediationStartReq', webAuthnMediationStartReq)
             const localVarPath = `/v1/webauthn/mediation/start`;
@@ -12183,7 +12983,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -12198,11 +12998,11 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * Completes registration of a user for Passkeys (Biometrics)
-         * @param {WebAuthnFinishReq} webAuthnFinishReq
+         * @param {WebAuthnFinishReq} webAuthnFinishReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        webAuthnRegisterFinish: async (webAuthnFinishReq: WebAuthnFinishReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        webAuthnRegisterFinish: async (webAuthnFinishReq: WebAuthnFinishReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'webAuthnFinishReq' is not null or undefined
             assertParamExists('webAuthnRegisterFinish', 'webAuthnFinishReq', webAuthnFinishReq)
             const localVarPath = `/v1/webauthn/register/finish`;
@@ -12225,7 +13025,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -12240,11 +13040,11 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * Starts registration of a user for Passkeys (Biometrics)
-         * @param {WebAuthnRegisterStartReq} [webAuthnRegisterStartReq]
+         * @param {WebAuthnRegisterStartReq} [webAuthnRegisterStartReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        webAuthnRegisterStart: async (webAuthnRegisterStartReq?: WebAuthnRegisterStartReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        webAuthnRegisterStart: async (webAuthnRegisterStartReq?: WebAuthnRegisterStartReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/webauthn/register/start`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -12265,7 +13065,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -12280,11 +13080,11 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * Creates a new setting for Passkeys (Biometrics)
-         * @param {WebauthnSettingCreateReq} [webauthnSettingCreateReq]
+         * @param {WebauthnSettingCreateReq} [webauthnSettingCreateReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        webAuthnSettingCreate: async (webauthnSettingCreateReq?: WebauthnSettingCreateReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        webAuthnSettingCreate: async (webauthnSettingCreateReq?: WebauthnSettingCreateReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/webauthn/settings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -12309,7 +13109,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -12325,11 +13125,11 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         /**
          * Deletes a setting by id for Passkeys (Biometrics)
          * @param {string} settingID ID from create
-         * @param {WebauthnSettingDeleteReq} [webauthnSettingDeleteReq]
+         * @param {WebauthnSettingDeleteReq} [webauthnSettingDeleteReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        webAuthnSettingDelete: async (settingID: string, webauthnSettingDeleteReq?: WebauthnSettingDeleteReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        webAuthnSettingDelete: async (settingID: string, webauthnSettingDeleteReq?: WebauthnSettingDeleteReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'settingID' is not null or undefined
             assertParamExists('webAuthnSettingDelete', 'settingID', settingID)
             const localVarPath = `/v1/webauthn/settings/{settingID}`
@@ -12357,7 +13157,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -12376,7 +13176,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        webAuthnSettingGet: async (settingID: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        webAuthnSettingGet: async (settingID: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'settingID' is not null or undefined
             assertParamExists('webAuthnSettingGet', 'settingID', settingID)
             const localVarPath = `/v1/webauthn/settings/{settingID}`
@@ -12404,7 +13204,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -12425,7 +13225,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        webAuthnSettingList: async (remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        webAuthnSettingList: async (remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/webauthn/settings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -12474,7 +13274,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -12487,11 +13287,11 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
         /**
          * Updates a setting by id for Passkeys (Biometrics)
          * @param {string} settingID ID from create
-         * @param {WebauthnSettingUpdateReq} [webauthnSettingUpdateReq]
+         * @param {WebauthnSettingUpdateReq} [webauthnSettingUpdateReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        webAuthnSettingPut: async (settingID: string, webauthnSettingUpdateReq?: WebauthnSettingUpdateReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        webAuthnSettingPut: async (settingID: string, webauthnSettingUpdateReq?: WebauthnSettingUpdateReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'settingID' is not null or undefined
             assertParamExists('webAuthnSettingPut', 'settingID', settingID)
             const localVarPath = `/v1/webauthn/settings/{settingID}`
@@ -12519,7 +13319,7 @@ export const PasskeysBiometricsApiAxiosParamCreator = function (configuration?: 
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -12544,11 +13344,11 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Starts association token flow for Passkeys (Biometrics)
-         * @param {WebAuthnAssociateStartReq} webAuthnAssociateStartReq
+         * @param {WebAuthnAssociateStartReq} webAuthnAssociateStartReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async webAuthnAssociateStart(webAuthnAssociateStartReq: WebAuthnAssociateStartReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebAuthnAssociateStartRsp>> {
+        async webAuthnAssociateStart(webAuthnAssociateStartReq: WebAuthnAssociateStartReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebAuthnAssociateStartRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.webAuthnAssociateStart(webAuthnAssociateStartReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PasskeysBiometricsApi.webAuthnAssociateStart']?.[index]?.url;
@@ -12556,11 +13356,11 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         },
         /**
          * Completes authentication of a user for Passkeys (Biometrics)
-         * @param {WebAuthnFinishReq} webAuthnFinishReq
+         * @param {WebAuthnFinishReq} webAuthnFinishReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async webAuthnAuthenticateFinish(webAuthnFinishReq: WebAuthnFinishReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebAuthnAuthenticateFinishRsp>> {
+        async webAuthnAuthenticateFinish(webAuthnFinishReq: WebAuthnFinishReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebAuthnAuthenticateFinishRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.webAuthnAuthenticateFinish(webAuthnFinishReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PasskeysBiometricsApi.webAuthnAuthenticateFinish']?.[index]?.url;
@@ -12568,11 +13368,11 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         },
         /**
          * Starts authentication of a user for Passkeys (Biometrics)
-         * @param {WebAuthnAuthenticateStartReq} webAuthnAuthenticateStartReq
+         * @param {WebAuthnAuthenticateStartReq} webAuthnAuthenticateStartReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async webAuthnAuthenticateStart(webAuthnAuthenticateStartReq: WebAuthnAuthenticateStartReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebAuthnAuthenticateStartRsp>> {
+        async webAuthnAuthenticateStart(webAuthnAuthenticateStartReq: WebAuthnAuthenticateStartReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebAuthnAuthenticateStartRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.webAuthnAuthenticateStart(webAuthnAuthenticateStartReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PasskeysBiometricsApi.webAuthnAuthenticateStart']?.[index]?.url;
@@ -12581,11 +13381,11 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         /**
          * Update authenticator
          * @param {string} authenticatorID ID of authenticator
-         * @param {WebAuthnAuthenticatorUpdateReq} webAuthnAuthenticatorUpdateReq
+         * @param {WebAuthnAuthenticatorUpdateReq} webAuthnAuthenticatorUpdateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async webAuthnAuthenticatorUpdate(authenticatorID: string, webAuthnAuthenticatorUpdateReq: WebAuthnAuthenticatorUpdateReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
+        async webAuthnAuthenticatorUpdate(authenticatorID: string, webAuthnAuthenticatorUpdateReq: WebAuthnAuthenticatorUpdateReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.webAuthnAuthenticatorUpdate(authenticatorID, webAuthnAuthenticatorUpdateReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PasskeysBiometricsApi.webAuthnAuthenticatorUpdate']?.[index]?.url;
@@ -12595,11 +13395,11 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
          * Delete credential
          * @param {string} userID ID of user
          * @param {string} credentialID ID of credential
-         * @param {EmptyReq} emptyReq
+         * @param {EmptyReq} emptyReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async webAuthnCredentialDelete(userID: string, credentialID: string, emptyReq: EmptyReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
+        async webAuthnCredentialDelete(userID: string, credentialID: string, emptyReq: EmptyReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.webAuthnCredentialDelete(userID, credentialID, emptyReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PasskeysBiometricsApi.webAuthnCredentialDelete']?.[index]?.url;
@@ -12607,11 +13407,11 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         },
         /**
          * Checks if active webauthn credential exists for provided user and device
-         * @param {WebAuthnCredentialExistsReq} webAuthnCredentialExistsReq
+         * @param {WebAuthnCredentialExistsReq} webAuthnCredentialExistsReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async webAuthnCredentialExists(webAuthnCredentialExistsReq: WebAuthnCredentialExistsReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebAuthnCredentialExistsRsp>> {
+        async webAuthnCredentialExists(webAuthnCredentialExistsReq: WebAuthnCredentialExistsReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebAuthnCredentialExistsRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.webAuthnCredentialExists(webAuthnCredentialExistsReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PasskeysBiometricsApi.webAuthnCredentialExists']?.[index]?.url;
@@ -12628,7 +13428,7 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async webAuthnCredentialList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebAuthnCredentialListRsp>> {
+        async webAuthnCredentialList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebAuthnCredentialListRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.webAuthnCredentialList(remoteAddress, userAgent, sort, filter, page, pageSize, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PasskeysBiometricsApi.webAuthnCredentialList']?.[index]?.url;
@@ -12637,11 +13437,11 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         /**
          * Update credential
          * @param {string} credentialID ID of credential
-         * @param {WebAuthnCredentialReq} webAuthnCredentialReq
+         * @param {WebAuthnCredentialReq} webAuthnCredentialReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async webAuthnCredentialUpdate(credentialID: string, webAuthnCredentialReq: WebAuthnCredentialReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebAuthnCredentialRsp>> {
+        async webAuthnCredentialUpdate(credentialID: string, webAuthnCredentialReq: WebAuthnCredentialReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebAuthnCredentialRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.webAuthnCredentialUpdate(credentialID, webAuthnCredentialReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PasskeysBiometricsApi.webAuthnCredentialUpdate']?.[index]?.url;
@@ -12649,11 +13449,11 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         },
         /**
          * Starts mediation for Passkeys (Biometrics)
-         * @param {WebAuthnMediationStartReq} webAuthnMediationStartReq
+         * @param {WebAuthnMediationStartReq} webAuthnMediationStartReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async webAuthnMediationStart(webAuthnMediationStartReq: WebAuthnMediationStartReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebAuthnMediationStartRsp>> {
+        async webAuthnMediationStart(webAuthnMediationStartReq: WebAuthnMediationStartReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebAuthnMediationStartRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.webAuthnMediationStart(webAuthnMediationStartReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PasskeysBiometricsApi.webAuthnMediationStart']?.[index]?.url;
@@ -12661,11 +13461,11 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         },
         /**
          * Completes registration of a user for Passkeys (Biometrics)
-         * @param {WebAuthnFinishReq} webAuthnFinishReq
+         * @param {WebAuthnFinishReq} webAuthnFinishReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async webAuthnRegisterFinish(webAuthnFinishReq: WebAuthnFinishReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebAuthnRegisterFinishRsp>> {
+        async webAuthnRegisterFinish(webAuthnFinishReq: WebAuthnFinishReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebAuthnRegisterFinishRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.webAuthnRegisterFinish(webAuthnFinishReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PasskeysBiometricsApi.webAuthnRegisterFinish']?.[index]?.url;
@@ -12673,11 +13473,11 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         },
         /**
          * Starts registration of a user for Passkeys (Biometrics)
-         * @param {WebAuthnRegisterStartReq} [webAuthnRegisterStartReq]
+         * @param {WebAuthnRegisterStartReq} [webAuthnRegisterStartReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async webAuthnRegisterStart(webAuthnRegisterStartReq?: WebAuthnRegisterStartReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebAuthnRegisterStartRsp>> {
+        async webAuthnRegisterStart(webAuthnRegisterStartReq?: WebAuthnRegisterStartReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebAuthnRegisterStartRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.webAuthnRegisterStart(webAuthnRegisterStartReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PasskeysBiometricsApi.webAuthnRegisterStart']?.[index]?.url;
@@ -12685,11 +13485,11 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         },
         /**
          * Creates a new setting for Passkeys (Biometrics)
-         * @param {WebauthnSettingCreateReq} [webauthnSettingCreateReq]
+         * @param {WebauthnSettingCreateReq} [webauthnSettingCreateReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async webAuthnSettingCreate(webauthnSettingCreateReq?: WebauthnSettingCreateReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebauthnSettingCreateRsp>> {
+        async webAuthnSettingCreate(webauthnSettingCreateReq?: WebauthnSettingCreateReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebauthnSettingCreateRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.webAuthnSettingCreate(webauthnSettingCreateReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PasskeysBiometricsApi.webAuthnSettingCreate']?.[index]?.url;
@@ -12698,11 +13498,11 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         /**
          * Deletes a setting by id for Passkeys (Biometrics)
          * @param {string} settingID ID from create
-         * @param {WebauthnSettingDeleteReq} [webauthnSettingDeleteReq]
+         * @param {WebauthnSettingDeleteReq} [webauthnSettingDeleteReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async webAuthnSettingDelete(settingID: string, webauthnSettingDeleteReq?: WebauthnSettingDeleteReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
+        async webAuthnSettingDelete(settingID: string, webauthnSettingDeleteReq?: WebauthnSettingDeleteReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.webAuthnSettingDelete(settingID, webauthnSettingDeleteReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PasskeysBiometricsApi.webAuthnSettingDelete']?.[index]?.url;
@@ -12714,7 +13514,7 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async webAuthnSettingGet(settingID: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebauthnSettingGetRsp>> {
+        async webAuthnSettingGet(settingID: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebauthnSettingGetRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.webAuthnSettingGet(settingID, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PasskeysBiometricsApi.webAuthnSettingGet']?.[index]?.url;
@@ -12731,7 +13531,7 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async webAuthnSettingList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebauthnSettingListRsp>> {
+        async webAuthnSettingList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebauthnSettingListRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.webAuthnSettingList(remoteAddress, userAgent, sort, filter, page, pageSize, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PasskeysBiometricsApi.webAuthnSettingList']?.[index]?.url;
@@ -12740,11 +13540,11 @@ export const PasskeysBiometricsApiFp = function(configuration?: Configuration) {
         /**
          * Updates a setting by id for Passkeys (Biometrics)
          * @param {string} settingID ID from create
-         * @param {WebauthnSettingUpdateReq} [webauthnSettingUpdateReq]
+         * @param {WebauthnSettingUpdateReq} [webauthnSettingUpdateReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async webAuthnSettingPut(settingID: string, webauthnSettingUpdateReq?: WebauthnSettingUpdateReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebauthnSettingUpdateRsp>> {
+        async webAuthnSettingPut(settingID: string, webauthnSettingUpdateReq?: WebauthnSettingUpdateReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebauthnSettingUpdateRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.webAuthnSettingPut(settingID, webauthnSettingUpdateReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PasskeysBiometricsApi.webAuthnSettingPut']?.[index]?.url;
@@ -12762,7 +13562,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
     return {
         /**
          * Starts association token flow for Passkeys (Biometrics)
-         * @param {WebAuthnAssociateStartReq} webAuthnAssociateStartReq
+         * @param {WebAuthnAssociateStartReq} webAuthnAssociateStartReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12771,7 +13571,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         },
         /**
          * Completes authentication of a user for Passkeys (Biometrics)
-         * @param {WebAuthnFinishReq} webAuthnFinishReq
+         * @param {WebAuthnFinishReq} webAuthnFinishReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12780,7 +13580,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         },
         /**
          * Starts authentication of a user for Passkeys (Biometrics)
-         * @param {WebAuthnAuthenticateStartReq} webAuthnAuthenticateStartReq
+         * @param {WebAuthnAuthenticateStartReq} webAuthnAuthenticateStartReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12790,7 +13590,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         /**
          * Update authenticator
          * @param {string} authenticatorID ID of authenticator
-         * @param {WebAuthnAuthenticatorUpdateReq} webAuthnAuthenticatorUpdateReq
+         * @param {WebAuthnAuthenticatorUpdateReq} webAuthnAuthenticatorUpdateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12801,7 +13601,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
          * Delete credential
          * @param {string} userID ID of user
          * @param {string} credentialID ID of credential
-         * @param {EmptyReq} emptyReq
+         * @param {EmptyReq} emptyReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12810,7 +13610,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         },
         /**
          * Checks if active webauthn credential exists for provided user and device
-         * @param {WebAuthnCredentialExistsReq} webAuthnCredentialExistsReq
+         * @param {WebAuthnCredentialExistsReq} webAuthnCredentialExistsReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12834,7 +13634,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         /**
          * Update credential
          * @param {string} credentialID ID of credential
-         * @param {WebAuthnCredentialReq} webAuthnCredentialReq
+         * @param {WebAuthnCredentialReq} webAuthnCredentialReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12843,7 +13643,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         },
         /**
          * Starts mediation for Passkeys (Biometrics)
-         * @param {WebAuthnMediationStartReq} webAuthnMediationStartReq
+         * @param {WebAuthnMediationStartReq} webAuthnMediationStartReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12852,7 +13652,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         },
         /**
          * Completes registration of a user for Passkeys (Biometrics)
-         * @param {WebAuthnFinishReq} webAuthnFinishReq
+         * @param {WebAuthnFinishReq} webAuthnFinishReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12861,7 +13661,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         },
         /**
          * Starts registration of a user for Passkeys (Biometrics)
-         * @param {WebAuthnRegisterStartReq} [webAuthnRegisterStartReq]
+         * @param {WebAuthnRegisterStartReq} [webAuthnRegisterStartReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12870,7 +13670,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         },
         /**
          * Creates a new setting for Passkeys (Biometrics)
-         * @param {WebauthnSettingCreateReq} [webauthnSettingCreateReq]
+         * @param {WebauthnSettingCreateReq} [webauthnSettingCreateReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12880,7 +13680,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         /**
          * Deletes a setting by id for Passkeys (Biometrics)
          * @param {string} settingID ID from create
-         * @param {WebauthnSettingDeleteReq} [webauthnSettingDeleteReq]
+         * @param {WebauthnSettingDeleteReq} [webauthnSettingDeleteReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12913,7 +13713,7 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
         /**
          * Updates a setting by id for Passkeys (Biometrics)
          * @param {string} settingID ID from create
-         * @param {WebauthnSettingUpdateReq} [webauthnSettingUpdateReq]
+         * @param {WebauthnSettingUpdateReq} [webauthnSettingUpdateReq] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12932,46 +13732,46 @@ export const PasskeysBiometricsApiFactory = function (configuration?: Configurat
 export class PasskeysBiometricsApi extends BaseAPI {
     /**
      * Starts association token flow for Passkeys (Biometrics)
-     * @param {WebAuthnAssociateStartReq} webAuthnAssociateStartReq
+     * @param {WebAuthnAssociateStartReq} webAuthnAssociateStartReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
      */
-    public webAuthnAssociateStart(webAuthnAssociateStartReq: WebAuthnAssociateStartReq, options?: RawAxiosRequestConfig) {
+    public webAuthnAssociateStart(webAuthnAssociateStartReq: WebAuthnAssociateStartReq, options?: AxiosRequestConfig) {
         return PasskeysBiometricsApiFp(this.configuration).webAuthnAssociateStart(webAuthnAssociateStartReq, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Completes authentication of a user for Passkeys (Biometrics)
-     * @param {WebAuthnFinishReq} webAuthnFinishReq
+     * @param {WebAuthnFinishReq} webAuthnFinishReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
      */
-    public webAuthnAuthenticateFinish(webAuthnFinishReq: WebAuthnFinishReq, options?: RawAxiosRequestConfig) {
+    public webAuthnAuthenticateFinish(webAuthnFinishReq: WebAuthnFinishReq, options?: AxiosRequestConfig) {
         return PasskeysBiometricsApiFp(this.configuration).webAuthnAuthenticateFinish(webAuthnFinishReq, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Starts authentication of a user for Passkeys (Biometrics)
-     * @param {WebAuthnAuthenticateStartReq} webAuthnAuthenticateStartReq
+     * @param {WebAuthnAuthenticateStartReq} webAuthnAuthenticateStartReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
      */
-    public webAuthnAuthenticateStart(webAuthnAuthenticateStartReq: WebAuthnAuthenticateStartReq, options?: RawAxiosRequestConfig) {
+    public webAuthnAuthenticateStart(webAuthnAuthenticateStartReq: WebAuthnAuthenticateStartReq, options?: AxiosRequestConfig) {
         return PasskeysBiometricsApiFp(this.configuration).webAuthnAuthenticateStart(webAuthnAuthenticateStartReq, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Update authenticator
      * @param {string} authenticatorID ID of authenticator
-     * @param {WebAuthnAuthenticatorUpdateReq} webAuthnAuthenticatorUpdateReq
+     * @param {WebAuthnAuthenticatorUpdateReq} webAuthnAuthenticatorUpdateReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
      */
-    public webAuthnAuthenticatorUpdate(authenticatorID: string, webAuthnAuthenticatorUpdateReq: WebAuthnAuthenticatorUpdateReq, options?: RawAxiosRequestConfig) {
+    public webAuthnAuthenticatorUpdate(authenticatorID: string, webAuthnAuthenticatorUpdateReq: WebAuthnAuthenticatorUpdateReq, options?: AxiosRequestConfig) {
         return PasskeysBiometricsApiFp(this.configuration).webAuthnAuthenticatorUpdate(authenticatorID, webAuthnAuthenticatorUpdateReq, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -12979,23 +13779,23 @@ export class PasskeysBiometricsApi extends BaseAPI {
      * Delete credential
      * @param {string} userID ID of user
      * @param {string} credentialID ID of credential
-     * @param {EmptyReq} emptyReq
+     * @param {EmptyReq} emptyReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
      */
-    public webAuthnCredentialDelete(userID: string, credentialID: string, emptyReq: EmptyReq, options?: RawAxiosRequestConfig) {
+    public webAuthnCredentialDelete(userID: string, credentialID: string, emptyReq: EmptyReq, options?: AxiosRequestConfig) {
         return PasskeysBiometricsApiFp(this.configuration).webAuthnCredentialDelete(userID, credentialID, emptyReq, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Checks if active webauthn credential exists for provided user and device
-     * @param {WebAuthnCredentialExistsReq} webAuthnCredentialExistsReq
+     * @param {WebAuthnCredentialExistsReq} webAuthnCredentialExistsReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
      */
-    public webAuthnCredentialExists(webAuthnCredentialExistsReq: WebAuthnCredentialExistsReq, options?: RawAxiosRequestConfig) {
+    public webAuthnCredentialExists(webAuthnCredentialExistsReq: WebAuthnCredentialExistsReq, options?: AxiosRequestConfig) {
         return PasskeysBiometricsApiFp(this.configuration).webAuthnCredentialExists(webAuthnCredentialExistsReq, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -13011,75 +13811,75 @@ export class PasskeysBiometricsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
      */
-    public webAuthnCredentialList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
+    public webAuthnCredentialList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig) {
         return PasskeysBiometricsApiFp(this.configuration).webAuthnCredentialList(remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Update credential
      * @param {string} credentialID ID of credential
-     * @param {WebAuthnCredentialReq} webAuthnCredentialReq
+     * @param {WebAuthnCredentialReq} webAuthnCredentialReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
      */
-    public webAuthnCredentialUpdate(credentialID: string, webAuthnCredentialReq: WebAuthnCredentialReq, options?: RawAxiosRequestConfig) {
+    public webAuthnCredentialUpdate(credentialID: string, webAuthnCredentialReq: WebAuthnCredentialReq, options?: AxiosRequestConfig) {
         return PasskeysBiometricsApiFp(this.configuration).webAuthnCredentialUpdate(credentialID, webAuthnCredentialReq, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Starts mediation for Passkeys (Biometrics)
-     * @param {WebAuthnMediationStartReq} webAuthnMediationStartReq
+     * @param {WebAuthnMediationStartReq} webAuthnMediationStartReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
      */
-    public webAuthnMediationStart(webAuthnMediationStartReq: WebAuthnMediationStartReq, options?: RawAxiosRequestConfig) {
+    public webAuthnMediationStart(webAuthnMediationStartReq: WebAuthnMediationStartReq, options?: AxiosRequestConfig) {
         return PasskeysBiometricsApiFp(this.configuration).webAuthnMediationStart(webAuthnMediationStartReq, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Completes registration of a user for Passkeys (Biometrics)
-     * @param {WebAuthnFinishReq} webAuthnFinishReq
+     * @param {WebAuthnFinishReq} webAuthnFinishReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
      */
-    public webAuthnRegisterFinish(webAuthnFinishReq: WebAuthnFinishReq, options?: RawAxiosRequestConfig) {
+    public webAuthnRegisterFinish(webAuthnFinishReq: WebAuthnFinishReq, options?: AxiosRequestConfig) {
         return PasskeysBiometricsApiFp(this.configuration).webAuthnRegisterFinish(webAuthnFinishReq, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Starts registration of a user for Passkeys (Biometrics)
-     * @param {WebAuthnRegisterStartReq} [webAuthnRegisterStartReq]
+     * @param {WebAuthnRegisterStartReq} [webAuthnRegisterStartReq] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
      */
-    public webAuthnRegisterStart(webAuthnRegisterStartReq?: WebAuthnRegisterStartReq, options?: RawAxiosRequestConfig) {
+    public webAuthnRegisterStart(webAuthnRegisterStartReq?: WebAuthnRegisterStartReq, options?: AxiosRequestConfig) {
         return PasskeysBiometricsApiFp(this.configuration).webAuthnRegisterStart(webAuthnRegisterStartReq, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Creates a new setting for Passkeys (Biometrics)
-     * @param {WebauthnSettingCreateReq} [webauthnSettingCreateReq]
+     * @param {WebauthnSettingCreateReq} [webauthnSettingCreateReq] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
      */
-    public webAuthnSettingCreate(webauthnSettingCreateReq?: WebauthnSettingCreateReq, options?: RawAxiosRequestConfig) {
+    public webAuthnSettingCreate(webauthnSettingCreateReq?: WebauthnSettingCreateReq, options?: AxiosRequestConfig) {
         return PasskeysBiometricsApiFp(this.configuration).webAuthnSettingCreate(webauthnSettingCreateReq, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Deletes a setting by id for Passkeys (Biometrics)
      * @param {string} settingID ID from create
-     * @param {WebauthnSettingDeleteReq} [webauthnSettingDeleteReq]
+     * @param {WebauthnSettingDeleteReq} [webauthnSettingDeleteReq] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
      */
-    public webAuthnSettingDelete(settingID: string, webauthnSettingDeleteReq?: WebauthnSettingDeleteReq, options?: RawAxiosRequestConfig) {
+    public webAuthnSettingDelete(settingID: string, webauthnSettingDeleteReq?: WebauthnSettingDeleteReq, options?: AxiosRequestConfig) {
         return PasskeysBiometricsApiFp(this.configuration).webAuthnSettingDelete(settingID, webauthnSettingDeleteReq, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -13090,7 +13890,7 @@ export class PasskeysBiometricsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
      */
-    public webAuthnSettingGet(settingID: string, options?: RawAxiosRequestConfig) {
+    public webAuthnSettingGet(settingID: string, options?: AxiosRequestConfig) {
         return PasskeysBiometricsApiFp(this.configuration).webAuthnSettingGet(settingID, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -13106,19 +13906,19 @@ export class PasskeysBiometricsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
      */
-    public webAuthnSettingList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
+    public webAuthnSettingList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig) {
         return PasskeysBiometricsApiFp(this.configuration).webAuthnSettingList(remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Updates a setting by id for Passkeys (Biometrics)
      * @param {string} settingID ID from create
-     * @param {WebauthnSettingUpdateReq} [webauthnSettingUpdateReq]
+     * @param {WebauthnSettingUpdateReq} [webauthnSettingUpdateReq] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PasskeysBiometricsApi
      */
-    public webAuthnSettingPut(settingID: string, webauthnSettingUpdateReq?: WebauthnSettingUpdateReq, options?: RawAxiosRequestConfig) {
+    public webAuthnSettingPut(settingID: string, webauthnSettingUpdateReq?: WebauthnSettingUpdateReq, options?: AxiosRequestConfig) {
         return PasskeysBiometricsApiFp(this.configuration).webAuthnSettingPut(settingID, webauthnSettingUpdateReq, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -13133,11 +13933,11 @@ export const ProjectConfigApiAxiosParamCreator = function (configuration?: Confi
     return {
         /**
          * Activates the project
-         * @param {EmptyReq} emptyReq
+         * @param {EmptyReq} emptyReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        projectActivate: async (emptyReq: EmptyReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        projectActivate: async (emptyReq: EmptyReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'emptyReq' is not null or undefined
             assertParamExists('projectActivate', 'emptyReq', emptyReq)
             const localVarPath = `/v1/projects/activate`;
@@ -13164,7 +13964,7 @@ export const ProjectConfigApiAxiosParamCreator = function (configuration?: Confi
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -13182,7 +13982,7 @@ export const ProjectConfigApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        projectConfigGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        projectConfigGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/projectConfig`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -13207,7 +14007,7 @@ export const ProjectConfigApiAxiosParamCreator = function (configuration?: Confi
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -13219,11 +14019,11 @@ export const ProjectConfigApiAxiosParamCreator = function (configuration?: Confi
         },
         /**
          * Saves project config
-         * @param {ProjectConfigSaveReq} projectConfigSaveReq
+         * @param {ProjectConfigSaveReq} projectConfigSaveReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        projectConfigSave: async (projectConfigSaveReq: ProjectConfigSaveReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        projectConfigSave: async (projectConfigSaveReq: ProjectConfigSaveReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'projectConfigSaveReq' is not null or undefined
             assertParamExists('projectConfigSave', 'projectConfigSaveReq', projectConfigSaveReq)
             const localVarPath = `/v1/projectConfig`;
@@ -13250,7 +14050,7 @@ export const ProjectConfigApiAxiosParamCreator = function (configuration?: Confi
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -13265,11 +14065,11 @@ export const ProjectConfigApiAxiosParamCreator = function (configuration?: Confi
         },
         /**
          * Tests webhook backend
-         * @param {ProjectConfigWebhookTestReq} projectConfigWebhookTestReq
+         * @param {ProjectConfigWebhookTestReq} projectConfigWebhookTestReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        projectConfigWebhookTest: async (projectConfigWebhookTestReq: ProjectConfigWebhookTestReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        projectConfigWebhookTest: async (projectConfigWebhookTestReq: ProjectConfigWebhookTestReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'projectConfigWebhookTestReq' is not null or undefined
             assertParamExists('projectConfigWebhookTest', 'projectConfigWebhookTestReq', projectConfigWebhookTestReq)
             const localVarPath = `/v1/projectConfig/testWebhook`;
@@ -13296,7 +14096,7 @@ export const ProjectConfigApiAxiosParamCreator = function (configuration?: Confi
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -13321,11 +14121,11 @@ export const ProjectConfigApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Activates the project
-         * @param {EmptyReq} emptyReq
+         * @param {EmptyReq} emptyReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async projectActivate(emptyReq: EmptyReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
+        async projectActivate(emptyReq: EmptyReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.projectActivate(emptyReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['ProjectConfigApi.projectActivate']?.[index]?.url;
@@ -13336,7 +14136,7 @@ export const ProjectConfigApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async projectConfigGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectConfigGetRsp>> {
+        async projectConfigGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectConfigGetRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.projectConfigGet(options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['ProjectConfigApi.projectConfigGet']?.[index]?.url;
@@ -13344,11 +14144,11 @@ export const ProjectConfigApiFp = function(configuration?: Configuration) {
         },
         /**
          * Saves project config
-         * @param {ProjectConfigSaveReq} projectConfigSaveReq
+         * @param {ProjectConfigSaveReq} projectConfigSaveReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async projectConfigSave(projectConfigSaveReq: ProjectConfigSaveReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
+        async projectConfigSave(projectConfigSaveReq: ProjectConfigSaveReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.projectConfigSave(projectConfigSaveReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['ProjectConfigApi.projectConfigSave']?.[index]?.url;
@@ -13356,11 +14156,11 @@ export const ProjectConfigApiFp = function(configuration?: Configuration) {
         },
         /**
          * Tests webhook backend
-         * @param {ProjectConfigWebhookTestReq} projectConfigWebhookTestReq
+         * @param {ProjectConfigWebhookTestReq} projectConfigWebhookTestReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async projectConfigWebhookTest(projectConfigWebhookTestReq: ProjectConfigWebhookTestReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectConfigWebhookTestRsp>> {
+        async projectConfigWebhookTest(projectConfigWebhookTestReq: ProjectConfigWebhookTestReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectConfigWebhookTestRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.projectConfigWebhookTest(projectConfigWebhookTestReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['ProjectConfigApi.projectConfigWebhookTest']?.[index]?.url;
@@ -13378,7 +14178,7 @@ export const ProjectConfigApiFactory = function (configuration?: Configuration, 
     return {
         /**
          * Activates the project
-         * @param {EmptyReq} emptyReq
+         * @param {EmptyReq} emptyReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13395,7 +14195,7 @@ export const ProjectConfigApiFactory = function (configuration?: Configuration, 
         },
         /**
          * Saves project config
-         * @param {ProjectConfigSaveReq} projectConfigSaveReq
+         * @param {ProjectConfigSaveReq} projectConfigSaveReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13404,7 +14204,7 @@ export const ProjectConfigApiFactory = function (configuration?: Configuration, 
         },
         /**
          * Tests webhook backend
-         * @param {ProjectConfigWebhookTestReq} projectConfigWebhookTestReq
+         * @param {ProjectConfigWebhookTestReq} projectConfigWebhookTestReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13423,12 +14223,12 @@ export const ProjectConfigApiFactory = function (configuration?: Configuration, 
 export class ProjectConfigApi extends BaseAPI {
     /**
      * Activates the project
-     * @param {EmptyReq} emptyReq
+     * @param {EmptyReq} emptyReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProjectConfigApi
      */
-    public projectActivate(emptyReq: EmptyReq, options?: RawAxiosRequestConfig) {
+    public projectActivate(emptyReq: EmptyReq, options?: AxiosRequestConfig) {
         return ProjectConfigApiFp(this.configuration).projectActivate(emptyReq, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -13438,29 +14238,29 @@ export class ProjectConfigApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ProjectConfigApi
      */
-    public projectConfigGet(options?: RawAxiosRequestConfig) {
+    public projectConfigGet(options?: AxiosRequestConfig) {
         return ProjectConfigApiFp(this.configuration).projectConfigGet(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Saves project config
-     * @param {ProjectConfigSaveReq} projectConfigSaveReq
+     * @param {ProjectConfigSaveReq} projectConfigSaveReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProjectConfigApi
      */
-    public projectConfigSave(projectConfigSaveReq: ProjectConfigSaveReq, options?: RawAxiosRequestConfig) {
+    public projectConfigSave(projectConfigSaveReq: ProjectConfigSaveReq, options?: AxiosRequestConfig) {
         return ProjectConfigApiFp(this.configuration).projectConfigSave(projectConfigSaveReq, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Tests webhook backend
-     * @param {ProjectConfigWebhookTestReq} projectConfigWebhookTestReq
+     * @param {ProjectConfigWebhookTestReq} projectConfigWebhookTestReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProjectConfigApi
      */
-    public projectConfigWebhookTest(projectConfigWebhookTestReq: ProjectConfigWebhookTestReq, options?: RawAxiosRequestConfig) {
+    public projectConfigWebhookTest(projectConfigWebhookTestReq: ProjectConfigWebhookTestReq, options?: AxiosRequestConfig) {
         return ProjectConfigApiFp(this.configuration).projectConfigWebhookTest(projectConfigWebhookTestReq, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -13481,7 +14281,7 @@ export const RequestLogsApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        requestLogGet: async (requestID: string, remoteAddress?: string, userAgent?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        requestLogGet: async (requestID: string, remoteAddress?: string, userAgent?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'requestID' is not null or undefined
             assertParamExists('requestLogGet', 'requestID', requestID)
             const localVarPath = `/v1/requestLogs/{requestID}`
@@ -13517,7 +14317,7 @@ export const RequestLogsApiAxiosParamCreator = function (configuration?: Configu
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -13538,7 +14338,7 @@ export const RequestLogsApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        requestLogsList: async (remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        requestLogsList: async (remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/requestLogs`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -13587,7 +14387,7 @@ export const RequestLogsApiAxiosParamCreator = function (configuration?: Configu
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -13615,7 +14415,7 @@ export const RequestLogsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async requestLogGet(requestID: string, remoteAddress?: string, userAgent?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RequestLogGetRsp>> {
+        async requestLogGet(requestID: string, remoteAddress?: string, userAgent?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RequestLogGetRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.requestLogGet(requestID, remoteAddress, userAgent, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['RequestLogsApi.requestLogGet']?.[index]?.url;
@@ -13632,7 +14432,7 @@ export const RequestLogsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async requestLogsList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RequestLogsListRsp>> {
+        async requestLogsList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RequestLogsListRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.requestLogsList(remoteAddress, userAgent, sort, filter, page, pageSize, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['RequestLogsApi.requestLogsList']?.[index]?.url;
@@ -13692,7 +14492,7 @@ export class RequestLogsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof RequestLogsApi
      */
-    public requestLogGet(requestID: string, remoteAddress?: string, userAgent?: string, options?: RawAxiosRequestConfig) {
+    public requestLogGet(requestID: string, remoteAddress?: string, userAgent?: string, options?: AxiosRequestConfig) {
         return RequestLogsApiFp(this.configuration).requestLogGet(requestID, remoteAddress, userAgent, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -13708,7 +14508,7 @@ export class RequestLogsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof RequestLogsApi
      */
-    public requestLogsList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
+    public requestLogsList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig) {
         return RequestLogsApiFp(this.configuration).requestLogsList(remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -13723,11 +14523,11 @@ export const SMSOTPApiAxiosParamCreator = function (configuration?: Configuratio
     return {
         /**
          * Creates SMS OTP and sends it to given phone number
-         * @param {SmsCodeSendReq} smsCodeSendReq
+         * @param {SmsCodeSendReq} smsCodeSendReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        smsCodeSend: async (smsCodeSendReq: SmsCodeSendReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        smsCodeSend: async (smsCodeSendReq: SmsCodeSendReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'smsCodeSendReq' is not null or undefined
             assertParamExists('smsCodeSend', 'smsCodeSendReq', smsCodeSendReq)
             const localVarPath = `/v1/smsCodes`;
@@ -13750,7 +14550,7 @@ export const SMSOTPApiAxiosParamCreator = function (configuration?: Configuratio
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -13766,11 +14566,11 @@ export const SMSOTPApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * Validates SMS OTP
          * @param {string} smsCodeID ID of SMS OTP
-         * @param {SmsCodeValidateReq} smsCodeValidateReq
+         * @param {SmsCodeValidateReq} smsCodeValidateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        smsCodeValidate: async (smsCodeID: string, smsCodeValidateReq: SmsCodeValidateReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        smsCodeValidate: async (smsCodeID: string, smsCodeValidateReq: SmsCodeValidateReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'smsCodeID' is not null or undefined
             assertParamExists('smsCodeValidate', 'smsCodeID', smsCodeID)
             // verify required parameter 'smsCodeValidateReq' is not null or undefined
@@ -13796,7 +14596,7 @@ export const SMSOTPApiAxiosParamCreator = function (configuration?: Configuratio
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -13821,11 +14621,11 @@ export const SMSOTPApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Creates SMS OTP and sends it to given phone number
-         * @param {SmsCodeSendReq} smsCodeSendReq
+         * @param {SmsCodeSendReq} smsCodeSendReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async smsCodeSend(smsCodeSendReq: SmsCodeSendReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SmsCodeSendRsp>> {
+        async smsCodeSend(smsCodeSendReq: SmsCodeSendReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SmsCodeSendRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.smsCodeSend(smsCodeSendReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['SMSOTPApi.smsCodeSend']?.[index]?.url;
@@ -13834,11 +14634,11 @@ export const SMSOTPApiFp = function(configuration?: Configuration) {
         /**
          * Validates SMS OTP
          * @param {string} smsCodeID ID of SMS OTP
-         * @param {SmsCodeValidateReq} smsCodeValidateReq
+         * @param {SmsCodeValidateReq} smsCodeValidateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async smsCodeValidate(smsCodeID: string, smsCodeValidateReq: SmsCodeValidateReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SmsCodeValidateRsp>> {
+        async smsCodeValidate(smsCodeID: string, smsCodeValidateReq: SmsCodeValidateReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SmsCodeValidateRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.smsCodeValidate(smsCodeID, smsCodeValidateReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['SMSOTPApi.smsCodeValidate']?.[index]?.url;
@@ -13856,7 +14656,7 @@ export const SMSOTPApiFactory = function (configuration?: Configuration, basePat
     return {
         /**
          * Creates SMS OTP and sends it to given phone number
-         * @param {SmsCodeSendReq} smsCodeSendReq
+         * @param {SmsCodeSendReq} smsCodeSendReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13866,7 +14666,7 @@ export const SMSOTPApiFactory = function (configuration?: Configuration, basePat
         /**
          * Validates SMS OTP
          * @param {string} smsCodeID ID of SMS OTP
-         * @param {SmsCodeValidateReq} smsCodeValidateReq
+         * @param {SmsCodeValidateReq} smsCodeValidateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13885,24 +14685,24 @@ export const SMSOTPApiFactory = function (configuration?: Configuration, basePat
 export class SMSOTPApi extends BaseAPI {
     /**
      * Creates SMS OTP and sends it to given phone number
-     * @param {SmsCodeSendReq} smsCodeSendReq
+     * @param {SmsCodeSendReq} smsCodeSendReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SMSOTPApi
      */
-    public smsCodeSend(smsCodeSendReq: SmsCodeSendReq, options?: RawAxiosRequestConfig) {
+    public smsCodeSend(smsCodeSendReq: SmsCodeSendReq, options?: AxiosRequestConfig) {
         return SMSOTPApiFp(this.configuration).smsCodeSend(smsCodeSendReq, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Validates SMS OTP
      * @param {string} smsCodeID ID of SMS OTP
-     * @param {SmsCodeValidateReq} smsCodeValidateReq
+     * @param {SmsCodeValidateReq} smsCodeValidateReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SMSOTPApi
      */
-    public smsCodeValidate(smsCodeID: string, smsCodeValidateReq: SmsCodeValidateReq, options?: RawAxiosRequestConfig) {
+    public smsCodeValidate(smsCodeID: string, smsCodeValidateReq: SmsCodeValidateReq, options?: AxiosRequestConfig) {
         return SMSOTPApiFp(this.configuration).smsCodeValidate(smsCodeID, smsCodeValidateReq, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -13917,11 +14717,11 @@ export const SMSTemplatesApiAxiosParamCreator = function (configuration?: Config
     return {
         /**
          * Creates a new SMS template
-         * @param {SmsTemplateCreateReq} smsTemplateCreateReq
+         * @param {SmsTemplateCreateReq} smsTemplateCreateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        smsTemplateCreate: async (smsTemplateCreateReq: SmsTemplateCreateReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        smsTemplateCreate: async (smsTemplateCreateReq: SmsTemplateCreateReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'smsTemplateCreateReq' is not null or undefined
             assertParamExists('smsTemplateCreate', 'smsTemplateCreateReq', smsTemplateCreateReq)
             const localVarPath = `/v1/smsTemplates`;
@@ -13940,7 +14740,7 @@ export const SMSTemplatesApiAxiosParamCreator = function (configuration?: Config
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -13956,11 +14756,11 @@ export const SMSTemplatesApiAxiosParamCreator = function (configuration?: Config
         /**
          * Deletes an SMS template
          * @param {string} smsTemplateID ID of SMS template
-         * @param {SmsTemplateDeleteReq} smsTemplateDeleteReq
+         * @param {SmsTemplateDeleteReq} smsTemplateDeleteReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        smsTemplateDelete: async (smsTemplateID: string, smsTemplateDeleteReq: SmsTemplateDeleteReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        smsTemplateDelete: async (smsTemplateID: string, smsTemplateDeleteReq: SmsTemplateDeleteReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'smsTemplateID' is not null or undefined
             assertParamExists('smsTemplateDelete', 'smsTemplateID', smsTemplateID)
             // verify required parameter 'smsTemplateDeleteReq' is not null or undefined
@@ -13982,7 +14782,7 @@ export const SMSTemplatesApiAxiosParamCreator = function (configuration?: Config
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -14007,11 +14807,11 @@ export const SMSTemplatesApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Creates a new SMS template
-         * @param {SmsTemplateCreateReq} smsTemplateCreateReq
+         * @param {SmsTemplateCreateReq} smsTemplateCreateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async smsTemplateCreate(smsTemplateCreateReq: SmsTemplateCreateReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SmsTemplateCreateRsp>> {
+        async smsTemplateCreate(smsTemplateCreateReq: SmsTemplateCreateReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SmsTemplateCreateRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.smsTemplateCreate(smsTemplateCreateReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['SMSTemplatesApi.smsTemplateCreate']?.[index]?.url;
@@ -14020,11 +14820,11 @@ export const SMSTemplatesApiFp = function(configuration?: Configuration) {
         /**
          * Deletes an SMS template
          * @param {string} smsTemplateID ID of SMS template
-         * @param {SmsTemplateDeleteReq} smsTemplateDeleteReq
+         * @param {SmsTemplateDeleteReq} smsTemplateDeleteReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async smsTemplateDelete(smsTemplateID: string, smsTemplateDeleteReq: SmsTemplateDeleteReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
+        async smsTemplateDelete(smsTemplateID: string, smsTemplateDeleteReq: SmsTemplateDeleteReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.smsTemplateDelete(smsTemplateID, smsTemplateDeleteReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['SMSTemplatesApi.smsTemplateDelete']?.[index]?.url;
@@ -14042,7 +14842,7 @@ export const SMSTemplatesApiFactory = function (configuration?: Configuration, b
     return {
         /**
          * Creates a new SMS template
-         * @param {SmsTemplateCreateReq} smsTemplateCreateReq
+         * @param {SmsTemplateCreateReq} smsTemplateCreateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -14052,7 +14852,7 @@ export const SMSTemplatesApiFactory = function (configuration?: Configuration, b
         /**
          * Deletes an SMS template
          * @param {string} smsTemplateID ID of SMS template
-         * @param {SmsTemplateDeleteReq} smsTemplateDeleteReq
+         * @param {SmsTemplateDeleteReq} smsTemplateDeleteReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -14071,24 +14871,24 @@ export const SMSTemplatesApiFactory = function (configuration?: Configuration, b
 export class SMSTemplatesApi extends BaseAPI {
     /**
      * Creates a new SMS template
-     * @param {SmsTemplateCreateReq} smsTemplateCreateReq
+     * @param {SmsTemplateCreateReq} smsTemplateCreateReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SMSTemplatesApi
      */
-    public smsTemplateCreate(smsTemplateCreateReq: SmsTemplateCreateReq, options?: RawAxiosRequestConfig) {
+    public smsTemplateCreate(smsTemplateCreateReq: SmsTemplateCreateReq, options?: AxiosRequestConfig) {
         return SMSTemplatesApiFp(this.configuration).smsTemplateCreate(smsTemplateCreateReq, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Deletes an SMS template
      * @param {string} smsTemplateID ID of SMS template
-     * @param {SmsTemplateDeleteReq} smsTemplateDeleteReq
+     * @param {SmsTemplateDeleteReq} smsTemplateDeleteReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SMSTemplatesApi
      */
-    public smsTemplateDelete(smsTemplateID: string, smsTemplateDeleteReq: SmsTemplateDeleteReq, options?: RawAxiosRequestConfig) {
+    public smsTemplateDelete(smsTemplateID: string, smsTemplateDeleteReq: SmsTemplateDeleteReq, options?: AxiosRequestConfig) {
         return SMSTemplatesApiFp(this.configuration).smsTemplateDelete(smsTemplateID, smsTemplateDeleteReq, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -14107,7 +14907,7 @@ export const SessionConfigApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sessionConfigGet: async (appType?: AppType, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sessionConfigGet: async (appType?: AppType, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/sessionConfig`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -14136,7 +14936,7 @@ export const SessionConfigApiAxiosParamCreator = function (configuration?: Confi
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -14148,11 +14948,11 @@ export const SessionConfigApiAxiosParamCreator = function (configuration?: Confi
         },
         /**
          * Updates session config
-         * @param {SessionConfigUpdateReq} sessionConfigUpdateReq
+         * @param {SessionConfigUpdateReq} sessionConfigUpdateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sessionConfigUpdate: async (sessionConfigUpdateReq: SessionConfigUpdateReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sessionConfigUpdate: async (sessionConfigUpdateReq: SessionConfigUpdateReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'sessionConfigUpdateReq' is not null or undefined
             assertParamExists('sessionConfigUpdate', 'sessionConfigUpdateReq', sessionConfigUpdateReq)
             const localVarPath = `/v1/sessionConfig`;
@@ -14179,7 +14979,7 @@ export const SessionConfigApiAxiosParamCreator = function (configuration?: Confi
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -14208,7 +15008,7 @@ export const SessionConfigApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sessionConfigGet(appType?: AppType, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SessionConfigGetRsp>> {
+        async sessionConfigGet(appType?: AppType, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SessionConfigGetRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.sessionConfigGet(appType, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['SessionConfigApi.sessionConfigGet']?.[index]?.url;
@@ -14216,11 +15016,11 @@ export const SessionConfigApiFp = function(configuration?: Configuration) {
         },
         /**
          * Updates session config
-         * @param {SessionConfigUpdateReq} sessionConfigUpdateReq
+         * @param {SessionConfigUpdateReq} sessionConfigUpdateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sessionConfigUpdate(sessionConfigUpdateReq: SessionConfigUpdateReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
+        async sessionConfigUpdate(sessionConfigUpdateReq: SessionConfigUpdateReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.sessionConfigUpdate(sessionConfigUpdateReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['SessionConfigApi.sessionConfigUpdate']?.[index]?.url;
@@ -14247,7 +15047,7 @@ export const SessionConfigApiFactory = function (configuration?: Configuration, 
         },
         /**
          * Updates session config
-         * @param {SessionConfigUpdateReq} sessionConfigUpdateReq
+         * @param {SessionConfigUpdateReq} sessionConfigUpdateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -14271,18 +15071,18 @@ export class SessionConfigApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof SessionConfigApi
      */
-    public sessionConfigGet(appType?: AppType, options?: RawAxiosRequestConfig) {
+    public sessionConfigGet(appType?: AppType, options?: AxiosRequestConfig) {
         return SessionConfigApiFp(this.configuration).sessionConfigGet(appType, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Updates session config
-     * @param {SessionConfigUpdateReq} sessionConfigUpdateReq
+     * @param {SessionConfigUpdateReq} sessionConfigUpdateReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SessionConfigApi
      */
-    public sessionConfigUpdate(sessionConfigUpdateReq: SessionConfigUpdateReq, options?: RawAxiosRequestConfig) {
+    public sessionConfigUpdate(sessionConfigUpdateReq: SessionConfigUpdateReq, options?: AxiosRequestConfig) {
         return SessionConfigApiFp(this.configuration).sessionConfigUpdate(sessionConfigUpdateReq, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -14306,7 +15106,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userAuthLogList: async (remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userAuthLogList: async (remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/userauthlogs`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -14355,7 +15155,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -14367,11 +15167,11 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * Creates a new user
-         * @param {UserCreateReq} userCreateReq
+         * @param {UserCreateReq} userCreateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userCreate: async (userCreateReq: UserCreateReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userCreate: async (userCreateReq: UserCreateReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'userCreateReq' is not null or undefined
             assertParamExists('userCreate', 'userCreateReq', userCreateReq)
             const localVarPath = `/v1/users`;
@@ -14398,7 +15198,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -14414,11 +15214,11 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * Add a custom login identifier to an existing user
          * @param {string} userID ID of user
-         * @param {UserCustomLoginIdentifierCreateReq} userCustomLoginIdentifierCreateReq
+         * @param {UserCustomLoginIdentifierCreateReq} userCustomLoginIdentifierCreateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userCustomLoginIdentifierCreate: async (userID: string, userCustomLoginIdentifierCreateReq: UserCustomLoginIdentifierCreateReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userCustomLoginIdentifierCreate: async (userID: string, userCustomLoginIdentifierCreateReq: UserCustomLoginIdentifierCreateReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'userID' is not null or undefined
             assertParamExists('userCustomLoginIdentifierCreate', 'userID', userID)
             // verify required parameter 'userCustomLoginIdentifierCreateReq' is not null or undefined
@@ -14448,7 +15248,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -14465,11 +15265,11 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * Delete a user\'s custom login identifier
          * @param {string} userID ID of user
          * @param {string} customLoginIdentifierID ID of custom login identifier
-         * @param {UserCustomLoginIdentifierDeleteReq} userCustomLoginIdentifierDeleteReq
+         * @param {UserCustomLoginIdentifierDeleteReq} userCustomLoginIdentifierDeleteReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userCustomLoginIdentifierDelete: async (userID: string, customLoginIdentifierID: string, userCustomLoginIdentifierDeleteReq: UserCustomLoginIdentifierDeleteReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userCustomLoginIdentifierDelete: async (userID: string, customLoginIdentifierID: string, userCustomLoginIdentifierDeleteReq: UserCustomLoginIdentifierDeleteReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'userID' is not null or undefined
             assertParamExists('userCustomLoginIdentifierDelete', 'userID', userID)
             // verify required parameter 'customLoginIdentifierID' is not null or undefined
@@ -14502,7 +15302,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -14524,7 +15324,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userCustomLoginIdentifierGet: async (userID: string, customLoginIdentifierID: string, remoteAddress?: string, userAgent?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userCustomLoginIdentifierGet: async (userID: string, customLoginIdentifierID: string, remoteAddress?: string, userAgent?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'userID' is not null or undefined
             assertParamExists('userCustomLoginIdentifierGet', 'userID', userID)
             // verify required parameter 'customLoginIdentifierID' is not null or undefined
@@ -14563,7 +15363,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -14576,11 +15376,11 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * Deletes a user
          * @param {string} userID ID of user
-         * @param {UserDeleteReq} userDeleteReq
+         * @param {UserDeleteReq} userDeleteReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userDelete: async (userID: string, userDeleteReq: UserDeleteReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userDelete: async (userID: string, userDeleteReq: UserDeleteReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'userID' is not null or undefined
             assertParamExists('userDelete', 'userID', userID)
             // verify required parameter 'userDeleteReq' is not null or undefined
@@ -14610,7 +15410,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -14635,7 +15435,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userDeviceList: async (userID: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userDeviceList: async (userID: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'userID' is not null or undefined
             assertParamExists('userDeviceList', 'userID', userID)
             const localVarPath = `/v1/users/{userID}/devices`
@@ -14687,7 +15487,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -14700,11 +15500,11 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * Add an email to an existing user
          * @param {string} userID ID of user
-         * @param {UserEmailCreateReq} userEmailCreateReq
+         * @param {UserEmailCreateReq} userEmailCreateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userEmailCreate: async (userID: string, userEmailCreateReq: UserEmailCreateReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userEmailCreate: async (userID: string, userEmailCreateReq: UserEmailCreateReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'userID' is not null or undefined
             assertParamExists('userEmailCreate', 'userID', userID)
             // verify required parameter 'userEmailCreateReq' is not null or undefined
@@ -14734,7 +15534,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -14751,11 +15551,11 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * Delete a user\'s email
          * @param {string} userID ID of user
          * @param {string} emailID ID of email
-         * @param {UserEmailDeleteReq} userEmailDeleteReq
+         * @param {UserEmailDeleteReq} userEmailDeleteReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userEmailDelete: async (userID: string, emailID: string, userEmailDeleteReq: UserEmailDeleteReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userEmailDelete: async (userID: string, emailID: string, userEmailDeleteReq: UserEmailDeleteReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'userID' is not null or undefined
             assertParamExists('userEmailDelete', 'userID', userID)
             // verify required parameter 'emailID' is not null or undefined
@@ -14788,7 +15588,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -14810,7 +15610,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userEmailGet: async (userID: string, emailID: string, remoteAddress?: string, userAgent?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userEmailGet: async (userID: string, emailID: string, remoteAddress?: string, userAgent?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'userID' is not null or undefined
             assertParamExists('userEmailGet', 'userID', userID)
             // verify required parameter 'emailID' is not null or undefined
@@ -14849,10 +15649,52 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             }
 
 
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Checks if a confirmed user exists for provided login identifier
+         * @param {UserExistsReq} userExistsReq 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userExists: async (userExistsReq: UserExistsReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'userExistsReq' is not null or undefined
+            assertParamExists('userExists', 'userExistsReq', userExistsReq)
+            const localVarPath = `/v1/users/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication basicAuth required
+            // http basic authentication required
+            setBasicAuthToObject(localVarRequestOptions, configuration)
+
+            // authentication projectID required
+            await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(userExistsReq, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -14867,7 +15709,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userGet: async (userID: string, remoteAddress?: string, userAgent?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userGet: async (userID: string, remoteAddress?: string, userAgent?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'userID' is not null or undefined
             assertParamExists('userGet', 'userID', userID)
             const localVarPath = `/v1/users/{userID}`
@@ -14903,7 +15745,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -14924,7 +15766,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userList: async (remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userList: async (remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/users`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -14973,7 +15815,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -14986,11 +15828,11 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * Add a phone number to an existing user
          * @param {string} userID ID of user
-         * @param {UserPhoneNumberCreateReq} userPhoneNumberCreateReq
+         * @param {UserPhoneNumberCreateReq} userPhoneNumberCreateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userPhoneNumberCreate: async (userID: string, userPhoneNumberCreateReq: UserPhoneNumberCreateReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userPhoneNumberCreate: async (userID: string, userPhoneNumberCreateReq: UserPhoneNumberCreateReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'userID' is not null or undefined
             assertParamExists('userPhoneNumberCreate', 'userID', userID)
             // verify required parameter 'userPhoneNumberCreateReq' is not null or undefined
@@ -15020,7 +15862,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -15037,11 +15879,11 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * Delete a user\'s phone number
          * @param {string} userID ID of user
          * @param {string} phoneNumberID ID of phone number
-         * @param {UserPhoneNumberDeleteReq} userPhoneNumberDeleteReq
+         * @param {UserPhoneNumberDeleteReq} userPhoneNumberDeleteReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userPhoneNumberDelete: async (userID: string, phoneNumberID: string, userPhoneNumberDeleteReq: UserPhoneNumberDeleteReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userPhoneNumberDelete: async (userID: string, phoneNumberID: string, userPhoneNumberDeleteReq: UserPhoneNumberDeleteReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'userID' is not null or undefined
             assertParamExists('userPhoneNumberDelete', 'userID', userID)
             // verify required parameter 'phoneNumberID' is not null or undefined
@@ -15074,7 +15916,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -15096,7 +15938,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userPhoneNumberGet: async (userID: string, phoneNumberID: string, remoteAddress?: string, userAgent?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userPhoneNumberGet: async (userID: string, phoneNumberID: string, remoteAddress?: string, userAgent?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'userID' is not null or undefined
             assertParamExists('userPhoneNumberGet', 'userID', userID)
             // verify required parameter 'phoneNumberID' is not null or undefined
@@ -15127,7 +15969,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -15149,7 +15991,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userStatsList: async (granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userStatsList: async (granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'granularity' is not null or undefined
             assertParamExists('userStatsList', 'granularity', granularity)
             const localVarPath = `/v1/users/stats`;
@@ -15204,7 +16046,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -15217,11 +16059,11 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * Updates a user
          * @param {string} userID ID of user
-         * @param {UserUpdateReq} userUpdateReq
+         * @param {UserUpdateReq} userUpdateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userUpdate: async (userID: string, userUpdateReq: UserUpdateReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userUpdate: async (userID: string, userUpdateReq: UserUpdateReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'userID' is not null or undefined
             assertParamExists('userUpdate', 'userID', userID)
             // verify required parameter 'userUpdateReq' is not null or undefined
@@ -15251,7 +16093,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -15285,7 +16127,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userAuthLogList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserAuthLogListRsp>> {
+        async userAuthLogList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserAuthLogListRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userAuthLogList(remoteAddress, userAgent, sort, filter, page, pageSize, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UserApi.userAuthLogList']?.[index]?.url;
@@ -15293,11 +16135,11 @@ export const UserApiFp = function(configuration?: Configuration) {
         },
         /**
          * Creates a new user
-         * @param {UserCreateReq} userCreateReq
+         * @param {UserCreateReq} userCreateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userCreate(userCreateReq: UserCreateReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserCreateRsp>> {
+        async userCreate(userCreateReq: UserCreateReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserCreateRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userCreate(userCreateReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UserApi.userCreate']?.[index]?.url;
@@ -15306,11 +16148,11 @@ export const UserApiFp = function(configuration?: Configuration) {
         /**
          * Add a custom login identifier to an existing user
          * @param {string} userID ID of user
-         * @param {UserCustomLoginIdentifierCreateReq} userCustomLoginIdentifierCreateReq
+         * @param {UserCustomLoginIdentifierCreateReq} userCustomLoginIdentifierCreateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userCustomLoginIdentifierCreate(userID: string, userCustomLoginIdentifierCreateReq: UserCustomLoginIdentifierCreateReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserCustomLoginIdentifierCreateRsp>> {
+        async userCustomLoginIdentifierCreate(userID: string, userCustomLoginIdentifierCreateReq: UserCustomLoginIdentifierCreateReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserCustomLoginIdentifierCreateRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userCustomLoginIdentifierCreate(userID, userCustomLoginIdentifierCreateReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UserApi.userCustomLoginIdentifierCreate']?.[index]?.url;
@@ -15320,11 +16162,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * Delete a user\'s custom login identifier
          * @param {string} userID ID of user
          * @param {string} customLoginIdentifierID ID of custom login identifier
-         * @param {UserCustomLoginIdentifierDeleteReq} userCustomLoginIdentifierDeleteReq
+         * @param {UserCustomLoginIdentifierDeleteReq} userCustomLoginIdentifierDeleteReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userCustomLoginIdentifierDelete(userID: string, customLoginIdentifierID: string, userCustomLoginIdentifierDeleteReq: UserCustomLoginIdentifierDeleteReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
+        async userCustomLoginIdentifierDelete(userID: string, customLoginIdentifierID: string, userCustomLoginIdentifierDeleteReq: UserCustomLoginIdentifierDeleteReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userCustomLoginIdentifierDelete(userID, customLoginIdentifierID, userCustomLoginIdentifierDeleteReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UserApi.userCustomLoginIdentifierDelete']?.[index]?.url;
@@ -15339,7 +16181,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userCustomLoginIdentifierGet(userID: string, customLoginIdentifierID: string, remoteAddress?: string, userAgent?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserCustomLoginIdentifierGetRsp>> {
+        async userCustomLoginIdentifierGet(userID: string, customLoginIdentifierID: string, remoteAddress?: string, userAgent?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserCustomLoginIdentifierGetRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userCustomLoginIdentifierGet(userID, customLoginIdentifierID, remoteAddress, userAgent, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UserApi.userCustomLoginIdentifierGet']?.[index]?.url;
@@ -15348,11 +16190,11 @@ export const UserApiFp = function(configuration?: Configuration) {
         /**
          * Deletes a user
          * @param {string} userID ID of user
-         * @param {UserDeleteReq} userDeleteReq
+         * @param {UserDeleteReq} userDeleteReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userDelete(userID: string, userDeleteReq: UserDeleteReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
+        async userDelete(userID: string, userDeleteReq: UserDeleteReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userDelete(userID, userDeleteReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UserApi.userDelete']?.[index]?.url;
@@ -15370,7 +16212,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userDeviceList(userID: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDeviceListRsp>> {
+        async userDeviceList(userID: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDeviceListRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userDeviceList(userID, remoteAddress, userAgent, sort, filter, page, pageSize, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UserApi.userDeviceList']?.[index]?.url;
@@ -15379,11 +16221,11 @@ export const UserApiFp = function(configuration?: Configuration) {
         /**
          * Add an email to an existing user
          * @param {string} userID ID of user
-         * @param {UserEmailCreateReq} userEmailCreateReq
+         * @param {UserEmailCreateReq} userEmailCreateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userEmailCreate(userID: string, userEmailCreateReq: UserEmailCreateReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserEmailCreateRsp>> {
+        async userEmailCreate(userID: string, userEmailCreateReq: UserEmailCreateReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserEmailCreateRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userEmailCreate(userID, userEmailCreateReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UserApi.userEmailCreate']?.[index]?.url;
@@ -15393,11 +16235,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * Delete a user\'s email
          * @param {string} userID ID of user
          * @param {string} emailID ID of email
-         * @param {UserEmailDeleteReq} userEmailDeleteReq
+         * @param {UserEmailDeleteReq} userEmailDeleteReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userEmailDelete(userID: string, emailID: string, userEmailDeleteReq: UserEmailDeleteReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
+        async userEmailDelete(userID: string, emailID: string, userEmailDeleteReq: UserEmailDeleteReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userEmailDelete(userID, emailID, userEmailDeleteReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UserApi.userEmailDelete']?.[index]?.url;
@@ -15412,10 +16254,22 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userEmailGet(userID: string, emailID: string, remoteAddress?: string, userAgent?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserEmailGetRsp>> {
+        async userEmailGet(userID: string, emailID: string, remoteAddress?: string, userAgent?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserEmailGetRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userEmailGet(userID, emailID, remoteAddress, userAgent, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UserApi.userEmailGet']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Checks if a confirmed user exists for provided login identifier
+         * @param {UserExistsReq} userExistsReq 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userExists(userExistsReq: UserExistsReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserExistsRsp>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userExists(userExistsReq, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UserApi.userExists']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -15426,7 +16280,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userGet(userID: string, remoteAddress?: string, userAgent?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserGetRsp>> {
+        async userGet(userID: string, remoteAddress?: string, userAgent?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserGetRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userGet(userID, remoteAddress, userAgent, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UserApi.userGet']?.[index]?.url;
@@ -15443,7 +16297,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserListRsp>> {
+        async userList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserListRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userList(remoteAddress, userAgent, sort, filter, page, pageSize, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UserApi.userList']?.[index]?.url;
@@ -15452,11 +16306,11 @@ export const UserApiFp = function(configuration?: Configuration) {
         /**
          * Add a phone number to an existing user
          * @param {string} userID ID of user
-         * @param {UserPhoneNumberCreateReq} userPhoneNumberCreateReq
+         * @param {UserPhoneNumberCreateReq} userPhoneNumberCreateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userPhoneNumberCreate(userID: string, userPhoneNumberCreateReq: UserPhoneNumberCreateReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserPhoneNumberCreateRsp>> {
+        async userPhoneNumberCreate(userID: string, userPhoneNumberCreateReq: UserPhoneNumberCreateReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserPhoneNumberCreateRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userPhoneNumberCreate(userID, userPhoneNumberCreateReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UserApi.userPhoneNumberCreate']?.[index]?.url;
@@ -15466,11 +16320,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * Delete a user\'s phone number
          * @param {string} userID ID of user
          * @param {string} phoneNumberID ID of phone number
-         * @param {UserPhoneNumberDeleteReq} userPhoneNumberDeleteReq
+         * @param {UserPhoneNumberDeleteReq} userPhoneNumberDeleteReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userPhoneNumberDelete(userID: string, phoneNumberID: string, userPhoneNumberDeleteReq: UserPhoneNumberDeleteReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
+        async userPhoneNumberDelete(userID: string, phoneNumberID: string, userPhoneNumberDeleteReq: UserPhoneNumberDeleteReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenericRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userPhoneNumberDelete(userID, phoneNumberID, userPhoneNumberDeleteReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UserApi.userPhoneNumberDelete']?.[index]?.url;
@@ -15485,7 +16339,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userPhoneNumberGet(userID: string, phoneNumberID: string, remoteAddress?: string, userAgent?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserPhoneNumberGetRsp>> {
+        async userPhoneNumberGet(userID: string, phoneNumberID: string, remoteAddress?: string, userAgent?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserPhoneNumberGetRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userPhoneNumberGet(userID, phoneNumberID, remoteAddress, userAgent, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UserApi.userPhoneNumberGet']?.[index]?.url;
@@ -15503,7 +16357,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserStatsListRsp>> {
+        async userStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserStatsListRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userStatsList(granularity, remoteAddress, userAgent, sort, filter, page, pageSize, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UserApi.userStatsList']?.[index]?.url;
@@ -15512,11 +16366,11 @@ export const UserApiFp = function(configuration?: Configuration) {
         /**
          * Updates a user
          * @param {string} userID ID of user
-         * @param {UserUpdateReq} userUpdateReq
+         * @param {UserUpdateReq} userUpdateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userUpdate(userID: string, userUpdateReq: UserUpdateReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserUpdateRsp>> {
+        async userUpdate(userID: string, userUpdateReq: UserUpdateReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserUpdateRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userUpdate(userID, userUpdateReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UserApi.userUpdate']?.[index]?.url;
@@ -15548,7 +16402,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * Creates a new user
-         * @param {UserCreateReq} userCreateReq
+         * @param {UserCreateReq} userCreateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15558,7 +16412,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         /**
          * Add a custom login identifier to an existing user
          * @param {string} userID ID of user
-         * @param {UserCustomLoginIdentifierCreateReq} userCustomLoginIdentifierCreateReq
+         * @param {UserCustomLoginIdentifierCreateReq} userCustomLoginIdentifierCreateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15569,7 +16423,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * Delete a user\'s custom login identifier
          * @param {string} userID ID of user
          * @param {string} customLoginIdentifierID ID of custom login identifier
-         * @param {UserCustomLoginIdentifierDeleteReq} userCustomLoginIdentifierDeleteReq
+         * @param {UserCustomLoginIdentifierDeleteReq} userCustomLoginIdentifierDeleteReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15591,7 +16445,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         /**
          * Deletes a user
          * @param {string} userID ID of user
-         * @param {UserDeleteReq} userDeleteReq
+         * @param {UserDeleteReq} userDeleteReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15616,7 +16470,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         /**
          * Add an email to an existing user
          * @param {string} userID ID of user
-         * @param {UserEmailCreateReq} userEmailCreateReq
+         * @param {UserEmailCreateReq} userEmailCreateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15627,7 +16481,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * Delete a user\'s email
          * @param {string} userID ID of user
          * @param {string} emailID ID of email
-         * @param {UserEmailDeleteReq} userEmailDeleteReq
+         * @param {UserEmailDeleteReq} userEmailDeleteReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15645,6 +16499,15 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          */
         userEmailGet(userID: string, emailID: string, remoteAddress?: string, userAgent?: string, options?: any): AxiosPromise<UserEmailGetRsp> {
             return localVarFp.userEmailGet(userID, emailID, remoteAddress, userAgent, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Checks if a confirmed user exists for provided login identifier
+         * @param {UserExistsReq} userExistsReq 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userExists(userExistsReq: UserExistsReq, options?: any): AxiosPromise<UserExistsRsp> {
+            return localVarFp.userExists(userExistsReq, options).then((request) => request(axios, basePath));
         },
         /**
          * Get a user by ID
@@ -15674,7 +16537,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         /**
          * Add a phone number to an existing user
          * @param {string} userID ID of user
-         * @param {UserPhoneNumberCreateReq} userPhoneNumberCreateReq
+         * @param {UserPhoneNumberCreateReq} userPhoneNumberCreateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15685,7 +16548,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * Delete a user\'s phone number
          * @param {string} userID ID of user
          * @param {string} phoneNumberID ID of phone number
-         * @param {UserPhoneNumberDeleteReq} userPhoneNumberDeleteReq
+         * @param {UserPhoneNumberDeleteReq} userPhoneNumberDeleteReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15722,7 +16585,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         /**
          * Updates a user
          * @param {string} userID ID of user
-         * @param {UserUpdateReq} userUpdateReq
+         * @param {UserUpdateReq} userUpdateReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15751,30 +16614,30 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userAuthLogList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
+    public userAuthLogList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).userAuthLogList(remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Creates a new user
-     * @param {UserCreateReq} userCreateReq
+     * @param {UserCreateReq} userCreateReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userCreate(userCreateReq: UserCreateReq, options?: RawAxiosRequestConfig) {
+    public userCreate(userCreateReq: UserCreateReq, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).userCreate(userCreateReq, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Add a custom login identifier to an existing user
      * @param {string} userID ID of user
-     * @param {UserCustomLoginIdentifierCreateReq} userCustomLoginIdentifierCreateReq
+     * @param {UserCustomLoginIdentifierCreateReq} userCustomLoginIdentifierCreateReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userCustomLoginIdentifierCreate(userID: string, userCustomLoginIdentifierCreateReq: UserCustomLoginIdentifierCreateReq, options?: RawAxiosRequestConfig) {
+    public userCustomLoginIdentifierCreate(userID: string, userCustomLoginIdentifierCreateReq: UserCustomLoginIdentifierCreateReq, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).userCustomLoginIdentifierCreate(userID, userCustomLoginIdentifierCreateReq, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -15782,12 +16645,12 @@ export class UserApi extends BaseAPI {
      * Delete a user\'s custom login identifier
      * @param {string} userID ID of user
      * @param {string} customLoginIdentifierID ID of custom login identifier
-     * @param {UserCustomLoginIdentifierDeleteReq} userCustomLoginIdentifierDeleteReq
+     * @param {UserCustomLoginIdentifierDeleteReq} userCustomLoginIdentifierDeleteReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userCustomLoginIdentifierDelete(userID: string, customLoginIdentifierID: string, userCustomLoginIdentifierDeleteReq: UserCustomLoginIdentifierDeleteReq, options?: RawAxiosRequestConfig) {
+    public userCustomLoginIdentifierDelete(userID: string, customLoginIdentifierID: string, userCustomLoginIdentifierDeleteReq: UserCustomLoginIdentifierDeleteReq, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).userCustomLoginIdentifierDelete(userID, customLoginIdentifierID, userCustomLoginIdentifierDeleteReq, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -15801,19 +16664,19 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userCustomLoginIdentifierGet(userID: string, customLoginIdentifierID: string, remoteAddress?: string, userAgent?: string, options?: RawAxiosRequestConfig) {
+    public userCustomLoginIdentifierGet(userID: string, customLoginIdentifierID: string, remoteAddress?: string, userAgent?: string, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).userCustomLoginIdentifierGet(userID, customLoginIdentifierID, remoteAddress, userAgent, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Deletes a user
      * @param {string} userID ID of user
-     * @param {UserDeleteReq} userDeleteReq
+     * @param {UserDeleteReq} userDeleteReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userDelete(userID: string, userDeleteReq: UserDeleteReq, options?: RawAxiosRequestConfig) {
+    public userDelete(userID: string, userDeleteReq: UserDeleteReq, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).userDelete(userID, userDeleteReq, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -15830,19 +16693,19 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userDeviceList(userID: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
+    public userDeviceList(userID: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).userDeviceList(userID, remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Add an email to an existing user
      * @param {string} userID ID of user
-     * @param {UserEmailCreateReq} userEmailCreateReq
+     * @param {UserEmailCreateReq} userEmailCreateReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userEmailCreate(userID: string, userEmailCreateReq: UserEmailCreateReq, options?: RawAxiosRequestConfig) {
+    public userEmailCreate(userID: string, userEmailCreateReq: UserEmailCreateReq, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).userEmailCreate(userID, userEmailCreateReq, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -15850,12 +16713,12 @@ export class UserApi extends BaseAPI {
      * Delete a user\'s email
      * @param {string} userID ID of user
      * @param {string} emailID ID of email
-     * @param {UserEmailDeleteReq} userEmailDeleteReq
+     * @param {UserEmailDeleteReq} userEmailDeleteReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userEmailDelete(userID: string, emailID: string, userEmailDeleteReq: UserEmailDeleteReq, options?: RawAxiosRequestConfig) {
+    public userEmailDelete(userID: string, emailID: string, userEmailDeleteReq: UserEmailDeleteReq, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).userEmailDelete(userID, emailID, userEmailDeleteReq, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -15869,8 +16732,19 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userEmailGet(userID: string, emailID: string, remoteAddress?: string, userAgent?: string, options?: RawAxiosRequestConfig) {
+    public userEmailGet(userID: string, emailID: string, remoteAddress?: string, userAgent?: string, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).userEmailGet(userID, emailID, remoteAddress, userAgent, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Checks if a confirmed user exists for provided login identifier
+     * @param {UserExistsReq} userExistsReq 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public userExists(userExistsReq: UserExistsReq, options?: AxiosRequestConfig) {
+        return UserApiFp(this.configuration).userExists(userExistsReq, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -15882,7 +16756,7 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userGet(userID: string, remoteAddress?: string, userAgent?: string, options?: RawAxiosRequestConfig) {
+    public userGet(userID: string, remoteAddress?: string, userAgent?: string, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).userGet(userID, remoteAddress, userAgent, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -15898,19 +16772,19 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
+    public userList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).userList(remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Add a phone number to an existing user
      * @param {string} userID ID of user
-     * @param {UserPhoneNumberCreateReq} userPhoneNumberCreateReq
+     * @param {UserPhoneNumberCreateReq} userPhoneNumberCreateReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userPhoneNumberCreate(userID: string, userPhoneNumberCreateReq: UserPhoneNumberCreateReq, options?: RawAxiosRequestConfig) {
+    public userPhoneNumberCreate(userID: string, userPhoneNumberCreateReq: UserPhoneNumberCreateReq, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).userPhoneNumberCreate(userID, userPhoneNumberCreateReq, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -15918,12 +16792,12 @@ export class UserApi extends BaseAPI {
      * Delete a user\'s phone number
      * @param {string} userID ID of user
      * @param {string} phoneNumberID ID of phone number
-     * @param {UserPhoneNumberDeleteReq} userPhoneNumberDeleteReq
+     * @param {UserPhoneNumberDeleteReq} userPhoneNumberDeleteReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userPhoneNumberDelete(userID: string, phoneNumberID: string, userPhoneNumberDeleteReq: UserPhoneNumberDeleteReq, options?: RawAxiosRequestConfig) {
+    public userPhoneNumberDelete(userID: string, phoneNumberID: string, userPhoneNumberDeleteReq: UserPhoneNumberDeleteReq, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).userPhoneNumberDelete(userID, phoneNumberID, userPhoneNumberDeleteReq, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -15937,7 +16811,7 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userPhoneNumberGet(userID: string, phoneNumberID: string, remoteAddress?: string, userAgent?: string, options?: RawAxiosRequestConfig) {
+    public userPhoneNumberGet(userID: string, phoneNumberID: string, remoteAddress?: string, userAgent?: string, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).userPhoneNumberGet(userID, phoneNumberID, remoteAddress, userAgent, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -15954,19 +16828,19 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
+    public userStatsList(granularity: string, remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).userStatsList(granularity, remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Updates a user
      * @param {string} userID ID of user
-     * @param {UserUpdateReq} userUpdateReq
+     * @param {UserUpdateReq} userUpdateReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public userUpdate(userID: string, userUpdateReq: UserUpdateReq, options?: RawAxiosRequestConfig) {
+    public userUpdate(userID: string, userUpdateReq: UserUpdateReq, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).userUpdate(userID, userUpdateReq, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -15981,11 +16855,11 @@ export const ValidationApiAxiosParamCreator = function (configuration?: Configur
     return {
         /**
          * Validates email
-         * @param {ValidateEmailReq} validateEmailReq
+         * @param {ValidateEmailReq} validateEmailReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        validateEmail: async (validateEmailReq: ValidateEmailReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        validateEmail: async (validateEmailReq: ValidateEmailReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'validateEmailReq' is not null or undefined
             assertParamExists('validateEmail', 'validateEmailReq', validateEmailReq)
             const localVarPath = `/v1/validate/email`;
@@ -16008,7 +16882,7 @@ export const ValidationApiAxiosParamCreator = function (configuration?: Configur
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -16023,11 +16897,11 @@ export const ValidationApiAxiosParamCreator = function (configuration?: Configur
         },
         /**
          * Validates phone number
-         * @param {ValidatePhoneNumberReq} validatePhoneNumberReq
+         * @param {ValidatePhoneNumberReq} validatePhoneNumberReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        validatePhoneNumber: async (validatePhoneNumberReq: ValidatePhoneNumberReq, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        validatePhoneNumber: async (validatePhoneNumberReq: ValidatePhoneNumberReq, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'validatePhoneNumberReq' is not null or undefined
             assertParamExists('validatePhoneNumber', 'validatePhoneNumberReq', validatePhoneNumberReq)
             const localVarPath = `/v1/validate/phoneNumber`;
@@ -16050,7 +16924,7 @@ export const ValidationApiAxiosParamCreator = function (configuration?: Configur
             await setApiKeyToObject(localVarHeaderParameter, "X-Corbado-ProjectID", configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -16075,11 +16949,11 @@ export const ValidationApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Validates email
-         * @param {ValidateEmailReq} validateEmailReq
+         * @param {ValidateEmailReq} validateEmailReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async validateEmail(validateEmailReq: ValidateEmailReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ValidateEmailRsp>> {
+        async validateEmail(validateEmailReq: ValidateEmailReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ValidateEmailRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.validateEmail(validateEmailReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['ValidationApi.validateEmail']?.[index]?.url;
@@ -16087,11 +16961,11 @@ export const ValidationApiFp = function(configuration?: Configuration) {
         },
         /**
          * Validates phone number
-         * @param {ValidatePhoneNumberReq} validatePhoneNumberReq
+         * @param {ValidatePhoneNumberReq} validatePhoneNumberReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async validatePhoneNumber(validatePhoneNumberReq: ValidatePhoneNumberReq, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ValidatePhoneNumberRsp>> {
+        async validatePhoneNumber(validatePhoneNumberReq: ValidatePhoneNumberReq, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ValidatePhoneNumberRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.validatePhoneNumber(validatePhoneNumberReq, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['ValidationApi.validatePhoneNumber']?.[index]?.url;
@@ -16109,7 +16983,7 @@ export const ValidationApiFactory = function (configuration?: Configuration, bas
     return {
         /**
          * Validates email
-         * @param {ValidateEmailReq} validateEmailReq
+         * @param {ValidateEmailReq} validateEmailReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -16118,7 +16992,7 @@ export const ValidationApiFactory = function (configuration?: Configuration, bas
         },
         /**
          * Validates phone number
-         * @param {ValidatePhoneNumberReq} validatePhoneNumberReq
+         * @param {ValidatePhoneNumberReq} validatePhoneNumberReq 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -16137,23 +17011,23 @@ export const ValidationApiFactory = function (configuration?: Configuration, bas
 export class ValidationApi extends BaseAPI {
     /**
      * Validates email
-     * @param {ValidateEmailReq} validateEmailReq
+     * @param {ValidateEmailReq} validateEmailReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ValidationApi
      */
-    public validateEmail(validateEmailReq: ValidateEmailReq, options?: RawAxiosRequestConfig) {
+    public validateEmail(validateEmailReq: ValidateEmailReq, options?: AxiosRequestConfig) {
         return ValidationApiFp(this.configuration).validateEmail(validateEmailReq, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Validates phone number
-     * @param {ValidatePhoneNumberReq} validatePhoneNumberReq
+     * @param {ValidatePhoneNumberReq} validatePhoneNumberReq 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ValidationApi
      */
-    public validatePhoneNumber(validatePhoneNumberReq: ValidatePhoneNumberReq, options?: RawAxiosRequestConfig) {
+    public validatePhoneNumber(validatePhoneNumberReq: ValidatePhoneNumberReq, options?: AxiosRequestConfig) {
         return ValidationApiFp(this.configuration).validatePhoneNumber(validatePhoneNumberReq, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -16177,7 +17051,7 @@ export const WebhookLogsApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        webhookLogsList: async (remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        webhookLogsList: async (remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/webhookLogs`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16226,7 +17100,7 @@ export const WebhookLogsApiAxiosParamCreator = function (configuration?: Configu
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -16257,7 +17131,7 @@ export const WebhookLogsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async webhookLogsList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebhookLogsListRsp>> {
+        async webhookLogsList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WebhookLogsListRsp>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.webhookLogsList(remoteAddress, userAgent, sort, filter, page, pageSize, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['WebhookLogsApi.webhookLogsList']?.[index]?.url;
@@ -16309,7 +17183,7 @@ export class WebhookLogsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof WebhookLogsApi
      */
-    public webhookLogsList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: RawAxiosRequestConfig) {
+    public webhookLogsList(remoteAddress?: string, userAgent?: string, sort?: string, filter?: Array<string>, page?: number, pageSize?: number, options?: AxiosRequestConfig) {
         return WebhookLogsApiFp(this.configuration).webhookLogsList(remoteAddress, userAgent, sort, filter, page, pageSize, options).then((request) => request(this.axios, this.basePath));
     }
 }
