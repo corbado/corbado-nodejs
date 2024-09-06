@@ -48,9 +48,7 @@ class Session implements SessionInterface {
     this.jwkSet = createRemoteJWKSet(new URL(jwksURI), {
       cacheMaxAge: this.cacheMaxAge,
       cooldownDuration: this.cacheMaxAge,
-      headers: {
-        'X-Corbado-ProjectID': projectID,
-      }
+      headers: { 'X-Corbado-ProjectID': projectID },
     });
   }
 
