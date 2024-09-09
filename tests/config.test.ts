@@ -17,7 +17,7 @@ describe('Configuration class', () => {
     expect(config).toBeInstanceOf(Config);
     expect(config.ProjectID).toBe(projectID);
     expect(config.APISecret).toBe(apiSecret);
-    expect(config.FrontendAPI).toBe(`https://${projectID}.frontendapi.corbado.io`);
+    expect(config.FrontendAPI).toBe(`https://${projectID}.frontendapi.cloud.corbado.io`);
     expect(config.BackendAPI).toBe(DefaultBackendAPI);
     expect(config.ShortSessionCookieName).toBe(DefaultShortSessionCookieName);
     expect(config.CacheMaxAge).toBe(DefaultCacheMaxAge);
@@ -37,7 +37,7 @@ describe('Configuration class', () => {
 
   it('should generate DefaultFrontendAPI using process.env.CORBADO_PROJECT_ID and provided project ID', () => {
     const config = new Config(projectID, apiSecret);
-    expect(config.FrontendAPI).toBe(`https://${projectID}.frontendapi.corbado.io`);
+    expect(config.FrontendAPI).toBe(`https://${projectID}.frontendapi.cloud.corbado.io`);
   });
 
   it('should throw an error when instantiated with an invalid project ID', () => {
