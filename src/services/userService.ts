@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { BaseError, httpStatusCodes } from '../errors/index.js';
 import { Assert, Helper, isErrorRsp } from '../helpers/index.js';
-import { UserCreateReq, UsersApi, User, UserStatus, GenericRsp } from '../generated_v2/api.js';
+import { UserCreateReq, UsersApi, User, UserStatus, GenericRsp } from '../generated/api.js';
 
 export interface UserInterface {
   create(req: UserCreateReq): Promise<User>;

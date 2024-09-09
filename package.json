@@ -26,8 +26,7 @@
   "main": "cjs/index.js",
   "module": "src/index.js",
   "scripts": {
-    "generate-openapi-v1": "make openapi_generate_v1",
-    "generate-openapi-v2": "make openapi_generate_v2",
+    "generate-openapi": "make openapi_generate",
     "prepublishOnly": "make build",
     "test": "make test",
     "lint": "make lint",

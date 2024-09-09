@@ -8,7 +8,7 @@ import {
   IdentifierStatus,
   IdentifiersApi,
   IdentifierList,
-} from '../generated_v2/index.js';
+} from '../generated/index.js';
 import { Assert, Helper, isErrorRsp } from '../helpers';
 import httpStatusCodes from '../errors/httpStatusCodes.js';
 import BaseError from '../errors/baseError.js';

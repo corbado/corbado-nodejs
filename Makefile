@@ -28,12 +28,8 @@ watch:
 .PHONY:start
 start: build
 
-.PHONY: openapi_generate_v1
-openapi_generate_v1:
-	npx @openapitools/openapi-generator-cli generate -i src/specs/backend_api_public.yml -g typescript-axios -o src/generated --additional-properties=supportsES6=true
-
-.PHONY: openapi_generate_v2
-openapi_generate_v2:
+.PHONY: openapi_generate
+openapi_generate:
 	npx @openapitools/openapi-generator-cli generate -i src/specs/backend_api_public_v2.yml -g typescript-axios -o src/generated_v2 --additional-properties=supportsES6=true
 
 .PHONY:clean
