@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import axios, { AxiosInstance } from 'axios';
 import Config from './config.js';
-import { Session, User } from './services/index.js';
+import { Identifier, Session, User } from './services/index.js';
 
 class SDK {
   private axiosClient: AxiosInstance;
@@ -9,6 +9,8 @@ class SDK {
   private user: User;
 
   private session: Session;
+
+  private identifier: Identifier;
 
   constructor(config: Config) {
     this.validateEnvironment();
@@ -24,6 +26,8 @@ class SDK {
     );
 
     this.user = new User(this.axiosClient);
+
+    this.identifier = new Identifier(this.axiosClient);
   }
 
   createClient(config: Config): AxiosInstance {
@@ -52,6 +56,10 @@ class SDK {
 
   users(): User {
     return this.user;
+  }
+
+  identifiers(): Identifier {
+    return this.identifier;
   }
 
   private validateEnvironment(): void {

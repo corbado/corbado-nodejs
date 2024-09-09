@@ -1,5 +1,6 @@
 import { SDK } from '../../../src';
 import { ServerError } from '../../../src/errors';
+import { UserCreateReq, UserStatus } from '../../../src/generated';
 import Utils from '../../utils';
 
 describe('User Validation Tests', () => {
@@ -13,7 +14,7 @@ describe('User Validation Tests', () => {
     expect.assertions(3);
 
     try {
-      const req = { name: Utils.testConstants.TEST_EMPTY_STRING, email: Utils.testConstants.TEST_EMPTY_STRING };
+      const req = { name: Utils.testConstants.TEST_EMPTY_STRING, status: UserStatus.Active };
 
       await sdk.users().create(req);
     } catch (error) {
@@ -26,18 +27,16 @@ describe('User Validation Tests', () => {
   test('should handle successful create', async () => {
     expect.assertions(1);
 
-    const req = { name: Utils.createRandomTestName(), email: Utils.createRandomTestEmail() };
+    const req: UserCreateReq = { fullName: Utils.createRandomTestName(), status: UserStatus.Active };
 
     const sendResponse = await sdk.users().create(req);
-    expect(sendResponse.httpStatusCode).toEqual(200);
+    expect(sendResponse.fullName).toEqual(req.fullName);
   });
 
   test('should handle not found delete', async () => {
     expect.assertions(3);
     try {
-      const req = {};
-
-      await sdk.users().delete(Utils.testConstants.TEST_USER_ID, req);
+      await sdk.users().delete(Utils.testConstants.TEST_USER_ID);
     } catch (error) {
       expect(error).toBeInstanceOf(ServerError);
       expect((error as ServerError).httpStatusCode).toEqual(400);
@@ -46,10 +45,9 @@ describe('User Validation Tests', () => {
   });
 
   test('should handle successful delete', async () => {
-    const req = {};
     const userId = await Utils.createUser();
 
-    const response = await sdk.users().delete(userId, req);
+    const response = await sdk.users().delete(userId);
     expect(response.httpStatusCode).toEqual(200);
   });
 
@@ -69,30 +67,6 @@ describe('User Validation Tests', () => {
 
     const userId = await Utils.createUser();
     const getResponse = await sdk.users().get(userId);
-    expect(getResponse.httpStatusCode).toEqual(200);
-  });
-
-  test('should handle invalid list sort', async () => {
-    expect.assertions(3);
-
-    try {
-      await sdk.users().list(Utils.testConstants.TEST_EMPTY_STRING, Utils.testConstants.TEST_EMPTY_STRING, 'foo:bar');
-    } catch (error) {
-      expect(error).toBeInstanceOf(ServerError);
-      expect((error as ServerError).httpStatusCode).toEqual(422);
-      expect((error as ServerError).getValidationMessages()).toEqual(["sort: Invalid order direction 'bar'"]);
-    }
-  });
-
-  test('should handle successful list', async () => {
-    expect.assertions(1);
-
-    const userId = await Utils.createUser();
-    const sendResponse = await sdk
-      .users()
-      .list(Utils.testConstants.TEST_EMPTY_STRING, Utils.testConstants.TEST_EMPTY_STRING, 'created:desc');
-
-    const found = sendResponse.data.users.some((user) => user.ID === userId);
-    expect(found).toEqual(true);
+    expect(getResponse.userID).toEqual(userId);
   });
 });

@@ -37,4 +37,9 @@ describe('SDK class', () => {
     const users = sdk.users();
     expect(users).toBeDefined();
   });
+
+  it('should create Identifiers object with created AxiosInstance', () => {
+    const identifiers = sdk.identifiers();
+    expect(identifiers).toBeDefined();
+  });
 });
