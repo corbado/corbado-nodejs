@@ -143,13 +143,24 @@ describe('Identifier Service Tests', () => {
   });
 
   test('should successfully delete an identifier', async () => {
+    expect.assertions(2);
+
     const identifier = await sdk.identifiers().create(TEST_USER_ID, {
       identifierType: IdentifierType.Email,
       identifierValue: Utils.createRandomTestEmail(),
       status: IdentifierStatus.Verified,
     });
 
-    const deleteResponse = await sdk.identifiers().delete(TEST_USER_ID, identifier.identifierID);
-    expect(deleteResponse.httpStatusCode).toEqual(200);
+    const identifiers = await sdk.identifiers().listByValueAndType(identifier.value, identifier.type);
+
+    expect(identifiers.identifiers.findIndex((rsp) => rsp.identifierID === identifier.identifierID)).toBeGreaterThan(
+      -1,
+    );
+
+    await sdk.identifiers().delete(TEST_USER_ID, identifier.identifierID);
+
+    const newIdentifiers = await sdk.identifiers().listByValueAndType(identifier.value, identifier.type);
+
+    expect(newIdentifiers.identifiers.findIndex((rsp) => rsp.identifierID === identifier.identifierID)).toEqual(-1);
   });
 });
