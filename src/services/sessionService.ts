@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable class-methods-use-this */
-import { JWTPayload, jwtVerify, createRemoteJWKSet } from 'jose';
-import { JWTExpired, JWTClaimValidationFailed, JWTInvalid } from 'jose/errors';
+import { JWTPayload, jwtVerify, createRemoteJWKSet, errors } from 'jose';
 import User from '../entities/user.js';
 import { Assert } from '../helpers/index.js';
 import JWTError, { JWTErrorNames } from '../errors/jwtError.js';
@@ -60,15 +59,15 @@ class Session implements SessionInterface {
 
       return new User(true, sub, name, email, phoneNumber);
     } catch (error) {
-      if (error instanceof JWTClaimValidationFailed) {
+      if (error instanceof errors.JWTClaimValidationFailed) {
         throw new JWTError(JWTErrorNames.JWTClaimValidationFailed);
       }
 
-      if (error instanceof JWTExpired) {
+      if (error instanceof errors.JWTExpired) {
         throw new JWTError(JWTErrorNames.JWTExpired);
       }
 
-      if (error instanceof JWTInvalid) {
+      if (error instanceof errors.JWTInvalid) {
         throw new JWTError(JWTErrorNames.JWTInvalid);
       }
 

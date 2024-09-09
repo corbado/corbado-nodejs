@@ -88,14 +88,10 @@ class Utils {
     return `+491509${this.generateNumber(7)}`;
   }
 
-  public static async createUser(): Promise<string> {
-    const rsp = await this.SDK().users().create({
-      name: this.createRandomTestName(),
-      email: this.createRandomTestEmail(),
-      phoneNumber: this.createRandomTestPhoneNumber(),
-    });
+  public static async createUserId(): Promise<string> {
+    const rsp = await this.SDK().users().createActiveByName(this.createRandomTestName());
 
-    return rsp.data.userID;
+    return rsp.userID;
   }
 
   public static testConstants = {

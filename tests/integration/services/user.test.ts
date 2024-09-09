@@ -45,7 +45,7 @@ describe('User Validation Tests', () => {
   });
 
   test('should handle successful delete', async () => {
-    const userId = await Utils.createUser();
+    const userId = await Utils.createUserId();
 
     const response = await sdk.users().delete(userId);
     expect(response.httpStatusCode).toEqual(200);
@@ -65,7 +65,7 @@ describe('User Validation Tests', () => {
   test('should handle successful get', async () => {
     expect.assertions(1);
 
-    const userId = await Utils.createUser();
+    const userId = await Utils.createUserId();
     const getResponse = await sdk.users().get(userId);
     expect(getResponse.userID).toEqual(userId);
   });
