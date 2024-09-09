@@ -1,43 +1,43 @@
 import { AxiosInstance } from 'axios';
 import { BaseError, httpStatusCodes } from '../errors/index.js';
 import { Assert, Helper, isErrorRsp } from '../helpers/index.js';
-import {
-  GenericRsp,
-  UserApi,
-  UserCreateReq,
-  UserCreateRsp,
-  UserDeleteReq,
-  UserGetRsp,
-  UserListRsp,
-} from '../generated/index.js';
+import { UserCreateReq, UsersApi, User, UserStatus, GenericRsp } from '../generated_v2/api.js';
 
 export interface UserInterface {
-  create(req: UserCreateReq): Promise<UserCreateRsp>;
-  delete(id: string, req: UserDeleteReq): Promise<GenericRsp>;
-  get(id: string, remoteAddr?: string, userAgent?: string): Promise<UserGetRsp>;
-  list(
-    remoteAddr?: string,
-    userAgent?: string,
-    sort?: string,
-    filter?: string[],
-    page?: number,
-    pageSize?: number,
-  ): Promise<UserListRsp>;
+  create(req: UserCreateReq): Promise<User>;
+  create(fullName: string, status: UserStatus, explicitWebauthnID: string): Promise<User>;
+  createActiveByName(fullName: string): Promise<User>;
+  delete(id: string): Promise<GenericRsp>;
+  get(id: string): Promise<User>;
 }
 
-class User implements UserInterface {
-  private client: UserApi;
+class UserService implements UserInterface {
+  private client: UsersApi;
 
   constructor(axios: AxiosInstance) {
     Assert.notNull(axios, 'User Axios instance must not be null');
-    this.client = new UserApi(undefined, '', axios);
+    this.client = new UsersApi(undefined, '', axios);
   }
 
-  async create(req: UserCreateReq): Promise<UserCreateRsp> {
-    Assert.notNull(req, 'User.create() "req" param must not be null');
+  async create(req: UserCreateReq): Promise<User>;
+  async create(fullName: string, status: UserStatus, explicitWebauthnID: string): Promise<User>;
+  async create(arg1: UserCreateReq | string, arg2?: UserStatus, arg3?: string): Promise<User> {
+    if (typeof arg1 === 'string' && arg2 && arg3) {
+      Assert.notEmptyString(arg1, 'User.create() "fullName" param must not be null');
+
+      const request: UserCreateReq = {
+        fullName: arg1,
+        status: arg2,
+        explicitWebauthnID: arg3,
+      };
+
+      return this.create(request);
+    }
+
+    Assert.notNull(arg1, 'User.create() "req" param must not be null');
 
     try {
-      const createRsp = await this.client.userCreate(req);
+      const createRsp = await this.client.userCreate(arg1 as UserCreateReq);
       const createResponse = createRsp.data;
 
       if (isErrorRsp(createResponse)) {
@@ -55,12 +55,22 @@ class User implements UserInterface {
     }
   }
 
-  async delete(id: string, req: UserDeleteReq): Promise<GenericRsp> {
+  async createActiveByName(fullName: string): Promise<User> {
+    Assert.notEmptyString(fullName, 'User.create() "fullName" param must not be null');
+
+    const request: UserCreateReq = {
+      fullName,
+      status: UserStatus.Active,
+    };
+
+    return this.create(request);
+  }
+
+  async delete(id: string): Promise<GenericRsp> {
     Assert.notEmptyString(id, 'User.delete() "id" param must not be empty');
-    Assert.notNull(req, 'User.delete() "req" param must not be null');
 
     try {
-      const deleteRsp = await this.client.userDelete(id, req);
+      const deleteRsp = await this.client.userDelete(id);
       const deleteResponse = deleteRsp.data;
 
       if (isErrorRsp(deleteResponse)) {
@@ -78,11 +88,11 @@ class User implements UserInterface {
     }
   }
 
-  async get(id: string, remoteAddr = '', userAgent = ''): Promise<UserGetRsp> {
+  async get(id: string): Promise<User> {
     Assert.notEmptyString(id, 'User.get() "id" param must not be an empty string');
 
     try {
-      const getRsp = await this.client.userGet(id, remoteAddr, userAgent);
+      const getRsp = await this.client.userGet(id);
       const getResponse = getRsp.data;
 
       if (isErrorRsp(getResponse)) {
@@ -99,26 +109,6 @@ class User implements UserInterface {
       throw Helper.convertToServerError(error, 'User.get()');
     }
   }
-
-  async list(remoteAddr = '', userAgent = '', sort = '', filter = [], page = 1, pageSize = 10): Promise<UserListRsp> {
-    try {
-      const listRsp = await this.client.userList(remoteAddr, userAgent, sort, filter, page, pageSize);
-      const listResponse = listRsp.data;
-
-      if (isErrorRsp(listResponse)) {
-        throw new BaseError(
-          'User list ErrorRsp',
-          httpStatusCodes.AUTH_RSP_ERROR.code,
-          httpStatusCodes.AUTH_RSP_ERROR.description,
-          httpStatusCodes.AUTH_RSP_ERROR.isOperational,
-        );
-      }
-
-      return listResponse;
-    } catch (error) {
-      throw Helper.convertToServerError(error, 'User.list()');
-    }
-  }
 }
 
-export default User;
+export default UserService;
