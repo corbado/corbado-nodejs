@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable class-methods-use-this */
-import { AxiosInstance } from 'axios';
 import { JWTPayload, jwtVerify, createRemoteJWKSet } from 'jose';
+import { JWTExpired, JWTClaimValidationFailed, JWTInvalid } from 'jose/errors';
 import User from '../entities/user.js';
 import { Assert } from '../helpers/index.js';
+import JWTError, { JWTErrorNames } from '../errors/jwtError.js';
 
 export interface SessionInterface {
-  validateShortSessionValue(shortSession: string): Promise<User>;
-  getCurrentUser(shortSession: string): Promise<User>;
-  getLastShortSessionValidationResult(): string;
+  getAndValidateCurrentUser(shortSession: string): Promise<User>;
 }
 
 interface MyJWTPayload extends JWTPayload {
@@ -20,8 +19,6 @@ interface MyJWTPayload extends JWTPayload {
 const MIN_SHORT_SESSION_LENGTH = 10;
 
 class Session implements SessionInterface {
-  private client: AxiosInstance;
-
   private issuer: string;
 
   private cacheMaxAge: number;
@@ -30,19 +27,11 @@ class Session implements SessionInterface {
 
   private jwkSet;
 
-  constructor(
-    client: AxiosInstance,
-    shortSessionCookieName: string,
-    issuer: string,
-    jwksURI: string,
-    cacheMaxAge: number,
-    projectID: string,
-  ) {
+  constructor(shortSessionCookieName: string, issuer: string, jwksURI: string, cacheMaxAge: number, projectID: string) {
     if (!shortSessionCookieName || !issuer || !jwksURI) {
       throw new Error('Required parameter is empty');
     }
 
-    this.client = client;
     this.issuer = issuer;
     this.cacheMaxAge = cacheMaxAge;
     this.jwkSet = createRemoteJWKSet(new URL(jwksURI), {
@@ -52,11 +41,11 @@ class Session implements SessionInterface {
     });
   }
 
-  public async validateShortSessionValue(shortSession: string): Promise<User> {
+  public async getAndValidateCurrentUser(shortSession: string): Promise<User> {
     Assert.notEmptyString(shortSession, 'shortSession not given');
 
-    if (!shortSession) {
-      return new User(false);
+    if (shortSession.length < MIN_SHORT_SESSION_LENGTH) {
+      throw new JWTError(JWTErrorNames.InvalidShortSession);
     }
 
     try {
@@ -66,39 +55,29 @@ class Session implements SessionInterface {
 
       if (payload.iss && payload.iss !== this.issuer) {
         this.setIssuerMismatchError(payload.iss);
-        return new User(false);
+        throw new JWTError(JWTErrorNames.InvalidIssuer);
       }
 
       return new User(true, sub, name, email, phoneNumber);
     } catch (error) {
-      this.setValidationError(error);
-      return new User(false);
+      if (error instanceof JWTClaimValidationFailed) {
+        throw new JWTError(JWTErrorNames.JWTClaimValidationFailed);
+      }
+
+      if (error instanceof JWTExpired) {
+        throw new JWTError(JWTErrorNames.JWTExpired);
+      }
+
+      if (error instanceof JWTInvalid) {
+        throw new JWTError(JWTErrorNames.JWTInvalid);
+      }
+
+      throw error;
     }
-  }
-
-  public getLastShortSessionValidationResult(): string {
-    return this.lastShortSessionValidationResult;
-  }
-
-  public async getCurrentUser(shortSession: string): Promise<User> {
-    if (!shortSession || shortSession.length < MIN_SHORT_SESSION_LENGTH) {
-      return new User(false);
-    }
-
-    const user = await this.validateShortSessionValue(shortSession);
-    return user ?? new User(false);
   }
 
   private setIssuerMismatchError(issuer: string): void {
     this.lastShortSessionValidationResult = `Mismatch in issuer (configured: ${this.issuer}, JWT: ${issuer})`;
-  }
-
-  private setValidationError(error: unknown): void {
-    if (error instanceof Error) {
-      this.lastShortSessionValidationResult = `JWT validation failed: ${error.message}`;
-    } else {
-      this.lastShortSessionValidationResult = `JWT validation failed: ${error}`;
-    }
   }
 }
 

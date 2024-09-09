@@ -28,6 +28,11 @@ const customErrorCodes: Record<string, HttpStatusCode> = {
   MISSING_ACTION_HEADER: { description: 'Missing action header (X-CORBADO-ACTION)', code: 1011, isOperational: false },
   INVALID_ACTION_HEADER: { description: 'Missing action header (X-CORBADO-ACTION)', code: 1012, isOperational: false },
   INVALID_URL: { description: 'Provided url is invalid', code: 1013, isOperational: false },
+  INVALID_SHORT_SESSION: { description: 'Invalid short session', code: 1014, isOperational: false },
+  CLAIM_VALIDATION_FAILED: { description: 'Claim validation failed', code: 1015, isOperational: false },
+  JWT_EXPIRED: { description: 'Token is expired', code: 1016, isOperational: false },
+  JWT_INVALID: { description: 'Token is invalid', code: 1017, isOperational: false },
+  INVALID_ISSUER: { description: 'Invalid Issuer: Issuer does not match', code: 1018, isOperational: false },
 };
 
 const httpStatusCodes = { ...standardStatusCodes, ...customErrorCodes };
