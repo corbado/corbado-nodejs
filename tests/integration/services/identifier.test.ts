@@ -95,6 +95,14 @@ describe('Identifier Service Tests', () => {
     expect(ret.identifiers[0].value).toEqual(TEST_USER_EMAIL);
   });
 
+  test('should list identifiers by value and type with paging', async () => {
+    const ret = await sdk
+      .identifiers()
+      .listByValueAndTypeWithPaging(TEST_USER_EMAIL, IdentifierType.Email, undefined, 1, 10);
+    expect(ret.identifiers.length).toBeGreaterThan(0);
+    expect(ret.identifiers[0].value).toEqual(TEST_USER_EMAIL);
+  });
+
   test('should list identifiers with paging', async () => {
     const ret = await sdk.identifiers().listAllWithPaging(1, 10);
     expect(ret.identifiers).toBeDefined();
@@ -133,7 +141,7 @@ describe('Identifier Service Tests', () => {
   });
 
   test('should list all emails by userId', async () => {
-    const testSize = 7;
+    const testSize = 11;
 
     // Create multiple email identifiers for the same user
     const promises: Promise<IdentifierRsp>[] = [];
