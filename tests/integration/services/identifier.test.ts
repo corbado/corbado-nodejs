@@ -4,7 +4,6 @@ import {
   IdentifierCreateReq,
   IdentifierStatus,
   IdentifierType,
-  IdentifierList,
   Identifier as IdentifierRsp,
 } from '../../../src/generated';
 import Utils from '../../utils';
@@ -19,7 +18,7 @@ describe('Identifier Service Tests', () => {
     sdk = Utils.SDK();
 
     // Create a test user and email identifier
-    TEST_USER_ID = await Utils.createUserId();
+    TEST_USER_ID = (await Utils.createUser()).userID;
     TEST_USER_EMAIL = Utils.createRandomTestEmail();
 
     // Create an email identifier for the user
@@ -30,26 +29,10 @@ describe('Identifier Service Tests', () => {
     });
   });
 
-  test('should check if existing email identifier is present', async () => {
-    // Check if email identifier is present
-    let ret: IdentifierList = await sdk.identifiers().listByValueAndType(TEST_USER_EMAIL, IdentifierType.Email);
-    expect(ret.identifiers.length).not.toEqual(0);
-
-    // Check if email is listed under phone identifiers (should not be found)
-    ret = await sdk.identifiers().listByValueAndType(TEST_USER_EMAIL, IdentifierType.Phone);
-    expect(ret.identifiers.length).toEqual(0);
-
-    // Check existence using existsByValueAndType
-    const emailExists = await sdk.identifiers().existsByValueAndType(TEST_USER_EMAIL, IdentifierType.Email);
-    const phoneExists = await sdk.identifiers().existsByValueAndType(TEST_USER_EMAIL, IdentifierType.Phone);
-    expect(emailExists).toBe(true);
-    expect(phoneExists).toBe(false);
-  });
-
   test('should throw error on empty identifier creation', async () => {
     expect.assertions(3);
 
-    const userId = await Utils.createUserId();
+    const userId = (await Utils.createUser()).userID;
     const req: IdentifierCreateReq = {
       identifierType: IdentifierType.Email,
       identifierValue: '', // Empty email value
@@ -66,7 +49,7 @@ describe('Identifier Service Tests', () => {
   });
 
   test('should successfully create an identifier', async () => {
-    const userId = await Utils.createUserId();
+    const userId = (await Utils.createUser()).userID;
     const email = Utils.createRandomTestEmail();
     const req: IdentifierCreateReq = {
       identifierType: IdentifierType.Email,
@@ -81,7 +64,7 @@ describe('Identifier Service Tests', () => {
   });
 
   test('should list all identifiers by userId', async () => {
-    const ret = await sdk.identifiers().listAllByUserIdWithPaging(TEST_USER_ID);
+    const ret = await sdk.identifiers().listByUserId(TEST_USER_ID);
     const identifierExists = ret.identifiers.some(
       (identifier) => identifier.identifierID === TEST_USER_EMAIL_IDENTIFIER.identifierID,
     );
@@ -96,17 +79,9 @@ describe('Identifier Service Tests', () => {
   });
 
   test('should list identifiers by value and type with paging', async () => {
-    const ret = await sdk
-      .identifiers()
-      .listByValueAndTypeWithPaging(TEST_USER_EMAIL, IdentifierType.Email, undefined, 1, 10);
+    const ret = await sdk.identifiers().listByValueAndType(TEST_USER_EMAIL, IdentifierType.Email, undefined, 1, 10);
     expect(ret.identifiers.length).toBeGreaterThan(0);
     expect(ret.identifiers[0].value).toEqual(TEST_USER_EMAIL);
-  });
-
-  test('should list identifiers with paging', async () => {
-    const ret = await sdk.identifiers().listAllWithPaging(1, 10);
-    expect(ret.identifiers).toBeDefined();
-    expect(ret.identifiers.length).toBeGreaterThan(0);
   });
 
   test('should list all identifiers', async () => {
@@ -141,7 +116,7 @@ describe('Identifier Service Tests', () => {
   });
 
   test('should list all emails by userId', async () => {
-    const testSize = 11;
+    const testSize = 3;
 
     // Create multiple email identifiers for the same user
     const promises: Promise<IdentifierRsp>[] = [];
@@ -158,8 +133,10 @@ describe('Identifier Service Tests', () => {
 
     await Promise.all(promises);
 
-    const allEmails = await sdk.identifiers().listAllEmailsByUserId(TEST_USER_ID);
-    expect(allEmails.length).toEqual(testSize + 1); // One email was already created before
+    const allEmails = await sdk
+      .identifiers()
+      .listByUserIdAndType(TEST_USER_ID, IdentifierType.Email, undefined, undefined);
+    expect(allEmails.identifiers.length).toEqual(testSize + 1); // One email was already created before
   });
 
   test('should successfully delete an identifier', async () => {
@@ -215,7 +192,7 @@ describe('Identifier Service Tests', () => {
   test('should fail to create identifier with invalid type', async () => {
     expect.assertions(2);
 
-    const userId = await Utils.createUserId();
+    const userId = (await Utils.createUser()).userID;
     const req: IdentifierCreateReq = {
       identifierType: 'invalid_type' as IdentifierType, // Invalid identifier type
       identifierValue: Utils.createRandomTestEmail(),

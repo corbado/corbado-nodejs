@@ -5,7 +5,6 @@ import { UserCreateReq, UsersApi, User, UserStatus, GenericRsp } from '../genera
 
 export interface UserInterface {
   create(req: UserCreateReq): Promise<User>;
-  create(fullName: string, status: UserStatus, explicitWebauthnID: string): Promise<User>;
   createActiveByName(fullName: string): Promise<User>;
   delete(id: string): Promise<GenericRsp>;
   get(id: string): Promise<User>;
@@ -19,23 +18,8 @@ class UserService implements UserInterface {
     this.client = new UsersApi(undefined, '', axios);
   }
 
-  async create(req: UserCreateReq): Promise<User>;
-  async create(fullName: string, status: UserStatus, explicitWebauthnID: string): Promise<User>;
-  async create(arg1: UserCreateReq | string, arg2?: UserStatus, arg3?: string): Promise<User> {
-    if (typeof arg1 === 'string' && arg2 && arg3) {
-      Assert.notEmptyString(arg1, 'User.create() "fullName" param must not be null');
-
-      const request: UserCreateReq = {
-        fullName: arg1,
-        status: arg2,
-        explicitWebauthnID: arg3,
-      };
-
-      return this.create(request);
-    }
-
+  async create(req: UserCreateReq): Promise<User> {
     try {
-      const req = arg1 as UserCreateReq;
       Assert.notNull(req, 'User.create() "req" param must not be null');
       Assert.notEmptyString(req.fullName ? req.fullName : '', 'User.create() "fullName" param must not be empty');
       Assert.notNull(req.status, 'User.create() "status" param must not be null');

@@ -32,16 +32,6 @@ describe('User Validation Tests', () => {
     expect(sendResponse.fullName).toEqual(req.fullName);
   });
 
-  test('should handle successful create using fullName and userStatus', async () => {
-    expect.assertions(2);
-
-    const fullName = Utils.createRandomTestName();
-    const sendResponse = await sdk.users().create(fullName, UserStatus.Active, Utils.generateString(10));
-
-    expect(sendResponse.fullName).toEqual(fullName);
-    expect(sendResponse.status).toEqual(UserStatus.Active);
-  });
-
   test('should handle not found delete', async () => {
     expect.assertions(3);
     try {
@@ -56,7 +46,7 @@ describe('User Validation Tests', () => {
   test('should handle successful delete', async () => {
     expect.assertions(2);
 
-    const userId = await Utils.createUserId();
+    const userId = (await Utils.createUser()).userID;
 
     await sdk.users().delete(userId);
 
@@ -82,7 +72,7 @@ describe('User Validation Tests', () => {
   test('should handle successful get', async () => {
     expect.assertions(1);
 
-    const userId = await Utils.createUserId();
+    const userId = (await Utils.createUser()).userID;
     const getResponse = await sdk.users().get(userId);
     expect(getResponse.userID).toEqual(userId);
   });
