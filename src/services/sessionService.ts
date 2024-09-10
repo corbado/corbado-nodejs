@@ -23,8 +23,6 @@ class Session implements SessionInterface {
 
   private cacheMaxAge: number;
 
-  private lastShortSessionValidationResult: string = '';
-
   private jwkSet;
 
   constructor(shortSessionCookieName: string, issuer: string, jwksURI: string, cacheMaxAge: number, projectID: string) {
@@ -54,7 +52,6 @@ class Session implements SessionInterface {
       const { userID, fullName, status, explicitWebauthnID } = payload as MyJWTPayload;
 
       if (payload.iss && payload.iss !== this.issuer) {
-        this.setIssuerMismatchError(payload.iss);
         throw new JWTError(JWTErrorNames.InvalidIssuer);
       }
 
@@ -74,10 +71,6 @@ class Session implements SessionInterface {
 
       throw error;
     }
-  }
-
-  private setIssuerMismatchError(issuer: string): void {
-    this.lastShortSessionValidationResult = `Mismatch in issuer (configured: ${this.issuer}, JWT: ${issuer})`;
   }
 }
 
