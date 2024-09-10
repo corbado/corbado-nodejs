@@ -1,18 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable class-methods-use-this */
 import { JWTPayload, jwtVerify, createRemoteJWKSet, errors } from 'jose';
-import User from '../entities/user.js';
 import { Assert } from '../helpers/index.js';
 import JWTError, { JWTErrorNames } from '../errors/jwtError.js';
+import { User, UserStatus } from '../generated/api.js';
 
 export interface SessionInterface {
   getAndValidateCurrentUser(shortSession: string): Promise<User>;
 }
 
 interface MyJWTPayload extends JWTPayload {
-  name?: string;
-  email?: string;
-  phoneNumber?: string;
+  userID: string;
+  fullName?: string;
+  status: UserStatus;
+  explicitWebauthnID?: string;
 }
 
 const MIN_SHORT_SESSION_LENGTH = 10;
@@ -50,14 +51,14 @@ class Session implements SessionInterface {
     try {
       const { payload } = await jwtVerify(shortSession, this.jwkSet, { issuer: this.issuer });
 
-      const { sub, name, email, phoneNumber } = payload as MyJWTPayload;
+      const { userID, fullName, status, explicitWebauthnID } = payload as MyJWTPayload;
 
       if (payload.iss && payload.iss !== this.issuer) {
         this.setIssuerMismatchError(payload.iss);
         throw new JWTError(JWTErrorNames.InvalidIssuer);
       }
 
-      return new User(true, sub, name, email, phoneNumber);
+      return { userID, fullName, status, explicitWebauthnID };
     } catch (error) {
       if (error instanceof errors.JWTClaimValidationFailed) {
         throw new JWTError(JWTErrorNames.JWTClaimValidationFailed);

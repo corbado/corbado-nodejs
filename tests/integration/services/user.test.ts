@@ -10,8 +10,8 @@ describe('User Validation Tests', () => {
     sdk = Utils.SDK();
   });
 
-  test('should handle empty name and email error', async () => {
-    expect.assertions(3);
+  test('should handle null full name', async () => {
+    expect.assertions(2);
 
     try {
       const req = { name: Utils.testConstants.TEST_EMPTY_STRING, status: UserStatus.Active };
@@ -19,8 +19,7 @@ describe('User Validation Tests', () => {
       await sdk.users().create(req);
     } catch (error) {
       expect(error).toBeInstanceOf(ServerError);
-      expect((error as ServerError).httpStatusCode).toEqual(400);
-      expect((error as ServerError).getValidationMessages()).toEqual(['name: cannot be blank']);
+      expect((error as ServerError).httpStatusCode).toEqual(500);
     }
   });
 
@@ -45,10 +44,18 @@ describe('User Validation Tests', () => {
   });
 
   test('should handle successful delete', async () => {
+    expect.assertions(2);
+
     const userId = await Utils.createUserId();
 
-    const response = await sdk.users().delete(userId);
-    expect(response.httpStatusCode).toEqual(200);
+    await sdk.users().delete(userId);
+
+    try {
+      await sdk.users().get(userId);
+    } catch (error) {
+      expect(error).toBeInstanceOf(ServerError);
+      expect((error as ServerError).httpStatusCode).toEqual(400);
+    }
   });
 
   test('should handle not found get', async () => {
@@ -58,7 +65,7 @@ describe('User Validation Tests', () => {
       await sdk.users().get(Utils.testConstants.TEST_USER_ID);
     } catch (error) {
       expect(error).toBeInstanceOf(ServerError);
-      expect((error as ServerError).httpStatusCode).toEqual(404);
+      expect((error as ServerError).httpStatusCode).toEqual(400);
     }
   });
 

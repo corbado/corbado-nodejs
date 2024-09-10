@@ -34,10 +34,13 @@ class UserService implements UserInterface {
       return this.create(request);
     }
 
-    Assert.notNull(arg1, 'User.create() "req" param must not be null');
-
     try {
-      const createRsp = await this.client.userCreate(arg1 as UserCreateReq);
+      const req = arg1 as UserCreateReq;
+      Assert.notNull(req, 'User.create() "req" param must not be null');
+      Assert.notEmptyString(req.fullName ? req.fullName : '', 'User.create() "fullName" param must not be empty');
+      Assert.notNull(req.status, 'User.create() "status" param must not be null');
+
+      const createRsp = await this.client.userCreate(req);
       const createResponse = createRsp.data;
 
       if (isErrorRsp(createResponse)) {

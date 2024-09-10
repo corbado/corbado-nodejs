@@ -2,11 +2,11 @@ import BaseError from './baseError';
 import httpStatusCodes from './httpStatusCodes';
 
 export enum JWTErrorNames {
-  JWTClaimValidationFailed = 'JWTClaimValidationFailed',
-  InvalidIssuer = 'InvalidIssuer',
-  InvalidShortSession = 'InvalidShortSession',
-  JWTExpired = 'JWTExpired',
-  JWTInvalid = 'JWTInvalid',
+  JWTClaimValidationFailed = 'CLAIM_VALIDATION_FAILED',
+  InvalidIssuer = 'INVALID_ISSUER',
+  InvalidShortSession = 'INVALID_SHORT_SESSION',
+  JWTExpired = 'JWT_EXPIRED',
+  JWTInvalid = 'JWT_INVALID',
 }
 
 class JWTError extends BaseError {

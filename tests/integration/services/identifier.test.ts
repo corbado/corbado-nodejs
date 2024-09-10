@@ -89,6 +89,18 @@ describe('Identifier Service Tests', () => {
     expect(ret.identifiers.length).toEqual(1); // Only email identifier created so far
   });
 
+  test('should list identifiers by value and type', async () => {
+    const ret = await sdk.identifiers().listByValueAndType(TEST_USER_EMAIL, IdentifierType.Email);
+    expect(ret.identifiers.length).toBeGreaterThan(0);
+    expect(ret.identifiers[0].value).toEqual(TEST_USER_EMAIL);
+  });
+
+  test('should list identifiers with paging', async () => {
+    const ret = await sdk.identifiers().listAllWithPaging(1, 10);
+    expect(ret.identifiers).toBeDefined();
+    expect(ret.identifiers.length).toBeGreaterThan(0);
+  });
+
   test('should list all identifiers', async () => {
     const ret = await sdk.identifiers().list(undefined, undefined, 1, 100);
     expect(ret).not.toBeNull();
@@ -162,5 +174,63 @@ describe('Identifier Service Tests', () => {
     const newIdentifiers = await sdk.identifiers().listByValueAndType(identifier.value, identifier.type);
 
     expect(newIdentifiers.identifiers.findIndex((rsp) => rsp.identifierID === identifier.identifierID)).toEqual(-1);
+  });
+
+  test('should handle multiple identifier deletions gracefully', async () => {
+    expect.assertions(3);
+    const identifiersCreatePromises: Promise<IdentifierRsp>[] = [];
+
+    [...Array(3).keys()].forEach(() => {
+      const identifier = sdk.identifiers().create(TEST_USER_ID, {
+        identifierType: IdentifierType.Email,
+        identifierValue: Utils.createRandomTestEmail(),
+        status: IdentifierStatus.Verified,
+      });
+      identifiersCreatePromises.push(identifier);
+    });
+
+    const identifiersToDelete = await Promise.all(identifiersCreatePromises);
+
+    const identifiersDeletePromises = identifiersToDelete.map((identifier) =>
+      sdk
+        .identifiers()
+        .delete(TEST_USER_ID, identifier.identifierID)
+        .then(() => sdk.identifiers().listByValueAndType(identifier.value, identifier.type))
+        .then((ret) =>
+          expect(ret.identifiers.findIndex((rsp) => rsp.identifierID === identifier.identifierID)).toEqual(-1),
+        ),
+    );
+
+    await Promise.all(identifiersDeletePromises);
+  });
+
+  test('should fail to create identifier with invalid type', async () => {
+    expect.assertions(2);
+
+    const userId = await Utils.createUserId();
+    const req: IdentifierCreateReq = {
+      identifierType: 'invalid_type' as IdentifierType, // Invalid identifier type
+      identifierValue: Utils.createRandomTestEmail(),
+      status: IdentifierStatus.Primary,
+    };
+
+    try {
+      await sdk.identifiers().create(userId, req);
+    } catch (error) {
+      expect(error).toBeInstanceOf(ServerError);
+      expect((error as ServerError).httpStatusCode).toEqual(400);
+    }
+  });
+
+  test('should fail to update non-existent identifier', async () => {
+    expect.assertions(2);
+
+    const nonExistentId = 'non-existent-id';
+    try {
+      await sdk.identifiers().updateStatus(TEST_USER_ID, nonExistentId, IdentifierStatus.Primary);
+    } catch (error) {
+      expect(error).toBeInstanceOf(ServerError);
+      expect((error as ServerError).httpStatusCode).toEqual(400);
+    }
   });
 });
