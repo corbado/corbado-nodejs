@@ -16,7 +16,7 @@ import BaseError from '../errors/baseError.js';
 export interface IdentifierInterface {
   create(userId: string, req: IdentifierCreateReq): Promise<IdentifierRsp>;
   delete(userId: string, identifierId: string): Promise<GenericRsp>;
-  list(sort?: string, filter?: string[], page?: number, pageSize?: number): Promise<IdentifierList>;
+  list(filter?: string[], sort?: string, page?: number, pageSize?: number): Promise<IdentifierList>;
   listByValueAndType(
     value: string,
     type: IdentifierType,
@@ -96,7 +96,7 @@ class Identifier implements IdentifierInterface {
     }
   }
 
-  async list(sort = '', filter?: string[], page = 1, pageSize = 10): Promise<IdentifierList> {
+  async list(filter?: string[], sort = '', page = 1, pageSize = 10): Promise<IdentifierList> {
     try {
       const listRsp = await this.client.identifierList(sort, filter, page, pageSize);
       const listResponse = listRsp.data;
@@ -123,7 +123,7 @@ class Identifier implements IdentifierInterface {
     page?: number,
     pageSize?: number,
   ): Promise<IdentifierList> {
-    return this.list(sort, [`identifierValue:eq:${value}`, `identifierType:eq:${type}`], page, pageSize);
+    return this.list([`identifierValue:eq:${value}`, `identifierType:eq:${type}`], sort, page, pageSize);
   }
 
   async listByUserId(userId: string, sort?: string, page?: number, pageSize?: number): Promise<IdentifierList> {
@@ -134,7 +134,7 @@ class Identifier implements IdentifierInterface {
       id = userId.substring(USER_ID_PREFIX.length);
     }
 
-    return this.list(sort, [`userID:eq:${id}`], page, pageSize);
+    return this.list([`userID:eq:${id}`], sort, page, pageSize);
   }
 
   listByUserIdAndType(
@@ -151,7 +151,7 @@ class Identifier implements IdentifierInterface {
       id = userId.substring(USER_ID_PREFIX.length);
     }
 
-    return this.list(sort, [`userID:eq:${id}`, `identifierType:eq:${type}`], page, pageSize);
+    return this.list([`userID:eq:${id}`, `identifierType:eq:${type}`], sort, page, pageSize);
   }
 
   async updateIdentifier(
