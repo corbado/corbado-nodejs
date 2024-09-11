@@ -17,9 +17,21 @@ export interface IdentifierInterface {
   create(userId: string, req: IdentifierCreateReq): Promise<IdentifierRsp>;
   delete(userId: string, identifierId: string): Promise<GenericRsp>;
   list(sort?: string, filter?: string[], page?: number, pageSize?: number): Promise<IdentifierList>;
-  listByValueAndType(value: string, type: IdentifierType): Promise<IdentifierList>;
-  listByUserId(userId: string, page?: number, pageSize?: number): Promise<IdentifierList>;
-  listByUserIdAndType(userId: string, type: IdentifierType, page?: number, pageSize?: number): Promise<IdentifierList>;
+  listByValueAndType(
+    value: string,
+    type: IdentifierType,
+    sort?: string,
+    page?: number,
+    pageSize?: number,
+  ): Promise<IdentifierList>;
+  listByUserId(userId: string, sort?: string, page?: number, pageSize?: number): Promise<IdentifierList>;
+  listByUserIdAndType(
+    userId: string,
+    type: IdentifierType,
+    sort?: string,
+    page?: number,
+    pageSize?: number,
+  ): Promise<IdentifierList>;
   updateIdentifier(
     userId: string,
     identifierId: string,
@@ -114,7 +126,7 @@ class Identifier implements IdentifierInterface {
     return this.list(sort, [`identifierValue:eq:${value}`, `identifierType:eq:${type}`], page, pageSize);
   }
 
-  async listByUserId(userId: string, page?: number, pageSize?: number): Promise<IdentifierList> {
+  async listByUserId(userId: string, sort?: string, page?: number, pageSize?: number): Promise<IdentifierList> {
     let id = userId;
 
     // filter queries are using userID without prefix
@@ -122,10 +134,16 @@ class Identifier implements IdentifierInterface {
       id = userId.substring(USER_ID_PREFIX.length);
     }
 
-    return this.list(undefined, [`userID:eq:${id}`], page, pageSize);
+    return this.list(sort, [`userID:eq:${id}`], page, pageSize);
   }
 
-  listByUserIdAndType(userId: string, type: IdentifierType, page?: number, pageSize?: number): Promise<IdentifierList> {
+  listByUserIdAndType(
+    userId: string,
+    type: IdentifierType,
+    sort?: string,
+    page?: number,
+    pageSize?: number,
+  ): Promise<IdentifierList> {
     let id = userId;
 
     // filter queries are using userID without prefix
@@ -133,7 +151,7 @@ class Identifier implements IdentifierInterface {
       id = userId.substring(USER_ID_PREFIX.length);
     }
 
-    return this.list(undefined, [`userID:eq:${id}`, `identifierType:eq:${type}`], page, pageSize);
+    return this.list(sort, [`userID:eq:${id}`, `identifierType:eq:${type}`], page, pageSize);
   }
 
   async updateIdentifier(
