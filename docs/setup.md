@@ -31,7 +31,6 @@ The SDK includes several important dependencies:
 
 - `express`: A robust web application framework for Node.js.
 - `jose`: Provides a comprehensive collection of JWT, JWS, and JWE tools.
-- `jwks-rsa`: Assists in retrieving RSA signing keys from JWKS endpoints.
 - `typescript`: Enhances JavaScript with types for better code quality and developer experience.
   Refer to the package.json file for a detailed list of dependencies and their specific versions.
 
