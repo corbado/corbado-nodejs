@@ -2,6 +2,7 @@ import AxiosMockAdapter from 'axios-mock-adapter';
 import axios, { AxiosInstance } from 'axios';
 import { SDK, Config } from '../src';
 import { BaseError, httpStatusCodes } from '../src/errors';
+import { User } from '../src/generated';
 
 class Utils {
   public static SDK(): SDK {
@@ -88,14 +89,10 @@ class Utils {
     return `+491509${this.generateNumber(7)}`;
   }
 
-  public static async createUser(): Promise<string> {
-    const rsp = await this.SDK().users().create({
-      name: this.createRandomTestName(),
-      email: this.createRandomTestEmail(),
-      phoneNumber: this.createRandomTestPhoneNumber(),
-    });
+  public static async createUser(): Promise<User> {
+    const rsp = await this.SDK().users().createActiveByName(this.createRandomTestName());
 
-    return rsp.data.userID;
+    return rsp;
   }
 
   public static testConstants = {

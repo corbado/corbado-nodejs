@@ -1,38 +1,23 @@
 /* eslint-disable class-methods-use-this */
-import axios, {AxiosInstance} from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import Config from './config.js';
-import {AuthToken, EmailLink, EmailOTP, Session, SmsOTP, User, Validation} from './services/index.js';
+import { Identifier, Session, User } from './services/index.js';
 
 class SDK {
   private axiosClient: AxiosInstance;
 
-  private authToken: AuthToken;
-
-  private emailLink: EmailLink;
-
-  private emailOTP: EmailOTP;
+  private user: User;
 
   private session: Session;
 
-  private smsOTP: SmsOTP;
-
-  private user: User;
-
-  private validation: Validation;
+  private identifier: Identifier;
 
   constructor(config: Config) {
     this.validateEnvironment();
 
     this.axiosClient = this.createClient(config);
 
-    this.authToken = new AuthToken(this.axiosClient);
-
-    this.emailLink = new EmailLink(this.axiosClient);
-
-    this.emailOTP = new EmailOTP(this.axiosClient);
-
     this.session = new Session(
-      this.axiosClient,
       config.ShortSessionCookieName,
       config.FrontendAPIWithCName,
       `${config.FrontendAPI}/.well-known/jwks`,
@@ -40,11 +25,9 @@ class SDK {
       config.ProjectID,
     );
 
-    this.smsOTP = new SmsOTP(this.axiosClient);
-
     this.user = new User(this.axiosClient);
 
-    this.validation = new Validation(this.axiosClient);
+    this.identifier = new Identifier(this.axiosClient);
   }
 
   createClient(config: Config): AxiosInstance {
@@ -67,32 +50,16 @@ class SDK {
     return instance;
   }
 
-  authTokens(): AuthToken {
-    return this.authToken;
-  }
-
-  emailLinks(): EmailLink {
-    return this.emailLink;
-  }
-
-  emailOtps(): EmailOTP {
-    return this.emailOTP;
-  }
-
   sessions(): Session {
     return this.session;
-  }
-
-  smsOtps(): SmsOTP {
-    return this.smsOTP;
   }
 
   users(): User {
     return this.user;
   }
 
-  validations(): Validation {
-    return this.validation;
+  identifiers(): Identifier {
+    return this.identifier;
   }
 
   private validateEnvironment(): void {

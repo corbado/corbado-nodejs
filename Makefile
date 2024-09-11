@@ -30,15 +30,7 @@ start: build
 
 .PHONY: openapi_generate
 openapi_generate:
-	@echo "Generating OpenAPI TypeScript Axios code..."
-	@mkdir -p $(GEN_DIR) $(TARGET_DIR)
-	@curl -s -o $(GEN_DIR)/backend_api_public.yml $(OPENAPI_SPEC_URL)
-	@docker pull openapitools/openapi-generator-cli
-	@docker run -v $(GEN_DIR):/local openapitools/openapi-generator-cli generate -g typescript-axios -i /local/backend_api_public.yml -o /local --additional-properties=invokerPackage=Corbado\\Generated
-	@cp -r $(GEN_DIR)/* $(TARGET_DIR)
-	@rm -rf $(GEN_DIR)
-	@echo "OpenAPI TypeScript Axios code generation done!"
-
+	npx @openapitools/openapi-generator-cli generate -i src/specs/backend_api_public_v2.yml -g typescript-axios -o src/generated_v2 --additional-properties=supportsES6=true
 
 .PHONY:clean
 clean:

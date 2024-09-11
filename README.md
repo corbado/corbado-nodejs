@@ -65,18 +65,14 @@ A list of examples can be found in the integration tests [here](tests/integratio
 
 The Corbado Node.js SDK provides the following services:
 
-- `authTokens` for managing authentication tokens needed for own session management ([examples](tests/integration/services/authToken.test.ts))
-- `emailMagicLinks` for managing email magic links ([examples](tests/integration/services/emailLink.test.ts))
-- `emailOTPs` for managing email OTPs ([examples](tests/integration/services/emailOtp.test.ts))
-- `sessions` for managing sessions
-- `smsOTPs` for managing SMS OTPs ([examples](tests/integration/services/smsOtp.test.ts))
+- `sessions` for managing sessions ([examples](tests/unit/session.test.ts))
+- `identifiers` for managing identifiers ([examples](tests/integration/services/identifiers.test.ts))
 - `users` for managing users ([examples](tests/integration/services/user.test.ts))
-- `validations` for validating email addresses and phone numbers ([examples](tests/integration/services/validation.test.ts))
 
 To use a specific service, such as `sessions`, invoke it as shown below:
 
 ```JavaScript
-corbado.sessions().getCurrentUser(req);
+corbado.sessions().getAndValidateCurrentUser(req);
 ```
 
 ## :books: Advanced
