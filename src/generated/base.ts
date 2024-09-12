@@ -13,10 +13,10 @@
  */
 
 
-import type { Configuration } from './configuration';
+import type { Configuration } from './configuration.js';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import type { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
+import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 
 export const BASE_PATH = "https://backendapi.corbado.io/v2".replace(/\/+$/, "");
