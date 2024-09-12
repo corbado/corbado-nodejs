@@ -9,7 +9,7 @@ import {
   IdentifiersApi,
   IdentifierList,
 } from '../generated/index.js';
-import { Assert, Helper, isErrorRsp } from '../helpers';
+import { Assert, Helper, isErrorRsp } from '../helpers/index.js';
 import httpStatusCodes from '../errors/httpStatusCodes.js';
 import BaseError from '../errors/baseError.js';
 
