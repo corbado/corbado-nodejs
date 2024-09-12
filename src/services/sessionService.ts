@@ -12,7 +12,6 @@ interface MyJWTPayload extends JWTPayload {
   name: string;
   iss: string;
   sub: string;
-  email: string;
 }
 
 const MIN_SHORT_SESSION_LENGTH = 10;
