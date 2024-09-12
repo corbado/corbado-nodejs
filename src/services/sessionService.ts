@@ -3,17 +3,15 @@
 import { JWTPayload, jwtVerify, createRemoteJWKSet, errors } from 'jose';
 import { Assert } from '../helpers/index.js';
 import ValidationError, { ValidationErrorNames } from '../errors/validationError.js';
-import { User, UserStatus } from '../generated/api.js';
 
 export interface SessionInterface {
-  getAndValidateCurrentUser(shortSession: string): Promise<User>;
+  validateToken(shortSession: string): Promise<{ userId: string; fullName: string }>;
 }
 
 interface MyJWTPayload extends JWTPayload {
-  userID: string;
-  fullName?: string;
-  status: UserStatus;
-  explicitWebauthnID?: string;
+  name: string;
+  iss: string;
+  sub: string;
 }
 
 const MIN_SHORT_SESSION_LENGTH = 10;
@@ -39,7 +37,12 @@ class Session implements SessionInterface {
     });
   }
 
-  public async getAndValidateCurrentUser(shortSession: string): Promise<User> {
+  /**
+   * Validate the short session token and return the user ID and full name
+   * @param {any} shortSession:string
+   * @returns {any} { userId: string; fullName: string }
+   */
+  public async validateToken(shortSession: string): Promise<{ userId: string; fullName: string }> {
     Assert.notEmptyString(shortSession, 'shortSession not given');
 
     if (shortSession.length < MIN_SHORT_SESSION_LENGTH) {
@@ -49,13 +52,13 @@ class Session implements SessionInterface {
     try {
       const { payload } = await jwtVerify(shortSession, this.jwkSet, { issuer: this.issuer });
 
-      const { userID, fullName, status, explicitWebauthnID } = payload as MyJWTPayload;
+      const { iss, name, sub } = payload as MyJWTPayload;
 
-      if (!payload.iss || payload.iss !== this.issuer) {
+      if (!iss || iss !== this.issuer) {
         throw new ValidationError(ValidationErrorNames.InvalidIssuer);
       }
 
-      return { userID, fullName, status, explicitWebauthnID };
+      return { userId: sub, fullName: name };
     } catch (error) {
       if (error instanceof errors.JWTClaimValidationFailed) {
         throw new ValidationError(ValidationErrorNames.JWTClaimValidationFailed);
