@@ -1,7 +1,6 @@
 import { createRemoteJWKSet, jwtVerify, errors } from 'jose';
 import { Session } from '../../src/services';
 import ValidationError, { ValidationErrorNames } from '../../src/errors/validationError';
-import { UserStatus } from '../../src/generated';
 import { httpStatusCodes } from '../../src/errors';
 
 // Mock jose functions
@@ -20,7 +19,6 @@ jest.mock('jose', () => {
 describe('Session Service Unit Tests', () => {
   const TEST_USER_ID = '12345';
   const TEST_FULL_NAME = 'Test Name';
-  const TEST_STATUS = UserStatus.Active;
   const TEST_ISSUER = 'https://auth.example.com';
   const JWKS_URI = 'https://example_uri.com';
   const PROJECT_ID = 'project-id';
@@ -55,9 +53,8 @@ describe('Session Service Unit Tests', () => {
     (jwtVerify as jest.Mock).mockResolvedValue({
       payload: {
         iss: 'https://invalid-issuer.com',
-        userID: TEST_USER_ID,
-        fullName: TEST_FULL_NAME,
-        status: TEST_STATUS,
+        sub: TEST_USER_ID,
+        name: TEST_FULL_NAME,
       },
     });
 
@@ -70,9 +67,8 @@ describe('Session Service Unit Tests', () => {
   test('should throw ValidationError if issuer is undefined', async () => {
     (jwtVerify as jest.Mock).mockResolvedValue({
       payload: {
-        userID: TEST_USER_ID,
-        fullName: TEST_FULL_NAME,
-        status: TEST_STATUS,
+        sub: TEST_USER_ID,
+        name: TEST_FULL_NAME,
       },
     });
 
@@ -113,18 +109,15 @@ describe('Session Service Unit Tests', () => {
     (jwtVerify as jest.Mock).mockResolvedValue({
       payload: {
         iss: TEST_ISSUER,
-        userID: TEST_USER_ID,
-        fullName: TEST_FULL_NAME,
-        status: TEST_STATUS,
+        sub: TEST_USER_ID,
+        name: TEST_FULL_NAME,
       },
     });
 
     const user = await sessionService.getAndValidateCurrentUser(SHORT_SESSION);
     expect(user).toEqual({
-      userID: TEST_USER_ID,
+      userId: TEST_USER_ID,
       fullName: TEST_FULL_NAME,
-      status: TEST_STATUS,
-      explicitWebauthnID: undefined, // optional field
     });
   });
 });
