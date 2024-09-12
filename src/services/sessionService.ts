@@ -2,7 +2,7 @@
 /* eslint-disable class-methods-use-this */
 import { JWTPayload, jwtVerify, createRemoteJWKSet, errors } from 'jose';
 import { Assert } from '../helpers/index.js';
-import JWTError, { JWTErrorNames } from '../errors/jwtError.js';
+import ValidationError, { ValidationErrorNames } from '../errors/validationError.js';
 import { User, UserStatus } from '../generated/api.js';
 
 export interface SessionInterface {
@@ -43,7 +43,7 @@ class Session implements SessionInterface {
     Assert.notEmptyString(shortSession, 'shortSession not given');
 
     if (shortSession.length < MIN_SHORT_SESSION_LENGTH) {
-      throw new JWTError(JWTErrorNames.InvalidShortSession);
+      throw new ValidationError(ValidationErrorNames.InvalidShortSession);
     }
 
     try {
@@ -51,22 +51,22 @@ class Session implements SessionInterface {
 
       const { userID, fullName, status, explicitWebauthnID } = payload as MyJWTPayload;
 
-      if (payload.iss && payload.iss !== this.issuer) {
-        throw new JWTError(JWTErrorNames.InvalidIssuer);
+      if (!payload.iss || payload.iss !== this.issuer) {
+        throw new ValidationError(ValidationErrorNames.InvalidIssuer);
       }
 
       return { userID, fullName, status, explicitWebauthnID };
     } catch (error) {
       if (error instanceof errors.JWTClaimValidationFailed) {
-        throw new JWTError(JWTErrorNames.JWTClaimValidationFailed);
+        throw new ValidationError(ValidationErrorNames.JWTClaimValidationFailed);
       }
 
       if (error instanceof errors.JWTExpired) {
-        throw new JWTError(JWTErrorNames.JWTExpired);
+        throw new ValidationError(ValidationErrorNames.JWTExpired);
       }
 
       if (error instanceof errors.JWTInvalid) {
-        throw new JWTError(JWTErrorNames.JWTInvalid);
+        throw new ValidationError(ValidationErrorNames.JWTInvalid);
       }
 
       throw error;

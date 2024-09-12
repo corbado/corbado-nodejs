@@ -1,6 +1,6 @@
 import { createRemoteJWKSet, jwtVerify, errors } from 'jose';
 import { Session } from '../../src/services';
-import JWTError, { JWTErrorNames } from '../../src/errors/jwtError';
+import ValidationError, { ValidationErrorNames } from '../../src/errors/validationError';
 import { UserStatus } from '../../src/generated';
 import { httpStatusCodes } from '../../src/errors';
 
@@ -43,15 +43,15 @@ describe('Session Service Unit Tests', () => {
     );
   });
 
-  test('should throw JWTError if short session is too short', async () => {
+  test('should throw ValidationError if short session is too short', async () => {
     const shortSession = 'short';
-    await expect(sessionService.getAndValidateCurrentUser(shortSession)).rejects.toThrow(JWTError);
+    await expect(sessionService.getAndValidateCurrentUser(shortSession)).rejects.toThrow(ValidationError);
     await expect(sessionService.getAndValidateCurrentUser(shortSession)).rejects.toThrow(
-      httpStatusCodes[JWTErrorNames.InvalidShortSession].description,
+      httpStatusCodes[ValidationErrorNames.InvalidShortSession].description,
     );
   });
 
-  test('should throw JWTError if issuer is mismatched', async () => {
+  test('should throw ValidationError if issuer is mismatched', async () => {
     (jwtVerify as jest.Mock).mockResolvedValue({
       payload: {
         iss: 'https://invalid-issuer.com',
@@ -61,36 +61,51 @@ describe('Session Service Unit Tests', () => {
       },
     });
 
-    await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(JWTError);
+    await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(ValidationError);
     await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(
-      httpStatusCodes[JWTErrorNames.InvalidIssuer].description,
+      httpStatusCodes[ValidationErrorNames.InvalidIssuer].description,
     );
   });
 
-  test('should throw JWTError on JWTClaimValidationFailed', async () => {
+  test('should throw ValidationError if issuer is undefined', async () => {
+    (jwtVerify as jest.Mock).mockResolvedValue({
+      payload: {
+        userID: TEST_USER_ID,
+        fullName: TEST_FULL_NAME,
+        status: TEST_STATUS,
+      },
+    });
+
+    await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(ValidationError);
+    await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(
+      httpStatusCodes[ValidationErrorNames.InvalidIssuer].description,
+    );
+  });
+
+  test('should throw ValidationError on JWTClaimValidationFailed', async () => {
     (jwtVerify as jest.Mock).mockRejectedValue(new errors.JWTClaimValidationFailed('message'));
 
-    await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(JWTError);
+    await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(ValidationError);
     await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(
-      httpStatusCodes[JWTErrorNames.JWTClaimValidationFailed].description,
+      httpStatusCodes[ValidationErrorNames.JWTClaimValidationFailed].description,
     );
   });
 
-  test('should throw JWTError on JWTExpired', async () => {
+  test('should throw ValidationError on JWTExpired', async () => {
     (jwtVerify as jest.Mock).mockRejectedValue(new errors.JWTExpired('message'));
 
-    await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(JWTError);
+    await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(ValidationError);
     await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(
-      httpStatusCodes[JWTErrorNames.JWTExpired].description,
+      httpStatusCodes[ValidationErrorNames.JWTExpired].description,
     );
   });
 
-  test('should throw JWTError on JWTInvalid', async () => {
+  test('should throw ValidationError on JWTInvalid', async () => {
     (jwtVerify as jest.Mock).mockRejectedValue(new errors.JWTInvalid());
 
-    await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(JWTError);
+    await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(ValidationError);
     await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(
-      httpStatusCodes[JWTErrorNames.JWTInvalid].description,
+      httpStatusCodes[ValidationErrorNames.JWTInvalid].description,
     );
   });
 
