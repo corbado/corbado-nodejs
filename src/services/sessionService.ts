@@ -5,7 +5,7 @@ import { Assert } from '../helpers/index.js';
 import ValidationError, { ValidationErrorNames } from '../errors/validationError.js';
 
 export interface SessionInterface {
-  getAndValidateCurrentUser(shortSession: string): Promise<{ userId: string; fullName: string }>;
+  validateToken(shortSession: string): Promise<{ userId: string; fullName: string }>;
 }
 
 interface MyJWTPayload extends JWTPayload {
@@ -38,7 +38,12 @@ class Session implements SessionInterface {
     });
   }
 
-  public async getAndValidateCurrentUser(shortSession: string): Promise<{ userId: string; fullName: string }> {
+  /**
+   * Validate the short session token and return the user ID and full name
+   * @param {any} shortSession:string
+   * @returns {any} { userId: string; fullName: string }
+   */
+  public async validateToken(shortSession: string): Promise<{ userId: string; fullName: string }> {
     Assert.notEmptyString(shortSession, 'shortSession not given');
 
     if (shortSession.length < MIN_SHORT_SESSION_LENGTH) {

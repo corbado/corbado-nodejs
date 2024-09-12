@@ -43,8 +43,8 @@ describe('Session Service Unit Tests', () => {
 
   test('should throw ValidationError if short session is too short', async () => {
     const shortSession = 'short';
-    await expect(sessionService.getAndValidateCurrentUser(shortSession)).rejects.toThrow(ValidationError);
-    await expect(sessionService.getAndValidateCurrentUser(shortSession)).rejects.toThrow(
+    await expect(sessionService.validateToken(shortSession)).rejects.toThrow(ValidationError);
+    await expect(sessionService.validateToken(shortSession)).rejects.toThrow(
       httpStatusCodes[ValidationErrorNames.InvalidShortSession].description,
     );
   });
@@ -58,8 +58,8 @@ describe('Session Service Unit Tests', () => {
       },
     });
 
-    await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(ValidationError);
-    await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(
+    await expect(sessionService.validateToken(SHORT_SESSION)).rejects.toThrow(ValidationError);
+    await expect(sessionService.validateToken(SHORT_SESSION)).rejects.toThrow(
       httpStatusCodes[ValidationErrorNames.InvalidIssuer].description,
     );
   });
@@ -72,8 +72,8 @@ describe('Session Service Unit Tests', () => {
       },
     });
 
-    await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(ValidationError);
-    await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(
+    await expect(sessionService.validateToken(SHORT_SESSION)).rejects.toThrow(ValidationError);
+    await expect(sessionService.validateToken(SHORT_SESSION)).rejects.toThrow(
       httpStatusCodes[ValidationErrorNames.InvalidIssuer].description,
     );
   });
@@ -81,8 +81,8 @@ describe('Session Service Unit Tests', () => {
   test('should throw ValidationError on JWTClaimValidationFailed', async () => {
     (jwtVerify as jest.Mock).mockRejectedValue(new errors.JWTClaimValidationFailed('message'));
 
-    await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(ValidationError);
-    await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(
+    await expect(sessionService.validateToken(SHORT_SESSION)).rejects.toThrow(ValidationError);
+    await expect(sessionService.validateToken(SHORT_SESSION)).rejects.toThrow(
       httpStatusCodes[ValidationErrorNames.JWTClaimValidationFailed].description,
     );
   });
@@ -90,8 +90,8 @@ describe('Session Service Unit Tests', () => {
   test('should throw ValidationError on JWTExpired', async () => {
     (jwtVerify as jest.Mock).mockRejectedValue(new errors.JWTExpired('message'));
 
-    await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(ValidationError);
-    await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(
+    await expect(sessionService.validateToken(SHORT_SESSION)).rejects.toThrow(ValidationError);
+    await expect(sessionService.validateToken(SHORT_SESSION)).rejects.toThrow(
       httpStatusCodes[ValidationErrorNames.JWTExpired].description,
     );
   });
@@ -99,8 +99,8 @@ describe('Session Service Unit Tests', () => {
   test('should throw ValidationError on JWTInvalid', async () => {
     (jwtVerify as jest.Mock).mockRejectedValue(new errors.JWTInvalid());
 
-    await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(ValidationError);
-    await expect(sessionService.getAndValidateCurrentUser(SHORT_SESSION)).rejects.toThrow(
+    await expect(sessionService.validateToken(SHORT_SESSION)).rejects.toThrow(ValidationError);
+    await expect(sessionService.validateToken(SHORT_SESSION)).rejects.toThrow(
       httpStatusCodes[ValidationErrorNames.JWTInvalid].description,
     );
   });
@@ -114,7 +114,7 @@ describe('Session Service Unit Tests', () => {
       },
     });
 
-    const user = await sessionService.getAndValidateCurrentUser(SHORT_SESSION);
+    const user = await sessionService.validateToken(SHORT_SESSION);
     expect(user).toEqual({
       userId: TEST_USER_ID,
       fullName: TEST_FULL_NAME,
