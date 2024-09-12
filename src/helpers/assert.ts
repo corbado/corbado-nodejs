@@ -73,7 +73,7 @@ class Assert {
     );
 
     validate(
-      parsedUrl.pathname !== '/',
+      parsedUrl.pathname !== '/' && parsedUrl.pathname !== '/v2',
       `${errorName} URL path assertion failed`,
       INVALID_URL.code,
       'path needs to be empty',
