@@ -1,5 +1,5 @@
-import BaseError from './baseError';
-import httpStatusCodes from './httpStatusCodes';
+import BaseError from './baseError.js';
+import httpStatusCodes from './httpStatusCodes.js';
 
 export enum ValidationErrorNames {
   JWTClaimValidationFailed = 'CLAIM_VALIDATION_FAILED',
