@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@corbado/node-sdk": "^2.0.0"
+    "@corbado/node-sdk": "^3.0.0-alpha.0 ",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.20.0"
   },
   "devDependencies": {
     "ts-node": "^10.9.2",
