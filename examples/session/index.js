@@ -26,7 +26,7 @@ router.get('/setCookie', async (req, res) => {
 router.get('/logged-in', async (req, res) => {
   try {
     const shortSession = await req.cookies.cbo_short_session;
-    const user = await sdk.sessions().getAndValidateCurrentUser(shortSession);
+    const user = await sdk.sessions().validateToken(shortSession);
 
     res.write(`User ID: ${user.userId}\n`);
     res.write(`User full name: ${user.fullName}\n`);
