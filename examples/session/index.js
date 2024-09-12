@@ -18,23 +18,11 @@ router.get('/logged-in', async (req, res) => {
     const user = await sdk.sessions().getCurrentUser(shortSession);
     console.log(sdk.sessions().getLastShortSessionValidationResult());
 
-    if (user.authenticated) {
-      // User is authenticated
-      res.write('User is authenticated!\n');
-      res.write(`User ID: ${user.id}\n`);
-      res.write(`User full name: ${user.name}\n`);
-      res.write(`User email: ${user.email}\n`);
-      res.write(`User phone number: ${user.phoneNumber}\n`);
-
-      const response = await sdk.users().get(user.id, null);
-      res.write(`User created: ${response.data.created}\n`);
-      res.write(`User updated: ${response.data.updated}\n`);
-      res.write(`User status: ${response.data.status}\n`);
-      res.end();
-    } else {
-      // User is not authenticated, redirect to login page
-      res.redirect(302, '/login');
-    }
+    res.write(`User ID: ${user.userID}\n`);
+    res.write(`User full name: ${user.fullName}\n`);
+    res.write(`User status: ${user.status}\n`);
+    res.write(`User explicit Webauthn ID: ${user.explicitWebauthnID}\n`);
+    res.end();
   } catch (err) {
     console.error(err);
     res.status(500).send(err.message);
