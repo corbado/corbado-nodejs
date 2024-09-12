@@ -1,7 +1,7 @@
 import BaseError from './baseError';
 import httpStatusCodes from './httpStatusCodes';
 
-export enum JWTErrorNames {
+export enum ValidationErrorNames {
   JWTClaimValidationFailed = 'CLAIM_VALIDATION_FAILED',
   InvalidIssuer = 'INVALID_ISSUER',
   InvalidShortSession = 'INVALID_SHORT_SESSION',
@@ -9,10 +9,10 @@ export enum JWTErrorNames {
   JWTInvalid = 'JWT_INVALID',
 }
 
-class JWTError extends BaseError {
-  constructor(name: JWTErrorNames, isOperational: boolean = false) {
+class ValidationError extends BaseError {
+  constructor(name: ValidationErrorNames, isOperational: boolean = false) {
     super(name, httpStatusCodes[name].code, httpStatusCodes[name].description, isOperational);
   }
 }
 
-export default JWTError;
+export default ValidationError;
