@@ -2,12 +2,11 @@ import express from 'express';
 import { Config, SDK } from '@corbado/node-sdk';
 
 const router = express.Router();
-
 const config = new Config(
-  'pro-1',
-  'corbado1_hALCgZhe3oSwec8Hr2ZuF9w4DZAo9w',
-  'https://pro-1.frontendapi.corbado-dev.io',
-  'http://localhost:15902',
+  process.env.CORBADO_PROJECT_ID,
+  process.env.CORBADO_PROJECT_API_SECRET,
+  process.env.CORBADO_FRONTEND_API,
+  process.env.CORBADO_BACKEND_API,
 );
 const sdk = new SDK(config);
 
