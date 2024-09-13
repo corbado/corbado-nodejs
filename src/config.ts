@@ -42,6 +42,7 @@ class Config implements ConfigInterface {
     this.APISecret = apiSecret;
     this.Client = DefaultClient;
     this.FrontendAPI = frontendAPI;
+    this.BackendAPI = backendAPI;
   }
 
   public setShortSessionCookieName(shortSessionCookieName: string): void {
