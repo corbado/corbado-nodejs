@@ -19,7 +19,7 @@ class SDK {
 
     this.session = new Session(
       config.ShortSessionCookieName,
-      config.FrontendAPIWithCName,
+      config.FrontendAPI,
       `${config.FrontendAPI}/.well-known/jwks`,
       config.CacheMaxAge,
       config.ProjectID,
@@ -32,7 +32,7 @@ class SDK {
 
   createClient(config: Config): AxiosInstance {
     const instance = axios.create({
-      baseURL: config.BackendAPI,
+      baseURL: `${config.BackendAPI}/v2`,
       auth: {
         username: config.ProjectID,
         password: config.APISecret,

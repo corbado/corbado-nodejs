@@ -72,7 +72,7 @@ The Corbado Node.js SDK provides the following services:
 To use a specific service, such as `sessions`, invoke it as shown below:
 
 ```JavaScript
-corbado.sessions().getAndValidateCurrentUser(req);
+corbado.sessions().validateToken(req);
 ```
 
 ## :books: Advanced
