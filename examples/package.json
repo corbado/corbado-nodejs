@@ -4,7 +4,7 @@
   "description": "",
   "main": "example.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node --env-file=.env index.js"
   },
   "type": "module",
   "author": "",
