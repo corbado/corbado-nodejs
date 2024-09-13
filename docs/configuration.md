@@ -19,7 +19,7 @@ const config = new Config(projectID, apiSecret, frontendAPI, backendAPI);
 
 ## Validation in Config Class
 
-The `Config` class validates the `projectID`, `apiSecret`, `frontendAPI` and `backendAPI` parameters. The `projectID` must start with 'pro-', the `apiSecret` must start with 'corbado1', both APIs should be domain names and the pathname should be empty. If these conditions are not met, an error is thrown.
+The `Config` class validates the `projectID`, `apiSecret`, `frontendAPI` and `backendAPI` parameters. The `projectID` must start with 'pro-', the `apiSecret` must start with 'corbado1', both API URLs should be valid domain names and the pathname should be empty. If these conditions are not met, an error is thrown.
 
 ## Config Class Properties
 
