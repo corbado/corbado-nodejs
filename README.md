@@ -6,7 +6,7 @@
 ![Latest Stable Version](https://img.shields.io/npm/v/@corbado/node-sdk)
 [![Coverage Status](https://github.com/corbado/corbado-nodejs/raw/gh-pages/badges/coverage-jest%20coverage.svg?raw=true)](https://nolleh.gitcorbado/corbado-nodejs/badges/coverage-jest%20coverage.svg?raw=true)
 [![codecov](https://codecov.io/gh/corbado/corbado-nodejs/graph/badge.svg?token=FD4TEXN6TR)](https://codecov.io/gh/corbado/corbado-nodejs)
-[![documentation](https://img.shields.io/badge/documentation-Corbado_Backend_API_Reference-blue.svg)](https://apireference.cloud.corbado.io/backendapi/)
+[![documentation](https://img.shields.io/badge/documentation-Corbado_Backend_API_Reference-blue.svg)](https://apireference.cloud.corbado.io/backendapi-v2/)
 [![Slack](https://img.shields.io/badge/slack-join%20chat-brightgreen.svg)](https://join.slack.com/t/corbado/shared_invite/zt-1b7867yz8-V~Xr~ngmSGbt7IA~g16ZsQ)
 
 The [Corbado](https://www.corbado.com) Node SDK provides convenient access to the [Corbado Backend API](https://apireference.cloud.corbado.io/backendapi/) from applications written in Node.js.
@@ -70,7 +70,7 @@ A list of examples can be found in the integration tests [here](tests/integratio
 The Corbado Node.js SDK provides the following services:
 
 - `sessions` for managing sessions ([examples](tests/unit/session.test.ts))
-- `identifiers` for managing identifiers ([examples](tests/integration/services/identifiers.test.ts))
+- `identifiers` for managing identifiers ([examples](tests/integration/services/identifier.test.ts))
 - `users` for managing users ([examples](tests/integration/services/user.test.ts))
 
 To use a specific service, such as `sessions`, invoke it as shown below:
