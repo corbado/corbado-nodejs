@@ -12,9 +12,9 @@ The Corbado Node.js SDK is organized into several directories and files, each se
 
 4. **src**: This is the main directory where the source code of the SDK resides. It contains several folders and a generated subdirectory.
 
-   - **src/entities**: Contains the user entity class that provides utility functions for interacting with the User class.
    - **src/errors**: Contains files concerned with creating and catching errors generated elsewhere in the project.
-   - **src/generated**: Contains the generated code for the API endpoints, generated from the OpenAPI specification file [backend_api_public.yml](../src/generated/backend_api_public.yml) using the OpenAPI Generator. Includes classes for each API endpoint and models for the request and response objects.
+   - **src/generated**: Contains the generated code for the API endpoints, generated from the OpenAPI specification file [backend_api_public.yml](../src/specs/backend_api_public.yml) using the OpenAPI Generator. Includes classes for each API endpoint and models for the request and response objects.
+   - **src/specs**: Contains the OpenAPI specification files.
    - **src/helpers**: Contains helper functions and utilities that assist with validations.
    - **src/services**: Hosts the main services upon which the entire project is based.
    - **src/webhook**: Contains files related to all things request and response.

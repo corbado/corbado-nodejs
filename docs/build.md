@@ -38,18 +38,18 @@ Because of inherent issues between ESM and CJS, a number of important decisions 
 All local TypeScript imports had to change from:
 
 ```javascript
-import AuthToken from './authokenService';
+import User from './userService';
 ```
 
 to:
 
 ```javascript
-import AuthToken from './authokenService.js';
+import User from './userService.js';
 ```
 
 This is because ESM requires extensions, whereas CommonJS doesn't. So building both ESM and CJS modules from our codebase requires importing files with their file extension.
 
-Note also that we're importing `authokenService.js` even though the file is actually `authokenService.ts`. This is because CJS modules will be incorrectly built with `.ts` file extensions unless we indicate `.js` as the extension ahead of time. Sadly, there is currently no TypeScript setting to automate this extension conversion.
+Note also that we're importing `userService.js` even though the file is actually `userService.ts`. This is because CJS modules will be incorrectly built with `.ts` file extensions unless we indicate `.js` as the extension ahead of time. Sadly, there is currently no TypeScript setting to automate this extension conversion.
 
 ❗
 
@@ -60,13 +60,13 @@ Note also that we're importing `authokenService.js` even though the file is actu
 In CJS, you can import a directory, and if an index.js exists in that directory, it will be used. ESM requires exact paths, so our statement:
 
 ```javascript
-import { AuthToken } from './controllers';
+import { User } from './controllers';
 ```
 
 had to become:
 
 ```javascript
-import { AuthToken } from './services/index.js';
+import { User } from './services/index.js';
 ```
 
 These notes are important, failing to follow them will result in an improperly build package which will not be fit for purpose.

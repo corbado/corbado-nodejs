@@ -27,7 +27,7 @@ This command triggers the test script in the [package.json file](../package.json
 
 ## Example Test Suite
 
-Consider this example of a test suite from [tests/unit/sdk.test.ts](../tests/unit/sdk.test.ts):
+Consider this example of a test suite from [tests/sdk.test.ts](../tests/sdk.test.ts):
 
 ```javascript
 describe('SDK class', () => {

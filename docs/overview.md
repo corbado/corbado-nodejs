@@ -8,13 +8,9 @@ The Corbado Node.js SDK is a comprehensive software development kit tailored for
 
 The SDK offers a robust set of features, including:
 
-- **Authentication Token Management**: Streamlines the process of handling authentication tokens.
-- **Email Magic Links**: Facilitates sending and managing magic links via email.
-- **Email OTPs**: Supports one-time password (OTP) generation and validation for email.
 - **Session Management**: Efficient handling of user sessions.
-- **SMS OTPs**: Implements OTP functionalities for SMS.
 - **User Management**: Provides utilities for user operations.
-- **Data Validation**: Includes tools for validating email addresses and phone numbers.
+- **Identifier Management**: Provides utilities for identifier operations.
 
 ## Installation
 
