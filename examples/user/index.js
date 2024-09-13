@@ -2,9 +2,12 @@ import express from 'express';
 import { Config, SDK } from '@corbado/node-sdk';
 
 const router = express.Router();
-const config = new Config('pro-1', 'corbado1_hALCgZhe3oSwec8Hr2ZuF9w4DZAo9w', 'https://auth.corbado-dev.com');
-config.setFrontendAPI('https://pro-1.frontendapi.corbado-dev.io');
-config.setBackendAPI('http://localhost:15902/v2');
+const config = new Config(
+  'pro-1',
+  'corbado1_hALCgZhe3oSwec8Hr2ZuF9w4DZAo9w',
+  'https://pro-1.frontendapi.corbado-dev.io',
+  'http://localhost:15902',
+);
 const sdk = new SDK(config);
 
 const userService = sdk.users();
