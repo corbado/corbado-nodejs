@@ -1,4 +1,4 @@
-import { DefaultBackendAPI, DefaultCacheMaxAge, DefaultShortSessionCookieName } from '../src/config.js';
+import { DefaultCacheMaxAge, DefaultShortSessionCookieName } from '../src/config.js';
 import { BaseError } from '../src/errors/index.js';
 import { Config } from '../src/index.js';
 
@@ -24,7 +24,7 @@ describe('Configuration class', () => {
     expect(config.ProjectID).toBe(projectID);
     expect(config.APISecret).toBe(apiSecret);
     expect(config.FrontendAPI).toBe(`https://${projectID}.frontendapi.cloud.corbado.io`);
-    expect(config.BackendAPI).toBe(DefaultBackendAPI);
+    expect(config.BackendAPI).toBe(backendAPI);
     expect(config.ShortSessionCookieName).toBe(DefaultShortSessionCookieName);
     expect(config.CacheMaxAge).toBe(DefaultCacheMaxAge);
   };
