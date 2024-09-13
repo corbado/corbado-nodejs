@@ -15,7 +15,12 @@ describe('SDK class', () => {
       throw new BaseError('Env Error', 5001, 'Both projectID and apiSecret must be defined', true);
     }
 
-    config = new Config(projectID, apiSecret);
+    config = new Config(
+      projectID,
+      apiSecret,
+      `https://${projectID}.frontendapi.cloud.corbado.io`,
+      `https://backendapi.cloud.corbado.io`,
+    );
     sdk = new SDK(config);
   });
 

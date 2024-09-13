@@ -12,8 +12,6 @@ export interface ConfigInterface {
 }
 
 export const DefaultClient = axios.create();
-export const DefaultBackendAPI = 'https://backendapi.cloud.corbado.io/v2';
-export const DefaultFrontendAPI = 'https://[projectID].frontendapi.cloud.corbado.io';
 export const DefaultShortSessionCookieName = 'cbo_short_session';
 export const DefaultCacheMaxAge = 10 * 60 * 1000; // 10 * 60 * 1000 = 60000 milliseconds, which is equivalent to 10 minutes.
 
@@ -24,9 +22,7 @@ class Config implements ConfigInterface {
 
   FrontendAPI: string;
 
-  FrontendAPIWithCName: string;
-
-  BackendAPI: string = DefaultBackendAPI;
+  BackendAPI: string;
 
   ShortSessionCookieName: string = DefaultShortSessionCookieName;
 
@@ -34,24 +30,16 @@ class Config implements ConfigInterface {
 
   CacheMaxAge: number = DefaultCacheMaxAge;
 
-  constructor(projectID: string, apiSecret: string, cname?: string) {
+  constructor(projectID: string, apiSecret: string, frontendAPI: string, backendAPI: string) {
     this.validateProjectID(projectID);
     this.validateAPISecret(apiSecret);
+    Assert.validURL(frontendAPI, 'frontendAPI');
+    Assert.validURL(backendAPI, 'backendAPI');
 
     this.ProjectID = projectID;
     this.APISecret = apiSecret;
     this.Client = DefaultClient;
-    this.FrontendAPI = DefaultFrontendAPI.replace('[projectID]', projectID);
-    this.FrontendAPIWithCName = cname ?? this.FrontendAPI;
-  }
-
-  public setFrontendAPI(frontendApi: string): void {
-    Assert.validURL(frontendApi, 'frontendApi');
-    this.FrontendAPI = frontendApi;
-  }
-
-  public setBackendAPI(backendAPI: string): void {
-    Assert.validURL(backendAPI, 'backendAPI');
+    this.FrontendAPI = frontendAPI;
     this.BackendAPI = backendAPI;
   }
 

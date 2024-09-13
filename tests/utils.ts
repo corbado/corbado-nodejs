@@ -6,7 +6,12 @@ import { User } from '../src/generated';
 
 class Utils {
   public static SDK(): SDK {
-    const config = new Config(this.getEnv('CORBADO_PROJECT_ID'), this.getEnv('CORBADO_API_SECRET'));
+    const config = new Config(
+      this.getEnv('CORBADO_PROJECT_ID'),
+      this.getEnv('CORBADO_API_SECRET'),
+      this.getEnv('CORBADO_FRONTEND_API'),
+      this.getEnv('CORBADO_BACKEND_API'),
+    );
 
     return new SDK(config);
   }
