@@ -1,5 +1,6 @@
 import express from 'express';
 import { Config, SDK } from '@corbado/node-sdk';
+import { ValidationError } from '@corbado/node-sdk/errors';
 
 const router = express.Router();
 const config = new Config(
@@ -34,6 +35,11 @@ router.get('/logged-in', async (req, res) => {
     res.write(`User full name: ${user.fullName}\n`);
     res.end();
   } catch (err) {
+    if (err instanceof ValidationError) {
+      res.status(401).send('Unauthorized');
+      return;
+    }
+
     console.error(err);
     res.status(500).send(err.message);
   }
