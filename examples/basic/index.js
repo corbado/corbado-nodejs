@@ -15,14 +15,12 @@ import { ValidationError } from '@corbado/node-sdk/errors';
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 // Configuration
-
 const projectID = '<Your Project ID>';
 const apiSecret = '<Your API secret>';
 const frontendAPI = '<Frontend API URL>';
 const backendAPI = '<Backend API URL>';
 
 // Create SDK instance
-
 const config = new Config(projectID, apiSecret, frontendAPI, backendAPI);
 const sdk = new SDK(config);
 
@@ -31,13 +29,15 @@ app.get('/', async (_, res) => {
   // Protecting routes                                                                        //
   //////////////////////////////////////////////////////////////////////////////////////////////
 
+  // Retrieve the short-term session value from the Cookie (e.g. req.cookies.cbo_short_session)
   const shortTermSessionValue = '<Your short-term session value>';
 
   if (!shortTermSessionValue) {
     // If the short-term session value is empty (e.g. the cookie is not set or
     // expired), the user is not authenticated. e.g. redirect to login page.
 
-    res.status(401).send('User not authenticated');
+    console.log('User not authenticated');
+    res.redirect('/login');
   }
 
   let user;
@@ -51,7 +51,7 @@ app.get('/', async (_, res) => {
       // Handle the user not being authenticated, e.g. redirect to login page
 
       console.log(err.message, err.statusCode);
-      res.status(401).send(err.message);
+      res.redirect('/login');
       return;
     }
 
