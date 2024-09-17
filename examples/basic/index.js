@@ -8,6 +8,7 @@ app.use(express.urlencoded({ extended: false }));
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 import { Config, SDK } from '@corbado/node-sdk';
+import { ValidationError } from '@corbado/node-sdk/errors';
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Instantiate SDK                                                                          //
@@ -44,12 +45,12 @@ app.get('/', async (_, res) => {
   try {
     user = await sdk.sessions().validateToken(shortTermSessionValue);
 
-    console.log(`User with ID ${user.userID} is authenticated!`);
+    console.log(`User with ID ${user.userId} is authenticated!`);
   } catch (err) {
-    if (err instanceof Error) {
+    if (err instanceof ValidationError) {
       // Handle the user not being authenticated, e.g. redirect to login page
 
-      console.log(err.message);
+      console.log(err.message, err.statusCode);
       res.status(401).send(err.message);
       return;
     }
@@ -65,7 +66,7 @@ app.get('/', async (_, res) => {
 
   user = await sdk.sessions().validateToken(shortTermSessionValue);
 
-  console.log('UserID', user.userID);
+  console.log('UserID', user.userId);
   console.log('Full Name', user.fullName);
 
   //////////////////////////////////////////////////////////////////////////////////////////////
@@ -74,7 +75,7 @@ app.get('/', async (_, res) => {
 
   user = await sdk.sessions().validateToken(shortTermSessionValue);
 
-  const fullUser = await sdk.users().get(user.userID);
+  const fullUser = await sdk.users().get(user.userId);
 
   const fullName = fullUser.fullName;
   const userStatus = fullUser.status;
@@ -83,9 +84,11 @@ app.get('/', async (_, res) => {
   console.log('User status', userStatus);
 
   // To get the email we use the IdentifierService
-  const identifiersList = await sdk.identifiers().listByUserIdAndType(user.userID, 'email');
+  const identifiersList = await sdk.identifiers().listByUserIdAndType(user.userId, 'email');
 
   console.log('Email', identifiersList.identifiers[0].value);
+
+  res.status(200).send('Success');
 });
 
 app.listen(8000, () => {
