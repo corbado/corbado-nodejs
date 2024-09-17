@@ -1,16 +1,16 @@
 {
-  "name": "session",
+  "name": "basic",
   "version": "1.0.0",
   "description": "",
-  "main": "example.ts",
+  "main": "index.ts",
   "scripts": {
-    "start": "node --env-file=.env index.js"
+    "start": "node index.js"
   },
   "type": "module",
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@corbado/node-sdk": "^3.0.0",
+    "@corbado/node-sdk": "^3.0.1",
     "cookie-parser": "^1.4.6",
     "express": "^4.20.0"
   },
