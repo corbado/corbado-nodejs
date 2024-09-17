@@ -1,6 +1,6 @@
 {
   "name": "@corbado/node-sdk",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "This Node.js SDK eases the integration of Corbado's passkey-first authentication solution.",
   "keywords": [
     "passkeys",
@@ -20,8 +20,14 @@
   "author": "Corbado",
   "type": "module",
   "exports": {
-    "import": "./esm/index.js",
-    "require": "./cjs/index.js"
+    ".": {
+      "import": "./esm/index.js",
+      "require": "./cjs/index.js"
+    },
+    "./errors": {
+      "import": "./esm/errors/index.js",
+      "require": "./cjs/errors/index.js"
+    }
   },
   "main": "cjs/index.js",
   "module": "src/index.js",
@@ -36,7 +42,6 @@
     "build": "make build"
   },
   "dependencies": {
-    "@openapitools/openapi-generator-cli": "^2.13.5",
     "axios": "^1.7.7",
     "axios-better-stacktrace": "^2.1.7",
     "axios-mock-adapter": "^2.0.0",
@@ -46,6 +51,7 @@
     "typescript": "^5.3.4"
   },
   "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.13.5",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.11",
