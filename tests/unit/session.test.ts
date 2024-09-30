@@ -60,7 +60,7 @@ describe('Session Service Unit Tests', () => {
 
     await expect(sessionService.validateToken(SHORT_SESSION)).rejects.toThrow(ValidationError);
     await expect(sessionService.validateToken(SHORT_SESSION)).rejects.toThrow(
-      httpStatusCodes[ValidationErrorNames.InvalidIssuer].description,
+      "JWT issuer mismatch (configured trough FrontendAPI: 'https://auth.example.com', JWT issuer: 'https://invalid-issuer.com')",
     );
   });
 
