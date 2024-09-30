@@ -82,7 +82,7 @@ class Session implements SessionInterface {
 
   private validateIssuer(jwtIssuer: string) {
     if (!jwtIssuer) {
-      throw new ValidationError(ValidationErrorNames.InvalidIssuer, false);
+      throw new ValidationError(ValidationErrorNames.EmptyIssuer, false);
     }
 
     if (jwtIssuer === `https://${this.projectID}.frontendapi.corbado.io`) {

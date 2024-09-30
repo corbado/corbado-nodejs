@@ -7,6 +7,7 @@ export enum ValidationErrorNames {
   InvalidShortSession = 'INVALID_SHORT_SESSION',
   JWTExpired = 'JWT_EXPIRED',
   JWTInvalid = 'JWT_INVALID',
+  EmptyIssuer = 'EMPTY_ISSUER',
 }
 
 class ValidationError extends BaseError {

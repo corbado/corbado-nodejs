@@ -136,7 +136,7 @@ describe('Session Service Unit Tests', () => {
 
     await expect(sessionService.validateToken(SHORT_SESSION)).rejects.toThrow(ValidationError);
     await expect(sessionService.validateToken(SHORT_SESSION)).rejects.toThrow(
-      httpStatusCodes[ValidationErrorNames.InvalidIssuer].description,
+      httpStatusCodes[ValidationErrorNames.EmptyIssuer].description,
     );
   });
 

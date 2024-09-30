@@ -33,6 +33,7 @@ const customErrorCodes: Record<string, HttpStatusCode> = {
   JWT_EXPIRED: { description: 'Token is expired', code: 1016, isOperational: false },
   JWT_INVALID: { description: 'Token is invalid', code: 1017, isOperational: false },
   INVALID_ISSUER: { description: 'Invalid Issuer: Issuer does not match', code: 1018, isOperational: false },
+  EMPTY_ISSUER: { description: 'Empty Issuer: Issuer is not defined', code: 1019, isOperational: false },
 };
 
 const httpStatusCodes = { ...standardStatusCodes, ...customErrorCodes };
