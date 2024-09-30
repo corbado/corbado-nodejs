@@ -19,9 +19,9 @@ jest.mock('jose', () => {
 describe('Session Service Unit Tests', () => {
   const TEST_USER_ID = '12345';
   const TEST_FULL_NAME = 'Test Name';
-  const TEST_ISSUER = 'https://auth.example.com';
+  const TEST_ISSUER = 'https://pro-2.frontendapi.corbado.io';
   const JWKS_URI = 'https://example_uri.com';
-  const PROJECT_ID = 'project-id';
+  const PROJECT_ID = 'pro-2';
   const SHORT_SESSION_COOKIE_NAME = 'short_session_cookie';
   const SHORT_SESSION = 'valid.jwt.token';
 
@@ -49,6 +49,68 @@ describe('Session Service Unit Tests', () => {
     );
   });
 
+  test('Invalid Issuer 1', async () => {
+    (jwtVerify as jest.Mock).mockResolvedValue({
+      payload: {
+        iss: 'https://pro-1.frontendapi.corbado.io',
+        sub: TEST_USER_ID,
+        name: TEST_FULL_NAME,
+      },
+    });
+
+    await expect(sessionService.validateToken(SHORT_SESSION)).rejects.toThrow(ValidationError);
+    await expect(sessionService.validateToken(SHORT_SESSION)).rejects.toThrow(
+      "JWT issuer mismatch (configured trough FrontendAPI: 'https://pro-2.frontendapi.corbado.io', JWT issuer: 'https://pro-1.frontendapi.corbado.io')",
+    );
+  });
+
+  test('Invalid Issuer 2', async () => {
+    (jwtVerify as jest.Mock).mockResolvedValue({
+      payload: {
+        iss: 'https://pro-1.frontendapi.cloud.corbado.io',
+        sub: TEST_USER_ID,
+        name: TEST_FULL_NAME,
+      },
+    });
+
+    await expect(sessionService.validateToken(SHORT_SESSION)).rejects.toThrow(ValidationError);
+    await expect(sessionService.validateToken(SHORT_SESSION)).rejects.toThrow(
+      "JWT issuer mismatch (configured trough FrontendAPI: 'https://pro-2.frontendapi.corbado.io', JWT issuer: 'https://pro-1.frontendapi.cloud.corbado.io')",
+    );
+  });
+
+  test('Valid Issuer with new Frontend API URL in JWT', async () => {
+    (jwtVerify as jest.Mock).mockResolvedValue({
+      payload: {
+        iss: 'https://pro-2.frontendapi.corbado.io',
+        sub: TEST_USER_ID,
+        name: TEST_FULL_NAME,
+      },
+    });
+
+    const user = await sessionService.validateToken(SHORT_SESSION);
+    expect(user).toEqual({
+      userId: TEST_USER_ID,
+      fullName: TEST_FULL_NAME,
+    });
+  });
+
+  test('Valid Issuer with old Frontend API URL in JWT', async () => {
+    (jwtVerify as jest.Mock).mockResolvedValue({
+      payload: {
+        iss: 'https://pro-2.frontendapi.cloud.corbado.io',
+        sub: TEST_USER_ID,
+        name: TEST_FULL_NAME,
+      },
+    });
+
+    const user = await sessionService.validateToken(SHORT_SESSION);
+    expect(user).toEqual({
+      userId: TEST_USER_ID,
+      fullName: TEST_FULL_NAME,
+    });
+  });
+
   test('should throw ValidationError if issuer is mismatched', async () => {
     (jwtVerify as jest.Mock).mockResolvedValue({
       payload: {
@@ -60,7 +122,7 @@ describe('Session Service Unit Tests', () => {
 
     await expect(sessionService.validateToken(SHORT_SESSION)).rejects.toThrow(ValidationError);
     await expect(sessionService.validateToken(SHORT_SESSION)).rejects.toThrow(
-      "JWT issuer mismatch (configured trough FrontendAPI: 'https://auth.example.com', JWT issuer: 'https://invalid-issuer.com')",
+      "JWT issuer mismatch (configured trough FrontendAPI: 'https://pro-2.frontendapi.corbado.io', JWT issuer: 'https://invalid-issuer.com')",
     );
   });
 
