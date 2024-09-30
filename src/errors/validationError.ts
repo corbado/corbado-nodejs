@@ -10,8 +10,8 @@ export enum ValidationErrorNames {
 }
 
 class ValidationError extends BaseError {
-  constructor(name: ValidationErrorNames, isOperational: boolean = false) {
-    super(name, httpStatusCodes[name].code, httpStatusCodes[name].description, isOperational);
+  constructor(name: ValidationErrorNames, isOperational: boolean = false, description?: string) {
+    super(name, httpStatusCodes[name].code, description ?? httpStatusCodes[name].description, isOperational);
   }
 }
 
