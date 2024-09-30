@@ -53,7 +53,7 @@ class Session implements SessionInterface {
     }
 
     try {
-      const { payload } = await jwtVerify(shortSession, this.jwkSet, { issuer: this.issuer });
+      const { payload } = await jwtVerify(shortSession, this.jwkSet);
 
       const { iss, name, sub } = payload as MyJWTPayload;
 
@@ -72,7 +72,7 @@ class Session implements SessionInterface {
         throw new ValidationError(ValidationErrorNames.JWTExpired);
       }
 
-      if (error instanceof errors.JWTInvalid) {
+      if (error instanceof errors.JWTInvalid  || error instanceof errors.JWSSignatureVerificationFailed) {
         throw new ValidationError(ValidationErrorNames.JWTInvalid);
       }
 
