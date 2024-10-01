@@ -40,8 +40,8 @@ clean:
 test:
 	@npx jest --coverage
 
-.PHONY: unit_test
-unit_test:
+.PHONY: unittests
+unittests:
 	@npx jest --coverage "tests/unit"
 
 .PHONY: cjs/build

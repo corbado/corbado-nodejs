@@ -35,7 +35,7 @@
     "generate-openapi": "make openapi_generate",
     "prepublishOnly": "make build",
     "test": "make test",
-    "unit-test": "make unit_test",
+    "unittests": "make unittests",
     "lint": "make lint",
     "fix": "make fix",
     "tsc": "tsc",
