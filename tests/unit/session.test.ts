@@ -132,7 +132,7 @@ describe('Session Service Unit Tests', () => {
     );
   });
 
-  test('Valid Issuer with new Frontend API URL in JWT', async () => {
+  test('should return user using new Frontend API URL as issuer in JWT', async () => {
     const jwt = await generateJWT(
       'https://pro-2.frontendapi.corbado.io',
       600,
@@ -150,7 +150,7 @@ describe('Session Service Unit Tests', () => {
     });
   });
 
-  test('Valid Issuer with old Frontend API URL in JWT', async () => {
+  test('should return user using old Frontend API URL as issuer in JWT', async () => {
     const jwt = await generateJWT(
       'https://pro-2.frontendapi.cloud.corbado.io',
       600,
