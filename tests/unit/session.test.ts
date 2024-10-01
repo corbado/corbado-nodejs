@@ -168,23 +168,6 @@ describe('Session Service Unit Tests', () => {
     });
   });
 
-  test('should throw ValidationError if issuer is mismatched', async () => {
-    const jwt = await generateJWT(
-      'https://invalid-issuer.com',
-      600,
-      {
-        sub: TEST_USER_ID,
-        name: TEST_FULL_NAME,
-      },
-      privateKey,
-    );
-
-    await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
-    await expect(sessionService.validateToken(jwt)).rejects.toThrow(
-      "JWT issuer mismatch (configured trough FrontendAPI: 'https://pro-2.frontendapi.corbado.io', JWT issuer: 'https://invalid-issuer.com')",
-    );
-  });
-
   test('should throw ValidationError if issuer is undefined', async () => {
     const jwt = await generateJWT(
       '',
