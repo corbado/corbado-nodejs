@@ -104,8 +104,9 @@ describe('Session Service Unit Tests', () => {
   test('should throw ValidationError if short session is too short', async () => {
     const shortSession = 'short';
     await expect(sessionService.validateToken(shortSession)).rejects.toThrow(ValidationError);
-    await expect(sessionService.validateToken(shortSession)).rejects.toThrow(
-      httpStatusCodes[ValidationErrorNames.InvalidShortSession].description,
+    await expect(sessionService.validateToken(shortSession)).rejects.toHaveProperty(
+      'name',
+      ValidationErrorNames.InvalidShortSession,
     );
   });
 
@@ -113,8 +114,9 @@ describe('Session Service Unit Tests', () => {
     const shortSession =
       'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6ImtpZDEyMyJ9.eyJpc3MiOiJodHRwczovL2F1dGguYWNtZS5jb20iLCJpYXQiOjE3MjY0OTE4MDcsImV4cCI6MTcyNjQ5MTkwNywibmJmIjoxNzI2NDkxNzA3LCJzdWIiOiJ1c3ItMTIzNDU2Nzg5MCIsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJlbWFpbCIsInBob25lX251bWJlciI6InBob25lTnVtYmVyIiwib3JpZyI6Im9yaWcifQ.invalid';
     await expect(sessionService.validateToken(shortSession)).rejects.toThrow(ValidationError);
-    await expect(sessionService.validateToken(shortSession)).rejects.toThrow(
-      httpStatusCodes[ValidationErrorNames.JWTInvalid].description,
+    await expect(sessionService.validateToken(shortSession)).rejects.toHaveProperty(
+      'name',
+      ValidationErrorNames.JWTInvalid,
     );
   });
 
@@ -122,9 +124,7 @@ describe('Session Service Unit Tests', () => {
     const jwt = await generateJWT(TEST_ISSUER, 600, TEST_USER_ID, TEST_FULL_NAME, invalidPrivateKey);
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
-    await expect(sessionService.validateToken(jwt)).rejects.toThrow(
-      httpStatusCodes[ValidationErrorNames.JWTInvalid].description,
-    );
+    await expect(sessionService.validateToken(jwt)).rejects.toHaveProperty('name', ValidationErrorNames.JWTInvalid);
   });
 
   test('should throw ValidationError if JWT is not yet valid (nbf claim in the future)', async () => {
@@ -142,8 +142,9 @@ describe('Session Service Unit Tests', () => {
       .sign(validPrivateKey);
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
-    await expect(sessionService.validateToken(jwt)).rejects.toThrow(
-      httpStatusCodes[ValidationErrorNames.JWTClaimValidationFailed].description,
+    await expect(sessionService.validateToken(jwt)).rejects.toHaveProperty(
+      'name',
+      ValidationErrorNames.JWTClaimValidationFailed,
     );
   });
 
@@ -151,9 +152,7 @@ describe('Session Service Unit Tests', () => {
     const jwt = await generateJWT(TEST_ISSUER, -600, TEST_USER_ID, TEST_FULL_NAME, validPrivateKey);
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
-    await expect(sessionService.validateToken(jwt)).rejects.toThrow(
-      httpStatusCodes[ValidationErrorNames.JWTExpired].description,
-    );
+    await expect(sessionService.validateToken(jwt)).rejects.toHaveProperty('name', ValidationErrorNames.JWTExpired);
   });
 
   test('should throw ValidationError if issuer is mismatched 1', async () => {
@@ -173,10 +172,7 @@ describe('Session Service Unit Tests', () => {
     );
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
-    await expect(sessionService.validateToken(jwt)).rejects.toHaveProperty(
-      'statusCode',
-      httpStatusCodes[ValidationErrorNames.InvalidIssuer].code,
-    );
+    await expect(sessionService.validateToken(jwt)).rejects.toHaveProperty('name', ValidationErrorNames.InvalidIssuer);
   });
 
   test('should throw ValidationError if issuer is mismatched 2', async () => {
@@ -189,19 +185,14 @@ describe('Session Service Unit Tests', () => {
     );
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
-    await expect(sessionService.validateToken(jwt)).rejects.toHaveProperty(
-      'statusCode',
-      httpStatusCodes[ValidationErrorNames.InvalidIssuer].code,
-    );
+    await expect(sessionService.validateToken(jwt)).rejects.toHaveProperty('name', ValidationErrorNames.InvalidIssuer);
   });
 
   test('should throw ValidationError if issuer is undefined', async () => {
     const jwt = await generateJWT('', 600, TEST_USER_ID, TEST_FULL_NAME, validPrivateKey);
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
-    await expect(sessionService.validateToken(jwt)).rejects.toThrow(
-      httpStatusCodes[ValidationErrorNames.EmptyIssuer].description,
-    );
+    await expect(sessionService.validateToken(jwt)).rejects.toHaveProperty('name', ValidationErrorNames.EmptyIssuer);
   });
 
   test('should return user using old Frontend API URL as issuer in JWT', async () => {
