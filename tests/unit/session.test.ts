@@ -248,7 +248,7 @@ describe('Session Service Unit Tests', () => {
     });
   });
 
-  test('should return user using old Frontend API URL as config issuer in JWT', async () => {
+  test('should return user using old Frontend API URL as config issuer', async () => {
     sessionService = new SessionService(
       SHORT_SESSION_COOKIE_NAME,
       'https://pro-2.frontendapi.cloud.corbado.io',
