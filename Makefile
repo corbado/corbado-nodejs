@@ -42,7 +42,7 @@ test:
 
 .PHONY: unittests
 unittests:
-	@npx jest --coverage "tests/unit"
+	@npx jest --coverage "/tests/unit"
 
 .PHONY: cjs/build
 cjs/build: $(SOURCE_FILES)
