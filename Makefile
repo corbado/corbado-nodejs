@@ -40,6 +40,10 @@ clean:
 test:
 	@npx jest --coverage
 
+.PHONY: unit_test
+unit_test:
+	@npx jest --coverage "tests/unit"
+
 .PHONY: cjs/build
 cjs/build: $(SOURCE_FILES)
 	npx tsc -p tsconfig.cjs.json
