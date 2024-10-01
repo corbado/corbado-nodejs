@@ -10,13 +10,13 @@ import SessionService from '../../src/services/sessionService';
 const app = express();
 const PORT = 8081;
 
-let privateKey: KeyLike;
+let validPrivateKey: KeyLike;
 let invalidPrivateKey: KeyLike;
 let publicKeyJwk: any;
 
 async function initializeKeys() {
   const { privateKey: key, publicKey } = await generateKeyPair('RS256');
-  privateKey = key;
+  validPrivateKey = key;
   const { privateKey: invalidKey } = await generateKeyPair('RS256');
   invalidPrivateKey = invalidKey;
   publicKeyJwk = await exportJWK(publicKey);
@@ -104,7 +104,7 @@ describe('Session Service Unit Tests', () => {
         sub: TEST_USER_ID,
         name: TEST_FULL_NAME,
       },
-      privateKey,
+      validPrivateKey,
     );
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
@@ -122,7 +122,7 @@ describe('Session Service Unit Tests', () => {
         sub: TEST_USER_ID,
         name: TEST_FULL_NAME,
       },
-      privateKey,
+      validPrivateKey,
     );
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
@@ -140,7 +140,7 @@ describe('Session Service Unit Tests', () => {
         sub: TEST_USER_ID,
         name: TEST_FULL_NAME,
       },
-      privateKey,
+      validPrivateKey,
     );
 
     const user = await sessionService.validateToken(jwt);
@@ -158,7 +158,7 @@ describe('Session Service Unit Tests', () => {
         sub: TEST_USER_ID,
         name: TEST_FULL_NAME,
       },
-      privateKey,
+      validPrivateKey,
     );
 
     const user = await sessionService.validateToken(jwt);
@@ -176,7 +176,7 @@ describe('Session Service Unit Tests', () => {
         sub: TEST_USER_ID,
         name: TEST_FULL_NAME,
       },
-      privateKey,
+      validPrivateKey,
     );
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
@@ -193,7 +193,7 @@ describe('Session Service Unit Tests', () => {
         sub: TEST_USER_ID,
         name: TEST_FULL_NAME,
       },
-      privateKey,
+      validPrivateKey,
     );
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
@@ -231,7 +231,7 @@ describe('Session Service Unit Tests', () => {
         alg: 'RS256',
         kid: 'kid123',
       })
-      .sign(privateKey);
+      .sign(validPrivateKey);
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(
@@ -247,7 +247,7 @@ describe('Session Service Unit Tests', () => {
         sub: TEST_USER_ID,
         name: TEST_FULL_NAME,
       },
-      privateKey,
+      validPrivateKey,
     );
 
     const user = await sessionService.validateToken(jwt);
