@@ -240,7 +240,6 @@ describe('Session Service Unit Tests', () => {
   });
 
   test('should return user data for a valid JWT', async () => {
-    // Generate a valid JWT using the generated private key
     const jwt = await generateJWT(
       TEST_ISSUER,
       600,
