@@ -72,7 +72,7 @@ class Session implements SessionInterface {
         throw new ValidationError(ValidationErrorNames.JWTExpired);
       }
 
-      if (error instanceof errors.JWTInvalid  || error instanceof errors.JWSSignatureVerificationFailed) {
+      if (error instanceof errors.JWTInvalid || error instanceof errors.JWSSignatureVerificationFailed) {
         throw new ValidationError(ValidationErrorNames.JWTInvalid);
       }
 

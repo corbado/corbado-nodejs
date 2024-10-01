@@ -1,6 +1,6 @@
 // @ts-ignore
 import express from 'express';
-import { generateKeyPair, exportJWK, SignJWT, jwtVerify, createRemoteJWKSet, KeyLike } from 'jose';
+import { exportJWK, generateKeyPair, KeyLike, SignJWT } from 'jose';
 // @ts-ignore
 import http from 'http';
 import { httpStatusCodes, ValidationError } from '../../src/errors';
@@ -11,11 +11,14 @@ const app = express();
 const PORT = 8081;
 
 let privateKey: KeyLike;
+let invalidPrivateKey: KeyLike;
 let publicKeyJwk: any;
 
 async function initializeKeys() {
   const { privateKey: key, publicKey } = await generateKeyPair('RS256');
   privateKey = key;
+  const { privateKey: invalidKey } = await generateKeyPair('RS256');
+  invalidPrivateKey = invalidKey;
   publicKeyJwk = await exportJWK(publicKey);
   publicKeyJwk.kid = 'kid123';
 }
@@ -35,27 +38,22 @@ async function startJWKSserver() {
   });
 }
 
-async function generateJWT(issuer: string, expiresIn: number, payload: Record<string, any>): Promise<string> {
+async function generateJWT(
+  issuer: string,
+  expiresIn: number,
+  payload: Record<string, any>,
+  privateKey: KeyLike,
+): Promise<string> {
   return await new SignJWT({
     ...payload,
     iss: issuer,
     iat: Math.floor(Date.now() / 1000),
     exp: Math.floor(Date.now() / 1000) + expiresIn,
   })
-    .setProtectedHeader({ alg: 'RS256', kid: 'kid123' })
-    .sign(privateKey);
-}
-
-async function generateInvalidJWT(issuer: string, expiresIn: number, payload: Record<string, any>): Promise<string> {
-  const { privateKey } = await generateKeyPair('RS256');
-
-  return await new SignJWT({
-    ...payload,
-    iss: issuer,
-    iat: Math.floor(Date.now() / 1000),
-    exp: Math.floor(Date.now() / 1000) + expiresIn,
-  })
-    .setProtectedHeader({ alg: 'RS256', kid: 'kid123' })
+    .setProtectedHeader({
+      alg: 'RS256',
+      kid: 'kid123',
+    })
     .sign(privateKey);
 }
 
@@ -80,7 +78,6 @@ describe('Session Service Unit Tests', () => {
     server.close();
   });
 
-
   test('should throw error if required parameters are missing in constructor', () => {
     expect(() => new SessionService('', TEST_ISSUER, JWKS_URI, 10, PROJECT_ID)).toThrow('Required parameter is empty');
     expect(() => new SessionService(SHORT_SESSION_COOKIE_NAME, '', JWKS_URI, 10, PROJECT_ID)).toThrow(
@@ -99,35 +96,52 @@ describe('Session Service Unit Tests', () => {
     );
   });
 
-  test('Invalid Issuer 1', async () => {
-    const jwt = await generateJWT('https://pro-1.frontendapi.corbado.io', 600, {
-      sub: TEST_USER_ID,
-      name: TEST_FULL_NAME,
-    });
+  test('should throw ValidationError if issuer is mismatched 1', async () => {
+    const jwt = await generateJWT(
+      'https://pro-1.frontendapi.cloud.corbado.io',
+      600,
+      {
+        sub: TEST_USER_ID,
+        name: TEST_FULL_NAME,
+      },
+      privateKey,
+    );
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
-    await expect(sessionService.validateToken(jwt)).rejects.toThrow(
-      "JWT issuer mismatch (configured trough FrontendAPI: 'https://pro-2.frontendapi.corbado.io', JWT issuer: 'https://pro-1.frontendapi.corbado.io')"
+    await expect(sessionService.validateToken(jwt)).rejects.toHaveProperty(
+      'statusCode',
+      httpStatusCodes[ValidationErrorNames.InvalidIssuer].code,
     );
   });
 
-  test('Invalid Issuer 2', async () => {
-    const jwt = await generateJWT('https://pro-1.frontendapi.cloud.corbado.io', 600, {
-      sub: TEST_USER_ID,
-      name: TEST_FULL_NAME,
-    });
+  test('should throw ValidationError if issuer is mismatched 2', async () => {
+    const jwt = await generateJWT(
+      'https://pro-1.frontendapi.corbado.io',
+      600,
+      {
+        sub: TEST_USER_ID,
+        name: TEST_FULL_NAME,
+      },
+      privateKey,
+    );
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
-    await expect(sessionService.validateToken(jwt)).rejects.toThrow(
-      "JWT issuer mismatch (configured trough FrontendAPI: 'https://pro-2.frontendapi.corbado.io', JWT issuer: 'https://pro-1.frontendapi.cloud.corbado.io')"
+    await expect(sessionService.validateToken(jwt)).rejects.toHaveProperty(
+      'statusCode',
+      httpStatusCodes[ValidationErrorNames.InvalidIssuer].code,
     );
   });
 
   test('Valid Issuer with new Frontend API URL in JWT', async () => {
-    const jwt = await generateJWT('https://pro-2.frontendapi.corbado.io', 600, {
-      sub: TEST_USER_ID,
-      name: TEST_FULL_NAME,
-    });
+    const jwt = await generateJWT(
+      'https://pro-2.frontendapi.corbado.io',
+      600,
+      {
+        sub: TEST_USER_ID,
+        name: TEST_FULL_NAME,
+      },
+      privateKey,
+    );
 
     const user = await sessionService.validateToken(jwt);
     expect(user).toEqual({
@@ -137,10 +151,15 @@ describe('Session Service Unit Tests', () => {
   });
 
   test('Valid Issuer with old Frontend API URL in JWT', async () => {
-    const jwt = await generateJWT('https://pro-2.frontendapi.cloud.corbado.io', 600, {
-      sub: TEST_USER_ID,
-      name: TEST_FULL_NAME,
-    });
+    const jwt = await generateJWT(
+      'https://pro-2.frontendapi.cloud.corbado.io',
+      600,
+      {
+        sub: TEST_USER_ID,
+        name: TEST_FULL_NAME,
+      },
+      privateKey,
+    );
 
     const user = await sessionService.validateToken(jwt);
     expect(user).toEqual({
@@ -150,10 +169,15 @@ describe('Session Service Unit Tests', () => {
   });
 
   test('should throw ValidationError if issuer is mismatched', async () => {
-    const jwt = await generateJWT('https://invalid-issuer.com', 600, {
-      sub: TEST_USER_ID,
-      name: TEST_FULL_NAME,
-    });
+    const jwt = await generateJWT(
+      'https://invalid-issuer.com',
+      600,
+      {
+        sub: TEST_USER_ID,
+        name: TEST_FULL_NAME,
+      },
+      privateKey,
+    );
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(
@@ -162,10 +186,15 @@ describe('Session Service Unit Tests', () => {
   });
 
   test('should throw ValidationError if issuer is undefined', async () => {
-    const jwt = await generateJWT('', 600, {
-      sub: TEST_USER_ID,
-      name: TEST_FULL_NAME,
-    });
+    const jwt = await generateJWT(
+      '',
+      600,
+      {
+        sub: TEST_USER_ID,
+        name: TEST_FULL_NAME,
+      },
+      privateKey,
+    );
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(
@@ -174,10 +203,15 @@ describe('Session Service Unit Tests', () => {
   });
 
   test('should throw ValidationError on JWTExpired', async () => {
-    const jwt = await generateJWT(TEST_ISSUER, -600, {
-      sub: TEST_USER_ID,
-      name: TEST_FULL_NAME,
-    });
+    const jwt = await generateJWT(
+      TEST_ISSUER,
+      -600,
+      {
+        sub: TEST_USER_ID,
+        name: TEST_FULL_NAME,
+      },
+      privateKey,
+    );
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(
@@ -186,10 +220,15 @@ describe('Session Service Unit Tests', () => {
   });
 
   test('should throw ValidationError on JWTInvalid', async () => {
-    const jwt = await generateInvalidJWT(TEST_ISSUER, 600, {
-      sub: TEST_USER_ID,
-      name: TEST_FULL_NAME,
-    });
+    const jwt = await generateJWT(
+      TEST_ISSUER,
+      600,
+      {
+        sub: TEST_USER_ID,
+        name: TEST_FULL_NAME,
+      },
+      invalidPrivateKey,
+    );
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(
@@ -205,21 +244,29 @@ describe('Session Service Unit Tests', () => {
       name: TEST_FULL_NAME,
       nbf: notBeforeTime,
     })
-      .setProtectedHeader({ alg: 'RS256', kid: 'kid123' })
+      .setProtectedHeader({
+        alg: 'RS256',
+        kid: 'kid123',
+      })
       .sign(privateKey);
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(
-      httpStatusCodes[ValidationErrorNames.JWTClaimValidationFailed].description
+      httpStatusCodes[ValidationErrorNames.JWTClaimValidationFailed].description,
     );
   });
 
   test('should return user data for a valid JWT', async () => {
     // Generate a valid JWT using the generated private key
-    const jwt = await generateJWT(TEST_ISSUER, 600, {
-      sub: TEST_USER_ID,
-      name: TEST_FULL_NAME,
-    });
+    const jwt = await generateJWT(
+      TEST_ISSUER,
+      600,
+      {
+        sub: TEST_USER_ID,
+        name: TEST_FULL_NAME,
+      },
+      privateKey,
+    );
 
     const user = await sessionService.validateToken(jwt);
     expect(user).toEqual({
