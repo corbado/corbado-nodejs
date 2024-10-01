@@ -3,7 +3,7 @@ import express from 'express';
 import { exportJWK, generateKeyPair, KeyLike, SignJWT } from 'jose';
 // @ts-ignore
 import http from 'http';
-import { httpStatusCodes, ValidationError } from '../../src/errors';
+import { BaseError, httpStatusCodes, ValidationError } from '../../src/errors';
 import { ValidationErrorNames } from '../../src/errors/validationError';
 import SessionService from '../../src/services/sessionService';
 
@@ -70,12 +70,14 @@ describe('Session Service Unit Tests', () => {
 
   beforeAll(async () => {
     server = await startJWKSserver();
-
-    sessionService = new SessionService(SHORT_SESSION_COOKIE_NAME, TEST_ISSUER, JWKS_URI, 10, PROJECT_ID);
   });
 
   afterAll(async () => {
     server.close();
+  });
+
+  beforeEach(async () => {
+    sessionService = new SessionService(SHORT_SESSION_COOKIE_NAME, TEST_ISSUER, JWKS_URI, 10, PROJECT_ID);
   });
 
   test('should throw error if required parameters are missing in constructor', () => {
@@ -88,6 +90,15 @@ describe('Session Service Unit Tests', () => {
     );
   });
 
+  test('should throw ValidationError if short session is empty', async () => {
+    const shortSession = '';
+    await expect(sessionService.validateToken(shortSession)).rejects.toThrow(BaseError);
+    await expect(sessionService.validateToken(shortSession)).rejects.toHaveProperty(
+      'statusCode',
+      httpStatusCodes.EMPTY_STRING.code,
+    );
+  });
+
   test('should throw ValidationError if short session is too short', async () => {
     const shortSession = 'short';
     await expect(sessionService.validateToken(shortSession)).rejects.toThrow(ValidationError);
@@ -96,9 +107,79 @@ describe('Session Service Unit Tests', () => {
     );
   });
 
-  test('should throw ValidationError if issuer is mismatched 1', async () => {
+  test('should throw ValidationError if jwt has an invalid signature', async () => {
+    const shortSession =
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6ImtpZDEyMyJ9.eyJpc3MiOiJodHRwczovL2F1dGguYWNtZS5jb20iLCJpYXQiOjE3MjY0OTE4MDcsImV4cCI6MTcyNjQ5MTkwNywibmJmIjoxNzI2NDkxNzA3LCJzdWIiOiJ1c3ItMTIzNDU2Nzg5MCIsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJlbWFpbCIsInBob25lX251bWJlciI6InBob25lTnVtYmVyIiwib3JpZyI6Im9yaWcifQ.invalid';
+    await expect(sessionService.validateToken(shortSession)).rejects.toThrow(ValidationError);
+    await expect(sessionService.validateToken(shortSession)).rejects.toThrow(
+      httpStatusCodes[ValidationErrorNames.JWTInvalid].description,
+    );
+  });
+
+  test('should throw ValidationError using invalid private key', async () => {
     const jwt = await generateJWT(
-      'https://pro-1.frontendapi.cloud.corbado.io',
+      TEST_ISSUER,
+      600,
+      {
+        sub: TEST_USER_ID,
+        name: TEST_FULL_NAME,
+      },
+      invalidPrivateKey,
+    );
+
+    await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
+    await expect(sessionService.validateToken(jwt)).rejects.toThrow(
+      httpStatusCodes[ValidationErrorNames.JWTInvalid].description,
+    );
+  });
+
+  test('should throw ValidationError if JWT is not yet valid (nbf claim in the future)', async () => {
+    const notBeforeTime = Math.floor(Date.now() / 1000) + 600;
+    const jwt = await new SignJWT({
+      iss: TEST_ISSUER,
+      sub: TEST_USER_ID,
+      name: TEST_FULL_NAME,
+      nbf: notBeforeTime,
+    })
+      .setProtectedHeader({
+        alg: 'RS256',
+        kid: 'kid123',
+      })
+      .sign(validPrivateKey);
+
+    await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
+    await expect(sessionService.validateToken(jwt)).rejects.toThrow(
+      httpStatusCodes[ValidationErrorNames.JWTClaimValidationFailed].description,
+    );
+  });
+
+  test('should throw ValidationError using an expired JWT', async () => {
+    const jwt = await generateJWT(
+      TEST_ISSUER,
+      -600,
+      {
+        sub: TEST_USER_ID,
+        name: TEST_FULL_NAME,
+      },
+      validPrivateKey,
+    );
+
+    await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
+    await expect(sessionService.validateToken(jwt)).rejects.toThrow(
+      httpStatusCodes[ValidationErrorNames.JWTExpired].description,
+    );
+  });
+
+  test('should throw ValidationError if issuer is mismatched 1', async () => {
+    sessionService = new SessionService(
+      SHORT_SESSION_COOKIE_NAME,
+      'https://pro-2.frontendapi.cloud.corbado.io',
+      JWKS_URI,
+      10,
+      PROJECT_ID,
+    );
+    const jwt = await generateJWT(
+      'https://pro-1.frontendapi.corbado.io',
       600,
       {
         sub: TEST_USER_ID,
@@ -116,7 +197,7 @@ describe('Session Service Unit Tests', () => {
 
   test('should throw ValidationError if issuer is mismatched 2', async () => {
     const jwt = await generateJWT(
-      'https://pro-1.frontendapi.corbado.io',
+      'https://pro-1.frontendapi.cloud.corbado.io',
       600,
       {
         sub: TEST_USER_ID,
@@ -129,6 +210,23 @@ describe('Session Service Unit Tests', () => {
     await expect(sessionService.validateToken(jwt)).rejects.toHaveProperty(
       'statusCode',
       httpStatusCodes[ValidationErrorNames.InvalidIssuer].code,
+    );
+  });
+
+  test('should throw ValidationError if issuer is undefined', async () => {
+    const jwt = await generateJWT(
+      '',
+      600,
+      {
+        sub: TEST_USER_ID,
+        name: TEST_FULL_NAME,
+      },
+      validPrivateKey,
+    );
+
+    await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
+    await expect(sessionService.validateToken(jwt)).rejects.toThrow(
+      httpStatusCodes[ValidationErrorNames.EmptyIssuer].description,
     );
   });
 
@@ -168,80 +266,10 @@ describe('Session Service Unit Tests', () => {
     });
   });
 
-  test('should throw ValidationError if issuer is undefined', async () => {
+  test('should return user data using CNAME', async () => {
+    sessionService = new SessionService(SHORT_SESSION_COOKIE_NAME, 'https://auth.acme.com', JWKS_URI, 10, PROJECT_ID);
     const jwt = await generateJWT(
-      '',
-      600,
-      {
-        sub: TEST_USER_ID,
-        name: TEST_FULL_NAME,
-      },
-      validPrivateKey,
-    );
-
-    await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
-    await expect(sessionService.validateToken(jwt)).rejects.toThrow(
-      httpStatusCodes[ValidationErrorNames.EmptyIssuer].description,
-    );
-  });
-
-  test('should throw ValidationError on JWTExpired', async () => {
-    const jwt = await generateJWT(
-      TEST_ISSUER,
-      -600,
-      {
-        sub: TEST_USER_ID,
-        name: TEST_FULL_NAME,
-      },
-      validPrivateKey,
-    );
-
-    await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
-    await expect(sessionService.validateToken(jwt)).rejects.toThrow(
-      httpStatusCodes[ValidationErrorNames.JWTExpired].description,
-    );
-  });
-
-  test('should throw ValidationError on JWTInvalid', async () => {
-    const jwt = await generateJWT(
-      TEST_ISSUER,
-      600,
-      {
-        sub: TEST_USER_ID,
-        name: TEST_FULL_NAME,
-      },
-      invalidPrivateKey,
-    );
-
-    await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
-    await expect(sessionService.validateToken(jwt)).rejects.toThrow(
-      httpStatusCodes[ValidationErrorNames.JWTInvalid].description,
-    );
-  });
-
-  test('should throw ValidationError if JWT is not yet valid (nbf claim in the future)', async () => {
-    const notBeforeTime = Math.floor(Date.now() / 1000) + 600;
-    const jwt = await new SignJWT({
-      iss: TEST_ISSUER,
-      sub: TEST_USER_ID,
-      name: TEST_FULL_NAME,
-      nbf: notBeforeTime,
-    })
-      .setProtectedHeader({
-        alg: 'RS256',
-        kid: 'kid123',
-      })
-      .sign(validPrivateKey);
-
-    await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
-    await expect(sessionService.validateToken(jwt)).rejects.toThrow(
-      httpStatusCodes[ValidationErrorNames.JWTClaimValidationFailed].description,
-    );
-  });
-
-  test('should return user data for a valid JWT', async () => {
-    const jwt = await generateJWT(
-      TEST_ISSUER,
+      'https://auth.acme.com',
       600,
       {
         sub: TEST_USER_ID,
