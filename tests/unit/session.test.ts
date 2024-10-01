@@ -41,11 +41,13 @@ async function startJWKSserver() {
 async function generateJWT(
   issuer: string,
   expiresIn: number,
-  payload: Record<string, any>,
+  userId: string,
+  fullName: string,
   privateKey: KeyLike,
 ): Promise<string> {
   return await new SignJWT({
-    ...payload,
+    sub: userId,
+    name: fullName,
     iss: issuer,
     iat: Math.floor(Date.now() / 1000),
     exp: Math.floor(Date.now() / 1000) + expiresIn,
@@ -117,15 +119,7 @@ describe('Session Service Unit Tests', () => {
   });
 
   test('should throw ValidationError using invalid private key', async () => {
-    const jwt = await generateJWT(
-      TEST_ISSUER,
-      600,
-      {
-        sub: TEST_USER_ID,
-        name: TEST_FULL_NAME,
-      },
-      invalidPrivateKey,
-    );
+    const jwt = await generateJWT(TEST_ISSUER, 600, TEST_USER_ID, TEST_FULL_NAME, invalidPrivateKey);
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(
@@ -154,15 +148,7 @@ describe('Session Service Unit Tests', () => {
   });
 
   test('should throw ValidationError using an expired JWT', async () => {
-    const jwt = await generateJWT(
-      TEST_ISSUER,
-      -600,
-      {
-        sub: TEST_USER_ID,
-        name: TEST_FULL_NAME,
-      },
-      validPrivateKey,
-    );
+    const jwt = await generateJWT(TEST_ISSUER, -600, TEST_USER_ID, TEST_FULL_NAME, validPrivateKey);
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(
@@ -181,10 +167,8 @@ describe('Session Service Unit Tests', () => {
     const jwt = await generateJWT(
       'https://pro-1.frontendapi.corbado.io',
       600,
-      {
-        sub: TEST_USER_ID,
-        name: TEST_FULL_NAME,
-      },
+      TEST_USER_ID,
+      TEST_FULL_NAME,
       validPrivateKey,
     );
 
@@ -199,10 +183,8 @@ describe('Session Service Unit Tests', () => {
     const jwt = await generateJWT(
       'https://pro-1.frontendapi.cloud.corbado.io',
       600,
-      {
-        sub: TEST_USER_ID,
-        name: TEST_FULL_NAME,
-      },
+      TEST_USER_ID,
+      TEST_FULL_NAME,
       validPrivateKey,
     );
 
@@ -214,15 +196,7 @@ describe('Session Service Unit Tests', () => {
   });
 
   test('should throw ValidationError if issuer is undefined', async () => {
-    const jwt = await generateJWT(
-      '',
-      600,
-      {
-        sub: TEST_USER_ID,
-        name: TEST_FULL_NAME,
-      },
-      validPrivateKey,
-    );
+    const jwt = await generateJWT('', 600, TEST_USER_ID, TEST_FULL_NAME, validPrivateKey);
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(
@@ -234,18 +208,14 @@ describe('Session Service Unit Tests', () => {
     const jwt = await generateJWT(
       'https://pro-2.frontendapi.cloud.corbado.io',
       600,
-      {
-        sub: TEST_USER_ID,
-        name: TEST_FULL_NAME,
-      },
+      TEST_USER_ID,
+      TEST_FULL_NAME,
       validPrivateKey,
     );
 
     const user = await sessionService.validateToken(jwt);
-    expect(user).toEqual({
-      userId: TEST_USER_ID,
-      fullName: TEST_FULL_NAME,
-    });
+    expect(user.userId).toBe(TEST_USER_ID);
+    expect(user.fullName).toBe(TEST_FULL_NAME);
   });
 
   test('should return user using old Frontend API URL as config issuer', async () => {
@@ -259,36 +229,22 @@ describe('Session Service Unit Tests', () => {
     const jwt = await generateJWT(
       'https://pro-2.frontendapi.corbado.io',
       600,
-      {
-        sub: TEST_USER_ID,
-        name: TEST_FULL_NAME,
-      },
+      TEST_USER_ID,
+      TEST_FULL_NAME,
       validPrivateKey,
     );
 
     const user = await sessionService.validateToken(jwt);
-    expect(user).toEqual({
-      userId: TEST_USER_ID,
-      fullName: TEST_FULL_NAME,
-    });
+    expect(user.userId).toBe(TEST_USER_ID);
+    expect(user.fullName).toBe(TEST_FULL_NAME);
   });
 
   test('should return user data using CNAME', async () => {
     sessionService = new SessionService(SHORT_SESSION_COOKIE_NAME, 'https://auth.acme.com', JWKS_URI, 10, PROJECT_ID);
-    const jwt = await generateJWT(
-      'https://auth.acme.com',
-      600,
-      {
-        sub: TEST_USER_ID,
-        name: TEST_FULL_NAME,
-      },
-      validPrivateKey,
-    );
+    const jwt = await generateJWT('https://auth.acme.com', 600, TEST_USER_ID, TEST_FULL_NAME, validPrivateKey);
 
     const user = await sessionService.validateToken(jwt);
-    expect(user).toEqual({
-      userId: TEST_USER_ID,
-      fullName: TEST_FULL_NAME,
-    });
+    expect(user.userId).toBe(TEST_USER_ID);
+    expect(user.fullName).toBe(TEST_FULL_NAME);
   });
 });
