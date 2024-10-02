@@ -95,7 +95,7 @@ describe('Session Service Unit Tests', () => {
     );
   });
 
-  test('should throw ValidationError if short session is empty', async () => {
+  test('should throw ValidationError if JWT is empty', async () => {
     const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io')
 
     await expect(sessionService.validateToken('')).rejects.toThrow(BaseError);
@@ -105,7 +105,7 @@ describe('Session Service Unit Tests', () => {
     );
   });
 
-  test('should throw ValidationError if short session is too short', async () => {
+  test('should throw ValidationError if JWT is too short', async () => {
     const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io')
 
     await expect(sessionService.validateToken('short')).rejects.toThrow(ValidationError);
@@ -115,12 +115,12 @@ describe('Session Service Unit Tests', () => {
     );
   });
 
-  test('should throw ValidationError if jwt has an invalid signature', async () => {
+  test('should throw ValidationError if JWT has an invalid signature', async () => {
     const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io')
 
-    const shortSession = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6ImtpZDEyMyJ9.eyJpc3MiOiJodHRwczovL2F1dGguYWNtZS5jb20iLCJpYXQiOjE3MjY0OTE4MDcsImV4cCI6MTcyNjQ5MTkwNywibmJmIjoxNzI2NDkxNzA3LCJzdWIiOiJ1c3ItMTIzNDU2Nzg5MCIsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJlbWFpbCIsInBob25lX251bWJlciI6InBob25lTnVtYmVyIiwib3JpZyI6Im9yaWcifQ.invalid';
-    await expect(sessionService.validateToken(shortSession)).rejects.toThrow(ValidationError);
-    await expect(sessionService.validateToken(shortSession)).rejects.toHaveProperty(
+    const jwt = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6ImtpZDEyMyJ9.eyJpc3MiOiJodHRwczovL2F1dGguYWNtZS5jb20iLCJpYXQiOjE3MjY0OTE4MDcsImV4cCI6MTcyNjQ5MTkwNywibmJmIjoxNzI2NDkxNzA3LCJzdWIiOiJ1c3ItMTIzNDU2Nzg5MCIsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJlbWFpbCIsInBob25lX251bWJlciI6InBob25lTnVtYmVyIiwib3JpZyI6Im9yaWcifQ.invalid';
+    await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
+    await expect(sessionService.validateToken(jwt)).rejects.toHaveProperty(
       'name',
       ValidationErrorNames.JWTInvalid,
     );
