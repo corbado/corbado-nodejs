@@ -7,12 +7,12 @@ export interface ConfigInterface {
   APISecret: string;
   FrontendAPI: string;
   BackendAPI: string;
-  ShortSessionCookieName: string;
+  SessionTokenCookieName: string;
   CacheMaxAge: number;
 }
 
 export const DefaultClient = axios.create();
-export const DefaultShortSessionCookieName = 'cbo_short_session';
+export const DefaultSessionTokenCookieName = 'cbo_session_token';
 export const DefaultCacheMaxAge = 10 * 60 * 1000; // 10 * 60 * 1000 = 60000 milliseconds, which is equivalent to 10 minutes.
 
 class Config implements ConfigInterface {
@@ -24,7 +24,7 @@ class Config implements ConfigInterface {
 
   BackendAPI: string;
 
-  ShortSessionCookieName: string = DefaultShortSessionCookieName;
+  SessionTokenCookieName: string = DefaultSessionTokenCookieName;
 
   Client: AxiosInstance;
 
@@ -43,10 +43,17 @@ class Config implements ConfigInterface {
     this.BackendAPI = backendAPI;
   }
 
+  // @deprecated
   public setShortSessionCookieName(shortSessionCookieName: string): void {
     Assert.notEmptyString(shortSessionCookieName, 'shortSessionCookieName');
 
-    this.ShortSessionCookieName = shortSessionCookieName;
+    this.SessionTokenCookieName = shortSessionCookieName;
+  }
+
+  public setSessionTokenCookieName(sessionTokenName: string): void {
+    Assert.notEmptyString(sessionTokenName, 'sessionTokenName');
+
+    this.SessionTokenCookieName = sessionTokenName;
   }
 
   public setHttpClient(client: AxiosInstance): void {

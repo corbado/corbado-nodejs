@@ -18,7 +18,7 @@ class SDK {
     this.axiosClient = this.createClient(config);
 
     this.session = new Session(
-      config.ShortSessionCookieName,
+      config.SessionTokenCookieName,
       config.FrontendAPI,
       `${config.FrontendAPI}/.well-known/jwks`,
       config.CacheMaxAge,

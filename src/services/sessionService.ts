@@ -5,7 +5,7 @@ import { Assert } from '../helpers/index.js';
 import ValidationError, { ValidationErrorNames } from '../errors/validationError.js';
 
 export interface SessionInterface {
-  validateToken(shortSession: string): Promise<{ userId: string; fullName: string }>;
+  validateToken(sessionToken: string): Promise<{ userId: string; fullName: string }>;
 }
 
 interface MyJWTPayload extends JWTPayload {
@@ -14,7 +14,7 @@ interface MyJWTPayload extends JWTPayload {
   sub: string;
 }
 
-const MIN_SHORT_SESSION_LENGTH = 10;
+const MIN_SESSION_TOKEN_LENGTH = 10;
 
 class Session implements SessionInterface {
   private issuer: string;
@@ -25,8 +25,8 @@ class Session implements SessionInterface {
 
   private projectID: string;
 
-  constructor(shortSessionCookieName: string, issuer: string, jwksURI: string, cacheMaxAge: number, projectID: string) {
-    if (!shortSessionCookieName || !issuer || !jwksURI) {
+  constructor(sessionTokenCookieName: string, issuer: string, jwksURI: string, cacheMaxAge: number, projectID: string) {
+    if (!sessionTokenCookieName || !issuer || !jwksURI) {
       throw new Error('Required parameter is empty');
     }
 
@@ -41,19 +41,19 @@ class Session implements SessionInterface {
   }
 
   /**
-   * Validate the short session token and return the user ID and full name
-   * @param {any} shortSession:string
+   * Validate the session token and return the user ID and full name
+   * @param {any} sessionToken:string
    * @returns {any} { userId: string; fullName: string }
    */
-  public async validateToken(shortSession: string): Promise<{ userId: string; fullName: string }> {
-    Assert.notEmptyString(shortSession, 'shortSession not given');
+  public async validateToken(sessionToken: string): Promise<{ userId: string; fullName: string }> {
+    Assert.notEmptyString(sessionToken, 'sessionToken not given');
 
-    if (shortSession.length < MIN_SHORT_SESSION_LENGTH) {
+    if (sessionToken.length < MIN_SESSION_TOKEN_LENGTH) {
       throw new ValidationError(ValidationErrorNames.InvalidShortSession);
     }
 
     try {
-      const { payload } = await jwtVerify(shortSession, this.jwkSet);
+      const { payload } = await jwtVerify(sessionToken, this.jwkSet);
 
       const { iss, name, sub } = payload as MyJWTPayload;
 

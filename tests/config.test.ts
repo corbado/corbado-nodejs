@@ -1,4 +1,4 @@
-import { DefaultCacheMaxAge, DefaultShortSessionCookieName } from '../src/config.js';
+import {DefaultCacheMaxAge, DefaultSessionTokenCookieName} from '../src/config.js';
 import { BaseError } from '../src/errors/index.js';
 import { Config } from '../src/index.js';
 
@@ -25,7 +25,7 @@ describe('Configuration class', () => {
     expect(config.APISecret).toBe(apiSecret);
     expect(config.FrontendAPI).toBe(`https://${projectID}.frontendapi.cloud.corbado.io`);
     expect(config.BackendAPI).toBe(backendAPI);
-    expect(config.ShortSessionCookieName).toBe(DefaultShortSessionCookieName);
+    expect(config.SessionTokenCookieName).toBe(DefaultSessionTokenCookieName);
     expect(config.CacheMaxAge).toBe(DefaultCacheMaxAge);
   };
 
@@ -38,7 +38,7 @@ describe('Configuration class', () => {
     const config = new Config(projectID, apiSecret, frontendAPI, backendAPI);
     expect(config.BackendAPI).toBe(backendAPI);
     expect(config.FrontendAPI).toBe(frontendAPI);
-    expect(config.ShortSessionCookieName).toBe(DefaultShortSessionCookieName);
+    expect(config.SessionTokenCookieName).toBe(DefaultSessionTokenCookieName);
     expect(config.CacheMaxAge).toBe(DefaultCacheMaxAge);
   });
 
