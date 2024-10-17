@@ -16,20 +16,20 @@ router.get('/', async (_, res) => {
 });
 
 router.get('/setCookie', async (req, res) => {
-  // You'll have to supply your own short session cookie value here.
-  // Bear in mind that the short session cookie value is only valid for 15 minutes.
-  // If you change the cookie name via config.setShortSessionCookieName, you'll
+  // You'll have to supply your own session-token here.
+  // Bear in mind that the session-token is only valid for 15 minutes.
+  // If you change the cookie name via config.setSessionTokenCookieName, you'll
   // have to update the cookie name here asa well.
-  const { shortSession } = await req.query;
+  const { sessionToken } = await req.query;
 
-  res.cookie('cbo_short_session', shortSession, { maxAge: 900000, httpOnly: true });
+  res.cookie('cbo_session_token', sessionToken, { maxAge: 900000, httpOnly: true });
   res.send('Cookie set!');
 });
 
 router.get('/logged-in', async (req, res) => {
   try {
-    const shortSession = await req.cookies.cbo_short_session;
-    const user = await sdk.sessions().validateToken(shortSession);
+    const sessionToken = await req.cookies.cbo_session_token;
+    const user = await sdk.sessions().validateToken(sessionToken);
 
     res.write(`User ID: ${user.userId}\n`);
     res.write(`User full name: ${user.fullName}\n`);

@@ -64,7 +64,7 @@ async function generateJWT(
 
 function createSessionService(issuer: string): SessionService {
   return new SessionService(
-    'cbo_short_session',
+    'cbo_session_token',
     issuer,
     `http://localhost:${PORT}/jwks`,
     10,
@@ -87,10 +87,10 @@ describe('Session Service Unit Tests', () => {
     expect(() => new SessionService('', 'https://pro-1.frontendapi.cloud.corbado.io', `http://localhost:${PORT}/jwks`, 10, 'pro-1')).toThrow(
       'Required parameter is empty',
     );
-    expect(() => new SessionService('cbo_short_session', '', `http://localhost:${PORT}/jwks`, 10, 'pro-1')).toThrow(
+    expect(() => new SessionService('cbo_session_token', '', `http://localhost:${PORT}/jwks`, 10, 'pro-1')).toThrow(
       'Required parameter is empty',
     );
-    expect(() => new SessionService('cbo_short_session', 'https://pro-1.frontendapi.cloud.corbado.io', '', 10, 'pro-1')).toThrow(
+    expect(() => new SessionService('cbo_session_token', 'https://pro-1.frontendapi.cloud.corbado.io', '', 10, 'pro-1')).toThrow(
       'Required parameter is empty',
     );
   });

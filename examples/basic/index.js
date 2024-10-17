@@ -29,11 +29,11 @@ app.get('/', async (_, res) => {
   // Protecting routes                                                                        //
   //////////////////////////////////////////////////////////////////////////////////////////////
 
-  // Retrieve the short-term session value from the Cookie (e.g. req.cookies.cbo_short_session)
-  const shortTermSessionValue = '<Your short-term session value>';
+  // Retrieve the session-token from cookie (e.g. req.cookies.cbo_session_token)
+  const sessionToken = '<Your session-token>';
 
-  if (!shortTermSessionValue) {
-    // If the short-term session value is empty (e.g. the cookie is not set or
+  if (!sessionToken) {
+    // If the session-token is empty (e.g. the cookie is not set or
     // expired), the user is not authenticated. e.g. redirect to login page.
 
     console.log('User not authenticated');
@@ -43,7 +43,7 @@ app.get('/', async (_, res) => {
   let user;
 
   try {
-    user = await sdk.sessions().validateToken(shortTermSessionValue);
+    user = await sdk.sessions().validateToken(sessionToken);
 
     console.log(`User with ID ${user.userId} is authenticated!`);
   } catch (err) {
@@ -61,10 +61,10 @@ app.get('/', async (_, res) => {
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////
-  // Getting user data from short-term session (represented as JWT)                           //
+  // Getting user data from session-token                                                     //
   //////////////////////////////////////////////////////////////////////////////////////////////
 
-  user = await sdk.sessions().validateToken(shortTermSessionValue);
+  user = await sdk.sessions().validateToken(sessionToken);
 
   console.log('UserID', user.userId);
   console.log('Full Name', user.fullName);
@@ -73,7 +73,7 @@ app.get('/', async (_, res) => {
   // Getting user data from Corbado Backend API                                               //
   //////////////////////////////////////////////////////////////////////////////////////////////
 
-  user = await sdk.sessions().validateToken(shortTermSessionValue);
+  user = await sdk.sessions().validateToken(sessionToken);
 
   const fullUser = await sdk.users().get(user.userId);
 
