@@ -4,7 +4,7 @@ on:
   push:
   pull_request:
   schedule:
-    - cron: '*/10 * * * *'  # Runs every 10 minutes
+    - cron: '0 0 * * *'  # Run at midnight
 
 jobs:
   test:
