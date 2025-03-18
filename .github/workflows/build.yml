@@ -1,6 +1,10 @@
 name: Build workflow
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'  # Runs at 00:00 UTC every day
 
 jobs:
   test:
