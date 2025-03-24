@@ -11,6 +11,8 @@
 
 The [Corbado](https://www.corbado.com) Node SDK provides convenient access to the [Corbado Backend API](https://apireference.cloud.corbado.io/backendapi-v2/) from applications written in Node.js.
 
+[![integration-guides](https://github.com/user-attachments/assets/7859201b-a345-4b68-b336-6e2edcc6577b)](https://app.corbado.com/getting-started?search=typescript)
+
 :warning: The Corbado Node.js SDK is commonly referred to as a private client, specifically designed for usage within closed backend applications. This particular SDK should exclusively be utilized in such environments, as it is crucial to ensure that the API secret remains strictly confidential and is never shared.
 
 :rocket: [Getting started](#rocket-getting-started) | :hammer_and_wrench: [Installation](#installation) | :books: [Advanced](#books-advanced) | :speech_balloon: [Support & Feedback](#speech_balloon-support--feedback)
@@ -61,9 +63,12 @@ const config = new Config(projectID, apiSecret, frontendAPI, backendAPI);
 const sdk = new SDK(config);
 ```
 
-### Examples
+### See in action
 
-A list of examples can be found in the integration tests [here](tests/integration).
+- Check [Next.js](https://github.com/corbado/passkeys-nextjs) example
+- Check [Express](https://github.com/corbado/passkeys-vuejs-express) example
+- Check [Hono](https://github.com/corbado/passkeys-react-hono) example
+- Check integration tests [here](tests/integration)
 
 ### Services
 
