@@ -4,7 +4,7 @@ on:
   push:
   pull_request:
   schedule:
-    - cron: '0 0 * * *'  # Run at midnight
+    - cron: '0 2 * * *'
 
 jobs:
   test:
