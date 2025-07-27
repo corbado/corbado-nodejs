@@ -41,6 +41,26 @@ class Assert {
     });
   }
 
+  public static isString(data: unknown, errorName: string): void {
+    validate(
+      typeof data !== 'string',
+      errorName,
+      INVALID_DATA.code,
+      `${errorName} must be a string`,
+      INVALID_DATA.isOperational,
+    );
+  }
+
+  public static isNotEmpty(data: unknown, errorName: string): void {
+    validate(
+      data === null || data === '',
+      errorName,
+      EMPTY_STRING.code,
+      `${errorName} must not be empty`,
+      EMPTY_STRING.isOperational,
+    );
+  }
+
   public static validURL(url: string, errorName: string): void {
     validate(!url, errorName, INVALID_URL.code, 'parse_url() returned error', INVALID_URL.isOperational);
 
