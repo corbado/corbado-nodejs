@@ -53,7 +53,7 @@ class Assert {
 
   public static isNotEmpty(data: unknown, errorName: string): void {
     validate(
-      data === null || data === '',
+      data === null || data === undefined || data === '',
       errorName,
       EMPTY_STRING.code,
       `${errorName} must not be empty`,
