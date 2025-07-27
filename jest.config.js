@@ -7,6 +7,11 @@ export default {
   transform: { '^.+\\.tsx?$': ['ts-jest', { useESM: true, tsconfig: 'tsconfig.esm.json' }] },
   setupFiles: ['./tests/setupJest.js'],
   collectCoverage: true,
+  collectCoverageFrom: [
+    'src/**/*.ts',
+    '!src/generated/**/*.ts', // Exclude auto-generated API files
+    '!src/**/*.d.ts',         // Exclude TypeScript declaration files
+  ],
   coverageReporters: ['json', 'json-summary', 'lcov', 'text', 'clover'],
   coverageDirectory: './coverage',
 };
