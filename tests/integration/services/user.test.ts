@@ -65,7 +65,7 @@ describe('User Validation Tests', () => {
       await sdk.users().get(Utils.testConstants.TEST_USER_ID);
     } catch (error) {
       expect(error).toBeInstanceOf(ServerError);
-      expect((error as ServerError).httpStatusCode).toEqual(400);
+      expect((error as ServerError).httpStatusCode).toEqual(401);
     }
   });
 

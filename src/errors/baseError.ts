@@ -3,6 +3,14 @@ class BaseError extends Error {
 
   isOperational: boolean;
 
+  get errorCode(): number {
+    return this.statusCode;
+  }
+
+  get isRetryable(): boolean {
+    return this.isOperational;
+  }
+
   constructor(name: string, statusCode: number, description: string, isOperational: boolean = false) {
     super(description);
 
