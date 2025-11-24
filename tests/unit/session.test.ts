@@ -69,22 +69,16 @@ async function generateJWT(
     return `${encodedHeader}.${encodedPayload}.`;
   }
 
-  return await new SignJWT(payload)
+  return new SignJWT(payload)
     .setProtectedHeader({
-      alg: alg,
+      alg,
       kid: 'kid123',
     })
     .sign(privateKey);
 }
 
 function createSessionService(issuer: string): SessionService {
-  return new SessionService(
-    'cbo_session_token',
-    issuer,
-    `http://localhost:${PORT}/jwks`,
-    10,
-    'pro-1',
-  );
+  return new SessionService('cbo_session_token', issuer, `http://localhost:${PORT}/jwks`, 10, 'pro-1');
 }
 
 describe('Session Service Unit Tests', () => {
@@ -99,19 +93,26 @@ describe('Session Service Unit Tests', () => {
   });
 
   test('should throw error if required parameters are missing in constructor', () => {
-    expect(() => new SessionService('', 'https://pro-1.frontendapi.cloud.corbado.io', `http://localhost:${PORT}/jwks`, 10, 'pro-1')).toThrow(
-      'Required parameter is empty',
-    );
+    expect(
+      () =>
+        new SessionService(
+          '',
+          'https://pro-1.frontendapi.cloud.corbado.io',
+          `http://localhost:${PORT}/jwks`,
+          10,
+          'pro-1',
+        ),
+    ).toThrow('Required parameter is empty');
     expect(() => new SessionService('cbo_session_token', '', `http://localhost:${PORT}/jwks`, 10, 'pro-1')).toThrow(
       'Required parameter is empty',
     );
-    expect(() => new SessionService('cbo_session_token', 'https://pro-1.frontendapi.cloud.corbado.io', '', 10, 'pro-1')).toThrow(
-      'Required parameter is empty',
-    );
+    expect(
+      () => new SessionService('cbo_session_token', 'https://pro-1.frontendapi.cloud.corbado.io', '', 10, 'pro-1'),
+    ).toThrow('Required parameter is empty');
   });
 
   test('should throw ValidationError if JWT is empty', async () => {
-    const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io')
+    const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io');
 
     await expect(sessionService.validateToken('')).rejects.toThrow(BaseError);
     await expect(sessionService.validateToken('')).rejects.toHaveProperty(
@@ -121,7 +122,7 @@ describe('Session Service Unit Tests', () => {
   });
 
   test('should throw ValidationError if JWT is too short', async () => {
-    const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io')
+    const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io');
 
     await expect(sessionService.validateToken('short')).rejects.toThrow(ValidationError);
     await expect(sessionService.validateToken('short')).rejects.toHaveProperty(
@@ -131,18 +132,16 @@ describe('Session Service Unit Tests', () => {
   });
 
   test('should throw ValidationError if JWT has an invalid signature', async () => {
-    const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io')
+    const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io');
 
-    const jwt = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6ImtpZDEyMyJ9.eyJpc3MiOiJodHRwczovL2F1dGguYWNtZS5jb20iLCJpYXQiOjE3MjY0OTE4MDcsImV4cCI6MTcyNjQ5MTkwNywibmJmIjoxNzI2NDkxNzA3LCJzdWIiOiJ1c3ItMTIzNDU2Nzg5MCIsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJlbWFpbCIsInBob25lX251bWJlciI6InBob25lTnVtYmVyIiwib3JpZyI6Im9yaWcifQ.invalid';
+    const jwt =
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6ImtpZDEyMyJ9.eyJpc3MiOiJodHRwczovL2F1dGguYWNtZS5jb20iLCJpYXQiOjE3MjY0OTE4MDcsImV4cCI6MTcyNjQ5MTkwNywibmJmIjoxNzI2NDkxNzA3LCJzdWIiOiJ1c3ItMTIzNDU2Nzg5MCIsIm5hbWUiOiJuYW1lIiwiZW1haWwiOiJlbWFpbCIsInBob25lX251bWJlciI6InBob25lTnVtYmVyIiwib3JpZyI6Im9yaWcifQ.invalid';
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
-    await expect(sessionService.validateToken(jwt)).rejects.toHaveProperty(
-      'name',
-      ValidationErrorNames.JWTInvalid,
-    );
+    await expect(sessionService.validateToken(jwt)).rejects.toHaveProperty('name', ValidationErrorNames.JWTInvalid);
   });
 
   test('should throw ValidationError using invalid private key', async () => {
-    const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io')
+    const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io');
     const jwt = await generateJWT('https://pro-1.frontendapi.cloud.corbado.io', 600, 0, invalidPrivateKey, 'RS256');
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
@@ -150,7 +149,7 @@ describe('Session Service Unit Tests', () => {
   });
 
   test('should throw ValidationError using alg "none"', async () => {
-    const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io')
+    const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io');
     const jwt = await generateJWT('https://pro-1.frontendapi.cloud.corbado.io', 600, 0, invalidPrivateKey, 'none');
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
@@ -158,7 +157,7 @@ describe('Session Service Unit Tests', () => {
   });
 
   test('should throw ValidationError if JWT is not yet valid (nbf claim in the future)', async () => {
-    const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io')
+    const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io');
     const jwt = await generateJWT('https://pro-1.frontendapi.cloud.corbado.io', 600, 600, validPrivateKey, 'RS256');
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
@@ -169,7 +168,7 @@ describe('Session Service Unit Tests', () => {
   });
 
   test('should throw ValidationError using an expired JWT', async () => {
-    const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io')
+    const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io');
     const jwt = await generateJWT('https://pro-1.frontendapi.cloud.corbado.io', -600, 0, validPrivateKey, 'RS256');
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
@@ -177,7 +176,7 @@ describe('Session Service Unit Tests', () => {
   });
 
   test('should throw ValidationError if issuer is empty', async () => {
-    const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io')
+    const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io');
     const jwt = await generateJWT('', 600, 0, validPrivateKey, 'RS256');
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
@@ -185,7 +184,7 @@ describe('Session Service Unit Tests', () => {
   });
 
   test('should throw ValidationError if issuer is mismatch 1', async () => {
-    const sessionService = createSessionService('https://pro-1.frontendapi.corbado.io')
+    const sessionService = createSessionService('https://pro-1.frontendapi.corbado.io');
     const jwt = await generateJWT('https://pro-2.frontendapi.cloud.corbado.io', 600, 0, validPrivateKey, 'RS256');
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
@@ -193,7 +192,7 @@ describe('Session Service Unit Tests', () => {
   });
 
   test('should throw ValidationError if issuer is mismatch 2', async () => {
-    const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io')
+    const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io');
     const jwt = await generateJWT('https://pro-2.frontendapi.corbado.io', 600, 0, validPrivateKey, 'RS256');
 
     await expect(sessionService.validateToken(jwt)).rejects.toThrow(ValidationError);
@@ -201,7 +200,7 @@ describe('Session Service Unit Tests', () => {
   });
 
   test('should return user using old Frontend API URL as issuer in JWT', async () => {
-    const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io')
+    const sessionService = createSessionService('https://pro-1.frontendapi.cloud.corbado.io');
     const jwt = await generateJWT('https://pro-1.frontendapi.corbado.io', 600, 0, validPrivateKey, 'RS256');
 
     const user = await sessionService.validateToken(jwt);
@@ -210,7 +209,7 @@ describe('Session Service Unit Tests', () => {
   });
 
   test('should return user using old Frontend API URL as issuer in config', async () => {
-    const sessionService = createSessionService('https://pro-1.frontendapi.corbado.io')
+    const sessionService = createSessionService('https://pro-1.frontendapi.corbado.io');
     const jwt = await generateJWT('https://pro-1.frontendapi.cloud.corbado.io', 600, 0, validPrivateKey, 'RS256');
 
     const user = await sessionService.validateToken(jwt);
@@ -219,7 +218,7 @@ describe('Session Service Unit Tests', () => {
   });
 
   test('should return user data using CNAME', async () => {
-    const sessionService = createSessionService('https://auth.acme.com')
+    const sessionService = createSessionService('https://auth.acme.com');
     const jwt = await generateJWT('https://auth.acme.com', 600, 0, validPrivateKey, 'RS256');
 
     const user = await sessionService.validateToken(jwt);
