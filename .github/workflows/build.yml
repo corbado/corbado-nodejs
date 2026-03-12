@@ -3,16 +3,24 @@ name: Build workflow
 on:
   push:
   pull_request:
+  pull_request_target:
   schedule:
     - cron: '0 2 * * *'
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    # Avoid duplicate runs: skip pull_request for Dependabot (pull_request_target handles it)
+    # and skip pull_request_target for non-Dependabot (pull_request handles it)
+    if: |
+      (github.event_name != 'pull_request' || github.actor != 'dependabot[bot]') &&
+      (github.event_name != 'pull_request_target' || github.actor == 'dependabot[bot]')
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.sha || '' }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
