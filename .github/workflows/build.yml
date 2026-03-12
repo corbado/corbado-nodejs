@@ -1,8 +1,8 @@
 name: Build workflow
 
 on:
-  push:
   pull_request:
+    types: [opened, synchronize]
   schedule:
     - cron: '0 2 * * *'
 
