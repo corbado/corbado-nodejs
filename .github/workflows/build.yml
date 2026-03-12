@@ -1,9 +1,10 @@
 name: Build workflow
 
 on:
-  push:
   pull_request:
+    types: [opened, synchronize]
   pull_request_target:
+    types: [opened, synchronize]
   schedule:
     - cron: '0 2 * * *'
 
