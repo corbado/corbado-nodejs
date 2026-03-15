@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable class-methods-use-this */
 import { createRemoteJWKSet, errors, JWTPayload, jwtVerify } from 'jose';
+import { JOSEAlgNotAllowed } from 'jose/dist/types/util/errors';
 import { Assert } from '../helpers/index.js';
 import ValidationError, { ValidationErrorNames } from '../errors/validationError.js';
-import {JOSEAlgNotAllowed} from "jose/dist/types/util/errors";
 
 export interface SessionInterface {
   validateToken(sessionToken: string): Promise<{ userId: string; fullName: string }>;
@@ -73,7 +73,11 @@ class Session implements SessionInterface {
         throw new ValidationError(ValidationErrorNames.JWTExpired);
       }
 
-      if (error instanceof errors.JWTInvalid || error instanceof errors.JWSSignatureVerificationFailed || error instanceof errors.JOSENotSupported) {
+      if (
+        error instanceof errors.JWTInvalid ||
+        error instanceof errors.JWSSignatureVerificationFailed ||
+        error instanceof errors.JOSENotSupported
+      ) {
         throw new ValidationError(ValidationErrorNames.JWTInvalid);
       }
 

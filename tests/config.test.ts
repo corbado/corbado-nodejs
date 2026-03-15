@@ -1,4 +1,4 @@
-import {DefaultCacheMaxAge, DefaultSessionTokenCookieName} from '../src/config.js';
+import { DefaultCacheMaxAge, DefaultSessionTokenCookieName } from '../src/config.js';
 import { BaseError } from '../src/errors/index.js';
 import { Config } from '../src/index.js';
 
@@ -62,6 +62,46 @@ describe('Configuration class', () => {
 
   it('should throw an error when frontendAPI is wrong', () => {
     expect(() => new Config(projectID, apiSecret, `${frontendAPI}/v2`, backendAPI)).toThrow('path needs to be empty');
+  });
+
+  it('should set session token cookie name using setSessionTokenCookieName', () => {
+    const config = new Config(projectID, apiSecret, frontendAPI, backendAPI);
+    const customCookieName = 'custom_session_token';
+
+    config.setSessionTokenCookieName(customCookieName);
+
+    expect(config.SessionTokenCookieName).toBe(customCookieName);
+  });
+
+  it('should throw error when setting empty session token cookie name', () => {
+    const config = new Config(projectID, apiSecret, frontendAPI, backendAPI);
+
+    expect(() => config.setSessionTokenCookieName('')).toThrow();
+  });
+
+  it('should set session token cookie name using deprecated setShortSessionCookieName', () => {
+    const config = new Config(projectID, apiSecret, frontendAPI, backendAPI);
+    const customCookieName = 'custom_short_session';
+
+    config.setShortSessionCookieName(customCookieName);
+
+    expect(config.SessionTokenCookieName).toBe(customCookieName);
+  });
+
+  it('should throw error when setting empty short session cookie name', () => {
+    const config = new Config(projectID, apiSecret, frontendAPI, backendAPI);
+
+    expect(() => config.setShortSessionCookieName('')).toThrow();
+  });
+
+  it('should set custom HTTP client', () => {
+    const config = new Config(projectID, apiSecret, frontendAPI, backendAPI);
+    const customClient = require('axios').create({ timeout: 5000 });
+
+    config.setHttpClient(customClient);
+
+    expect(config.Client).toBe(customClient);
+    expect(config.Client.defaults.timeout).toBe(5000);
   });
 
   it('should throw an error when backendAPI is wrong', () => {

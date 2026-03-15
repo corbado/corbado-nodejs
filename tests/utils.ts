@@ -1,8 +1,8 @@
 import AxiosMockAdapter from 'axios-mock-adapter';
 import axios, { AxiosInstance } from 'axios';
-import { SDK, Config } from '../src';
-import { BaseError, httpStatusCodes } from '../src/errors';
-import { User } from '../src/generated';
+import { SDK, Config } from '../src/index.js';
+import { BaseError, httpStatusCodes } from '../src/errors/index.js';
+import { User } from '../src/generated/index.js';
 
 class Utils {
   public static SDK(): SDK {

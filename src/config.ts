@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import Assert from './helpers/assert.js';
+import { BaseError } from './errors/index.js';
 
 /* eslint-disable class-methods-use-this */
 export interface ConfigInterface {
@@ -62,13 +63,16 @@ class Config implements ConfigInterface {
 
   private validateProjectID(projectID: string): void {
     if (!projectID || !projectID.startsWith('pro-')) {
-      throw new Error('ProjectID must not be empty and must start with "pro-".');
+      const description = 'ProjectID must not be empty and must start with "pro-".';
+      throw new BaseError(description, 400, description, true);
     }
   }
 
   private validateAPISecret(apiSecret: string): void {
     if (!apiSecret || !apiSecret.startsWith('corbado1_')) {
-      throw new Error('APISecret must not be empty and must start with "corbado1_".');
+      const description = 'APISecret must not be empty and must start with "corbado1_".';
+
+      throw new BaseError(description, 400, description, true);
     }
   }
 }
